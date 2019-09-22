@@ -12,7 +12,9 @@ dependencies:
 
   cupertino_icons: ^0.1.2
   http: ^0.12.0+2
-  jikan_dart: ^0.9.0
+  intl: ^0.16.0
+  jikan_dart:
+    path: ../jikan-dart/
 
 dev_dependencies:
   flutter_test:

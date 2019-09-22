@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/item_anime.dart';
+import 'package:myanimelist/screens/top_anime_screen.dart';
 
 class TopAnime extends StatelessWidget {
   TopAnime(this.top, {this.label});
@@ -22,7 +23,9 @@ class TopAnime extends StatelessWidget {
               Text('Top $label Anime', style: Theme.of(context).textTheme.title),
               IconButton(
                 icon: Icon(Icons.chevron_right),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => TopAnimeScreen(index: label == 'Airing' ? 1 : 2)));
+                },
               )
             ],
           ),
