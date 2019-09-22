@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jikan_dart/jikan_dart.dart';
+import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/screens/home_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,49 +13,49 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: LoadingScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
+class LoadingScreen extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LoadingScreenState createState() => _LoadingScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _LoadingScreenState extends State<LoadingScreen> {
+  final JikanApi jikanApi = JikanApi();
 
-  void _incrementCounter() {
+  bool loading = true;
+  ProfileResult profile;
+  Season season;
+  BuiltList<Top> topAiring;
+  BuiltList<Top> topUpcoming;
+
+  @override
+  void initState() {
+    super.initState();
+    load();
+  }
+
+  void load() async {
+    profile = await jikanApi.getUserProfile('javoeria');
+    season = await jikanApi.getSeason(2019, Fall());
+    topAiring = await jikanApi.getTop(TopType.anime, page: 1, subtype: TopSubtype.airing);
+    topUpcoming = await jikanApi.getTop(TopType.anime, page: 1, subtype: TopSubtype.upcoming);
     setState(() {
-      _counter++;
+      loading = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('You have pushed the button this many times:'),
-            Text('$_counter', style: Theme.of(context).textTheme.display1),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
-    );
+    if (loading) {
+      return Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    } else {
+      return HomeScreen(profile, season, topAiring, topUpcoming);
+    }
   }
 }
