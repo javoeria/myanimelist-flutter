@@ -6,6 +6,7 @@ import 'package:myanimelist/widgets/season_anime.dart';
 import 'package:myanimelist/widgets/top_anime.dart';
 import 'package:myanimelist/screens/top_anime_screen.dart';
 import 'package:myanimelist/screens/top_manga_screen.dart';
+import 'package:myanimelist/screens/schedule_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen(this.profile, this.season, this.topAiring, this.topUpcoming);
@@ -54,11 +55,18 @@ class HomeScreen extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TopAnimeScreen()));
               },
             ),
-                        ListTile(
+            ListTile(
               title: Text('Top Manga'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TopMangaScreen()));
+              },
+            ),
+            ListTile(
+              title: Text('Schedule'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ScheduleScreen()));
               },
             ),
           ],
