@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:myanimelist/widgets/item_anime.dart';
+import 'package:myanimelist/screens/seasonal_anime_screen.dart';
 
 class SeasonAnime extends StatelessWidget {
   SeasonAnime(this.season);
@@ -20,7 +21,9 @@ class SeasonAnime extends StatelessWidget {
               Text('${season.seasonName} ${season.seasonYear} Anime', style: Theme.of(context).textTheme.title),
               IconButton(
                 icon: Icon(Icons.chevron_right),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SeasonalAnimeScreen(year: 2019, type: Fall())));
+                },
               )
             ],
           ),

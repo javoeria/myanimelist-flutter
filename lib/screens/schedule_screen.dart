@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat, DateFormat;
+import 'package:myanimelist/widgets/custom_menu.dart';
 
 final NumberFormat f = NumberFormat.decimalPattern();
 final DateFormat dateFormat = DateFormat('MMM d, yyyy, HH:mm');
@@ -29,6 +30,9 @@ class ScheduleScreen extends StatelessWidget {
               Tab(text: 'Unknown'),
             ],
           ),
+          actions: <Widget>[
+            CustomMenu(),
+          ],
         ),
         body: TabBarView(
           children: [
@@ -89,8 +93,7 @@ class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClient
         return schedule.unknown;
         break;
       default:
-        return schedule.monday;
-        break;
+        throw 'Schedule Error';
     }
   }
 
