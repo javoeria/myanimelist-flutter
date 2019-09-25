@@ -40,7 +40,6 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
         }
 
         BuiltList<Top> topList = snapshot.data;
-        double width = MediaQuery.of(context).size.width * 0.68;
         return ListView.builder(
           itemCount: topList.length,
           itemBuilder: (context, index) {
@@ -50,23 +49,24 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Image.network(top.imageUrl, height: 70.0, width: 50.0, fit: BoxFit.cover),
-                      Container(
-                        width: width,
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(top.title, style: Theme.of(context).textTheme.subtitle),
-                            Text(top.type + ' ' + episodesText(top), style: Theme.of(context).textTheme.caption),
-                            Text((top.startDate ?? '') + ' - ' + (top.endDate ?? ''), style: Theme.of(context).textTheme.caption),
-                            Text(f.format(top.members) + ' members', style: Theme.of(context).textTheme.caption),
-                          ],
+                  Expanded(
+                    child: Row(
+                      children: <Widget>[
+                        Image.network(top.imageUrl, height: 70.0, width: 50.0, fit: BoxFit.cover),
+                        SizedBox(width: 8.0),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(top.title, style: Theme.of(context).textTheme.subtitle),
+                              Text(top.type + ' ' + episodesText(top), style: Theme.of(context).textTheme.caption),
+                              Text((top.startDate ?? '') + ' - ' + (top.endDate ?? ''), style: Theme.of(context).textTheme.caption),
+                              Text(f.format(top.members) + ' members', style: Theme.of(context).textTheme.caption),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   widget.subtype != TopSubtype.upcoming
                       ? Row(
