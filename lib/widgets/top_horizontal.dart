@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
+import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/item_anime.dart';
-import 'package:myanimelist/screens/seasonal_anime_screen.dart';
+import 'package:myanimelist/screens/top_anime_screen.dart';
 
-class SeasonAnime extends StatelessWidget {
-  SeasonAnime(this.season);
+class TopHorizontal extends StatelessWidget {
+  TopHorizontal(this.top, {this.label});
 
-  final Season season;
+  final BuiltList<Top> top;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +20,11 @@ class SeasonAnime extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('${season.seasonName} ${season.seasonYear} Anime', style: Theme.of(context).textTheme.title),
+              Text('Top $label Anime', style: Theme.of(context).textTheme.title),
               IconButton(
                 icon: Icon(Icons.chevron_right),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SeasonalAnimeScreen(year: 2019, type: Fall())));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => TopAnimeScreen(index: label == 'Airing' ? 1 : 2)));
                 },
               )
             ],
@@ -34,7 +36,7 @@ class SeasonAnime extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: 20,
             itemBuilder: (context, index) {
-              Anime anime = season.anime.elementAt(index);
+              Top anime = top.elementAt(index);
               return Padding(
                 padding: index < 19 ? EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0) : EdgeInsets.all(8.0),
                 child: ItemAnime(anime.malId, anime.title, anime.imageUrl),

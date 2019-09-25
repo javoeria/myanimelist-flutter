@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:intl/intl.dart' show NumberFormat;
-
-final NumberFormat f = NumberFormat.decimalPattern();
+import 'package:myanimelist/widgets/top_list.dart';
 
 class TopMangaScreen extends StatelessWidget {
   TopMangaScreen({this.index});
@@ -35,87 +32,18 @@ class TopMangaScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            TopList(),
-            TopList(subtype: TopSubtype.manga),
-            TopList(subtype: TopSubtype.novels),
-            TopList(subtype: TopSubtype.oneshots),
-            TopList(subtype: TopSubtype.doujin),
-            TopList(subtype: TopSubtype.manhwa),
-            TopList(subtype: TopSubtype.manhua),
-            TopList(subtype: TopSubtype.bypopularity),
-            TopList(subtype: TopSubtype.favorite),
+            TopList(type: TopType.manga),
+            TopList(type: TopType.manga, subtype: TopSubtype.manga),
+            TopList(type: TopType.manga, subtype: TopSubtype.novels),
+            TopList(type: TopType.manga, subtype: TopSubtype.oneshots),
+            TopList(type: TopType.manga, subtype: TopSubtype.doujin),
+            TopList(type: TopType.manga, subtype: TopSubtype.manhwa),
+            TopList(type: TopType.manga, subtype: TopSubtype.manhua),
+            TopList(type: TopType.manga, subtype: TopSubtype.bypopularity),
+            TopList(type: TopType.manga, subtype: TopSubtype.favorite),
           ],
         ),
       ),
     );
   }
-}
-
-class TopList extends StatefulWidget {
-  TopList({this.subtype});
-
-  final TopSubtype subtype;
-
-  @override
-  _TopListState createState() => _TopListState();
-}
-
-class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<TopList> {
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return FutureBuilder(
-      future: JikanApi().getTop(TopType.manga, page: 1, subtype: widget.subtype),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Center(child: CircularProgressIndicator());
-        }
-
-        BuiltList<Top> topList = snapshot.data;
-        double width = MediaQuery.of(context).size.width * 0.68;
-        return ListView.builder(
-          itemCount: topList.length,
-          itemBuilder: (context, index) {
-            Top top = topList.elementAt(index);
-            String volumes = top.volumes == null ? '?' : top.volumes.toString();
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Image.network(top.imageUrl, height: 70.0, width: 50.0, fit: BoxFit.cover),
-                      Container(
-                        width: width,
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(top.title, style: Theme.of(context).textTheme.subtitle),
-                            Text(top.type + ' ($volumes vols)', style: Theme.of(context).textTheme.caption),
-                            Text((top.startDate ?? '') + ' - ' + (top.endDate ?? ''), style: Theme.of(context).textTheme.caption),
-                            Text(f.format(top.members) + ' members', style: Theme.of(context).textTheme.caption),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text(top.score.toString(), style: Theme.of(context).textTheme.subhead),
-                      Icon(Icons.star, color: Colors.amber),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  @override
-  bool get wantKeepAlive => true;
 }
