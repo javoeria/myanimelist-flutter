@@ -4,21 +4,15 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/custom_menu.dart';
 import 'package:myanimelist/widgets/season_list.dart';
 
-class SeasonalAnimeScreen extends StatelessWidget {
-  SeasonalAnimeScreen({this.year, this.type});
-
-  final int year;
-  final SeasonType type;
-
+class LaterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String typeString = type.toString();
     return DefaultTabController(
-      length: 5,
+      length: 6,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(typeString[0].toUpperCase() + typeString.substring(1) + ' ' + year.toString()),
+          title: Text('Later'),
           bottom: TabBar(
             isScrollable: true,
             tabs: [
@@ -27,6 +21,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
               Tab(text: 'OVA'),
               Tab(text: 'Movie'),
               Tab(text: 'Special'),
+              Tab(text: 'Unknown'),
             ],
           ),
           actions: <Widget>[
@@ -34,7 +29,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
           ],
         ),
         body: FutureBuilder(
-          future: JikanApi().getSeason(year, type),
+          future: JikanApi().getSeasonLater(),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return Center(child: CircularProgressIndicator());
@@ -47,6 +42,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
             BuiltList<Anime> ova = BuiltList.from(animeList.where((anime) => anime.type == 'OVA'));
             BuiltList<Anime> movie = BuiltList.from(animeList.where((anime) => anime.type == 'Movie'));
             BuiltList<Anime> special = BuiltList.from(animeList.where((anime) => anime.type == 'Special'));
+            BuiltList<Anime> unknown = BuiltList.from(animeList.where((anime) => anime.type == '-'));
             return TabBarView(
               children: [
                 SeasonList(tv),
@@ -54,6 +50,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
                 SeasonList(ova),
                 SeasonList(movie),
                 SeasonList(special),
+                SeasonList(unknown),
               ],
             );
           },

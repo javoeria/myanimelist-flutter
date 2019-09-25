@@ -6,6 +6,7 @@ import 'package:myanimelist/widgets/season_horizontal.dart';
 import 'package:myanimelist/widgets/top_horizontal.dart';
 import 'package:myanimelist/screens/top_anime_screen.dart';
 import 'package:myanimelist/screens/top_manga_screen.dart';
+import 'package:myanimelist/screens/later_screen.dart';
 import 'package:myanimelist/screens/schedule_screen.dart';
 import 'package:myanimelist/screens/seasonal_anime_screen.dart';
 
@@ -75,6 +76,13 @@ class HomeScreen extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ScheduleScreen()));
+              },
+            ),
+            ListTile(
+              title: Text('Later'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LaterScreen()));
               },
             ),
           ],

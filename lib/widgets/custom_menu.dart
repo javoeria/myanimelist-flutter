@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:myanimelist/screens/archive_screen.dart';
+import 'package:myanimelist/screens/later_screen.dart';
 import 'package:myanimelist/screens/schedule_screen.dart';
 import 'package:myanimelist/screens/seasonal_anime_screen.dart';
 
@@ -40,7 +41,7 @@ class CustomMenu extends StatelessWidget {
       },
       onSelected: (value) async {
         if (value == 'Later') {
-          // TODO: Later Screen
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LaterScreen()));
         } else if (value == 'Schedule') {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ScheduleScreen()));
         } else if (value == 'Archive') {

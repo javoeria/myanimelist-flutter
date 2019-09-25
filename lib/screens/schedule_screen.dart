@@ -104,6 +104,7 @@ class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClient
         }
 
         BuiltList<Anime> animeList = animeBuiltList(snapshot.data);
+        animeList = BuiltList.from(animeList.where((anime) => anime.kids == false && anime.r18 == false));
         return ListView.separated(
           separatorBuilder: (context, index) => Divider(),
           itemCount: animeList.length,
