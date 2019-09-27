@@ -47,11 +47,12 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
           return TopGrid(topList);
         } else {
           return ListView.builder(
+            padding: const EdgeInsets.all(12.0),
             itemCount: topList.length,
             itemBuilder: (context, index) {
               Top top = topList.elementAt(index);
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(4.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[

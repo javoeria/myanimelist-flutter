@@ -23,7 +23,7 @@ class SeasonInfo extends StatelessWidget {
     }
   }
 
-    String airingText(String date) {
+  String airingText(String date) {
     if (date == null) {
       return '??';
     } else {
@@ -37,17 +37,18 @@ class SeasonInfo extends StatelessWidget {
     String episodes = anime.episodes == null ? '?' : anime.episodes.toString();
     String score = anime.score == null ? 'N/A' : anime.score.toString();
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Column(
         children: <Widget>[
           Text(anime.title, style: Theme.of(context).textTheme.title),
           SizedBox(height: 4.0),
           Text(producersText(anime.producers) + ' | $episodes eps | ' + anime.source, style: Theme.of(context).textTheme.body1),
           Wrap(
+            spacing: 4.0,
             children: anime.genres.map((genre) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                child: Chip(label: Text(genre.name, style: Theme.of(context).textTheme.overline)),
+              return Chip(
+                label: Text(genre.name, style: Theme.of(context).textTheme.overline),
+                padding: EdgeInsets.zero,
               );
             }).toList(),
           ),
@@ -68,7 +69,7 @@ class SeasonInfo extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 8.0),
+          SizedBox(height: 4.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[

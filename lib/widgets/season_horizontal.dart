@@ -14,7 +14,7 @@ class SeasonHorizontal extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 8.0),
+          padding: const EdgeInsets.only(left: 16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -32,11 +32,12 @@ class SeasonHorizontal extends StatelessWidget {
           height: 220.0,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             itemCount: 20,
             itemBuilder: (context, index) {
               Anime anime = season.anime.elementAt(index);
               return Padding(
-                padding: index < 19 ? EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0) : EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(4.0),
                 child: ItemAnime(anime.malId, anime.title, anime.imageUrl),
               );
             },

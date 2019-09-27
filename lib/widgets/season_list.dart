@@ -17,7 +17,7 @@ class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMi
   Widget build(BuildContext context) {
     super.build(context);
     return ListView.separated(
-      separatorBuilder: (context, index) => Divider(),
+      separatorBuilder: (context, index) => Divider(height: 0.0),
       itemCount: widget.animeList.length,
       itemBuilder: (context, index) {
         Anime anime = widget.animeList.elementAt(index);

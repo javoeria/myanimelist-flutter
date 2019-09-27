@@ -34,11 +34,13 @@ class HomeScreen extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
+          SizedBox(height: 8.0),
           SeasonHorizontal(season),
           Divider(),
           TopHorizontal(topAiring, label: 'Airing'),
           Divider(),
           TopHorizontal(topUpcoming, label: 'Upcoming'),
+          SizedBox(height: 8.0),
         ],
       ),
       drawer: Drawer(
