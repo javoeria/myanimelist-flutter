@@ -55,7 +55,7 @@ class SeasonInfo extends StatelessWidget {
             height: 242.0,
             child: Row(
               children: <Widget>[
-                Image.network(anime.imageUrl, height: 242.0, width: 167.0, fit: BoxFit.cover),
+                Image.network(anime.imageUrl, width: 167.0, height: 242.0, fit: BoxFit.cover),
                 SizedBox(width: 8.0),
                 Expanded(
                   child: Container(
