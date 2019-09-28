@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 
+import 'package:myanimelist/widgets/search_button.dart';
 import 'package:myanimelist/widgets/season_horizontal.dart';
 import 'package:myanimelist/widgets/top_horizontal.dart';
 import 'package:myanimelist/screens/top_anime_screen.dart';
@@ -26,10 +27,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('MyAnimeList'),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          )
+          SearchButton(),
         ],
       ),
       body: ListView(
