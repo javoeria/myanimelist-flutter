@@ -44,7 +44,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
 
         BuiltList<Top> topList = snapshot.data;
         if (Provider.of<UserData>(context).gridView) {
-          return TopGrid(topList);
+          return TopGrid(topList, type: widget.type);
         } else {
           return ListView.builder(
             padding: const EdgeInsets.all(12.0),

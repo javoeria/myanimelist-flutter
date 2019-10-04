@@ -40,7 +40,7 @@ class TopHorizontal extends StatelessWidget {
               Top anime = top.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(anime.malId, anime.title, anime.imageUrl),
+                child: ItemAnime(anime.malId, anime.title, anime.imageUrl, type: TopType.anime),
               );
             },
           ),

@@ -4,9 +4,10 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/item_anime.dart';
 
 class TopGrid extends StatelessWidget {
-  TopGrid(this.topList);
+  TopGrid(this.topList, {this.type});
 
   final BuiltList<Top> topList;
+  final TopType type;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class TopGrid extends StatelessWidget {
           spacing: 16.0,
           runSpacing: 16.0,
           children: topList.map((top) {
-            return ItemAnime(top.malId, top.title, top.imageUrl, width: 108.0, height: 163.0);
+            return ItemAnime(top.malId, top.title, top.imageUrl, width: 108.0, height: 163.0, type: type);
           }).toList(),
         ),
       ),
