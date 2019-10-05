@@ -4,8 +4,9 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/profile/custom_filter.dart';
 
 class AnimeListScreen extends StatelessWidget {
-  AnimeListScreen({this.order});
+  AnimeListScreen(this.username, {this.order});
 
+  final String username;
   final String order;
 
   @override
@@ -27,16 +28,16 @@ class AnimeListScreen extends StatelessWidget {
               Tab(text: 'Plan to Watch'),
             ],
           ),
-          actions: <Widget>[CustomFilter('anime')],
+          actions: <Widget>[CustomFilter(username, 'anime')],
         ),
         body: TabBarView(
           children: [
-            UserList(type: AllAnimeListType(), order: order),
-            UserList(type: WatchingAnimeListType(), order: order),
-            UserList(type: CompletedAnimeListType(), order: order),
-            UserList(type: OnHoldAnimeListType(), order: order),
-            UserList(type: DroppedAnimeListType(), order: order),
-            UserList(type: PlanToWatchAnimeListType(), order: order),
+            UserAnimeList(username, type: AllAnimeListType(), order: order),
+            UserAnimeList(username, type: WatchingAnimeListType(), order: order),
+            UserAnimeList(username, type: CompletedAnimeListType(), order: order),
+            UserAnimeList(username, type: OnHoldAnimeListType(), order: order),
+            UserAnimeList(username, type: DroppedAnimeListType(), order: order),
+            UserAnimeList(username, type: PlanToWatchAnimeListType(), order: order),
           ],
         ),
       ),
@@ -44,17 +45,18 @@ class AnimeListScreen extends StatelessWidget {
   }
 }
 
-class UserList extends StatefulWidget {
-  UserList({this.type, this.order});
+class UserAnimeList extends StatefulWidget {
+  UserAnimeList(this.username, {this.type, this.order});
 
+  final String username;
   final MangaAnimeListType type;
   final String order;
 
   @override
-  _UserListState createState() => _UserListState();
+  _UserAnimeListState createState() => _UserAnimeListState();
 }
 
-class _UserListState extends State<UserList> with AutomaticKeepAliveClientMixin<UserList> {
+class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveClientMixin<UserAnimeList> {
   Color statusColor(int status) {
     switch (status) {
       case 1:
@@ -73,7 +75,7 @@ class _UserListState extends State<UserList> with AutomaticKeepAliveClientMixin<
         return Colors.grey[400];
         break;
       default:
-        throw 'Status Error';
+        throw 'AnimeStatus Error';
     }
   }
 
@@ -81,7 +83,7 @@ class _UserListState extends State<UserList> with AutomaticKeepAliveClientMixin<
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-      future: JikanApi().getUserAnimeList('javoeria', widget.type, order: widget.order),
+      future: JikanApi().getUserAnimeList(widget.username, widget.type, order: widget.order),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());

@@ -3,6 +3,7 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:myanimelist/widgets/item_anime.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
+import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 
 final NumberFormat f = NumberFormat.compact();
@@ -18,8 +19,11 @@ class PersonScreen extends StatefulWidget {
 }
 
 class _PersonScreenState extends State<PersonScreen> {
+  final JikanApi jikanApi = JikanApi();
+
   ScrollController _scrollController;
   PersonInfo person;
+  BuiltList<Picture> pictures;
   bool loading = true;
 
   @override
@@ -30,7 +34,8 @@ class _PersonScreenState extends State<PersonScreen> {
   }
 
   void load() async {
-    person = await JikanApi().getPersonInfo(widget.id);
+    person = await jikanApi.getPersonInfo(widget.id);
+    pictures = await jikanApi.getPersonPictures(widget.id);
     setState(() => loading = false);
   }
 
@@ -40,7 +45,9 @@ class _PersonScreenState extends State<PersonScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) return Scaffold(body: Center(child: CircularProgressIndicator()));
+    if (loading) {
+      return Scaffold(appBar: AppBar(), body: Center(child: CircularProgressIndicator()));
+    }
 
     return Scaffold(
       body: CustomScrollView(controller: _scrollController, slivers: <Widget>[
@@ -62,12 +69,14 @@ class _PersonScreenState extends State<PersonScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(person.name, style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
-                          Text((person.familyName ?? '') + (person.givenName ?? ''), style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                          Text((person.familyName ?? '') + (person.givenName ?? ''),
+                              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
                           SizedBox(height: 24.0),
                           Row(
                             children: <Widget>[
                               Icon(Icons.person, color: Colors.white),
-                              Text(f.format(person.memberFavorites), style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
+                              Text(f.format(person.memberFavorites),
+                                  style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
                             ],
                           ),
                         ],
@@ -81,19 +90,11 @@ class _PersonScreenState extends State<PersonScreen> {
         ),
         SliverList(
           delegate: SliverChildListDelegate(<Widget>[
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text('About', style: Theme.of(context).textTheme.title),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
-              child: Text(person.about, softWrap: true),
-            ),
-            Divider(),
+            AboutSection(person.about),
             // TODO: Voice Acting Roles
             person.animeStaffPositions.length > 0 ? StaffList(person.animeStaffPositions) : Container(),
             person.publishedManga.length > 0 ? PublishList(person.publishedManga) : Container(),
-            PictureList(person.malId, type: TopType.people),
+            pictures.length > 0 ? PictureList(pictures) : Container(),
           ]),
         ),
       ]),
@@ -125,7 +126,8 @@ class StaffList extends StatelessWidget {
               AnimeStaff staff = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(staff.anime.malId, staff.anime.name, staff.anime.imageUrl, width: 108.0, height: 163.0, type: TopType.anime),
+                child: ItemAnime(staff.anime.malId, staff.anime.name, staff.anime.imageUrl,
+                    width: 108.0, height: 163.0, type: TopType.anime),
               );
             },
           ),
@@ -160,7 +162,8 @@ class PublishList extends StatelessWidget {
               PublishedManga publish = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(publish.manga.malId, publish.manga.name, publish.manga.imageUrl, width: 108.0, height: 163.0, type: TopType.manga),
+                child: ItemAnime(publish.manga.malId, publish.manga.name, publish.manga.imageUrl,
+                    width: 108.0, height: 163.0, type: TopType.manga),
               );
             },
           ),

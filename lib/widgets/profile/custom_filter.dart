@@ -3,8 +3,9 @@ import 'package:myanimelist/screens/anime_list_screen.dart';
 import 'package:myanimelist/screens/manga_list_screen.dart';
 
 class CustomFilter extends StatelessWidget {
-  CustomFilter(this.type);
+  CustomFilter(this.username, this.type);
 
+  final String username;
   final String type;
 
   @override
@@ -21,9 +22,9 @@ class CustomFilter extends StatelessWidget {
       },
       onSelected: (value) {
         if (type == 'anime') {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AnimeListScreen(order: value)));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AnimeListScreen(username, order: value)));
         } else {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MangaListScreen(order: value)));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MangaListScreen(username, order: value)));
         }
       },
     );

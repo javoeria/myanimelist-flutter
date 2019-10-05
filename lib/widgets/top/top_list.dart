@@ -27,8 +27,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
       String volumes = top.volumes == null ? '?' : top.volumes.toString();
       return '($volumes vols)';
     } else {
-      // TODO
-      return '?';
+      throw 'TopType Error';
     }
   }
 

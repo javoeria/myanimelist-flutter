@@ -3,6 +3,7 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:myanimelist/widgets/item_anime.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
+import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 
 final NumberFormat f = NumberFormat.compact();
@@ -18,8 +19,11 @@ class CharacterScreen extends StatefulWidget {
 }
 
 class _CharacterScreenState extends State<CharacterScreen> {
+  final JikanApi jikanApi = JikanApi();
+
   ScrollController _scrollController;
   CharacterInfo character;
+  BuiltList<Picture> pictures;
   bool loading = true;
 
   @override
@@ -30,7 +34,8 @@ class _CharacterScreenState extends State<CharacterScreen> {
   }
 
   void load() async {
-    character = await JikanApi().getCharacterInfo(widget.id);
+    character = await jikanApi.getCharacterInfo(widget.id);
+    pictures = await jikanApi.getCharactersPictures(widget.id);
     setState(() => loading = false);
   }
 
@@ -40,7 +45,9 @@ class _CharacterScreenState extends State<CharacterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) return Scaffold(body: Center(child: CircularProgressIndicator()));
+    if (loading) {
+      return Scaffold(appBar: AppBar(), body: Center(child: CircularProgressIndicator()));
+    }
 
     return Scaffold(
       body: CustomScrollView(controller: _scrollController, slivers: <Widget>[
@@ -62,12 +69,14 @@ class _CharacterScreenState extends State<CharacterScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(character.name, style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
-                          Text(character.nameKanji, style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                          Text(character.nameKanji,
+                              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
                           SizedBox(height: 24.0),
                           Row(
                             children: <Widget>[
                               Icon(Icons.person, color: Colors.white),
-                              Text(f.format(character.memberFavorites), style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
+                              Text(f.format(character.memberFavorites),
+                                  style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
                             ],
                           ),
                         ],
@@ -81,19 +90,11 @@ class _CharacterScreenState extends State<CharacterScreen> {
         ),
         SliverList(
           delegate: SliverChildListDelegate(<Widget>[
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text('About', style: Theme.of(context).textTheme.title),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
-              child: Text(character.about, softWrap: true),
-            ),
-            Divider(),
-            AnimeographyList(character.animeography, title: 'Animeography', type: TopType.anime),
-            AnimeographyList(character.mangaography, title: 'Mangaography', type: TopType.manga),
-            VoiceList(character.voiceActors),
-            PictureList(character.malId, type: TopType.characters),
+            AboutSection(character.about),
+            character.animeography.length > 0 ? AnimeographyList(character.animeography, type: TopType.anime) : Container(),
+            character.mangaography.length > 0 ? AnimeographyList(character.mangaography, type: TopType.manga) : Container(),
+            character.voiceActors.length > 0 ? VoiceList(character.voiceActors) : Container(),
+            pictures.length > 0 ? PictureList(pictures) : Container(),
           ]),
         ),
       ]),
@@ -102,10 +103,9 @@ class _CharacterScreenState extends State<CharacterScreen> {
 }
 
 class AnimeographyList extends StatelessWidget {
-  AnimeographyList(this.list, {this.title, this.type});
+  AnimeographyList(this.list, {this.type});
 
   final BuiltList<MangaCharacter> list;
-  final String title;
   final TopType type;
 
   @override
@@ -115,7 +115,7 @@ class AnimeographyList extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text(title, style: Theme.of(context).textTheme.title),
+          child: Text(type == TopType.anime ? 'Animeography' : 'Mangaography', style: Theme.of(context).textTheme.title),
         ),
         Container(
           height: 163.0,

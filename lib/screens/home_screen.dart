@@ -29,9 +29,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('MyAnimeList'),
-        actions: <Widget>[
-          SearchButton(),
-        ],
+        actions: <Widget>[SearchButton()],
       ),
       body: ListView(
         children: <Widget>[
@@ -87,7 +85,8 @@ class HomeScreen extends StatelessWidget {
               title: Text('Seasonal Anime'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SeasonalAnimeScreen(year: 2019, type: Fall())));
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => SeasonalAnimeScreen(year: 2019, type: Fall())));
               },
             ),
             ListTile(
@@ -108,14 +107,14 @@ class HomeScreen extends StatelessWidget {
               title: Text('Anime List'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeListScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeListScreen(profile.username)));
               },
             ),
             ListTile(
               title: Text('Manga List'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => MangaListScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MangaListScreen(profile.username)));
               },
             ),
             ListTile(
@@ -130,7 +129,8 @@ class HomeScreen extends StatelessWidget {
               trailing: Switch(
                 value: Theme.of(context).brightness == Brightness.dark,
                 onChanged: (value) {
-                  DynamicTheme.of(context).setBrightness(Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark);
+                  DynamicTheme.of(context).setBrightness(
+                      Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark);
                 },
               ),
             ),

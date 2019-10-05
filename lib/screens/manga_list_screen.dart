@@ -4,8 +4,9 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/profile/custom_filter.dart';
 
 class MangaListScreen extends StatelessWidget {
-  MangaListScreen({this.order});
+  MangaListScreen(this.username, {this.order});
 
+  final String username;
   final String order;
 
   @override
@@ -27,16 +28,16 @@ class MangaListScreen extends StatelessWidget {
               Tab(text: 'Plan to Read'),
             ],
           ),
-          actions: <Widget>[CustomFilter('manga')],
+          actions: <Widget>[CustomFilter(username, 'manga')],
         ),
         body: TabBarView(
           children: [
-            UserList(type: AllAnimeListType(), order: order),
-            UserList(type: ReadingMangaListType(), order: order),
-            UserList(type: CompletedAnimeListType(), order: order),
-            UserList(type: OnHoldAnimeListType(), order: order),
-            UserList(type: DroppedAnimeListType(), order: order),
-            UserList(type: PlanToReadMangaListType(), order: order),
+            UserMangaList(username, type: AllAnimeListType(), order: order),
+            UserMangaList(username, type: ReadingMangaListType(), order: order),
+            UserMangaList(username, type: CompletedAnimeListType(), order: order),
+            UserMangaList(username, type: OnHoldAnimeListType(), order: order),
+            UserMangaList(username, type: DroppedAnimeListType(), order: order),
+            UserMangaList(username, type: PlanToReadMangaListType(), order: order),
           ],
         ),
       ),
@@ -44,17 +45,18 @@ class MangaListScreen extends StatelessWidget {
   }
 }
 
-class UserList extends StatefulWidget {
-  UserList({this.type, this.order});
+class UserMangaList extends StatefulWidget {
+  UserMangaList(this.username, {this.type, this.order});
 
+  final String username;
   final MangaAnimeListType type;
   final String order;
 
   @override
-  _UserListState createState() => _UserListState();
+  _UserMangaListState createState() => _UserMangaListState();
 }
 
-class _UserListState extends State<UserList> with AutomaticKeepAliveClientMixin<UserList> {
+class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveClientMixin<UserMangaList> {
   Color statusColor(int status) {
     switch (status) {
       case 1:
@@ -73,7 +75,7 @@ class _UserListState extends State<UserList> with AutomaticKeepAliveClientMixin<
         return Colors.grey[400];
         break;
       default:
-        throw 'Status Error';
+        throw 'MangaStatus Error';
     }
   }
 
@@ -81,7 +83,7 @@ class _UserListState extends State<UserList> with AutomaticKeepAliveClientMixin<
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-      future: JikanApi().getUserMangaList('javoeria', widget.type, order: widget.order),
+      future: JikanApi().getUserMangaList(widget.username, widget.type, order: widget.order),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());

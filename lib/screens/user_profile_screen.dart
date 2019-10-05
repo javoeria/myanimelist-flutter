@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:intl/intl.dart' show NumberFormat, DateFormat;
+import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/screens/anime_list_screen.dart';
+import 'package:myanimelist/screens/manga_list_screen.dart';
+import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/favorite_list.dart';
 import 'package:myanimelist/widgets/profile/friend_list.dart';
 
@@ -18,8 +22,11 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
+  final JikanApi jikanApi = JikanApi();
+
   ScrollController _scrollController;
   ProfileResult profile;
+  BuiltList<FriendResult> friends;
   bool loading = true;
 
   @override
@@ -30,7 +37,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   void load() async {
-    profile = await JikanApi().getUserProfile(widget.username);
+    profile = await jikanApi.getUserProfile(widget.username);
+    friends = await jikanApi.getUserFriends(widget.username);
     setState(() => loading = false);
   }
 
@@ -40,7 +48,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) return Scaffold(body: Center(child: CircularProgressIndicator()));
+    if (loading) {
+      return Scaffold(appBar: AppBar(), body: Center(child: CircularProgressIndicator()));
+    }
 
     return Scaffold(
       body: CustomScrollView(controller: _scrollController, slivers: <Widget>[
@@ -61,19 +71,22 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(profile.username, style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
+                          Text(profile.username,
+                              style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
                           SizedBox(height: 24.0),
                           Row(
                             children: <Widget>[
                               Icon(Icons.person, color: Colors.white),
-                              Text(profile.gender, style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                              Text(profile.gender,
+                                  style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
                             ],
                           ),
                           profile.location != null
                               ? Row(
                                   children: <Widget>[
                                     Icon(Icons.place, color: Colors.white),
-                                    Text(profile.location, style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                                    Text(profile.location,
+                                        style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
                                   ],
                                 )
                               : Container(),
@@ -89,7 +102,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           Row(
                             children: <Widget>[
                               Icon(Icons.access_time, color: Colors.white),
-                              Text(date1.format(DateTime.parse(profile.lastOnline)), style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                              Text(date1.format(DateTime.parse(profile.lastOnline)),
+                                  style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
                             ],
                           ),
                         ],
@@ -105,16 +119,35 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           delegate: SliverChildListDelegate(<Widget>[
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text('About', style: Theme.of(context).textTheme.title),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: RaisedButton(
+                      color: Colors.indigo[600],
+                      child: Text('Anime List', style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeListScreen(profile.username)));
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 16.0),
+                  Expanded(
+                    child: RaisedButton(
+                      color: Colors.indigo[600],
+                      child: Text('Manga List', style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => MangaListScreen(profile.username)));
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
-              child: Text(profile.about.toString(), softWrap: true),
-            ),
-            Divider(),
+            Divider(height: 0.0),
+            AboutSection(profile.about),
             // TODO: Stats
             FavoriteList(profile.favorites),
-            FriendList(profile.username),
+            friends.length > 0 ? FriendList(friends) : Container(),
           ]),
         ),
       ]),

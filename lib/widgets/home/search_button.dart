@@ -133,8 +133,7 @@ class _ResultList extends StatelessWidget {
       String volumes = search.volumes == 0 ? '?' : search.volumes.toString();
       return '($volumes vols)';
     } else {
-      // TODO
-      return '?';
+      throw 'TopType Error';
     }
   }
 

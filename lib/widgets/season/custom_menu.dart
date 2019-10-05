@@ -21,7 +21,7 @@ class CustomMenu extends StatelessWidget {
         return Winter();
         break;
       default:
-        throw 'Season Error';
+        throw 'SeasonType Error';
     }
   }
 
