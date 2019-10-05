@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:myanimelist/widgets/home/search_button.dart';
 import 'package:myanimelist/widgets/home/season_horizontal.dart';
 import 'package:myanimelist/widgets/home/top_horizontal.dart';
@@ -123,6 +124,15 @@ class HomeScreen extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfileScreen(profile.username)));
               },
+            ),
+            ListTile(
+              title: Text('Brightness'),
+              trailing: Switch(
+                value: Theme.of(context).brightness == Brightness.dark,
+                onChanged: (value) {
+                  DynamicTheme.of(context).setBrightness(Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark);
+                },
+              ),
             ),
           ],
         ),

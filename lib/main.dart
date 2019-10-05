@@ -4,6 +4,7 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/home_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,13 +13,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       builder: (context) => UserData(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          primaryColor: Colors.blue[900],
+      child: DynamicTheme(
+        defaultBrightness: Brightness.light,
+        data: (brightness) => ThemeData(
+          primarySwatch: Colors.indigo,
+          brightness: brightness,
         ),
-        home: LoadingScreen(),
+        themedWidgetBuilder: (context, theme) {
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: theme,
+            home: LoadingScreen(),
+          );
+        },
       ),
     );
   }

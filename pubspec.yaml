@@ -15,6 +15,7 @@ dependencies:
   intl: ^0.16.0
   provider: ^3.1.0
   shared_preferences: ^0.5.3+4
+  dynamic_theme: ^1.0.1
   jikan_dart:
     path: ../jikan-dart/
 
