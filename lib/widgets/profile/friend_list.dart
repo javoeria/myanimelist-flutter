@@ -39,7 +39,7 @@ class _FriendListState extends State<FriendList> with AutomaticKeepAliveClientMi
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               friendsTitle(),
-              Container(height: 163.0, child: Center(child: CircularProgressIndicator())),
+              Container(height: 175.0, child: Center(child: CircularProgressIndicator())),
             ],
           );
         }
@@ -79,6 +79,8 @@ class FriendCard extends StatelessWidget {
   FriendCard(this.item);
 
   final FriendResult item;
+  final double width = 108.0;
+  final double height = 163.0;
 
   @override
   Widget build(BuildContext context) {
@@ -87,8 +89,8 @@ class FriendCard extends StatelessWidget {
       children: <Widget>[
         Ink.image(
           image: NetworkImage(item.imageUrl),
-          width: 108.0,
-          height: 163.0,
+          width: width,
+          height: height,
           fit: BoxFit.cover,
           child: InkWell(
             onTap: () {
@@ -99,9 +101,9 @@ class FriendCard extends StatelessWidget {
         Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: <Widget>[
-            Image.asset('images/box_shadow.png', width: 108.0, height: 40.0, fit: BoxFit.cover),
+            Image.asset('images/box_shadow.png', width: width, height: 40.0, fit: BoxFit.cover),
             Container(
-              width: 108.0,
+              width: width,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(

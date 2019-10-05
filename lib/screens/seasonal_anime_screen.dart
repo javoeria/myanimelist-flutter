@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:myanimelist/widgets/custom_menu.dart';
-import 'package:myanimelist/widgets/season_list.dart';
+import 'package:myanimelist/widgets/season/custom_menu.dart';
+import 'package:myanimelist/widgets/season/season_list.dart';
 
 class SeasonalAnimeScreen extends StatelessWidget {
   SeasonalAnimeScreen({this.year, this.type});
@@ -29,9 +29,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
               Tab(text: 'Special'),
             ],
           ),
-          actions: <Widget>[
-            CustomMenu(),
-          ],
+          actions: <Widget>[CustomMenu()],
         ),
         body: FutureBuilder(
           future: JikanApi().getSeason(year, type),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
-import 'package:myanimelist/widgets/custom_view.dart';
-import 'package:myanimelist/widgets/top_list.dart';
+import 'package:myanimelist/widgets/top/custom_view.dart';
+import 'package:myanimelist/widgets/top/top_list.dart';
 
 class TopAnimeScreen extends StatelessWidget {
   TopAnimeScreen({this.index});

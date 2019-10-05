@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:myanimelist/widgets/custom_menu.dart';
-import 'package:myanimelist/widgets/season_info.dart';
+import 'package:myanimelist/widgets/season/custom_menu.dart';
+import 'package:myanimelist/widgets/season/season_info.dart';
 
 class ScheduleScreen extends StatelessWidget {
   @override
@@ -27,9 +27,7 @@ class ScheduleScreen extends StatelessWidget {
               Tab(text: 'Unknown'),
             ],
           ),
-          actions: <Widget>[
-            CustomMenu(),
-          ],
+          actions: <Widget>[CustomMenu()],
         ),
         body: TabBarView(
           children: [
@@ -105,13 +103,15 @@ class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClient
 
         BuiltList<Anime> animeList = animeBuiltList(snapshot.data);
         animeList = BuiltList.from(animeList.where((anime) => anime.kids == false && anime.r18 == false));
-        return ListView.separated(
-          separatorBuilder: (context, index) => Divider(height: 0.0),
-          itemCount: animeList.length,
-          itemBuilder: (context, index) {
-            Anime anime = animeList.elementAt(index);
-            return SeasonInfo(anime);
-          },
+        return Scrollbar(
+          child: ListView.separated(
+            separatorBuilder: (context, index) => Divider(height: 0.0),
+            itemCount: animeList.length,
+            itemBuilder: (context, index) {
+              Anime anime = animeList.elementAt(index);
+              return SeasonInfo(anime);
+            },
+          ),
         );
       },
     );

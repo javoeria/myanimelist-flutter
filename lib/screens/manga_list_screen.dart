@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:myanimelist/widgets/custom_filter.dart';
+import 'package:myanimelist/widgets/profile/custom_filter.dart';
 
 class MangaListScreen extends StatelessWidget {
   MangaListScreen({this.order});
@@ -27,9 +27,7 @@ class MangaListScreen extends StatelessWidget {
               Tab(text: 'Plan to Read'),
             ],
           ),
-          actions: <Widget>[
-            CustomFilter('manga'),
-          ],
+          actions: <Widget>[CustomFilter('manga')],
         ),
         body: TabBarView(
           children: [
@@ -90,43 +88,45 @@ class _UserListState extends State<UserList> with AutomaticKeepAliveClientMixin<
         }
 
         BuiltList<MangaItem> animeList = snapshot.data;
-        return ListView.builder(
-          padding: const EdgeInsets.all(12.0),
-          itemCount: animeList.length,
-          itemBuilder: (context, index) {
-            MangaItem item = animeList.elementAt(index);
-            String score = item.score == 0 ? '-' : item.score.toString();
-            String read = item.readVolumes == 0 ? '-' : item.readVolumes.toString();
-            String total = item.totalVolumes == 0 ? '-' : item.totalVolumes.toString();
-            String progress = read == total ? total : '$read / $total';
-            return Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: Row(
-                      children: <Widget>[
-                        Container(color: statusColor(item.readingStatus), width: 5.0, height: 70.0),
-                        Image.network(item.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
-                        SizedBox(width: 8.0),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(item.title, style: Theme.of(context).textTheme.subtitle),
-                              Text(item.type + ' ($progress vols)', style: Theme.of(context).textTheme.caption),
-                            ],
+        return Scrollbar(
+          child: ListView.builder(
+            padding: const EdgeInsets.all(12.0),
+            itemCount: animeList.length,
+            itemBuilder: (context, index) {
+              MangaItem item = animeList.elementAt(index);
+              String score = item.score == 0 ? '-' : item.score.toString();
+              String read = item.readVolumes == 0 ? '-' : item.readVolumes.toString();
+              String total = item.totalVolumes == 0 ? '-' : item.totalVolumes.toString();
+              String progress = read == total ? total : '$read / $total';
+              return Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: Row(
+                        children: <Widget>[
+                          Container(color: statusColor(item.readingStatus), width: 5.0, height: 70.0),
+                          Image.network(item.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                          SizedBox(width: 8.0),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(item.title, style: Theme.of(context).textTheme.subtitle),
+                                Text(item.type + ' ($progress vols)', style: Theme.of(context).textTheme.caption),
+                              ],
+                            ),
                           ),
-                        ),
-                        Text(score, style: Theme.of(context).textTheme.subhead),
-                      ],
+                          Text(score, style: Theme.of(context).textTheme.subhead),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
+                  ],
+                ),
+              );
+            },
+          ),
         );
       },
     );

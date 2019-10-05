@@ -3,7 +3,7 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:myanimelist/widgets/item_anime.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
-import 'package:myanimelist/widgets/picture_list.dart';
+import 'package:myanimelist/widgets/profile/picture_list.dart';
 
 final NumberFormat f = NumberFormat.compact();
 const kExpandedHeight = 280.0;
@@ -62,7 +62,7 @@ class _PersonScreenState extends State<PersonScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(person.name, style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
-                          Text(person.name, style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                          Text((person.familyName ?? '') + (person.givenName ?? ''), style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
                           SizedBox(height: 24.0),
                           Row(
                             children: <Widget>[

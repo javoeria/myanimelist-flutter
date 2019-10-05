@@ -3,7 +3,7 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:myanimelist/widgets/item_anime.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
-import 'package:myanimelist/widgets/picture_list.dart';
+import 'package:myanimelist/widgets/profile/picture_list.dart';
 
 final NumberFormat f = NumberFormat.compact();
 const kExpandedHeight = 280.0;

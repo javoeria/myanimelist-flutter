@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
-import 'package:myanimelist/widgets/friend_list.dart';
-import 'package:myanimelist/widgets/item_anime.dart';
 import 'package:intl/intl.dart' show NumberFormat, DateFormat;
+import 'package:myanimelist/widgets/profile/favorite_list.dart';
+import 'package:myanimelist/widgets/profile/friend_list.dart';
 
 final NumberFormat f = NumberFormat.compact();
 final DateFormat date1 = DateFormat('MMM d, yy');
@@ -69,18 +69,23 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               Text(profile.gender, style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
                             ],
                           ),
-                          profile.location != null ? Row(
-                            children: <Widget>[
-                              Icon(Icons.place, color: Colors.white),
-                              Text(profile.location, style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
-                            ],
-                          ) : Container(),
-                          profile.birthday!= null ? Row(
-                            children: <Widget>[
-                              Icon(Icons.cake, color: Colors.white),
-                              Text(date1.format(DateTime.parse(profile.birthday)), style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
-                            ],
-                          ) : Container(),
+                          profile.location != null
+                              ? Row(
+                                  children: <Widget>[
+                                    Icon(Icons.place, color: Colors.white),
+                                    Text(profile.location, style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                                  ],
+                                )
+                              : Container(),
+                          profile.birthday != null
+                              ? Row(
+                                  children: <Widget>[
+                                    Icon(Icons.cake, color: Colors.white),
+                                    Text(date1.format(DateTime.parse(profile.birthday)),
+                                        style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                                  ],
+                                )
+                              : Container(),
                           Row(
                             children: <Widget>[
                               Icon(Icons.access_time, color: Colors.white),
@@ -108,107 +113,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             ),
             Divider(),
             // TODO: Stats
-            FavoritesList(profile.favorites),
+            FavoriteList(profile.favorites),
             FriendList(profile.username),
           ]),
         ),
       ]),
-    );
-  }
-}
-
-class FavoritesList extends StatelessWidget {
-  FavoritesList(this.favorites);
-
-  final Favorites favorites;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text('Favorites', style: Theme.of(context).textTheme.title),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text('Anime', style: Theme.of(context).textTheme.subhead),
-        ),
-        Container(
-          height: 163.0,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            itemCount: favorites.anime.length,
-            itemBuilder: (context, index) {
-              FavoriteItem fav = favorites.anime.elementAt(index);
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(fav.malId, fav.name, fav.imageUrl, width: 108.0, height: 163.0, type: TopType.anime),
-              );
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text('Manga', style: Theme.of(context).textTheme.subhead),
-        ),
-        Container(
-          height: 163.0,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            itemCount: favorites.manga.length,
-            itemBuilder: (context, index) {
-              FavoriteItem fav = favorites.manga.elementAt(index);
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(fav.malId, fav.name, fav.imageUrl, width: 108.0, height: 163.0, type: TopType.manga),
-              );
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text('Characters', style: Theme.of(context).textTheme.subhead),
-        ),
-        Container(
-          height: 163.0,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            itemCount: favorites.characters.length,
-            itemBuilder: (context, index) {
-              FavoriteItem fav = favorites.characters.elementAt(index);
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(fav.malId, fav.name, fav.imageUrl, width: 108.0, height: 163.0, type: TopType.characters),
-              );
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text('People', style: Theme.of(context).textTheme.subhead),
-        ),
-        Container(
-          height: 163.0,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            itemCount: favorites.people.length,
-            itemBuilder: (context, index) {
-              FavoriteItem fav = favorites.people.elementAt(index);
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(fav.malId, fav.name, fav.imageUrl, width: 108.0, height: 163.0, type: TopType.people),
-              );
-            },
-          ),
-        ),
-        Divider(),
-      ],
     );
   }
 }

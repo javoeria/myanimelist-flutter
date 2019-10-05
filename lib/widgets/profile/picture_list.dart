@@ -53,7 +53,7 @@ class _PictureListState extends State<PictureList> with AutomaticKeepAliveClient
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               picturesTitle(),
-              Container(height: 163.0, child: Center(child: CircularProgressIndicator())),
+              Container(height: 175.0, child: Center(child: CircularProgressIndicator())),
             ],
           );
         }
