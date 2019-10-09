@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
+import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/character_screen.dart';
+import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/person_screen.dart';
 
 class ItemAnime extends StatelessWidget {
@@ -28,10 +30,10 @@ class ItemAnime extends StatelessWidget {
               print(type.toString() + ' - $id');
               switch (type) {
                 case TopType.anime:
-                  // TODO: anime screen
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(id, title)));
                   break;
                 case TopType.manga:
-                  // TODO: manga screen
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MangaScreen(id, title)));
                   break;
                 case TopType.people:
                   Navigator.push(context, MaterialPageRoute(builder: (context) => PersonScreen(id)));
@@ -44,33 +46,35 @@ class ItemAnime extends StatelessWidget {
             },
           ),
         ),
-        Stack(
-          alignment: AlignmentDirectional.bottomCenter,
-          children: <Widget>[
-            Image.asset('images/box_shadow.png', width: width, height: 40.0, fit: BoxFit.cover),
-            Container(
-              width: width,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  title,
-                  maxLines: 3,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12.0,
-                    shadows: <Shadow>[
-                      Shadow(
-                        offset: Offset(0.0, 0.0),
-                        blurRadius: 3.0,
+        title != ''
+            ? Stack(
+                alignment: AlignmentDirectional.bottomCenter,
+                children: <Widget>[
+                  Image.asset('images/box_shadow.png', width: width, height: 40.0, fit: BoxFit.cover),
+                  Container(
+                    width: width,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        title,
+                        maxLines: 3,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12.0,
+                          shadows: <Shadow>[
+                            Shadow(
+                              offset: Offset(0.0, 0.0),
+                              blurRadius: 3.0,
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ],
-        ),
+                ],
+              )
+            : Container(),
       ],
     );
   }

@@ -4,6 +4,7 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:myanimelist/models/user_data.dart';
+import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:provider/provider.dart';
 
 final NumberFormat f = NumberFormat.decimalPattern();
@@ -16,19 +17,19 @@ class SearchButton extends StatelessWidget {
     return IconButton(
       icon: Icon(Icons.search),
       onPressed: () async {
-        final int selected = await showSearch<int>(
+        final Search selected = await showSearch<Search>(
           context: context,
           delegate: _delegate,
         );
         if (selected != null) {
-          print(selected);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(selected.malId, selected.title)));
         }
       },
     );
   }
 }
 
-class _CustomSearchDelegate extends SearchDelegate<int> {
+class _CustomSearchDelegate extends SearchDelegate<Search> {
   List<String> _suggestions = [];
   SearchType type = SearchType.anime;
 
@@ -103,6 +104,7 @@ class _CustomSearchDelegate extends SearchDelegate<int> {
 
   @override
   List<Widget> buildActions(BuildContext context) {
+    // TODO: better filter
     if (query.isNotEmpty) {
       return <Widget>[
         IconButton(
@@ -123,7 +125,7 @@ class _ResultList extends StatelessWidget {
 
   final SearchType type;
   final BuiltList<Search> searchList;
-  final SearchDelegate<int> searchDelegate;
+  final SearchDelegate<Search> searchDelegate;
 
   String episodesText(Search search) {
     if (type == SearchType.anime) {
@@ -147,7 +149,7 @@ class _ResultList extends StatelessWidget {
         String score = search.score == 0.0 ? 'N/A' : search.score.toString();
         return InkWell(
           onTap: () {
-            searchDelegate.close(context, search.malId);
+            searchDelegate.close(context, search);
           },
           child: Padding(
             padding: const EdgeInsets.all(4.0),

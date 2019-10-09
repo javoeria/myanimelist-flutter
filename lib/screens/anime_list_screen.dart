@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/widgets/profile/custom_filter.dart';
 
 class AnimeListScreen extends StatelessWidget {
@@ -100,32 +101,37 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
               String watched = item.watchedEpisodes == 0 ? '-' : item.watchedEpisodes.toString();
               String total = item.totalEpisodes == 0 ? '-' : item.totalEpisodes.toString();
               String progress = watched == total ? total : '$watched / $total';
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: Row(
-                        children: <Widget>[
-                          Container(color: statusColor(item.watchingStatus), width: 5.0, height: 70.0),
-                          Image.network(item.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
-                          SizedBox(width: 8.0),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(item.title, style: Theme.of(context).textTheme.subtitle),
-                                Text(item.type + ' ($progress eps)', style: Theme.of(context).textTheme.caption),
-                              ],
+              return InkWell(
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: Row(
+                          children: <Widget>[
+                            Container(color: statusColor(item.watchingStatus), width: 5.0, height: 70.0),
+                            Image.network(item.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                            SizedBox(width: 8.0),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(item.title, style: Theme.of(context).textTheme.subtitle),
+                                  Text(item.type + ' ($progress eps)', style: Theme.of(context).textTheme.caption),
+                                ],
+                              ),
                             ),
-                          ),
-                          Text(score, style: Theme.of(context).textTheme.subhead),
-                        ],
+                            Text(score, style: Theme.of(context).textTheme.subhead),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(item.malId, item.title)));
+                },
               );
             },
           ),

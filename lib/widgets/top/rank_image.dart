@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
+import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/character_screen.dart';
+import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/person_screen.dart';
 
 class RankImage extends StatelessWidget {
@@ -25,10 +27,10 @@ class RankImage extends StatelessWidget {
               int id = top.malId;
               switch (type) {
                 case TopType.anime:
-                  // TODO: anime screen
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(id, top.title)));
                   break;
                 case TopType.manga:
-                  // TODO: manga screen
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MangaScreen(id, top.title)));
                   break;
                 case TopType.people:
                   Navigator.push(context, MaterialPageRoute(builder: (context) => PersonScreen(id)));

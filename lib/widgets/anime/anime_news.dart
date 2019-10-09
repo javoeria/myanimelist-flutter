@@ -1,0 +1,75 @@
+import 'package:flutter/material.dart';
+import 'package:jikan_dart/jikan_dart.dart';
+import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:intl/intl.dart' show DateFormat;
+import 'package:url_launcher/url_launcher.dart';
+
+final DateFormat f = DateFormat('MMM d, yyyy h:mm a');
+
+class AnimeNews extends StatefulWidget {
+  AnimeNews(this.id);
+
+  final int id;
+
+  @override
+  _AnimeNewsState createState() => _AnimeNewsState();
+}
+
+class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixin<AnimeNews> {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return FutureBuilder(
+      future: JikanApi().getAnimeNews(widget.id),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        BuiltList<Article> articleList = snapshot.data;
+        return ListView.separated(
+          separatorBuilder: (context, index) => Divider(height: 0.0),
+          itemCount: articleList.length,
+          itemBuilder: (context, index) {
+            Article article = articleList.elementAt(index);
+            return InkWell(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: <Widget>[
+                    Image.network(article.imageUrl, width: 50.0, height: 78.0, fit: BoxFit.cover),
+                    SizedBox(width: 8.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(article.title, style: Theme.of(context).textTheme.body2),
+                          SizedBox(height: 4.0),
+                          Text(article.intro, maxLines: 2, overflow: TextOverflow.ellipsis),
+                          SizedBox(height: 4.0),
+                          Text(f.format(DateTime.parse(article.date)) + ' by ${article.authorName}',
+                              style: Theme.of(context).textTheme.caption),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () async {
+                String url = article.url;
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}

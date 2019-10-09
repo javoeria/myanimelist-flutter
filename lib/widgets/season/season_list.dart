@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/widgets/season/season_info.dart';
 
 class SeasonList extends StatefulWidget {
@@ -22,7 +23,12 @@ class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMi
         itemCount: widget.animeList.length,
         itemBuilder: (context, index) {
           Anime anime = widget.animeList.elementAt(index);
-          return SeasonInfo(anime);
+          return InkWell(
+            child: SeasonInfo(anime),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(anime.malId, anime.title)));
+            },
+          );
         },
       ),
     );

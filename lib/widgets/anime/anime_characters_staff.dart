@@ -1,0 +1,83 @@
+import 'package:flutter/material.dart';
+import 'package:jikan_dart/jikan_dart.dart';
+import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/widgets/item_anime.dart';
+
+class AnimeCharactersStaff extends StatefulWidget {
+  AnimeCharactersStaff(this.id);
+
+  final int id;
+
+  @override
+  _AnimeCharactersStaffState createState() => _AnimeCharactersStaffState();
+}
+
+class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
+    with AutomaticKeepAliveClientMixin<AnimeCharactersStaff> {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return FutureBuilder(
+      future: JikanApi().getCharacterStaff(widget.id),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        // TODO: Staff List
+        BuiltList<CharacterStaff> characterList = snapshot.data;
+        return ListView.separated(
+          separatorBuilder: (context, index) => Divider(height: 0.0),
+          itemCount: characterList.length,
+          itemBuilder: (context, index) {
+            CharacterStaff character = characterList.elementAt(index);
+            BuiltList<VoiceActor> actors = character.voiceActors;
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      ItemAnime(character.malId, '', character.imageUrl,
+                          width: 50.0, height: 70.0, type: TopType.characters),
+                      SizedBox(width: 8.0),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(character.name),
+                          SizedBox(height: 4.0),
+                          Text(character.role, style: Theme.of(context).textTheme.caption),
+                        ],
+                      ),
+                    ],
+                  ),
+                  actors.length > 0
+                      ? Row(
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Text(actors.first.name),
+                                SizedBox(height: 4.0),
+                                Text(actors.first.language, style: Theme.of(context).textTheme.caption),
+                              ],
+                            ),
+                            SizedBox(width: 8.0),
+                            ItemAnime(actors.first.malId, '', actors.first.imageUrl.replaceFirst('/r/23x32', ''),
+                                width: 50.0, height: 70.0, type: TopType.people),
+                          ],
+                        )
+                      : Container(),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}

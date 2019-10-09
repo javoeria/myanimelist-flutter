@@ -16,6 +16,10 @@ dependencies:
   provider: ^3.1.0
   shared_preferences: ^0.5.3+4
   dynamic_theme: ^1.0.1
+  url_launcher: ^5.1.4
+  charts_flutter: ^0.8.1
+  expandable: ^3.0.0+1
+  flutter_pagewise: ^1.2.3
   jikan_dart:
     path: ../jikan-dart/
 
