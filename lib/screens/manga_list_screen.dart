@@ -58,6 +58,8 @@ class UserMangaList extends StatefulWidget {
 }
 
 class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveClientMixin<UserMangaList> {
+  Future<BuiltList<MangaItem>> _future;
+
   Color statusColor(int status) {
     switch (status) {
       case 1:
@@ -81,10 +83,16 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
   }
 
   @override
+  void initState() {
+    super.initState();
+    _future = JikanApi().getUserMangaList(widget.username, widget.type, order: widget.order);
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-      future: JikanApi().getUserMangaList(widget.username, widget.type, order: widget.order),
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());

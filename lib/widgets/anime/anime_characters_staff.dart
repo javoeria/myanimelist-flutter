@@ -14,11 +14,19 @@ class AnimeCharactersStaff extends StatefulWidget {
 
 class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
     with AutomaticKeepAliveClientMixin<AnimeCharactersStaff> {
+  Future<BuiltList<CharacterStaff>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = JikanApi().getCharacterStaff(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-      future: JikanApi().getCharacterStaff(widget.id),
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
@@ -37,36 +45,45 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      ItemAnime(character.malId, '', character.imageUrl,
-                          width: 50.0, height: 70.0, type: TopType.characters),
-                      SizedBox(width: 8.0),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(character.name),
-                          SizedBox(height: 4.0),
-                          Text(character.role, style: Theme.of(context).textTheme.caption),
-                        ],
-                      ),
-                    ],
+                  Expanded(
+                    child: Row(
+                      children: <Widget>[
+                        ItemAnime(character.malId, '', character.imageUrl,
+                            width: 50.0, height: 70.0, type: TopType.characters),
+                        SizedBox(width: 8.0),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(character.name),
+                              SizedBox(height: 4.0),
+                              Text(character.role, style: Theme.of(context).textTheme.caption),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   actors.length > 0
-                      ? Row(
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Text(actors.first.name),
-                                SizedBox(height: 4.0),
-                                Text(actors.first.language, style: Theme.of(context).textTheme.caption),
-                              ],
-                            ),
-                            SizedBox(width: 8.0),
-                            ItemAnime(actors.first.malId, '', actors.first.imageUrl.replaceFirst('/r/23x32', ''),
-                                width: 50.0, height: 70.0, type: TopType.people),
-                          ],
+                      ? Expanded(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: <Widget>[
+                                    Text(actors.first.name, textAlign: TextAlign.end),
+                                    SizedBox(height: 4.0),
+                                    Text(actors.first.language, style: Theme.of(context).textTheme.caption),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 8.0),
+                              ItemAnime(actors.first.malId, '', actors.first.imageUrl.replaceFirst('/r/23x32', ''),
+                                  width: 50.0, height: 70.0, type: TopType.people),
+                            ],
+                          ),
                         )
                       : Container(),
                 ],

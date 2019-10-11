@@ -128,6 +128,7 @@ class HomeScreen extends StatelessWidget {
               title: Text('Brightness'),
               trailing: Switch(
                 value: Theme.of(context).brightness == Brightness.dark,
+                activeColor: Colors.indigo,
                 onChanged: (value) {
                   DynamicTheme.of(context).setBrightness(
                       Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark);

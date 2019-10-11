@@ -8,8 +8,6 @@ import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/widgets/top/top_grid.dart';
 import 'package:provider/provider.dart';
 
-final NumberFormat f = NumberFormat.decimalPattern();
-
 class TopList extends StatefulWidget {
   TopList({@required this.type, this.subtype});
 
@@ -21,6 +19,9 @@ class TopList extends StatefulWidget {
 }
 
 class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<TopList> {
+  final NumberFormat f = NumberFormat.decimalPattern();
+  Future<BuiltList<Top>> _future;
+
   String episodesText(Top top) {
     if (widget.type == TopType.anime) {
       String episodes = top.episodes == null ? '?' : top.episodes.toString();
@@ -34,10 +35,16 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
   }
 
   @override
+  void initState() {
+    super.initState();
+    _future = JikanApi().getTop(widget.type, page: 1, subtype: widget.subtype);
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-      future: JikanApi().getTop(widget.type, page: 1, subtype: widget.subtype),
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());

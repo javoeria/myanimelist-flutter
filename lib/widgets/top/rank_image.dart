@@ -39,6 +39,7 @@ class RankImage extends StatelessWidget {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => CharacterScreen(id)));
                   break;
                 default:
+                  throw 'TopType Error';
               }
             },
           ),

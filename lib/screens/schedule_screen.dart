@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/widgets/season/custom_menu.dart';
 import 'package:myanimelist/widgets/season/season_info.dart';
 
@@ -57,6 +58,8 @@ class WeekDayList extends StatefulWidget {
 }
 
 class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClientMixin<WeekDayList> {
+  Future<Schedule> _future;
+
   BuiltList<Anime> animeBuiltList(Schedule schedule) {
     switch (widget.day.toString()) {
       case 'monday':
@@ -92,10 +95,16 @@ class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClient
   }
 
   @override
+  void initState() {
+    super.initState();
+    _future = JikanApi().getSchedule(weekday: widget.day);
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-      future: JikanApi().getSchedule(weekday: widget.day),
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
@@ -109,7 +118,13 @@ class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClient
             itemCount: animeList.length,
             itemBuilder: (context, index) {
               Anime anime = animeList.elementAt(index);
-              return SeasonInfo(anime);
+              return InkWell(
+                child: SeasonInfo(anime),
+                onTap: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => AnimeScreen(anime.malId, anime.title)));
+                },
+              );
             },
           ),
         );

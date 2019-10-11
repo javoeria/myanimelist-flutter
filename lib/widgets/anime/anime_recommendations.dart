@@ -14,11 +14,19 @@ class AnimeRecommendations extends StatefulWidget {
 
 class _AnimeRecommendationsState extends State<AnimeRecommendations>
     with AutomaticKeepAliveClientMixin<AnimeRecommendations> {
+  Future<BuiltList<Recommendation>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = JikanApi().getAnimeRecommendations(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-      future: JikanApi().getAnimeRecommendations(widget.id),
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());

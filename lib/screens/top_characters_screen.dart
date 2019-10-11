@@ -8,9 +8,9 @@ import 'package:myanimelist/widgets/top/custom_view.dart';
 import 'package:myanimelist/widgets/top/top_grid.dart';
 import 'package:provider/provider.dart';
 
-final NumberFormat f = NumberFormat.decimalPattern();
-
 class TopCharactersScreen extends StatelessWidget {
+  final NumberFormat f = NumberFormat.decimalPattern();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

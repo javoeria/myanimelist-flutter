@@ -58,6 +58,8 @@ class UserAnimeList extends StatefulWidget {
 }
 
 class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveClientMixin<UserAnimeList> {
+  Future<BuiltList<AnimeItem>> _future;
+
   Color statusColor(int status) {
     switch (status) {
       case 1:
@@ -81,10 +83,16 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
   }
 
   @override
+  void initState() {
+    super.initState();
+    _future = JikanApi().getUserAnimeList(widget.username, widget.type, order: widget.order);
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-      future: JikanApi().getUserAnimeList(widget.username, widget.type, order: widget.order),
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());

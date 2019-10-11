@@ -4,8 +4,6 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show DateFormat;
 
-final DateFormat f = DateFormat('MMM d, yyyy');
-
 class AnimeReviews extends StatefulWidget {
   AnimeReviews(this.id);
 
@@ -16,11 +14,20 @@ class AnimeReviews extends StatefulWidget {
 }
 
 class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClientMixin<AnimeReviews> {
+  final DateFormat f = DateFormat('MMM d, yyyy');
+  Future<BuiltList<Review>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = JikanApi().getAnimeReviews(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-      future: JikanApi().getAnimeReviews(widget.id),
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());

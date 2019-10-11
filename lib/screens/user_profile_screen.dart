@@ -8,8 +8,6 @@ import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/favorite_list.dart';
 import 'package:myanimelist/widgets/profile/friend_list.dart';
 
-final NumberFormat f = NumberFormat.compact();
-final DateFormat date1 = DateFormat('MMM d, yy');
 const kExpandedHeight = 280.0;
 
 class UserProfileScreen extends StatefulWidget {
@@ -23,6 +21,8 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final JikanApi jikanApi = JikanApi();
+  final NumberFormat f = NumberFormat.compact();
+  final DateFormat dateFormat = DateFormat('MMM d, yy');
 
   ScrollController _scrollController;
   ProfileResult profile;
@@ -94,7 +94,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               ? Row(
                                   children: <Widget>[
                                     Icon(Icons.cake, color: Colors.white),
-                                    Text(date1.format(DateTime.parse(profile.birthday)),
+                                    Text(dateFormat.format(DateTime.parse(profile.birthday)),
                                         style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
                                   ],
                                 )
@@ -102,7 +102,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           Row(
                             children: <Widget>[
                               Icon(Icons.access_time, color: Colors.white),
-                              Text(date1.format(DateTime.parse(profile.lastOnline)),
+                              Text(dateFormat.format(DateTime.parse(profile.lastOnline)),
                                   style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
                             ],
                           ),
@@ -124,9 +124,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   Expanded(
                     child: RaisedButton(
                       color: Colors.indigo[600],
-                      child: Text('Anime List', style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                      child:
+                          Text('Anime List', style: Theme.of(context).textTheme.button.copyWith(color: Colors.white)),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeListScreen(profile.username)));
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => AnimeListScreen(profile.username)));
                       },
                     ),
                   ),
@@ -134,9 +136,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   Expanded(
                     child: RaisedButton(
                       color: Colors.indigo[600],
-                      child: Text('Manga List', style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                      child:
+                          Text('Manga List', style: Theme.of(context).textTheme.button.copyWith(color: Colors.white)),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => MangaListScreen(profile.username)));
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => MangaListScreen(profile.username)));
                       },
                     ),
                   ),

@@ -27,7 +27,6 @@ class ItemAnime extends StatelessWidget {
           fit: BoxFit.cover,
           child: InkWell(
             onTap: () {
-              print(type.toString() + ' - $id');
               switch (type) {
                 case TopType.anime:
                   Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(id, title)));
@@ -42,6 +41,7 @@ class ItemAnime extends StatelessWidget {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => CharacterScreen(id)));
                   break;
                 default:
+                  throw 'TopType Error';
               }
             },
           ),

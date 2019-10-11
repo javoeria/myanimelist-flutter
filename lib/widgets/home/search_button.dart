@@ -7,8 +7,6 @@ import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:provider/provider.dart';
 
-final NumberFormat f = NumberFormat.decimalPattern();
-
 class SearchButton extends StatelessWidget {
   final _CustomSearchDelegate _delegate = _CustomSearchDelegate();
 
@@ -126,6 +124,7 @@ class _ResultList extends StatelessWidget {
   final SearchType type;
   final BuiltList<Search> searchList;
   final SearchDelegate<Search> searchDelegate;
+  final NumberFormat f = NumberFormat.decimalPattern();
 
   String episodesText(Search search) {
     if (type == SearchType.anime) {

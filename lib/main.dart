@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
         defaultBrightness: Brightness.light,
         data: (brightness) => ThemeData(
           primarySwatch: Colors.indigo,
+          accentColor: Colors.indigo,
           brightness: brightness,
         ),
         themedWidgetBuilder: (context, theme) {

@@ -6,7 +6,6 @@ import 'package:intl/intl.dart' show NumberFormat;
 import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 
-final NumberFormat f = NumberFormat.compact();
 const kExpandedHeight = 280.0;
 
 class CharacterScreen extends StatefulWidget {
@@ -20,6 +19,7 @@ class CharacterScreen extends StatefulWidget {
 
 class _CharacterScreenState extends State<CharacterScreen> {
   final JikanApi jikanApi = JikanApi();
+  final NumberFormat f = NumberFormat.compact();
 
   ScrollController _scrollController;
   CharacterInfo character;

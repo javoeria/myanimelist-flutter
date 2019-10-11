@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myanimelist/widgets/anime/anime_characters_staff.dart';
+import 'package:myanimelist/widgets/anime/anime_details.dart';
 import 'package:myanimelist/widgets/anime/anime_episodes.dart';
 import 'package:myanimelist/widgets/anime/anime_forum.dart';
 import 'package:myanimelist/widgets/anime/anime_news.dart';
@@ -41,7 +42,7 @@ class AnimeScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Text('1'),
+            AnimeDetails(id),
             AnimeVideos(id),
             AnimeEpisodeList(id),
             AnimeReviews(id),

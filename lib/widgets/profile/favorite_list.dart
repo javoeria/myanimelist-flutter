@@ -50,7 +50,7 @@ class FavoriteSection extends StatelessWidget {
         return 'Characters';
         break;
       default:
-        return '?';
+        throw 'TopType Error';
     }
   }
 

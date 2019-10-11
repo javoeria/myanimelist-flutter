@@ -3,13 +3,12 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat, DateFormat;
 
-final NumberFormat f = NumberFormat.decimalPattern();
-final DateFormat dateFormat = DateFormat('MMM d, yyyy, HH:mm');
-
 class SeasonInfo extends StatelessWidget {
   SeasonInfo(this.anime);
 
   final Anime anime;
+  final NumberFormat f = NumberFormat.decimalPattern();
+  final DateFormat dateFormat = DateFormat('MMM d, yyyy, HH:mm');
 
   String producersText(BuiltList<Producer> producers) {
     if (producers.length == 0) {

@@ -3,8 +3,6 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:charts_flutter/flutter.dart' as charts;
 
-final NumberFormat f = NumberFormat.decimalPattern();
-
 class AnimeStats extends StatefulWidget {
   AnimeStats(this.id);
 
@@ -15,11 +13,20 @@ class AnimeStats extends StatefulWidget {
 }
 
 class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMixin<AnimeStats> {
+  final NumberFormat f = NumberFormat.decimalPattern();
+  Future<Stats> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = JikanApi().getAnimeStats(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-      future: JikanApi().getAnimeStats(widget.id),
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
@@ -85,7 +92,8 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                             text: 'Plan to Watch: ',
                             style: DefaultTextStyle.of(context).style,
                             children: <TextSpan>[
-                              TextSpan(text: f.format(stats.planToWatch), style: TextStyle(fontWeight: FontWeight.bold)),
+                              TextSpan(
+                                  text: f.format(stats.planToWatch), style: TextStyle(fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),

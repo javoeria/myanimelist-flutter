@@ -12,11 +12,19 @@ class AnimePictures extends StatefulWidget {
 }
 
 class _AnimePicturesState extends State<AnimePictures> with AutomaticKeepAliveClientMixin<AnimePictures> {
+  Future<BuiltList<Picture>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = JikanApi().getAnimePictures(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-      future: JikanApi().getAnimePictures(widget.id),
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());

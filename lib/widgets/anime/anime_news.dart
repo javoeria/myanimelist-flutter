@@ -4,8 +4,6 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:url_launcher/url_launcher.dart';
 
-final DateFormat f = DateFormat('MMM d, yyyy h:mm a');
-
 class AnimeNews extends StatefulWidget {
   AnimeNews(this.id);
 
@@ -16,11 +14,20 @@ class AnimeNews extends StatefulWidget {
 }
 
 class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixin<AnimeNews> {
+  final DateFormat f = DateFormat('MMM d, yyyy h:mm a');
+  Future<BuiltList<Article>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = JikanApi().getAnimeNews(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-      future: JikanApi().getAnimeNews(widget.id),
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
@@ -37,8 +44,14 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
                   children: <Widget>[
-                    Image.network(article.imageUrl, width: 50.0, height: 78.0, fit: BoxFit.cover),
-                    SizedBox(width: 8.0),
+                    article.imageUrl != null
+                        ? Row(
+                            children: <Widget>[
+                              Image.network(article.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                              SizedBox(width: 8.0),
+                            ],
+                          )
+                        : Container(),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

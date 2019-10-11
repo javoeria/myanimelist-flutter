@@ -4,8 +4,6 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:url_launcher/url_launcher.dart';
 
-final DateFormat f = DateFormat('MMM d, yyyy');
-
 class AnimeForum extends StatefulWidget {
   AnimeForum(this.id);
 
@@ -16,11 +14,20 @@ class AnimeForum extends StatefulWidget {
 }
 
 class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMixin<AnimeForum> {
+  final DateFormat f = DateFormat('MMM d, yyyy');
+  Future<BuiltList<Forum>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = JikanApi().getAnimeForum(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder(
-      future: JikanApi().getAnimeForum(widget.id),
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
