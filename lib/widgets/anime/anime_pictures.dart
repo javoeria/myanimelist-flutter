@@ -3,9 +3,10 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 
 class AnimePictures extends StatefulWidget {
-  AnimePictures(this.id);
+  AnimePictures(this.id, {this.anime = true});
 
   final int id;
+  final bool anime;
 
   @override
   _AnimePicturesState createState() => _AnimePicturesState();
@@ -17,7 +18,7 @@ class _AnimePicturesState extends State<AnimePictures> with AutomaticKeepAliveCl
   @override
   void initState() {
     super.initState();
-    _future = JikanApi().getAnimePictures(widget.id);
+    _future = widget.anime ? JikanApi().getAnimePictures(widget.id) : JikanApi().getMangaPictures(widget.id);
   }
 
   @override

@@ -4,7 +4,6 @@ import 'package:myanimelist/widgets/anime/anime_details.dart';
 import 'package:myanimelist/widgets/anime/anime_episodes.dart';
 import 'package:myanimelist/widgets/anime/anime_forum.dart';
 import 'package:myanimelist/widgets/anime/anime_news.dart';
-import 'package:myanimelist/widgets/anime/anime_pictures.dart';
 import 'package:myanimelist/widgets/anime/anime_recommendations.dart';
 import 'package:myanimelist/widgets/anime/anime_reviews.dart';
 import 'package:myanimelist/widgets/anime/anime_stats.dart';
@@ -19,7 +18,7 @@ class AnimeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 10,
+      length: 9,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
@@ -36,7 +35,6 @@ class AnimeScreen extends StatelessWidget {
               Tab(text: 'Characters & Staff'),
               Tab(text: 'News'),
               Tab(text: 'Forum'),
-              Tab(text: 'Pictures'),
             ],
           ),
         ),
@@ -51,7 +49,6 @@ class AnimeScreen extends StatelessWidget {
             AnimeCharactersStaff(id),
             AnimeNews(id),
             AnimeForum(id),
-            AnimePictures(id),
           ],
         ),
       ),

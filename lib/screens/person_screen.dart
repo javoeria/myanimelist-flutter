@@ -5,6 +5,7 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
+import 'package:myanimelist/widgets/profile/role_list.dart';
 
 const kExpandedHeight = 280.0;
 
@@ -62,9 +63,10 @@ class _PersonScreenState extends State<PersonScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Image.network(person.imageUrl, width: 135.0, height: 210.0, fit: BoxFit.cover),
+                      SizedBox(width: 24.0),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -91,7 +93,7 @@ class _PersonScreenState extends State<PersonScreen> {
         SliverList(
           delegate: SliverChildListDelegate(<Widget>[
             AboutSection(person.about),
-            // TODO: Voice Acting Roles
+            person.voiceActingRoles.length > 0 ? RoleList(person.voiceActingRoles) : Container(),
             person.animeStaffPositions.length > 0 ? StaffList(person.animeStaffPositions) : Container(),
             person.publishedManga.length > 0 ? PublishList(person.publishedManga) : Container(),
             pictures.length > 0 ? PictureList(pictures) : Container(),

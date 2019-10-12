@@ -4,9 +4,10 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/item_anime.dart';
 
 class AnimeRecommendations extends StatefulWidget {
-  AnimeRecommendations(this.id);
+  AnimeRecommendations(this.id, {this.anime = true});
 
   final int id;
+  final bool anime;
 
   @override
   _AnimeRecommendationsState createState() => _AnimeRecommendationsState();
@@ -19,7 +20,8 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
   @override
   void initState() {
     super.initState();
-    _future = JikanApi().getAnimeRecommendations(widget.id);
+    _future =
+        widget.anime ? JikanApi().getAnimeRecommendations(widget.id) : JikanApi().getMangaRecommendations(widget.id);
   }
 
   @override
@@ -41,7 +43,7 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
               runSpacing: 16.0,
               children: recommendationList.map((Recommendation recommendation) {
                 return ItemAnime(recommendation.malId, recommendation.title, recommendation.imageUrl,
-                    type: TopType.anime);
+                    type: widget.anime ? TopType.anime : TopType.manga);
               }).toList(),
             ),
           ),

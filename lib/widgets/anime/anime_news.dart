@@ -5,9 +5,10 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:url_launcher/url_launcher.dart';
 
 class AnimeNews extends StatefulWidget {
-  AnimeNews(this.id);
+  AnimeNews(this.id, {this.anime = true});
 
   final int id;
+  final bool anime;
 
   @override
   _AnimeNewsState createState() => _AnimeNewsState();
@@ -20,7 +21,7 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
   @override
   void initState() {
     super.initState();
-    _future = JikanApi().getAnimeNews(widget.id);
+    _future = widget.anime ? JikanApi().getAnimeNews(widget.id) : JikanApi().getMangaNews(widget.id);
   }
 
   @override

@@ -62,14 +62,15 @@ class _CharacterScreenState extends State<CharacterScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Image.network(character.imageUrl, width: 135.0, height: 210.0, fit: BoxFit.cover),
+                      SizedBox(width: 24.0),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(character.name, style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
-                          Text(character.nameKanji,
+                          Text(character.nameKanji ?? '',
                               style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
                           SizedBox(height: 24.0),
                           Row(

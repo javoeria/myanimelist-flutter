@@ -5,9 +5,10 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show DateFormat;
 
 class AnimeReviews extends StatefulWidget {
-  AnimeReviews(this.id);
+  AnimeReviews(this.id, {this.anime = true});
 
   final int id;
+  final bool anime;
 
   @override
   _AnimeReviewsState createState() => _AnimeReviewsState();
@@ -20,7 +21,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
   @override
   void initState() {
     super.initState();
-    _future = JikanApi().getAnimeReviews(widget.id);
+    _future = widget.anime ? JikanApi().getAnimeReviews(widget.id) : JikanApi().getMangaReviews(widget.id);
   }
 
   @override
@@ -65,7 +66,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                         children: <Widget>[
                           Text(f.format(DateTime.parse(review.date))),
                           SizedBox(height: 4.0),
-                          Text('${review.reviewer.episodesSeen} episodes seen',
+                          Text(widget.anime ? '${review.reviewer.episodesSeen} episodes seen' : '${review.reviewer.chaptersRead} chapters read',
                               style: Theme.of(context).textTheme.caption),
                         ],
                       ),

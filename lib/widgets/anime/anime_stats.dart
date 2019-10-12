@@ -4,9 +4,10 @@ import 'package:intl/intl.dart' show NumberFormat;
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class AnimeStats extends StatefulWidget {
-  AnimeStats(this.id);
+  AnimeStats(this.id, {this.anime = true});
 
   final int id;
+  final bool anime;
 
   @override
   _AnimeStatsState createState() => _AnimeStatsState();
@@ -19,7 +20,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
   @override
   void initState() {
     super.initState();
-    _future = JikanApi().getAnimeStats(widget.id);
+    _future = widget.anime ? JikanApi().getAnimeStats(widget.id) : JikanApi().getMangaStats(widget.id);
   }
 
   @override
@@ -47,12 +48,20 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        RichText(
+                        widget.anime ? RichText(
                           text: TextSpan(
                             text: 'Watching: ',
                             style: DefaultTextStyle.of(context).style,
                             children: <TextSpan>[
                               TextSpan(text: f.format(stats.watching), style: TextStyle(fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ) : RichText(
+                          text: TextSpan(
+                            text: 'Reading: ',
+                            style: DefaultTextStyle.of(context).style,
+                            children: <TextSpan>[
+                              TextSpan(text: f.format(stats.reading), style: TextStyle(fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
@@ -87,13 +96,22 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                           ),
                         ),
                         SizedBox(height: 4.0),
-                        RichText(
+                        widget.anime ? RichText(
                           text: TextSpan(
                             text: 'Plan to Watch: ',
                             style: DefaultTextStyle.of(context).style,
                             children: <TextSpan>[
                               TextSpan(
                                   text: f.format(stats.planToWatch), style: TextStyle(fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ) : RichText(
+                          text: TextSpan(
+                            text: 'Plan to Read: ',
+                            style: DefaultTextStyle.of(context).style,
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: f.format(stats.planToRead), style: TextStyle(fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),

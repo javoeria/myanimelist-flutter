@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:myanimelist/widgets/anime/anime_forum.dart';
+import 'package:myanimelist/widgets/anime/anime_news.dart';
+import 'package:myanimelist/widgets/anime/anime_recommendations.dart';
+import 'package:myanimelist/widgets/anime/anime_reviews.dart';
+import 'package:myanimelist/widgets/anime/anime_stats.dart';
+import 'package:myanimelist/widgets/manga/manga_characters.dart';
+import 'package:myanimelist/widgets/manga/manga_details.dart';
 
 class MangaScreen extends StatelessWidget {
   MangaScreen(this.id, this.title);
@@ -9,7 +16,7 @@ class MangaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 8,
+      length: 7,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
@@ -24,20 +31,18 @@ class MangaScreen extends StatelessWidget {
               Tab(text: 'Characters'),
               Tab(text: 'News'),
               Tab(text: 'Forum'),
-              Tab(text: 'Pictures'),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            Text('1'),
-            Text('2'),
-            Text('3'),
-            Text('4'),
-            Text('5'),
-            Text('6'),
-            Text('7'),
-            Text('8'),
+            MangaDetails(id),
+            AnimeReviews(id, anime: false),
+            AnimeRecommendations(id, anime: false),
+            AnimeStats(id, anime: false),
+            MangaCharacters(id),
+            AnimeNews(id, anime: false),
+            AnimeForum(id, anime: false),
           ],
         ),
       ),

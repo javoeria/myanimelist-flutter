@@ -5,9 +5,10 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:url_launcher/url_launcher.dart';
 
 class AnimeForum extends StatefulWidget {
-  AnimeForum(this.id);
+  AnimeForum(this.id, {this.anime = true});
 
   final int id;
+  final bool anime;
 
   @override
   _AnimeForumState createState() => _AnimeForumState();
@@ -20,7 +21,7 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
   @override
   void initState() {
     super.initState();
-    _future = JikanApi().getAnimeForum(widget.id);
+    _future = widget.anime ? JikanApi().getAnimeForum(widget.id) : JikanApi().getMangaForum(widget.id);
   }
 
   @override
