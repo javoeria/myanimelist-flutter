@@ -35,6 +35,9 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
         }
 
         BuiltList<Article> articleList = snapshot.data;
+        if (articleList.length == 0) {
+          return ListTile(title: Text('No items found.'));
+        }
         return ListView.separated(
           separatorBuilder: (context, index) => Divider(height: 0.0),
           itemCount: articleList.length,

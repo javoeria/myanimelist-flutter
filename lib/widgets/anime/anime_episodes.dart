@@ -45,6 +45,9 @@ class _AnimeEpisodeListState extends State<AnimeEpisodeList> with AutomaticKeepA
         }
 
         BuiltList<AnimeEpisode> episodeList = snapshot.data.episodes;
+        if (episodeList.length == 0) {
+          return ListTile(title: Text('No items found.'));
+        }
         return ListView.separated(
           separatorBuilder: (context, index) => Divider(height: 0.0),
           itemCount: episodeList.length,

@@ -98,13 +98,16 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<MangaItem> animeList = snapshot.data;
+        BuiltList<MangaItem> mangaList = snapshot.data;
+        if (mangaList.length == 0) {
+          return ListTile(title: Text('No items found.'));
+        }
         return Scrollbar(
           child: ListView.builder(
             padding: const EdgeInsets.all(12.0),
-            itemCount: animeList.length,
+            itemCount: mangaList.length,
             itemBuilder: (context, index) {
-              MangaItem item = animeList.elementAt(index);
+              MangaItem item = mangaList.elementAt(index);
               String score = item.score == 0 ? '-' : item.score.toString();
               String read = item.readVolumes == 0 ? '-' : item.readVolumes.toString();
               String total = item.totalVolumes == 0 ? '-' : item.totalVolumes.toString();

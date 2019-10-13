@@ -82,7 +82,6 @@ class _CustomSearchDelegate extends SearchDelegate<Search> {
       return Center(child: Text('Minimum 3 letters'));
     }
 
-    Provider.of<UserData>(context).addHistory(query);
     return FutureBuilder(
       future: JikanApi().search(type, query: query),
       builder: (context, snapshot) {
@@ -91,6 +90,10 @@ class _CustomSearchDelegate extends SearchDelegate<Search> {
         }
 
         BuiltList<Search> searchList = snapshot.data;
+        if (searchList.length == 0) {
+          return ListTile(title: Text('No items found.'));
+        }
+        Provider.of<UserData>(context).addHistory(query);
         return _ResultList(
           type: type,
           searchList: searchList,
@@ -166,8 +169,11 @@ class _ResultList extends StatelessWidget {
                           children: <Widget>[
                             Text(search.title, style: Theme.of(context).textTheme.subtitle),
                             Text(search.synopsis.split('.').first + '.',
-                                maxLines: 2, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.caption),
-                            Text(search.type + ' ' + episodesText(search) + ' - ' + score, style: Theme.of(context).textTheme.caption),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.caption),
+                            Text(search.type + ' ' + episodesText(search) + ' - ' + score,
+                                style: Theme.of(context).textTheme.caption),
                             Text(f.format(search.members) + ' members', style: Theme.of(context).textTheme.caption),
                           ],
                         ),

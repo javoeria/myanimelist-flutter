@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/widgets/season/custom_menu.dart';
 import 'package:myanimelist/widgets/season/season_info.dart';
 
@@ -111,6 +110,9 @@ class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClient
         }
 
         BuiltList<Anime> animeList = animeBuiltList(snapshot.data);
+        if (animeList.length == 0) {
+          return ListTile(title: Text('No items found.'));
+        }
         animeList = BuiltList.from(animeList.where((anime) => anime.kids == false && anime.r18 == false));
         return Scrollbar(
           child: ListView.separated(

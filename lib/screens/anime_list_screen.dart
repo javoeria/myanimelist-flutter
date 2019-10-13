@@ -99,6 +99,9 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
         }
 
         BuiltList<AnimeItem> animeList = snapshot.data;
+        if (animeList.length == 0) {
+          return ListTile(title: Text('No items found.'));
+        }
         return Scrollbar(
           child: ListView.builder(
             padding: const EdgeInsets.all(12.0),

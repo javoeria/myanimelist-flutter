@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/widgets/season/season_info.dart';
 
 class SeasonList extends StatefulWidget {
@@ -17,6 +16,9 @@ class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMi
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    if (widget.animeList.length == 0) {
+      return ListTile(title: Text('No items found.'));
+    }
     return Scrollbar(
       child: ListView.separated(
         separatorBuilder: (context, index) => Divider(height: 0.0),

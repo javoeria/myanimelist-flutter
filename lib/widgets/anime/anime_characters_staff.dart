@@ -33,6 +33,9 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
         }
 
         CharacterStaff list = snapshot.data;
+        if ((list.characters.length + list.staff.length) == 0) {
+          return ListTile(title: Text('No items found.'));
+        }
         return SingleChildScrollView(
           child: Column(
             children: <Widget>[

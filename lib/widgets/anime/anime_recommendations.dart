@@ -35,6 +35,9 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
         }
 
         BuiltList<Recommendation> recommendationList = snapshot.data;
+        if (recommendationList.length == 0) {
+          return ListTile(title: Text('No items found.'));
+        }
         return SingleChildScrollView(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Center(

@@ -22,10 +22,11 @@ class UserData extends ChangeNotifier {
   }
 
   void addHistory(String value) {
-    if (!_history.contains(value)) {
-      _history.insert(0, value);
-      prefs.setStringList('history', _history);
-      // notifyListeners();
+    if (_history.contains(value)) {
+      _history.remove(value);
     }
+    _history.insert(0, value);
+    prefs.setStringList('history', _history);
+    // notifyListeners();
   }
 }

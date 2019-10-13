@@ -162,7 +162,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
             children: <Widget>[
               Text('Synopsis', style: Theme.of(context).textTheme.title),
               SizedBox(height: 16.0),
-              Text(anime.synopsis, softWrap: true),
+              Text(anime.synopsis ?? '(No synopsis yet.)', softWrap: true),
             ],
           ),
         ),

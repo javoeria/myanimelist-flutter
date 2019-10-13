@@ -32,6 +32,10 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
+        if (snapshot.hasError) {
+          print(snapshot.error);
+          return ListTile(title: Text('No items found.'));
+        }
 
         Stats stats = snapshot.data;
         return ListView(
@@ -48,23 +52,27 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        widget.anime ? RichText(
-                          text: TextSpan(
-                            text: 'Watching: ',
-                            style: DefaultTextStyle.of(context).style,
-                            children: <TextSpan>[
-                              TextSpan(text: f.format(stats.watching), style: TextStyle(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ) : RichText(
-                          text: TextSpan(
-                            text: 'Reading: ',
-                            style: DefaultTextStyle.of(context).style,
-                            children: <TextSpan>[
-                              TextSpan(text: f.format(stats.reading), style: TextStyle(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ),
+                        widget.anime
+                            ? RichText(
+                                text: TextSpan(
+                                  text: 'Watching: ',
+                                  style: DefaultTextStyle.of(context).style,
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: f.format(stats.watching), style: TextStyle(fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              )
+                            : RichText(
+                                text: TextSpan(
+                                  text: 'Reading: ',
+                                  style: DefaultTextStyle.of(context).style,
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: f.format(stats.reading), style: TextStyle(fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              ),
                         SizedBox(height: 4.0),
                         RichText(
                           text: TextSpan(
@@ -96,25 +104,29 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                           ),
                         ),
                         SizedBox(height: 4.0),
-                        widget.anime ? RichText(
-                          text: TextSpan(
-                            text: 'Plan to Watch: ',
-                            style: DefaultTextStyle.of(context).style,
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: f.format(stats.planToWatch), style: TextStyle(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ) : RichText(
-                          text: TextSpan(
-                            text: 'Plan to Read: ',
-                            style: DefaultTextStyle.of(context).style,
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: f.format(stats.planToRead), style: TextStyle(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ),
+                        widget.anime
+                            ? RichText(
+                                text: TextSpan(
+                                  text: 'Plan to Watch: ',
+                                  style: DefaultTextStyle.of(context).style,
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: f.format(stats.planToWatch),
+                                        style: TextStyle(fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              )
+                            : RichText(
+                                text: TextSpan(
+                                  text: 'Plan to Read: ',
+                                  style: DefaultTextStyle.of(context).style,
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: f.format(stats.planToRead),
+                                        style: TextStyle(fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              ),
                         SizedBox(height: 4.0),
                         RichText(
                           text: TextSpan(

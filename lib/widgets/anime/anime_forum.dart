@@ -35,6 +35,9 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
         }
 
         BuiltList<Forum> forumList = snapshot.data;
+        if (forumList.length == 0) {
+          return ListTile(title: Text('No items found.'));
+        }
         return ListView.separated(
           separatorBuilder: (context, index) => Divider(height: 0.0),
           itemCount: forumList.length,

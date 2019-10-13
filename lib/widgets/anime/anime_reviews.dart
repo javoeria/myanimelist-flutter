@@ -36,6 +36,9 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
         }
 
         BuiltList<Review> reviewList = snapshot.data;
+        if (reviewList.length == 0) {
+          return ListTile(title: Text('No items found.'));
+        }
         return ListView.separated(
           separatorBuilder: (context, index) => Divider(height: 0.0),
           itemCount: reviewList.length,

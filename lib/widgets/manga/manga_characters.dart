@@ -32,6 +32,9 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
         }
 
         BuiltList<MangaCharacter> characterList = snapshot.data;
+        if (characterList.length == 0) {
+          return ListTile(title: Text('No items found.'));
+        }
         return ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
           itemCount: characterList.length,

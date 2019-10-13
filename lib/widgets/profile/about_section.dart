@@ -16,7 +16,7 @@ class AboutSection extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: Text(about ?? 'No biography written.', softWrap: true),
+          child: Text(about ?? '(No biography written.)', softWrap: true),
         ),
       ],
     );

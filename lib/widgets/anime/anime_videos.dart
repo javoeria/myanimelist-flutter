@@ -32,6 +32,9 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
         }
 
         BuiltList<Promo> promoList = snapshot.data;
+        if (promoList.length == 0) {
+          return ListTile(title: Text('No items found.'));
+        }
         return SingleChildScrollView(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Center(

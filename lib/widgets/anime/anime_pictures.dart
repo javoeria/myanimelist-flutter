@@ -32,6 +32,9 @@ class _AnimePicturesState extends State<AnimePictures> with AutomaticKeepAliveCl
         }
 
         BuiltList<Picture> pictureList = snapshot.data;
+        if (pictureList.length == 0) {
+          return ListTile(title: Text('No items found.'));
+        }
         return SingleChildScrollView(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Center(

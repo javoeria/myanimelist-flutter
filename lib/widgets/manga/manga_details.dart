@@ -155,7 +155,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
             children: <Widget>[
               Text('Synopsis', style: Theme.of(context).textTheme.title),
               SizedBox(height: 16.0),
-              Text(manga.synopsis, softWrap: true),
+              Text(manga.synopsis ?? '(No synopsis yet.)', softWrap: true),
             ],
           ),
         ),
