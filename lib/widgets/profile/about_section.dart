@@ -15,10 +15,9 @@ class AboutSection extends StatelessWidget {
           child: Text('About', style: Theme.of(context).textTheme.title),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
-          child: Text(about.toString(), softWrap: true),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: Text(about ?? 'No biography written.', softWrap: true),
         ),
-        Divider(),
       ],
     );
   }

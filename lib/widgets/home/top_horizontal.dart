@@ -15,6 +15,7 @@ class TopHorizontal extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Divider(height: 0.0),
         Padding(
           padding: const EdgeInsets.only(left: 16.0),
           child: Row(
@@ -45,6 +46,7 @@ class TopHorizontal extends StatelessWidget {
             },
           ),
         ),
+        SizedBox(height: 12.0),
       ],
     );
   }

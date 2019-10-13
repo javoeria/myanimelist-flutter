@@ -23,12 +23,7 @@ class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMi
         itemCount: widget.animeList.length,
         itemBuilder: (context, index) {
           Anime anime = widget.animeList.elementAt(index);
-          return InkWell(
-            child: SeasonInfo(anime),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(anime.malId, anime.title)));
-            },
-          );
+          return SeasonInfo(anime);
         },
       ),
     );

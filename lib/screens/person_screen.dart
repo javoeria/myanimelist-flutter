@@ -77,6 +77,7 @@ class _PersonScreenState extends State<PersonScreen> {
                           Row(
                             children: <Widget>[
                               Icon(Icons.person, color: Colors.white),
+                              SizedBox(width: 4.0),
                               Text(f.format(person.memberFavorites),
                                   style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
                             ],
@@ -114,8 +115,9 @@ class StaffList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Text('Anime Staff Positions', style: Theme.of(context).textTheme.title),
         ),
         Container(
@@ -134,7 +136,7 @@ class StaffList extends StatelessWidget {
             },
           ),
         ),
-        Divider(),
+        SizedBox(height: 12.0),
       ],
     );
   }
@@ -150,8 +152,9 @@ class PublishList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Text('Published Manga', style: Theme.of(context).textTheme.title),
         ),
         Container(
@@ -170,7 +173,7 @@ class PublishList extends StatelessWidget {
             },
           ),
         ),
-        Divider(),
+        SizedBox(height: 12.0),
       ],
     );
   }

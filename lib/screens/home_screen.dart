@@ -33,13 +33,9 @@ class HomeScreen extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          SizedBox(height: 8.0),
           SeasonHorizontal(season),
-          Divider(),
           TopHorizontal(topAiring, label: 'Airing'),
-          Divider(),
           TopHorizontal(topUpcoming, label: 'Upcoming'),
-          SizedBox(height: 8.0),
         ],
       ),
       drawer: Drawer(
@@ -48,7 +44,7 @@ class HomeScreen extends StatelessWidget {
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountName: Text(profile.username),
-              accountEmail: Text(profile.username),
+              accountEmail: null,
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(profile.imageUrl),
               ),
@@ -130,6 +126,7 @@ class HomeScreen extends StatelessWidget {
                 value: Theme.of(context).brightness == Brightness.dark,
                 activeColor: Colors.indigo,
                 onChanged: (value) {
+                  Navigator.pop(context);
                   DynamicTheme.of(context).setBrightness(
                       Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark);
                 },

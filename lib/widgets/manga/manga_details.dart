@@ -33,7 +33,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
     setState(() => loading = false);
   }
 
-  String genresText(MangaInfo manga) {
+  String get _genresText {
     List<String> names = [];
     for (GenericInfo gen in manga.genres) {
       names.add(gen.name);
@@ -41,7 +41,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
     return names.join(', ');
   }
 
-  String authorsText(MangaInfo manga) {
+  String get _authorsText {
     List<String> names = [];
     for (GenericInfo aut in manga.authors) {
       names.add(aut.name);
@@ -49,7 +49,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
     return names.join(', ');
   }
 
-  String serializationText(MangaInfo manga) {
+  String get _serializationText {
     List<String> names = [];
     for (GenericInfo ser in manga.serializations) {
       names.add(ser.name);
@@ -71,7 +71,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
     return ListView(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -130,8 +130,8 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ),
                   SizedBox(height: 8.0),
                   Text(manga.type),
-                  manga.serializations.length > 0 ? Text(serializationText(manga)) : Container(),
-                  Text(authorsText(manga)),
+                  manga.serializations.length > 0 ? Text(_serializationText) : Container(),
+                  Text(_authorsText),
                 ],
               ),
             ],
@@ -149,7 +149,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -233,7 +233,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   text: 'Genres: ',
                   style: Theme.of(context).textTheme.body2,
                   children: <TextSpan>[
-                    TextSpan(text: genresText(manga), style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: _genresText, style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),
@@ -242,7 +242,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   text: 'Authors: ',
                   style: Theme.of(context).textTheme.body2,
                   children: <TextSpan>[
-                    TextSpan(text: authorsText(manga), style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: _authorsText, style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),
@@ -251,14 +251,13 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   text: 'Serialization: ',
                   style: Theme.of(context).textTheme.body2,
                   children: <TextSpan>[
-                    TextSpan(text: serializationText(manga), style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: _serializationText, style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),
             ],
           ),
         ),
-        Divider(height: 0.0),
         PictureList(pictures),
       ],
     );

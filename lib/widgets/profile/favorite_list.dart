@@ -13,15 +13,16 @@ class FavoriteList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 8.0),
           child: Text('Favorites', style: Theme.of(context).textTheme.title),
         ),
         favorites.anime.length > 0 ? FavoriteSection(favorites.anime, type: TopType.anime) : Container(),
         favorites.manga.length > 0 ? FavoriteSection(favorites.manga, type: TopType.manga) : Container(),
         favorites.characters.length > 0 ? FavoriteSection(favorites.characters, type: TopType.characters) : Container(),
         favorites.people.length > 0 ? FavoriteSection(favorites.people, type: TopType.people) : Container(),
-        Divider(),
+        SizedBox(height: 12.0),
       ],
     );
   }

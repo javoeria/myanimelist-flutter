@@ -38,12 +38,24 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   void load() async {
     profile = await jikanApi.getUserProfile(widget.username);
-    friends = await jikanApi.getUserFriends(widget.username);
+    try {
+      friends = await jikanApi.getUserFriends(widget.username);
+    } catch (e) {
+      print(e);
+      friends = BuiltList<FriendResult>([]);
+    }
     setState(() => loading = false);
   }
 
   bool get _showTitle {
     return _scrollController.hasClients && _scrollController.offset > kExpandedHeight - kToolbarHeight;
+  }
+
+  int get _favoriteCount {
+    return profile.favorites.anime.length +
+        profile.favorites.manga.length +
+        profile.favorites.characters.length +
+        profile.favorites.people.length;
   }
 
   @override
@@ -65,26 +77,43 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.network(profile.imageUrl, width: 135.0, height: 210.0, fit: BoxFit.cover),
+                      profile.imageUrl != null
+                          ? Image.network(profile.imageUrl, width: 135.0, height: 210.0, fit: BoxFit.cover)
+                          : Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.camera_alt),
+                                  Text('No Picture'),
+                                ],
+                              ),
+                              width: 135.0,
+                              height: 210.0,
+                              color: Colors.grey),
+                      SizedBox(width: 24.0),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(profile.username,
                               style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
                           SizedBox(height: 24.0),
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.person, color: Colors.white),
-                              Text(profile.gender,
-                                  style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
-                            ],
-                          ),
+                          profile.gender != null
+                              ? Row(
+                                  children: <Widget>[
+                                    Icon(Icons.person, color: Colors.white, size: 20.0),
+                                    SizedBox(width: 4.0),
+                                    Text(profile.gender,
+                                        style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                                  ],
+                                )
+                              : Container(),
                           profile.location != null
                               ? Row(
                                   children: <Widget>[
-                                    Icon(Icons.place, color: Colors.white),
+                                    Icon(Icons.place, color: Colors.white, size: 20.0),
+                                    SizedBox(width: 4.0),
                                     Text(profile.location,
                                         style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
                                   ],
@@ -93,7 +122,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           profile.birthday != null
                               ? Row(
                                   children: <Widget>[
-                                    Icon(Icons.cake, color: Colors.white),
+                                    Icon(Icons.cake, color: Colors.white, size: 20.0),
+                                    SizedBox(width: 4.0),
                                     Text(dateFormat.format(DateTime.parse(profile.birthday)),
                                         style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
                                   ],
@@ -101,7 +131,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               : Container(),
                           Row(
                             children: <Widget>[
-                              Icon(Icons.access_time, color: Colors.white),
+                              Icon(Icons.access_time, color: Colors.white, size: 20.0),
+                              SizedBox(width: 4.0),
                               Text(dateFormat.format(DateTime.parse(profile.lastOnline)),
                                   style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
                             ],
@@ -150,7 +181,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             Divider(height: 0.0),
             AboutSection(profile.about),
             // TODO: Stats
-            FavoriteList(profile.favorites),
+            _favoriteCount > 0 ? FavoriteList(profile.favorites) : Container(),
             friends.length > 0 ? FriendList(friends) : Container(),
           ]),
         ),

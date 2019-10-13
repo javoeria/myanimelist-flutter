@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:myanimelist/screens/user_profile_screen.dart';
 
 class AnimeReviews extends StatefulWidget {
   AnimeReviews(this.id, {this.anime = true});
@@ -49,7 +50,20 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                     children: [
                       Row(
                         children: <Widget>[
-                          Image.network(review.reviewer.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                          Ink.image(
+                            image: NetworkImage(review.reviewer.imageUrl),
+                            width: 50.0,
+                            height: 70.0,
+                            fit: BoxFit.cover,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UserProfileScreen(review.reviewer.username)));
+                              },
+                            ),
+                          ),
                           SizedBox(width: 8.0),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +80,10 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                         children: <Widget>[
                           Text(f.format(DateTime.parse(review.date))),
                           SizedBox(height: 4.0),
-                          Text(widget.anime ? '${review.reviewer.episodesSeen} episodes seen' : '${review.reviewer.chaptersRead} chapters read',
+                          Text(
+                              widget.anime
+                                  ? '${review.reviewer.episodesSeen} episodes seen'
+                                  : '${review.reviewer.chaptersRead} chapters read',
                               style: Theme.of(context).textTheme.caption),
                         ],
                       ),

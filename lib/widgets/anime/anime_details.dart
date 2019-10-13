@@ -33,7 +33,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     setState(() => loading = false);
   }
 
-  String producersText(AnimeInfo anime) {
+  String get _producersText {
     List<String> names = [];
     for (GenericInfo prod in anime.producers) {
       names.add(prod.name);
@@ -41,7 +41,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     return names.join(', ');
   }
 
-  String licensorsText(AnimeInfo anime) {
+  String get _licensorsText {
     List<String> names = [];
     for (GenericInfo lic in anime.licensors) {
       names.add(lic.name);
@@ -49,7 +49,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     return names.join(', ');
   }
 
-  String studiosText(AnimeInfo anime) {
+  String get _studiosText {
     List<String> names = [];
     for (GenericInfo stud in anime.studios) {
       names.add(stud.name);
@@ -57,7 +57,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     return names.join(', ');
   }
 
-  String genresText(AnimeInfo anime) {
+  String get _genresText {
     List<String> names = [];
     for (GenericInfo gen in anime.genres) {
       names.add(gen.name);
@@ -78,7 +78,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     return ListView(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -138,7 +138,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   SizedBox(height: 8.0),
                   Text(anime.type),
                   anime.premiered != null ? Text(anime.premiered) : Container(),
-                  Text(studiosText(anime)),
+                  Text(_studiosText),
                 ],
               ),
             ],
@@ -156,7 +156,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -253,7 +253,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   text: 'Producers: ',
                   style: Theme.of(context).textTheme.body2,
                   children: <TextSpan>[
-                    TextSpan(text: producersText(anime), style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: _producersText, style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),
@@ -262,7 +262,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   text: 'Licensors: ',
                   style: Theme.of(context).textTheme.body2,
                   children: <TextSpan>[
-                    TextSpan(text: licensorsText(anime), style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: _licensorsText, style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),
@@ -271,7 +271,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   text: 'Studios: ',
                   style: Theme.of(context).textTheme.body2,
                   children: <TextSpan>[
-                    TextSpan(text: studiosText(anime), style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: _studiosText, style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),
@@ -289,7 +289,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   text: 'Genres: ',
                   style: Theme.of(context).textTheme.body2,
                   children: <TextSpan>[
-                    TextSpan(text: genresText(anime), style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: _genresText, style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),
@@ -356,7 +356,6 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 ],
               )
             : Container(),
-        Divider(height: 0.0),
         PictureList(pictures),
       ],
     );

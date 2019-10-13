@@ -76,6 +76,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
                           Row(
                             children: <Widget>[
                               Icon(Icons.person, color: Colors.white),
+                              SizedBox(width: 4.0),
                               Text(f.format(character.memberFavorites),
                                   style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
                             ],
@@ -92,8 +93,12 @@ class _CharacterScreenState extends State<CharacterScreen> {
         SliverList(
           delegate: SliverChildListDelegate(<Widget>[
             AboutSection(character.about),
-            character.animeography.length > 0 ? AnimeographyList(character.animeography, type: TopType.anime) : Container(),
-            character.mangaography.length > 0 ? AnimeographyList(character.mangaography, type: TopType.manga) : Container(),
+            character.animeography.length > 0
+                ? AnimeographyList(character.animeography, type: TopType.anime)
+                : Container(),
+            character.mangaography.length > 0
+                ? AnimeographyList(character.mangaography, type: TopType.manga)
+                : Container(),
             character.voiceActors.length > 0 ? VoiceList(character.voiceActors) : Container(),
             pictures.length > 0 ? PictureList(pictures) : Container(),
           ]),
@@ -114,9 +119,11 @@ class AnimeographyList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text(type == TopType.anime ? 'Animeography' : 'Mangaography', style: Theme.of(context).textTheme.title),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
+          child:
+              Text(type == TopType.anime ? 'Animeography' : 'Mangaography', style: Theme.of(context).textTheme.title),
         ),
         Container(
           height: 163.0,
@@ -133,7 +140,7 @@ class AnimeographyList extends StatelessWidget {
             },
           ),
         ),
-        Divider(),
+        SizedBox(height: 12.0),
       ],
     );
   }
@@ -149,8 +156,9 @@ class VoiceList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Text('Voice Actors', style: Theme.of(context).textTheme.title),
         ),
         Container(
@@ -169,7 +177,7 @@ class VoiceList extends StatelessWidget {
             },
           ),
         ),
-        Divider(),
+        SizedBox(height: 12.0),
       ],
     );
   }

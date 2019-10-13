@@ -13,8 +13,9 @@ class FriendList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Text('Friends', style: Theme.of(context).textTheme.title),
         ),
         Container(

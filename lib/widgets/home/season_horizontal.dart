@@ -43,6 +43,7 @@ class SeasonHorizontal extends StatelessWidget {
             },
           ),
         ),
+        SizedBox(height: 12.0),
       ],
     );
   }

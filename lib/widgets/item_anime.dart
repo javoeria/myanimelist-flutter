@@ -6,7 +6,8 @@ import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/person_screen.dart';
 
 class ItemAnime extends StatelessWidget {
-  ItemAnime(this.id, this.title, this.image, {this.width = 160.0, this.height = 220.0, this.type});
+  ItemAnime(this.id, this.title, this.image,
+      {this.width = 160.0, this.height = 220.0, this.type, this.showTitle = true});
 
   final int id;
   final String title;
@@ -14,6 +15,7 @@ class ItemAnime extends StatelessWidget {
   final double width;
   final double height;
   final TopType type;
+  final bool showTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class ItemAnime extends StatelessWidget {
             },
           ),
         ),
-        title != ''
+        title != '' && showTitle
             ? Stack(
                 alignment: AlignmentDirectional.bottomCenter,
                 children: <Widget>[

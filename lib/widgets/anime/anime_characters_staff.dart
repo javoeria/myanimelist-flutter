@@ -92,7 +92,7 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                   );
                 }).toList(),
               ),
-              Divider(),
+              Divider(height: 8.0),
               Column(
                 children: list.staff.map((Staff staff) {
                   return Padding(

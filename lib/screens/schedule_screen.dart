@@ -118,13 +118,7 @@ class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClient
             itemCount: animeList.length,
             itemBuilder: (context, index) {
               Anime anime = animeList.elementAt(index);
-              return InkWell(
-                child: SeasonInfo(anime),
-                onTap: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => AnimeScreen(anime.malId, anime.title)));
-                },
-              );
+              return SeasonInfo(anime);
             },
           ),
         );
