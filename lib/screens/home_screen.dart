@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:myanimelist/screens/anime_screen.dart';
+import 'package:myanimelist/screens/manga_screen.dart';
+import 'package:myanimelist/screens/settings_screen.dart';
 import 'package:myanimelist/widgets/home/search_button.dart';
 import 'package:myanimelist/widgets/home/season_horizontal.dart';
 import 'package:myanimelist/widgets/home/top_horizontal.dart';
@@ -9,12 +13,13 @@ import 'package:myanimelist/screens/top_anime_screen.dart';
 import 'package:myanimelist/screens/top_manga_screen.dart';
 import 'package:myanimelist/screens/top_people_screen.dart';
 import 'package:myanimelist/screens/top_characters_screen.dart';
-import 'package:myanimelist/screens/later_screen.dart';
-import 'package:myanimelist/screens/schedule_screen.dart';
 import 'package:myanimelist/screens/seasonal_anime_screen.dart';
 import 'package:myanimelist/screens/anime_list_screen.dart';
 import 'package:myanimelist/screens/manga_list_screen.dart';
 import 'package:myanimelist/screens/user_profile_screen.dart';
+import 'package:myanimelist/widgets/profile/user_dialog.dart';
+import 'package:package_info/package_info.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen(this.profile, this.season, this.topAiring, this.topUpcoming);
@@ -39,97 +44,168 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text(profile.username),
-              accountEmail: null,
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(profile.imageUrl),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  UserAccountsDrawerHeader(
+                    accountName: Text(profile == null ? '' : profile.username),
+                    accountEmail: null,
+                    currentAccountPicture:
+                        profile == null ? Container() : CircleAvatar(backgroundImage: NetworkImage(profile.imageUrl)),
+                  ),
+                  profile == null
+                      ? ListTile(
+                          title: Text('Login'),
+                          leading: Icon(FontAwesomeIcons.signInAlt, color: Theme.of(context).unselectedWidgetColor),
+                          onTap: () {
+                            showDialog<void>(
+                              context: context,
+                              builder: (context) => UserDialog(),
+                            );
+                          },
+                        )
+                      : ExpansionTile(
+                          title: Text('User'),
+                          leading: Icon(FontAwesomeIcons.userAlt),
+                          children: <Widget>[
+                            ListTile(
+                              title: Text('Profile'),
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => UserProfileScreen(profile.username)));
+                              },
+                            ),
+                            ListTile(
+                              title: Text('Anime List'),
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => AnimeListScreen(profile.username)));
+                              },
+                            ),
+                            ListTile(
+                              title: Text('Manga List'),
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => MangaListScreen(profile.username)));
+                              },
+                            ),
+                          ],
+                        ),
+                  ExpansionTile(
+                    title: Text('Anime'),
+                    leading: Icon(FontAwesomeIcons.tv),
+                    children: <Widget>[
+                      ListTile(
+                        title: Text('Anime Search'),
+                        onTap: () async {
+                          Navigator.pop(context);
+                          final Search selected = await showSearch<Search>(
+                            context: context,
+                            delegate: CustomSearchDelegate(type: SearchType.anime),
+                          );
+                          if (selected != null) {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => AnimeScreen(selected.malId, selected.title)));
+                          }
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Top Anime'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => TopAnimeScreen()));
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Seasonal Anime'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => SeasonalAnimeScreen(year: 2019, type: Fall())));
+                        },
+                      ),
+                    ],
+                  ),
+                  ExpansionTile(
+                    title: Text('Manga'),
+                    leading: Icon(FontAwesomeIcons.book),
+                    children: <Widget>[
+                      ListTile(
+                        title: Text('Manga Search'),
+                        onTap: () async {
+                          Navigator.pop(context);
+                          final Search selected = await showSearch<Search>(
+                            context: context,
+                            delegate: CustomSearchDelegate(type: SearchType.manga),
+                          );
+                          if (selected != null) {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => MangaScreen(selected.malId, selected.title)));
+                          }
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Top Manga'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => TopMangaScreen()));
+                        },
+                      ),
+                    ],
+                  ),
+                  ExpansionTile(
+                    title: Text('Industry'),
+                    leading: Icon(FontAwesomeIcons.briefcase),
+                    children: <Widget>[
+                      ListTile(
+                        title: Text('People'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => TopPeopleScreen()));
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Characters'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => TopCharactersScreen()));
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            ListTile(
-              title: Text('Top Anime'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TopAnimeScreen()));
-              },
-            ),
-            ListTile(
-              title: Text('Top Manga'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TopMangaScreen()));
-              },
-            ),
-            ListTile(
-              title: Text('Top People'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TopPeopleScreen()));
-              },
-            ),
-            ListTile(
-              title: Text('Top Characters'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TopCharactersScreen()));
-              },
-            ),
-            ListTile(
-              title: Text('Seasonal Anime'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => SeasonalAnimeScreen(year: 2019, type: Fall())));
-              },
-            ),
-            ListTile(
-              title: Text('Schedule'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ScheduleScreen()));
-              },
-            ),
-            ListTile(
-              title: Text('Later'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => LaterScreen()));
-              },
-            ),
-            ListTile(
-              title: Text('Anime List'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeListScreen(profile.username)));
-              },
-            ),
-            ListTile(
-              title: Text('Manga List'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => MangaListScreen(profile.username)));
-              },
-            ),
-            ListTile(
-              title: Text('My Profile'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfileScreen(profile.username)));
-              },
-            ),
-            ListTile(
-              title: Text('Brightness'),
-              trailing: Switch(
-                value: Theme.of(context).brightness == Brightness.dark,
-                activeColor: Colors.indigo,
-                onChanged: (value) {
-                  Navigator.pop(context);
-                  DynamicTheme.of(context).setBrightness(
-                      Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark);
-                },
+            Divider(height: 0.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(FontAwesomeIcons.cog, color: Theme.of(context).unselectedWidgetColor),
+                    onPressed: () async {
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+                      Navigator.pop(context);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(prefs, packageInfo)));
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(FontAwesomeIcons.lightbulb, color: Theme.of(context).unselectedWidgetColor),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      DynamicTheme.of(context).setBrightness(
+                          Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark);
+                    },
+                  ),
+                ],
               ),
             ),
           ],

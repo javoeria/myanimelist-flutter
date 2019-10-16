@@ -8,7 +8,7 @@ import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:provider/provider.dart';
 
 class SearchButton extends StatelessWidget {
-  final _CustomSearchDelegate _delegate = _CustomSearchDelegate();
+  final CustomSearchDelegate _delegate = CustomSearchDelegate();
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +27,11 @@ class SearchButton extends StatelessWidget {
   }
 }
 
-class _CustomSearchDelegate extends SearchDelegate<Search> {
+class CustomSearchDelegate extends SearchDelegate<Search> {
+  CustomSearchDelegate({this.type = SearchType.anime});
+
+  SearchType type;
   List<String> _suggestions = [];
-  SearchType type = SearchType.anime;
 
   @override
   Widget buildLeading(BuildContext context) {
@@ -46,7 +48,7 @@ class _CustomSearchDelegate extends SearchDelegate<Search> {
     if (query == null || query.isEmpty || query.length < 3) {
       _suggestions.clear();
       return _SuggestionList(
-        query: query,
+        history: true,
         suggestions: Provider.of<UserData>(context).history,
         onSelected: (String suggestion) {
           query = suggestion;
@@ -64,7 +66,7 @@ class _CustomSearchDelegate extends SearchDelegate<Search> {
           }
 
           return _SuggestionList(
-            query: query,
+            history: false,
             suggestions: _suggestions,
             onSelected: (String suggestion) {
               query = suggestion;
@@ -191,9 +193,9 @@ class _ResultList extends StatelessWidget {
 }
 
 class _SuggestionList extends StatelessWidget {
-  _SuggestionList({this.query, this.suggestions, this.onSelected});
+  _SuggestionList({this.history, this.suggestions, this.onSelected});
 
-  final String query;
+  final bool history;
   final List<String> suggestions;
   final ValueChanged<String> onSelected;
 
@@ -203,14 +205,55 @@ class _SuggestionList extends StatelessWidget {
       itemCount: min(suggestions.length, 10),
       itemBuilder: (BuildContext context, int i) {
         final String suggestion = suggestions[i];
-        return ListTile(
-          leading: query.length < 3 ? Icon(Icons.history) : Icon(Icons.search),
-          title: Text(suggestion, style: Theme.of(context).textTheme.subhead),
-          onTap: () {
-            onSelected(suggestion);
-          },
-        );
+        if (history) {
+          return ListTile(
+            leading: Icon(Icons.history),
+            title: Text(suggestion, style: Theme.of(context).textTheme.subhead),
+            onTap: () {
+              onSelected(suggestion);
+            },
+            onLongPress: () async {
+              bool action = await _historyDialog(context, suggestion);
+              if (action == true) {
+                Provider.of<UserData>(context).removeHistory(suggestion);
+              }
+            },
+          );
+        } else {
+          return ListTile(
+            leading: Icon(Icons.search),
+            title: Text(suggestion, style: Theme.of(context).textTheme.subhead),
+            onTap: () {
+              onSelected(suggestion);
+            },
+          );
+        }
       },
     );
   }
+}
+
+Future<bool> _historyDialog(BuildContext context, String suggestion) async {
+  return showDialog<bool>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Text('Clear $suggestion from your history?'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('CANCEL'),
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+          ),
+          FlatButton(
+            child: Text('CLEAR'),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

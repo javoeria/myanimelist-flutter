@@ -29,4 +29,16 @@ class UserData extends ChangeNotifier {
     prefs.setStringList('history', _history);
     // notifyListeners();
   }
+
+  void removeHistory(String value) {
+    _history.remove(value);
+    prefs.setStringList('history', _history);
+    notifyListeners();
+  }
+
+  void removeHistoryAll() {
+    _history.clear();
+    prefs.setStringList('history', _history);
+    notifyListeners();
+  }
 }

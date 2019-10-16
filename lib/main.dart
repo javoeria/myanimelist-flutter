@@ -64,7 +64,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   void load() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    profile = await jikanApi.getUserProfile(prefs.getString('username'));
+    String username = prefs.getString('username');
+    if (username != null) {
+      profile = await jikanApi.getUserProfile(username);
+    }
     season = await jikanApi.getSeason(2019, Fall());
     topAiring = await jikanApi.getTop(TopType.anime, page: 1, subtype: TopSubtype.airing);
     topUpcoming = await jikanApi.getTop(TopType.anime, page: 1, subtype: TopSubtype.upcoming);
