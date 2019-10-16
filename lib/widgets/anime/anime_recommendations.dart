@@ -38,16 +38,18 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
         if (recommendationList.length == 0) {
           return ListTile(title: Text('No items found.'));
         }
-        return SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Center(
-            child: Wrap(
-              spacing: 16.0,
-              runSpacing: 16.0,
-              children: recommendationList.map((Recommendation recommendation) {
-                return ItemAnime(recommendation.malId, recommendation.title, recommendation.imageUrl,
-                    type: widget.anime ? TopType.anime : TopType.manga);
-              }).toList(),
+        return Scrollbar(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Center(
+              child: Wrap(
+                spacing: 16.0,
+                runSpacing: 16.0,
+                children: recommendationList.map((Recommendation recommendation) {
+                  return ItemAnime(recommendation.malId, recommendation.title, recommendation.imageUrl,
+                      type: widget.anime ? TopType.anime : TopType.manga);
+                }).toList(),
+              ),
             ),
           ),
         );

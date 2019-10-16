@@ -1,9 +1,11 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_dart/jikan_dart.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:myanimelist/screens/user_profile_screen.dart';
+
+const int PAGE_SIZE = 20;
 
 class AnimeReviews extends StatefulWidget {
   AnimeReviews(this.id, {this.anime = true});
@@ -17,97 +19,80 @@ class AnimeReviews extends StatefulWidget {
 
 class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClientMixin<AnimeReviews> {
   final DateFormat f = DateFormat('MMM d, yyyy');
-  Future<BuiltList<Review>> _future;
-
-  @override
-  void initState() {
-    super.initState();
-    _future = widget.anime ? JikanApi().getAnimeReviews(widget.id) : JikanApi().getMangaReviews(widget.id);
-  }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return FutureBuilder(
-      future: _future,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Center(child: CircularProgressIndicator());
-        }
+    return Scrollbar(
+      child: PagewiseListView(
+        pageSize: PAGE_SIZE,
+        itemBuilder: this._itemBuilder,
+        pageFuture: (pageIndex) => widget.anime
+            ? JikanApi().getAnimeReviews(widget.id, page: pageIndex + 1)
+            : JikanApi().getMangaReviews(widget.id, page: pageIndex + 1),
+      ),
+    );
+  }
 
-        BuiltList<Review> reviewList = snapshot.data;
-        if (reviewList.length == 0) {
-          return ListTile(title: Text('No items found.'));
-        }
-        return ListView.separated(
-          separatorBuilder: (context, index) => Divider(height: 0.0),
-          itemCount: reviewList.length,
-          itemBuilder: (context, index) {
-            Review review = reviewList.elementAt(index);
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
+  Widget _itemBuilder(BuildContext context, Review review, int index) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: <Widget>[
-                          Ink.image(
-                            image: NetworkImage(review.reviewer.imageUrl),
-                            width: 50.0,
-                            height: 70.0,
-                            fit: BoxFit.cover,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => UserProfileScreen(review.reviewer.username)));
-                              },
-                            ),
-                          ),
-                          SizedBox(width: 8.0),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(review.reviewer.username),
-                              SizedBox(height: 4.0),
-                              Text('${review.helpfulCount} helpful review', style: Theme.of(context).textTheme.caption),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Text(f.format(DateTime.parse(review.date))),
-                          SizedBox(height: 4.0),
-                          Text(
-                              widget.anime
-                                  ? '${review.reviewer.episodesSeen} episodes seen'
-                                  : '${review.reviewer.chaptersRead} chapters read',
-                              style: Theme.of(context).textTheme.caption),
-                        ],
-                      ),
-                    ],
-                  ),
-                  ExpandablePanel(
-                    header: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Text('Overall Rating: ' + review.reviewer.scores.overall.toString()),
+                  Ink.image(
+                    image: NetworkImage(review.reviewer.imageUrl),
+                    width: 50.0,
+                    height: 70.0,
+                    fit: BoxFit.cover,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => UserProfileScreen(review.reviewer.username)));
+                      },
                     ),
-                    collapsed: Text(review.content, softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),
-                    expanded: Text(review.content, softWrap: true),
-                    tapHeaderToExpand: true,
-                    hasIcon: true,
+                  ),
+                  SizedBox(width: 8.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(review.reviewer.username),
+                      SizedBox(height: 4.0),
+                      Text('${review.helpfulCount} helpful review', style: Theme.of(context).textTheme.caption),
+                    ],
                   ),
                 ],
               ),
-            );
-          },
-        );
-      },
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Text(f.format(DateTime.parse(review.date))),
+                  SizedBox(height: 4.0),
+                  Text(
+                      widget.anime
+                          ? '${review.reviewer.episodesSeen} episodes seen'
+                          : '${review.reviewer.chaptersRead} chapters read',
+                      style: Theme.of(context).textTheme.caption),
+                ],
+              ),
+            ],
+          ),
+          ExpandablePanel(
+            header: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Text('Overall Rating: ' + review.reviewer.scores.overall.toString()),
+            ),
+            collapsed: Text(review.content, softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),
+            expanded: Text(review.content, softWrap: true),
+            tapHeaderToExpand: true,
+            hasIcon: true,
+          ),
+        ],
+      ),
     );
   }
 

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_dart/jikan_dart.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/widgets/profile/custom_filter.dart';
+
+const int PAGE_SIZE = 300;
 
 class MangaListScreen extends StatelessWidget {
   MangaListScreen(this.username, {this.order});
@@ -58,8 +60,6 @@ class UserMangaList extends StatefulWidget {
 }
 
 class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveClientMixin<UserMangaList> {
-  Future<BuiltList<MangaItem>> _future;
-
   Color statusColor(int status) {
     switch (status) {
       case 1:
@@ -83,70 +83,54 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
   }
 
   @override
-  void initState() {
-    super.initState();
-    _future = JikanApi().getUserMangaList(widget.username, widget.type, order: widget.order);
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
-    return FutureBuilder(
-      future: _future,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Center(child: CircularProgressIndicator());
-        }
+    return Scrollbar(
+      child: PagewiseListView(
+        pageSize: PAGE_SIZE,
+        itemBuilder: this._itemBuilder,
+        padding: const EdgeInsets.all(12.0),
+        pageFuture: (pageIndex) =>
+            JikanApi().getUserMangaList(widget.username, widget.type, order: widget.order, page: pageIndex + 1),
+      ),
+    );
+  }
 
-        BuiltList<MangaItem> mangaList = snapshot.data;
-        if (mangaList.length == 0) {
-          return ListTile(title: Text('No items found.'));
-        }
-        return Scrollbar(
-          child: ListView.builder(
-            padding: const EdgeInsets.all(12.0),
-            itemCount: mangaList.length,
-            itemBuilder: (context, index) {
-              MangaItem item = mangaList.elementAt(index);
-              String score = item.score == 0 ? '-' : item.score.toString();
-              String read = item.readVolumes == 0 ? '-' : item.readVolumes.toString();
-              String total = item.totalVolumes == 0 ? '-' : item.totalVolumes.toString();
-              String progress = read == total ? total : '$read / $total';
-              return InkWell(
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: Row(
-                          children: <Widget>[
-                            Container(color: statusColor(item.readingStatus), width: 5.0, height: 70.0),
-                            Image.network(item.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
-                            SizedBox(width: 8.0),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(item.title, style: Theme.of(context).textTheme.subtitle),
-                                  Text(item.type + ' ($progress vols)', style: Theme.of(context).textTheme.caption),
-                                ],
-                              ),
-                            ),
-                            Text(score, style: Theme.of(context).textTheme.subhead),
-                          ],
-                        ),
-                      ),
-                    ],
+  Widget _itemBuilder(BuildContext context, MangaItem item, int index) {
+    String score = item.score == 0 ? '-' : item.score.toString();
+    String read = item.readVolumes == 0 ? '-' : item.readVolumes.toString();
+    String total = item.totalVolumes == 0 ? '-' : item.totalVolumes.toString();
+    String progress = read == total ? total : '$read / $total';
+    return InkWell(
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              child: Row(
+                children: <Widget>[
+                  Container(color: statusColor(item.readingStatus), width: 5.0, height: 70.0),
+                  Image.network(item.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                  SizedBox(width: 8.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(item.title, style: Theme.of(context).textTheme.subtitle),
+                        Text(item.type + ' ($progress vols)', style: Theme.of(context).textTheme.caption),
+                      ],
+                    ),
                   ),
-                ),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MangaScreen(item.malId, item.title)));
-                },
-              );
-            },
-          ),
-        );
+                  Text(score, style: Theme.of(context).textTheme.subhead),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MangaScreen(item.malId, item.title)));
       },
     );
   }

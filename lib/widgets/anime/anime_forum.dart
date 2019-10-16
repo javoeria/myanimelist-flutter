@@ -38,51 +38,53 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
         if (forumList.length == 0) {
           return ListTile(title: Text('No items found.'));
         }
-        return ListView.separated(
-          separatorBuilder: (context, index) => Divider(height: 0.0),
-          itemCount: forumList.length,
-          itemBuilder: (context, index) {
-            Forum forum = forumList.elementAt(index);
-            return InkWell(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(forum.title, style: Theme.of(context).textTheme.body2),
-                          SizedBox(height: 4.0),
-                          RichText(
-                            text: TextSpan(
-                              text: forum.authorName + ' - ',
-                              style: DefaultTextStyle.of(context).style,
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: f.format(DateTime.parse(forum.datePosted)),
-                                    style: Theme.of(context).textTheme.caption),
-                              ],
+        return Scrollbar(
+          child: ListView.separated(
+            separatorBuilder: (context, index) => Divider(height: 0.0),
+            itemCount: forumList.length,
+            itemBuilder: (context, index) {
+              Forum forum = forumList.elementAt(index);
+              return InkWell(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(forum.title, style: Theme.of(context).textTheme.body2),
+                            SizedBox(height: 4.0),
+                            RichText(
+                              text: TextSpan(
+                                text: forum.authorName + ' - ',
+                                style: DefaultTextStyle.of(context).style,
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: f.format(DateTime.parse(forum.datePosted)),
+                                      style: Theme.of(context).textTheme.caption),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Chip(label: Text(forum.replies.toString()), padding: EdgeInsets.zero),
-                  ],
+                      Chip(label: Text(forum.replies.toString()), padding: EdgeInsets.zero),
+                    ],
+                  ),
                 ),
-              ),
-              onTap: () async {
-                String url = forum.url;
-                if (await canLaunch(url)) {
-                  await launch(url);
-                } else {
-                  throw 'Could not launch $url';
-                }
-              },
-            );
-          },
+                onTap: () async {
+                  String url = forum.url;
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+              );
+            },
+          ),
         );
       },
     );

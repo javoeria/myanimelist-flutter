@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_dart/jikan_dart.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show DateFormat;
+
+const int PAGE_SIZE = 100;
 
 class AnimeEpisodeList extends StatefulWidget {
   AnimeEpisodeList(this.id);
@@ -14,7 +16,6 @@ class AnimeEpisodeList extends StatefulWidget {
 
 class _AnimeEpisodeListState extends State<AnimeEpisodeList> with AutomaticKeepAliveClientMixin<AnimeEpisodeList> {
   final DateFormat f = DateFormat('MMM d, yyyy');
-  Future<AnimeEpisodes> _future;
 
   Widget subtitleText(String titleRomanji, String titleJapanese) {
     if (titleRomanji != null && titleJapanese != null) {
@@ -29,43 +30,28 @@ class _AnimeEpisodeListState extends State<AnimeEpisodeList> with AutomaticKeepA
   }
 
   @override
-  void initState() {
-    super.initState();
-    _future = JikanApi().getAnimeEpisodes(widget.id);
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
-    return FutureBuilder(
-      future: _future,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Center(child: CircularProgressIndicator());
-        }
+    return Scrollbar(
+      child: PagewiseListView(
+        pageSize: PAGE_SIZE,
+        itemBuilder: this._itemBuilder,
+        padding: const EdgeInsets.all(12.0),
+        pageFuture: (pageIndex) => JikanApi().getAnimeEpisodes(widget.id, page: pageIndex + 1),
+      ),
+    );
+  }
 
-        BuiltList<AnimeEpisode> episodeList = snapshot.data.episodes;
-        if (episodeList.length == 0) {
-          return ListTile(title: Text('No items found.'));
-        }
-        return ListView.separated(
-          separatorBuilder: (context, index) => Divider(height: 0.0),
-          itemCount: episodeList.length,
-          itemBuilder: (context, index) {
-            AnimeEpisode episode = episodeList.elementAt(index);
-            String dateAired = episode.aired == null ? 'N/A' : f.format(DateTime.parse(episode.aired));
-            return ListTile(
-              title: Text(episode.title),
-              subtitle: subtitleText(episode.titleRomanji, episode.titleJapanese),
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(episode.episodeId.toString(), style: Theme.of(context).textTheme.title),
-              ),
-              trailing: Text(dateAired),
-            );
-          },
-        );
-      },
+  Widget _itemBuilder(BuildContext context, AnimeEpisode episode, int index) {
+    String dateAired = episode.aired == null ? 'N/A' : f.format(DateTime.parse(episode.aired));
+    return ListTile(
+      title: Text(episode.title),
+      subtitle: subtitleText(episode.titleRomanji, episode.titleJapanese),
+      leading: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(episode.episodeId.toString(), style: Theme.of(context).textTheme.title),
+      ),
+      trailing: Text(dateAired),
     );
   }
 

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
+import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/widgets/top/custom_view.dart';
+import 'package:myanimelist/widgets/top/top_grid.dart';
 import 'package:myanimelist/widgets/top/top_list.dart';
+import 'package:provider/provider.dart';
 
 class TopAnimeScreen extends StatelessWidget {
   TopAnimeScreen({this.index});
@@ -32,19 +35,33 @@ class TopAnimeScreen extends StatelessWidget {
           ),
           actions: <Widget>[CustomView()],
         ),
-        body: TabBarView(
-          children: [
-            TopList(type: TopType.anime),
-            TopList(type: TopType.anime, subtype: TopSubtype.airing),
-            TopList(type: TopType.anime, subtype: TopSubtype.upcoming),
-            TopList(type: TopType.anime, subtype: TopSubtype.tv),
-            TopList(type: TopType.anime, subtype: TopSubtype.movie),
-            TopList(type: TopType.anime, subtype: TopSubtype.ova),
-            TopList(type: TopType.anime, subtype: TopSubtype.special),
-            TopList(type: TopType.anime, subtype: TopSubtype.bypopularity),
-            TopList(type: TopType.anime, subtype: TopSubtype.favorite),
-          ],
-        ),
+        body: Provider.of<UserData>(context).gridView
+            ? TabBarView(
+                children: <Widget>[
+                  TopGrid(type: TopType.anime),
+                  TopGrid(type: TopType.anime, subtype: TopSubtype.airing),
+                  TopGrid(type: TopType.anime, subtype: TopSubtype.upcoming),
+                  TopGrid(type: TopType.anime, subtype: TopSubtype.tv),
+                  TopGrid(type: TopType.anime, subtype: TopSubtype.movie),
+                  TopGrid(type: TopType.anime, subtype: TopSubtype.ova),
+                  TopGrid(type: TopType.anime, subtype: TopSubtype.special),
+                  TopGrid(type: TopType.anime, subtype: TopSubtype.bypopularity),
+                  TopGrid(type: TopType.anime, subtype: TopSubtype.favorite),
+                ],
+              )
+            : TabBarView(
+                children: <Widget>[
+                  TopList(type: TopType.anime),
+                  TopList(type: TopType.anime, subtype: TopSubtype.airing),
+                  TopList(type: TopType.anime, subtype: TopSubtype.upcoming),
+                  TopList(type: TopType.anime, subtype: TopSubtype.tv),
+                  TopList(type: TopType.anime, subtype: TopSubtype.movie),
+                  TopList(type: TopType.anime, subtype: TopSubtype.ova),
+                  TopList(type: TopType.anime, subtype: TopSubtype.special),
+                  TopList(type: TopType.anime, subtype: TopSubtype.bypopularity),
+                  TopList(type: TopType.anime, subtype: TopSubtype.favorite),
+                ],
+              ),
       ),
     );
   }

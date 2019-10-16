@@ -38,50 +38,52 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
         if (articleList.length == 0) {
           return ListTile(title: Text('No items found.'));
         }
-        return ListView.separated(
-          separatorBuilder: (context, index) => Divider(height: 0.0),
-          itemCount: articleList.length,
-          itemBuilder: (context, index) {
-            Article article = articleList.elementAt(index);
-            return InkWell(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: <Widget>[
-                    article.imageUrl != null
-                        ? Row(
-                            children: <Widget>[
-                              Image.network(article.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
-                              SizedBox(width: 8.0),
-                            ],
-                          )
-                        : Container(),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(article.title, style: Theme.of(context).textTheme.body2),
-                          SizedBox(height: 4.0),
-                          Text(article.intro, maxLines: 2, overflow: TextOverflow.ellipsis),
-                          SizedBox(height: 4.0),
-                          Text(f.format(DateTime.parse(article.date)) + ' by ${article.authorName}',
-                              style: Theme.of(context).textTheme.caption),
-                        ],
+        return Scrollbar(
+          child: ListView.separated(
+            separatorBuilder: (context, index) => Divider(height: 0.0),
+            itemCount: articleList.length,
+            itemBuilder: (context, index) {
+              Article article = articleList.elementAt(index);
+              return InkWell(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: <Widget>[
+                      article.imageUrl != null
+                          ? Row(
+                              children: <Widget>[
+                                Image.network(article.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                                SizedBox(width: 8.0),
+                              ],
+                            )
+                          : Container(),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(article.title, style: Theme.of(context).textTheme.body2),
+                            SizedBox(height: 4.0),
+                            Text(article.intro, maxLines: 2, overflow: TextOverflow.ellipsis),
+                            SizedBox(height: 4.0),
+                            Text(f.format(DateTime.parse(article.date)) + ' by ${article.authorName}',
+                                style: Theme.of(context).textTheme.caption),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              onTap: () async {
-                String url = article.url;
-                if (await canLaunch(url)) {
-                  await launch(url);
-                } else {
-                  throw 'Could not launch $url';
-                }
-              },
-            );
-          },
+                onTap: () async {
+                  String url = article.url;
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+              );
+            },
+          ),
         );
       },
     );

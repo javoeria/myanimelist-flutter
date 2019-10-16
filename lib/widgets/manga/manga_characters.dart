@@ -35,39 +35,41 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
         if (characterList.length == 0) {
           return ListTile(title: Text('No items found.'));
         }
-        return ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-          itemCount: characterList.length,
-          itemBuilder: (context, index) {
-            MangaCharacter character = characterList.elementAt(index);
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: Row(
-                      children: <Widget>[
-                        ItemAnime(character.malId, '', character.imageUrl,
-                            width: 50.0, height: 70.0, type: TopType.characters),
-                        SizedBox(width: 8.0),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(character.name),
-                              SizedBox(height: 4.0),
-                              Text(character.role, style: Theme.of(context).textTheme.caption),
-                            ],
+        return Scrollbar(
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            itemCount: characterList.length,
+            itemBuilder: (context, index) {
+              MangaCharacter character = characterList.elementAt(index);
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: Row(
+                        children: <Widget>[
+                          ItemAnime(character.malId, '', character.imageUrl,
+                              width: 50.0, height: 70.0, type: TopType.characters),
+                          SizedBox(width: 8.0),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(character.name),
+                                SizedBox(height: 4.0),
+                                Text(character.role, style: Theme.of(context).textTheme.caption),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
+                  ],
+                ),
+              );
+            },
+          ),
         );
       },
     );

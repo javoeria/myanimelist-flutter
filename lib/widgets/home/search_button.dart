@@ -1,11 +1,14 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:provider/provider.dart';
+
+const int PAGE_SIZE = 50;
 
 class SearchButton extends StatelessWidget {
   final CustomSearchDelegate _delegate = CustomSearchDelegate();
@@ -32,6 +35,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
 
   SearchType type;
   List<String> _suggestions = [];
+  final JikanApi jikanApi = JikanApi();
 
   @override
   Widget buildLeading(BuildContext context) {
@@ -57,7 +61,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
       );
     } else {
       return FutureBuilder(
-        future: JikanApi().search(type, query: query),
+        future: jikanApi.search(type, query: query),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             BuiltList<Search> searchList = snapshot.data;
@@ -84,24 +88,14 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
       return Center(child: Text('Minimum 3 letters'));
     }
 
-    return FutureBuilder(
-      future: JikanApi().search(type, query: query),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Center(child: CircularProgressIndicator());
-        }
-
-        BuiltList<Search> searchList = snapshot.data;
-        if (searchList.length == 0) {
-          return ListTile(title: Text('No items found.'));
-        }
-        Provider.of<UserData>(context).addHistory(query);
-        return _ResultList(
-          type: type,
-          searchList: searchList,
-          searchDelegate: this,
-        );
-      },
+    Provider.of<UserData>(context).addHistory(query);
+    return Scrollbar(
+      child: PagewiseListView(
+        pageSize: PAGE_SIZE,
+        itemBuilder: (context, search, _) => _ResultList(search, type: type, searchDelegate: this),
+        padding: const EdgeInsets.all(12.0),
+        pageFuture: (pageIndex) => jikanApi.search(type, query: query, page: pageIndex + 1),
+      ),
     );
   }
 
@@ -124,10 +118,10 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
 }
 
 class _ResultList extends StatelessWidget {
-  _ResultList({this.type, this.searchList, this.searchDelegate});
+  _ResultList(this.search, {this.type, this.searchDelegate});
 
+  final Search search;
   final SearchType type;
-  final BuiltList<Search> searchList;
   final SearchDelegate<Search> searchDelegate;
   final NumberFormat f = NumberFormat.decimalPattern();
 
@@ -145,49 +139,40 @@ class _ResultList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(12.0),
-      itemCount: searchList.length,
-      itemBuilder: (context, index) {
-        final Search search = searchList.elementAt(index);
-        String score = search.score == 0.0 ? 'N/A' : search.score.toString();
-        return InkWell(
-          onTap: () {
-            searchDelegate.close(context, search);
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: Row(
-                    children: <Widget>[
-                      Image.network(search.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
-                      SizedBox(width: 8.0),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(search.title, style: Theme.of(context).textTheme.subtitle),
-                            Text(search.synopsis.split('.').first + '.',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.caption),
-                            Text(search.type + ' ' + episodesText(search) + ' - ' + score,
-                                style: Theme.of(context).textTheme.caption),
-                            Text(f.format(search.members) + ' members', style: Theme.of(context).textTheme.caption),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+    String score = search.score == 0.0 ? 'N/A' : search.score.toString();
+    return InkWell(
+      onTap: () {
+        searchDelegate.close(context, search);
       },
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              child: Row(
+                children: <Widget>[
+                  Image.network(search.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                  SizedBox(width: 8.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(search.title, style: Theme.of(context).textTheme.subtitle),
+                        Text(search.synopsis.split('.').first + '.',
+                            maxLines: 2, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.caption),
+                        Text(search.type + ' ' + episodesText(search) + ' - ' + score,
+                            style: Theme.of(context).textTheme.caption),
+                        Text(f.format(search.members) + ' members', style: Theme.of(context).textTheme.caption),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
