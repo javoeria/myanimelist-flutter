@@ -138,7 +138,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   SizedBox(height: 8.0),
                   Text(anime.type),
                   anime.premiered != null ? Text(anime.premiered) : Container(),
-                  Text(_studiosText),
+                  anime.studios.length > 0 ? Text(anime.studios.first.name) : Container(),
                 ],
               ),
             ],

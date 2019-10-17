@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:myanimelist/widgets/item_anime.dart';
+import 'package:myanimelist/widgets/title_anime.dart';
 
 class FavoriteList extends StatelessWidget {
   FavoriteList(this.favorites);
@@ -74,7 +74,7 @@ class FavoriteSection extends StatelessWidget {
               FavoriteItem fav = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(fav.malId, fav.name, fav.imageUrl, width: width, height: height, type: type),
+                child: TitleAnime(fav.malId, fav.name, fav.imageUrl, width: width, height: height, type: type),
               );
             },
           ),

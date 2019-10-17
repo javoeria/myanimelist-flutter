@@ -5,17 +5,16 @@ import 'package:myanimelist/screens/character_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/person_screen.dart';
 
-class ItemAnime extends StatelessWidget {
-  ItemAnime(this.id, this.title, this.image,
-      {this.width = 160.0, this.height = 220.0, this.type, this.showTitle = true});
+class SubtitleAnime extends StatelessWidget {
+  SubtitleAnime(this.id, this.title, this.subtitle, this.image, {this.type});
 
   final int id;
   final String title;
+  final String subtitle;
   final String image;
-  final double width;
-  final double height;
   final TopType type;
-  final bool showTitle;
+  final double width = 108.0;
+  final double height = 163.0;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +47,7 @@ class ItemAnime extends StatelessWidget {
             },
           ),
         ),
-        title != '' && showTitle
+        title != ''
             ? Stack(
                 alignment: AlignmentDirectional.bottomCenter,
                 children: <Widget>[
@@ -57,20 +56,34 @@ class ItemAnime extends StatelessWidget {
                     width: width,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        title,
-                        maxLines: 3,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.0,
-                          shadows: <Shadow>[
-                            Shadow(
-                              offset: Offset(0.0, 0.0),
-                              blurRadius: 3.0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            title,
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.0,
+                              shadows: <Shadow>[
+                                Shadow(
+                                  offset: Offset(0.0, 0.0),
+                                  blurRadius: 3.0,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          Text(
+                            subtitle,
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white60,
+                              fontSize: 10.0,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
-import 'package:myanimelist/widgets/item_anime.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/profile/role_list.dart';
+import 'package:myanimelist/widgets/subtitle_anime.dart';
 
 const kExpandedHeight = 280.0;
 
@@ -130,8 +130,8 @@ class StaffList extends StatelessWidget {
               AnimeStaff staff = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(staff.anime.malId, staff.anime.name, staff.anime.imageUrl,
-                    width: 108.0, height: 163.0, type: TopType.anime),
+                child: SubtitleAnime(staff.anime.malId, staff.anime.name, staff.position, staff.anime.imageUrl,
+                    type: TopType.anime),
               );
             },
           ),
@@ -167,8 +167,8 @@ class PublishList extends StatelessWidget {
               PublishedManga publish = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(publish.manga.malId, publish.manga.name, publish.manga.imageUrl,
-                    width: 108.0, height: 163.0, type: TopType.manga),
+                child: SubtitleAnime(publish.manga.malId, publish.manga.name, publish.position, publish.manga.imageUrl,
+                    type: TopType.manga),
               );
             },
           ),

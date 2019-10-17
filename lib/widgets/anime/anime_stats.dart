@@ -46,99 +46,91 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text('Summary Stats', style: Theme.of(context).textTheme.title),
-                  SizedBox(height: 12.0),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        widget.anime
-                            ? RichText(
-                                text: TextSpan(
-                                  text: 'Watching: ',
-                                  style: DefaultTextStyle.of(context).style,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: f.format(stats.watching), style: TextStyle(fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              )
-                            : RichText(
-                                text: TextSpan(
-                                  text: 'Reading: ',
-                                  style: DefaultTextStyle.of(context).style,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: f.format(stats.reading), style: TextStyle(fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
+                  SizedBox(height: 16.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      widget.anime
+                          ? RichText(
+                              text: TextSpan(
+                                text: 'Watching: ',
+                                style: Theme.of(context).textTheme.body2,
+                                children: <TextSpan>[
+                                  TextSpan(text: f.format(stats.watching), style: DefaultTextStyle.of(context).style),
+                                ],
                               ),
-                        SizedBox(height: 4.0),
-                        RichText(
-                          text: TextSpan(
-                            text: 'Completed: ',
-                            style: DefaultTextStyle.of(context).style,
-                            children: <TextSpan>[
-                              TextSpan(text: f.format(stats.completed), style: TextStyle(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 4.0),
-                        RichText(
-                          text: TextSpan(
-                            text: 'On-Hold: ',
-                            style: DefaultTextStyle.of(context).style,
-                            children: <TextSpan>[
-                              TextSpan(text: f.format(stats.onHold), style: TextStyle(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 4.0),
-                        RichText(
-                          text: TextSpan(
-                            text: 'Dropped: ',
-                            style: DefaultTextStyle.of(context).style,
-                            children: <TextSpan>[
-                              TextSpan(text: f.format(stats.dropped), style: TextStyle(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 4.0),
-                        widget.anime
-                            ? RichText(
-                                text: TextSpan(
-                                  text: 'Plan to Watch: ',
-                                  style: DefaultTextStyle.of(context).style,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: f.format(stats.planToWatch),
-                                        style: TextStyle(fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              )
-                            : RichText(
-                                text: TextSpan(
-                                  text: 'Plan to Read: ',
-                                  style: DefaultTextStyle.of(context).style,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: f.format(stats.planToRead),
-                                        style: TextStyle(fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
+                            )
+                          : RichText(
+                              text: TextSpan(
+                                text: 'Reading: ',
+                                style: Theme.of(context).textTheme.body2,
+                                children: <TextSpan>[
+                                  TextSpan(text: f.format(stats.reading), style: DefaultTextStyle.of(context).style),
+                                ],
                               ),
-                        SizedBox(height: 4.0),
-                        RichText(
-                          text: TextSpan(
-                            text: 'Total: ',
-                            style: DefaultTextStyle.of(context).style,
-                            children: <TextSpan>[
-                              TextSpan(text: f.format(stats.total), style: TextStyle(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
+                            ),
+                      SizedBox(height: 8.0),
+                      RichText(
+                        text: TextSpan(
+                          text: 'Completed: ',
+                          style: Theme.of(context).textTheme.body2,
+                          children: <TextSpan>[
+                            TextSpan(text: f.format(stats.completed), style: DefaultTextStyle.of(context).style),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 8.0),
+                      RichText(
+                        text: TextSpan(
+                          text: 'On-Hold: ',
+                          style: Theme.of(context).textTheme.body2,
+                          children: <TextSpan>[
+                            TextSpan(text: f.format(stats.onHold), style: DefaultTextStyle.of(context).style),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 8.0),
+                      RichText(
+                        text: TextSpan(
+                          text: 'Dropped: ',
+                          style: Theme.of(context).textTheme.body2,
+                          children: <TextSpan>[
+                            TextSpan(text: f.format(stats.dropped), style: DefaultTextStyle.of(context).style),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 8.0),
+                      widget.anime
+                          ? RichText(
+                              text: TextSpan(
+                                text: 'Plan to Watch: ',
+                                style: Theme.of(context).textTheme.body2,
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: f.format(stats.planToWatch), style: DefaultTextStyle.of(context).style),
+                                ],
+                              ),
+                            )
+                          : RichText(
+                              text: TextSpan(
+                                text: 'Plan to Read: ',
+                                style: Theme.of(context).textTheme.body2,
+                                children: <TextSpan>[
+                                  TextSpan(text: f.format(stats.planToRead), style: DefaultTextStyle.of(context).style),
+                                ],
+                              ),
+                            ),
+                      SizedBox(height: 8.0),
+                      RichText(
+                        text: TextSpan(
+                          text: 'Total: ',
+                          style: Theme.of(context).textTheme.body2,
+                          children: <TextSpan>[
+                            TextSpan(text: f.format(stats.total), style: DefaultTextStyle.of(context).style),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -174,12 +166,33 @@ class HorizontalBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool light = Theme.of(context).brightness == Brightness.light;
     return charts.BarChart(
       _scoreData(),
       animate: false,
       vertical: false,
-      barRendererDecorator: charts.BarLabelDecorator<String>(),
-      // domainAxis: charts.OrdinalAxisSpec(renderSpec: charts.NoneRenderSpec()),
+      barRendererDecorator: light
+          ? charts.BarLabelDecorator<String>()
+          : charts.BarLabelDecorator<String>(
+              insideLabelStyleSpec: charts.TextStyleSpec(color: charts.MaterialPalette.white),
+              outsideLabelStyleSpec: charts.TextStyleSpec(color: charts.MaterialPalette.white),
+            ),
+      primaryMeasureAxis: light
+          ? charts.NumericAxisSpec()
+          : charts.NumericAxisSpec(
+              renderSpec: charts.GridlineRendererSpec(
+                labelStyle: charts.TextStyleSpec(color: charts.MaterialPalette.white),
+                lineStyle: charts.LineStyleSpec(color: charts.MaterialPalette.gray.shade700),
+              ),
+            ),
+      domainAxis: light
+          ? charts.OrdinalAxisSpec()
+          : charts.OrdinalAxisSpec(
+              renderSpec: charts.GridlineRendererSpec(
+                labelStyle: charts.TextStyleSpec(color: charts.MaterialPalette.white),
+                lineStyle: charts.LineStyleSpec(color: charts.MaterialPalette.transparent),
+              ),
+            ),
     );
   }
 

@@ -94,6 +94,9 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
         pageSize: PAGE_SIZE,
         itemBuilder: (context, search, _) => _ResultList(search, type: type, searchDelegate: this),
         padding: const EdgeInsets.all(12.0),
+        noItemsFoundBuilder: (context) {
+          return ListTile(title: Text('No items found.'));
+        },
         pageFuture: (pageIndex) => jikanApi.search(type, query: query, page: pageIndex + 1),
       ),
     );

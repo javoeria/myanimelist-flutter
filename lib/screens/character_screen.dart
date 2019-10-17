@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
-import 'package:myanimelist/widgets/item_anime.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
+import 'package:myanimelist/widgets/subtitle_anime.dart';
+import 'package:myanimelist/widgets/title_anime.dart';
 
 const kExpandedHeight = 280.0;
 
@@ -135,7 +136,7 @@ class AnimeographyList extends StatelessWidget {
               MangaCharacter anime = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(anime.malId, anime.name, anime.imageUrl, width: 108.0, height: 163.0, type: type),
+                child: TitleAnime(anime.malId, anime.name, anime.imageUrl, width: 108.0, height: 163.0, type: type),
               );
             },
           ),
@@ -172,7 +173,7 @@ class VoiceList extends StatelessWidget {
               String image = anime.imageUrl.replaceFirst('v.jpg', '.jpg');
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(anime.malId, anime.name, image, width: 108.0, height: 163.0, type: TopType.people),
+                child: SubtitleAnime(anime.malId, anime.name, anime.language, image, type: TopType.people),
               );
             },
           ),

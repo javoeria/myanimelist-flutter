@@ -42,7 +42,7 @@ class AnimeScreen extends StatelessWidget {
           children: [
             AnimeDetails(id),
             AnimeVideos(id),
-            AnimeEpisodeList(id),
+            AnimeEpisodes(id),
             AnimeReviews(id),
             AnimeRecommendations(id),
             AnimeStats(id),

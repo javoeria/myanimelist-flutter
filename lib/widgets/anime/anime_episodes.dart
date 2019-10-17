@@ -5,16 +5,16 @@ import 'package:intl/intl.dart' show DateFormat;
 
 const int PAGE_SIZE = 100;
 
-class AnimeEpisodeList extends StatefulWidget {
-  AnimeEpisodeList(this.id);
+class AnimeEpisodes extends StatefulWidget {
+  AnimeEpisodes(this.id);
 
   final int id;
 
   @override
-  _AnimeEpisodeListState createState() => _AnimeEpisodeListState();
+  _AnimeEpisodesState createState() => _AnimeEpisodesState();
 }
 
-class _AnimeEpisodeListState extends State<AnimeEpisodeList> with AutomaticKeepAliveClientMixin<AnimeEpisodeList> {
+class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveClientMixin<AnimeEpisodes> {
   final DateFormat f = DateFormat('MMM d, yyyy');
 
   Widget subtitleText(String titleRomanji, String titleJapanese) {
@@ -36,7 +36,9 @@ class _AnimeEpisodeListState extends State<AnimeEpisodeList> with AutomaticKeepA
       child: PagewiseListView(
         pageSize: PAGE_SIZE,
         itemBuilder: this._itemBuilder,
-        padding: const EdgeInsets.all(12.0),
+        noItemsFoundBuilder: (context) {
+          return ListTile(title: Text('No items found.'));
+        },
         pageFuture: (pageIndex) => JikanApi().getAnimeEpisodes(widget.id, page: pageIndex + 1),
       ),
     );
@@ -44,14 +46,19 @@ class _AnimeEpisodeListState extends State<AnimeEpisodeList> with AutomaticKeepA
 
   Widget _itemBuilder(BuildContext context, AnimeEpisode episode, int index) {
     String dateAired = episode.aired == null ? 'N/A' : f.format(DateTime.parse(episode.aired));
-    return ListTile(
-      title: Text(episode.title),
-      subtitle: subtitleText(episode.titleRomanji, episode.titleJapanese),
-      leading: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(episode.episodeId.toString(), style: Theme.of(context).textTheme.title),
-      ),
-      trailing: Text(dateAired),
+    return Column(
+      children: <Widget>[
+        ListTile(
+          title: Text(episode.title),
+          subtitle: subtitleText(episode.titleRomanji, episode.titleJapanese),
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(episode.episodeId.toString(), style: Theme.of(context).textTheme.title),
+          ),
+          trailing: Text(dateAired),
+        ),
+        Divider(height: 0.0),
+      ],
     );
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
-import 'package:myanimelist/widgets/item_anime.dart';
 import 'package:myanimelist/screens/seasonal_anime_screen.dart';
+import 'package:myanimelist/widgets/title_anime.dart';
 
 class SeasonHorizontal extends StatelessWidget {
   SeasonHorizontal(this.season);
@@ -38,7 +38,7 @@ class SeasonHorizontal extends StatelessWidget {
               Anime anime = season.anime.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(anime.malId, anime.title, anime.imageUrl, type: TopType.anime),
+                child: TitleAnime(anime.malId, anime.title, anime.imageUrl, type: TopType.anime),
               );
             },
           ),

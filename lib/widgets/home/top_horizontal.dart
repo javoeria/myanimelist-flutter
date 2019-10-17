@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:myanimelist/widgets/item_anime.dart';
 import 'package:myanimelist/screens/top_anime_screen.dart';
+import 'package:myanimelist/widgets/title_anime.dart';
 
 class TopHorizontal extends StatelessWidget {
   TopHorizontal(this.top, {this.label});
@@ -41,7 +41,7 @@ class TopHorizontal extends StatelessWidget {
               Top anime = top.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: ItemAnime(anime.malId, anime.title, anime.imageUrl, type: TopType.anime),
+                child: TitleAnime(anime.malId, anime.title, anime.imageUrl, type: TopType.anime),
               );
             },
           ),

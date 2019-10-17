@@ -90,6 +90,9 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
         pageSize: PAGE_SIZE,
         itemBuilder: this._itemBuilder,
         padding: const EdgeInsets.all(12.0),
+        noItemsFoundBuilder: (context) {
+          return ListTile(title: Text('No items found.'));
+        },
         pageFuture: (pageIndex) =>
             JikanApi().getUserMangaList(widget.username, widget.type, order: widget.order, page: pageIndex + 1),
       ),
