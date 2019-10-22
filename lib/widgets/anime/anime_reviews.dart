@@ -5,8 +5,6 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:myanimelist/screens/user_profile_screen.dart';
 
-const int PAGE_SIZE = 20;
-
 class AnimeReviews extends StatefulWidget {
   AnimeReviews(this.id, {this.anime = true});
 
@@ -25,8 +23,8 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
     super.build(context);
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: PAGE_SIZE,
-        itemBuilder: this._itemBuilder,
+        pageSize: 20,
+        itemBuilder: _itemBuilder,
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
@@ -89,7 +87,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
               ExpandablePanel(
                 header: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Text('Overall Rating: ' + review.reviewer.scores.overall.toString()),
+                  child: Text('Overall Rating: ${review.reviewer.scores.overall}'),
                 ),
                 collapsed: Text(review.content, softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),
                 expanded: Text(review.content, softWrap: true),

@@ -8,8 +8,6 @@ import 'package:myanimelist/widgets/top/custom_view.dart';
 import 'package:myanimelist/widgets/top/rank_image.dart';
 import 'package:provider/provider.dart';
 
-const int PAGE_SIZE = 50;
-
 class TopCharactersScreen extends StatelessWidget {
   final JikanApi jikanApi = JikanApi();
   final TopType type = TopType.characters;
@@ -25,7 +23,7 @@ class TopCharactersScreen extends StatelessWidget {
       body: Scrollbar(
         child: Provider.of<UserData>(context).gridView
             ? PagewiseGridView.extent(
-                pageSize: PAGE_SIZE,
+                pageSize: 50,
                 maxCrossAxisExtent: 108.0,
                 mainAxisSpacing: 16.0,
                 crossAxisSpacing: 16.0,
@@ -35,8 +33,8 @@ class TopCharactersScreen extends StatelessWidget {
                 pageFuture: (pageIndex) => jikanApi.getTop(type, page: pageIndex + 1),
               )
             : PagewiseListView(
-                pageSize: PAGE_SIZE,
-                itemBuilder: this._itemBuilder,
+                pageSize: 50,
+                itemBuilder: _itemBuilder,
                 padding: const EdgeInsets.all(12.0),
                 pageFuture: (pageIndex) => jikanApi.getTop(type, page: pageIndex + 1),
               ),
@@ -60,7 +58,7 @@ class TopCharactersScreen extends StatelessWidget {
                   Image.network(top.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
                   SizedBox(width: 8.0),
                   Expanded(
-                    child: Text('${top.rank}. ' + top.title, style: Theme.of(context).textTheme.subtitle),
+                    child: Text('${top.rank}. ${top.title}', style: Theme.of(context).textTheme.subtitle),
                   ),
                   Row(
                     children: <Widget>[

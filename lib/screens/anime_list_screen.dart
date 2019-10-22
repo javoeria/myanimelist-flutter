@@ -4,8 +4,6 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/widgets/profile/custom_filter.dart';
 
-const int PAGE_SIZE = 300;
-
 class AnimeListScreen extends StatelessWidget {
   AnimeListScreen(this.username, {this.order});
 
@@ -87,8 +85,8 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
     super.build(context);
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: PAGE_SIZE,
-        itemBuilder: this._itemBuilder,
+        pageSize: 300,
+        itemBuilder: _itemBuilder,
         padding: const EdgeInsets.all(12.0),
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
@@ -121,7 +119,7 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(item.title, style: Theme.of(context).textTheme.subtitle),
-                        Text(item.type + ' ($progress eps)', style: Theme.of(context).textTheme.caption),
+                        Text('${item.type} ($progress eps)', style: Theme.of(context).textTheme.caption),
                       ],
                     ),
                   ),

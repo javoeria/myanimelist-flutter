@@ -58,7 +58,7 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
                             SizedBox(height: 4.0),
                             RichText(
                               text: TextSpan(
-                                text: forum.authorName + ' - ',
+                                text: '${forum.authorName} - ',
                                 style: DefaultTextStyle.of(context).style,
                                 children: <TextSpan>[
                                   TextSpan(

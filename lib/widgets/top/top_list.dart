@@ -5,8 +5,6 @@ import 'package:intl/intl.dart' show NumberFormat;
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 
-const int PAGE_SIZE = 50;
-
 class TopList extends StatefulWidget {
   TopList({@required this.type, this.subtype});
 
@@ -37,8 +35,8 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
     super.build(context);
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: PAGE_SIZE,
-        itemBuilder: this._itemBuilder,
+        pageSize: 50,
+        itemBuilder: _itemBuilder,
         padding: const EdgeInsets.all(12.0),
         pageFuture: (pageIndex) => JikanApi().getTop(widget.type, page: pageIndex + 1, subtype: widget.subtype),
       ),
@@ -61,7 +59,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('${top.rank}. ' + top.title, style: Theme.of(context).textTheme.subtitle),
+                        Text('${top.rank}. ${top.title}', style: Theme.of(context).textTheme.subtitle),
                         Text(top.type + ' ' + episodesText(top), style: Theme.of(context).textTheme.caption),
                         Text((top.startDate ?? '') + ' - ' + (top.endDate ?? ''),
                             style: Theme.of(context).textTheme.caption),

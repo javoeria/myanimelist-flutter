@@ -13,7 +13,7 @@ class UserDialog extends StatefulWidget {
 }
 
 class _UserDialogState extends State<UserDialog> {
-  TextEditingController _textFieldController = TextEditingController();
+  final TextEditingController _textFieldController = TextEditingController();
   String _error;
 
   @override

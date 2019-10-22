@@ -3,8 +3,6 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:myanimelist/widgets/top/rank_image.dart';
 
-const int PAGE_SIZE = 50;
-
 class TopGrid extends StatefulWidget {
   TopGrid({@required this.type, this.subtype});
 
@@ -21,7 +19,7 @@ class _TopGridState extends State<TopGrid> with AutomaticKeepAliveClientMixin<To
     super.build(context);
     return Scrollbar(
       child: PagewiseGridView.extent(
-        pageSize: PAGE_SIZE,
+        pageSize: 50,
         maxCrossAxisExtent: 108.0,
         mainAxisSpacing: 16.0,
         crossAxisSpacing: 16.0,

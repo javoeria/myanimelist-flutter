@@ -8,8 +8,6 @@ import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:provider/provider.dart';
 
-const int PAGE_SIZE = 50;
-
 class SearchButton extends StatelessWidget {
   final CustomSearchDelegate _delegate = CustomSearchDelegate();
 
@@ -91,7 +89,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
     Provider.of<UserData>(context).addHistory(query);
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: PAGE_SIZE,
+        pageSize: 50,
         itemBuilder: (context, search, _) => _ResultList(search, type: type, searchDelegate: this),
         padding: const EdgeInsets.all(12.0),
         noItemsFoundBuilder: (context) {
