@@ -5,8 +5,11 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/screens/anime_list_screen.dart';
 import 'package:myanimelist/screens/manga_list_screen.dart';
 import 'package:myanimelist/widgets/profile/about_section.dart';
+import 'package:myanimelist/widgets/profile/anime_stats_section.dart';
 import 'package:myanimelist/widgets/profile/favorite_list.dart';
 import 'package:myanimelist/widgets/profile/friend_list.dart';
+import 'package:myanimelist/widgets/profile/manga_stats_section.dart';
+import 'package:page_indicator/page_indicator.dart';
 
 const kExpandedHeight = 280.0;
 
@@ -154,7 +157,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 children: <Widget>[
                   Expanded(
                     child: RaisedButton(
-                      color: Colors.indigo[600],
+                      color: Colors.indigo,
                       child:
                           Text('Anime List', style: Theme.of(context).textTheme.button.copyWith(color: Colors.white)),
                       onPressed: () {
@@ -166,7 +169,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   SizedBox(width: 16.0),
                   Expanded(
                     child: RaisedButton(
-                      color: Colors.indigo[600],
+                      color: Colors.indigo,
                       child:
                           Text('Manga List', style: Theme.of(context).textTheme.button.copyWith(color: Colors.white)),
                       onPressed: () {
@@ -179,8 +182,27 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
             ),
             Divider(height: 0.0),
-            AboutSection(profile.about),
-            // TODO: Stats
+            profile.about != null ? AboutSection(profile.about) : Container(),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text('Statistics', style: Theme.of(context).textTheme.title),
+            ),
+            Container(
+              height: 263.0,
+              child: PageIndicatorContainer(
+                length: 2,
+                indicatorColor: Colors.grey[300],
+                indicatorSelectorColor: Colors.indigo,
+                shape: IndicatorShape.circle(size: 6.0),
+                child: PageView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    AnimeStatsSection(profile.animeStats),
+                    MangaStatsSection(profile.mangaStats),
+                  ],
+                ),
+              ),
+            ),
             _favoriteCount > 0 ? FavoriteList(profile.favorites) : Container(),
             friends.length > 0 ? FriendList(friends) : Container(),
           ]),

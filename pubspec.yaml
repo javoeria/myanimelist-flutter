@@ -22,6 +22,7 @@ dependencies:
   auto_size_text: ^2.1.0
   font_awesome_flutter: ^8.5.0
   package_info: ^0.4.0+6
+  page_indicator: ^0.3.0
   jikan_dart:
     path: ../jikan-dart/
   flutter_pagewise:
