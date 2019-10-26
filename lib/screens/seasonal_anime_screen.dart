@@ -1,8 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:myanimelist/widgets/custom_menu.dart';
-import 'package:myanimelist/widgets/season_list.dart';
+import 'package:myanimelist/widgets/season/custom_menu.dart';
+import 'package:myanimelist/widgets/season/season_list.dart';
 
 class SeasonalAnimeScreen extends StatelessWidget {
   SeasonalAnimeScreen({this.year, this.type});
@@ -12,7 +13,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String typeString = type.toString();
+    String typeString = describeEnum(type);
     return DefaultTabController(
       length: 5,
       initialIndex: 0,
@@ -29,9 +30,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
               Tab(text: 'Special'),
             ],
           ),
-          actions: <Widget>[
-            CustomMenu(),
-          ],
+          actions: <Widget>[CustomMenu()],
         ),
         body: FutureBuilder(
           future: JikanApi().getSeason(year, type),
@@ -40,13 +39,13 @@ class SeasonalAnimeScreen extends StatelessWidget {
               return Center(child: CircularProgressIndicator());
             }
 
-            BuiltList<Anime> animeList = snapshot.data.anime;
+            BuiltList<AnimeItem> animeList = snapshot.data.anime;
             animeList = BuiltList.from(animeList.where((anime) => anime.kids == false && anime.r18 == false));
-            BuiltList<Anime> tv = BuiltList.from(animeList.where((anime) => anime.type == 'TV'));
-            BuiltList<Anime> ona = BuiltList.from(animeList.where((anime) => anime.type == 'ONA'));
-            BuiltList<Anime> ova = BuiltList.from(animeList.where((anime) => anime.type == 'OVA'));
-            BuiltList<Anime> movie = BuiltList.from(animeList.where((anime) => anime.type == 'Movie'));
-            BuiltList<Anime> special = BuiltList.from(animeList.where((anime) => anime.type == 'Special'));
+            BuiltList<AnimeItem> tv = BuiltList.from(animeList.where((anime) => anime.type == 'TV'));
+            BuiltList<AnimeItem> ona = BuiltList.from(animeList.where((anime) => anime.type == 'ONA'));
+            BuiltList<AnimeItem> ova = BuiltList.from(animeList.where((anime) => anime.type == 'OVA'));
+            BuiltList<AnimeItem> movie = BuiltList.from(animeList.where((anime) => anime.type == 'Movie'));
+            BuiltList<AnimeItem> special = BuiltList.from(animeList.where((anime) => anime.type == 'Special'));
             return TabBarView(
               children: [
                 SeasonList(tv),

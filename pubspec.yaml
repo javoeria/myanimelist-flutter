@@ -15,8 +15,18 @@ dependencies:
   intl: ^0.16.0
   provider: ^3.1.0
   shared_preferences: ^0.5.3+4
+  dynamic_theme: ^1.0.1
+  url_launcher: ^5.1.4
+  charts_flutter: ^0.8.1
+  expandable: ^3.0.0+1
+  auto_size_text: ^2.1.0
+  font_awesome_flutter: ^8.5.0
+  package_info: ^0.4.0+6
+  page_indicator: ^0.3.0
   jikan_dart:
     path: ../jikan-dart/
+  flutter_pagewise:
+    path: ../flutter_pagewise/
 
 dev_dependencies:
   flutter_test:

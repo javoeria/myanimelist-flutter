@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:myanimelist/widgets/season_info.dart';
+import 'package:myanimelist/widgets/season/season_info.dart';
 
 class SeasonList extends StatefulWidget {
   SeasonList(this.animeList);
 
-  final BuiltList<Anime> animeList;
+  final BuiltList<AnimeItem> animeList;
 
   @override
   _SeasonListState createState() => _SeasonListState();
@@ -16,13 +16,18 @@ class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ListView.separated(
-      separatorBuilder: (context, index) => Divider(height: 0.0),
-      itemCount: widget.animeList.length,
-      itemBuilder: (context, index) {
-        Anime anime = widget.animeList.elementAt(index);
-        return SeasonInfo(anime);
-      },
+    if (widget.animeList.length == 0) {
+      return ListTile(title: Text('No items found.'));
+    }
+    return Scrollbar(
+      child: ListView.separated(
+        separatorBuilder: (context, index) => Divider(height: 0.0),
+        itemCount: widget.animeList.length,
+        itemBuilder: (context, index) {
+          AnimeItem anime = widget.animeList.elementAt(index);
+          return SeasonInfo(anime);
+        },
+      ),
     );
   }
 

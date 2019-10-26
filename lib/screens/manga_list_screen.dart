@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_dart/jikan_dart.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:myanimelist/widgets/custom_filter.dart';
+import 'package:myanimelist/screens/manga_screen.dart';
+import 'package:myanimelist/widgets/profile/custom_filter.dart';
 
 class MangaListScreen extends StatelessWidget {
-  MangaListScreen({this.order});
+  MangaListScreen(this.username, {this.order});
 
+  final String username;
   final String order;
 
   @override
@@ -27,18 +29,16 @@ class MangaListScreen extends StatelessWidget {
               Tab(text: 'Plan to Read'),
             ],
           ),
-          actions: <Widget>[
-            CustomFilter('manga'),
-          ],
+          actions: <Widget>[CustomFilter(username, 'manga')],
         ),
         body: TabBarView(
           children: [
-            UserList(type: AllAnimeListType(), order: order),
-            UserList(type: ReadingMangaListType(), order: order),
-            UserList(type: CompletedAnimeListType(), order: order),
-            UserList(type: OnHoldAnimeListType(), order: order),
-            UserList(type: DroppedAnimeListType(), order: order),
-            UserList(type: PlanToReadMangaListType(), order: order),
+            UserMangaList(username, type: AllListType(), order: order),
+            UserMangaList(username, type: ReadingListType(), order: order),
+            UserMangaList(username, type: CompletedListType(), order: order),
+            UserMangaList(username, type: OnHoldListType(), order: order),
+            UserMangaList(username, type: DroppedListType(), order: order),
+            UserMangaList(username, type: PlanToReadListType(), order: order),
           ],
         ),
       ),
@@ -46,17 +46,18 @@ class MangaListScreen extends StatelessWidget {
   }
 }
 
-class UserList extends StatefulWidget {
-  UserList({this.type, this.order});
+class UserMangaList extends StatefulWidget {
+  UserMangaList(this.username, {this.type, this.order});
 
-  final MangaAnimeListType type;
+  final String username;
+  final AnimeMangaListType type;
   final String order;
 
   @override
-  _UserListState createState() => _UserListState();
+  _UserMangaListState createState() => _UserMangaListState();
 }
 
-class _UserListState extends State<UserList> with AutomaticKeepAliveClientMixin<UserList> {
+class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveClientMixin<UserMangaList> {
   Color statusColor(int status) {
     switch (status) {
       case 1:
@@ -75,59 +76,62 @@ class _UserListState extends State<UserList> with AutomaticKeepAliveClientMixin<
         return Colors.grey[400];
         break;
       default:
-        throw 'Status Error';
+        throw 'MangaStatus Error';
     }
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return FutureBuilder(
-      future: JikanApi().getUserMangaList('javoeria', widget.type, order: widget.order),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Center(child: CircularProgressIndicator());
-        }
+    return Scrollbar(
+      child: PagewiseListView(
+        pageSize: 300,
+        itemBuilder: _itemBuilder,
+        padding: const EdgeInsets.all(12.0),
+        noItemsFoundBuilder: (context) {
+          return ListTile(title: Text('No items found.'));
+        },
+        pageFuture: (pageIndex) =>
+            JikanApi().getUserMangaList(widget.username, widget.type, order: widget.order, page: pageIndex + 1),
+      ),
+    );
+  }
 
-        BuiltList<MangaItem> animeList = snapshot.data;
-        return ListView.builder(
-          padding: const EdgeInsets.all(12.0),
-          itemCount: animeList.length,
-          itemBuilder: (context, index) {
-            MangaItem item = animeList.elementAt(index);
-            String score = item.score == 0 ? '-' : item.score.toString();
-            String read = item.readVolumes == 0 ? '-' : item.readVolumes.toString();
-            String total = item.totalVolumes == 0 ? '-' : item.totalVolumes.toString();
-            String progress = read == total ? total : '$read / $total';
-            return Padding(
-              padding: const EdgeInsets.all(4.0),
+  Widget _itemBuilder(BuildContext context, UserItem item, int index) {
+    String score = item.score == 0 ? '-' : item.score.toString();
+    String read = item.readVolumes == 0 ? '-' : item.readVolumes.toString();
+    String total = item.totalVolumes == 0 ? '-' : item.totalVolumes.toString();
+    String progress = read == total ? total : '$read / $total';
+    return InkWell(
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+                  Container(color: statusColor(item.readingStatus), width: 5.0, height: 70.0),
+                  Image.network(item.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                  SizedBox(width: 8.0),
                   Expanded(
-                    child: Row(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Container(color: statusColor(item.readingStatus), width: 5.0, height: 70.0),
-                        Image.network(item.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
-                        SizedBox(width: 8.0),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(item.title, style: Theme.of(context).textTheme.subtitle),
-                              Text(item.type + ' ($progress vols)', style: Theme.of(context).textTheme.caption),
-                            ],
-                          ),
-                        ),
-                        Text(score, style: Theme.of(context).textTheme.subhead),
+                        Text(item.title, style: Theme.of(context).textTheme.subtitle),
+                        Text('${item.type} ($progress vols)', style: Theme.of(context).textTheme.caption),
                       ],
                     ),
                   ),
+                  Text(score, style: Theme.of(context).textTheme.subhead),
                 ],
               ),
-            );
-          },
-        );
+            ),
+          ],
+        ),
+      ),
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MangaScreen(item.malId, item.title)));
       },
     );
   }

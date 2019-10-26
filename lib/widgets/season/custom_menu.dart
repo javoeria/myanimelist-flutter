@@ -8,20 +8,20 @@ import 'package:myanimelist/screens/seasonal_anime_screen.dart';
 class CustomMenu extends StatelessWidget {
   SeasonType seasonClass(String season) {
     switch (season) {
-      case 'Fall':
-        return Fall();
+      case 'Spring':
+        return SeasonType.spring;
         break;
       case 'Summer':
-        return Summer();
+        return SeasonType.summer;
         break;
-      case 'Spring':
-        return Spring();
+      case 'Fall':
+        return SeasonType.fall;
         break;
       case 'Winter':
-        return Winter();
+        return SeasonType.winter;
         break;
       default:
-        throw 'Season Error';
+        throw 'SeasonType Error';
     }
   }
 
@@ -30,10 +30,10 @@ class CustomMenu extends StatelessWidget {
     return PopupMenuButton(
       itemBuilder: (context) {
         return [
-          PopupMenuItem(child: Text('Spring 2019'), value: 'Spring 2019'),
           PopupMenuItem(child: Text('Summer 2019'), value: 'Summer 2019'),
           PopupMenuItem(child: Text('Fall 2019'), value: 'Fall 2019'),
           PopupMenuItem(child: Text('Winter 2020'), value: 'Winter 2020'),
+          PopupMenuItem(child: Text('Spring 2020'), value: 'Spring 2020'),
           PopupMenuItem(child: Text('Later'), value: 'Later'),
           PopupMenuItem(child: Text('Schedule'), value: 'Schedule'),
           PopupMenuItem(child: Text('Archive'), value: 'Archive'),
