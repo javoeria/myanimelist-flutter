@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
@@ -31,15 +32,15 @@ class ScheduleScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            WeekDayList(day: Monday()),
-            WeekDayList(day: Tuesday()),
-            WeekDayList(day: Wednesday()),
-            WeekDayList(day: Thursday()),
-            WeekDayList(day: Friday()),
-            WeekDayList(day: Saturday()),
-            WeekDayList(day: Sunday()),
-            WeekDayList(day: Other()),
-            WeekDayList(day: Unknown()),
+            WeekDayList(day: WeekDay.monday),
+            WeekDayList(day: WeekDay.tuesday),
+            WeekDayList(day: WeekDay.wednesday),
+            WeekDayList(day: WeekDay.thursday),
+            WeekDayList(day: WeekDay.friday),
+            WeekDayList(day: WeekDay.saturday),
+            WeekDayList(day: WeekDay.sunday),
+            WeekDayList(day: WeekDay.other),
+            WeekDayList(day: WeekDay.unknown),
           ],
         ),
       ),
@@ -59,8 +60,8 @@ class WeekDayList extends StatefulWidget {
 class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClientMixin<WeekDayList> {
   Future<Schedule> _future;
 
-  BuiltList<Anime> animeBuiltList(Schedule schedule) {
-    switch (widget.day.toString()) {
+  BuiltList<AnimeItem> animeBuiltList(Schedule schedule) {
+    switch (describeEnum(widget.day)) {
       case 'monday':
         return schedule.monday;
         break;
@@ -109,7 +110,7 @@ class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClient
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<Anime> animeList = animeBuiltList(snapshot.data);
+        BuiltList<AnimeItem> animeList = animeBuiltList(snapshot.data);
         if (animeList.length == 0) {
           return ListTile(title: Text('No items found.'));
         }
@@ -119,7 +120,7 @@ class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClient
             separatorBuilder: (context, index) => Divider(height: 0.0),
             itemCount: animeList.length,
             itemBuilder: (context, index) {
-              Anime anime = animeList.elementAt(index);
+              AnimeItem anime = animeList.elementAt(index);
               return SeasonInfo(anime);
             },
           ),

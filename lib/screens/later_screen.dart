@@ -33,14 +33,14 @@ class LaterScreen extends StatelessWidget {
               return Center(child: CircularProgressIndicator());
             }
 
-            BuiltList<Anime> animeList = snapshot.data.anime;
+            BuiltList<AnimeItem> animeList = snapshot.data.anime;
             animeList = BuiltList.from(animeList.where((anime) => anime.kids == false && anime.r18 == false));
-            BuiltList<Anime> tv = BuiltList.from(animeList.where((anime) => anime.type == 'TV'));
-            BuiltList<Anime> ona = BuiltList.from(animeList.where((anime) => anime.type == 'ONA'));
-            BuiltList<Anime> ova = BuiltList.from(animeList.where((anime) => anime.type == 'OVA'));
-            BuiltList<Anime> movie = BuiltList.from(animeList.where((anime) => anime.type == 'Movie'));
-            BuiltList<Anime> special = BuiltList.from(animeList.where((anime) => anime.type == 'Special'));
-            BuiltList<Anime> unknown = BuiltList.from(animeList.where((anime) => anime.type == '-'));
+            BuiltList<AnimeItem> tv = BuiltList.from(animeList.where((anime) => anime.type == 'TV'));
+            BuiltList<AnimeItem> ona = BuiltList.from(animeList.where((anime) => anime.type == 'ONA'));
+            BuiltList<AnimeItem> ova = BuiltList.from(animeList.where((anime) => anime.type == 'OVA'));
+            BuiltList<AnimeItem> movie = BuiltList.from(animeList.where((anime) => anime.type == 'Movie'));
+            BuiltList<AnimeItem> special = BuiltList.from(animeList.where((anime) => anime.type == 'Special'));
+            BuiltList<AnimeItem> unknown = BuiltList.from(animeList.where((anime) => anime.type == '-'));
             return TabBarView(
               children: [
                 SeasonList(tv),

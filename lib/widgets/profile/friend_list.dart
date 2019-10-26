@@ -6,7 +6,7 @@ import 'package:myanimelist/screens/user_profile_screen.dart';
 class FriendList extends StatelessWidget {
   FriendList(this.list);
 
-  final BuiltList<FriendResult> list;
+  final BuiltList<Friend> list;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class FriendList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             itemCount: list.length,
             itemBuilder: (context, index) {
-              FriendResult friend = list.elementAt(index);
+              Friend friend = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: FriendCard(friend),
@@ -42,7 +42,7 @@ class FriendList extends StatelessWidget {
 class FriendCard extends StatelessWidget {
   FriendCard(this.item);
 
-  final FriendResult item;
+  final Friend item;
   final double width = 108.0;
   final double height = 163.0;
 

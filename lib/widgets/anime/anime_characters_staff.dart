@@ -47,7 +47,7 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
             itemBuilder: (context, index) {
               final item = items[index];
               if (item is CharacterItem) {
-                Character character = item.character;
+                CharacterRole character = item.character;
                 BuiltList<VoiceActor> actors = character.voiceActors;
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
@@ -139,7 +139,7 @@ class DividerItem implements ListItem {}
 class CharacterItem implements ListItem {
   CharacterItem(this.character);
 
-  final Character character;
+  final CharacterRole character;
 }
 
 class StaffItem implements ListItem {

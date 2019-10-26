@@ -171,6 +171,7 @@ class HorizontalBarChart extends StatelessWidget {
       _scoreData(),
       animate: false,
       vertical: false,
+      defaultInteractions: false,
       barRendererDecorator: light
           ? charts.BarLabelDecorator<String>()
           : charts.BarLabelDecorator<String>(

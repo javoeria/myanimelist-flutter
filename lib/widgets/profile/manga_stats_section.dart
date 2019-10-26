@@ -4,7 +4,7 @@ import 'package:jikan_dart/jikan_dart.dart';
 class MangaStatsSection extends StatelessWidget {
   MangaStatsSection(this.stats);
 
-  final MangaStats stats;
+  final UserStats stats;
 
   @override
   Widget build(BuildContext context) {

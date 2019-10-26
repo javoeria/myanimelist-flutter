@@ -33,12 +33,12 @@ class MangaListScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            UserMangaList(username, type: AllAnimeListType(), order: order),
-            UserMangaList(username, type: ReadingMangaListType(), order: order),
-            UserMangaList(username, type: CompletedAnimeListType(), order: order),
-            UserMangaList(username, type: OnHoldAnimeListType(), order: order),
-            UserMangaList(username, type: DroppedAnimeListType(), order: order),
-            UserMangaList(username, type: PlanToReadMangaListType(), order: order),
+            UserMangaList(username, type: AllListType(), order: order),
+            UserMangaList(username, type: ReadingListType(), order: order),
+            UserMangaList(username, type: CompletedListType(), order: order),
+            UserMangaList(username, type: OnHoldListType(), order: order),
+            UserMangaList(username, type: DroppedListType(), order: order),
+            UserMangaList(username, type: PlanToReadListType(), order: order),
           ],
         ),
       ),
@@ -50,7 +50,7 @@ class UserMangaList extends StatefulWidget {
   UserMangaList(this.username, {this.type, this.order});
 
   final String username;
-  final MangaAnimeListType type;
+  final AnimeMangaListType type;
   final String order;
 
   @override
@@ -97,7 +97,7 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
     );
   }
 
-  Widget _itemBuilder(BuildContext context, MangaItem item, int index) {
+  Widget _itemBuilder(BuildContext context, UserItem item, int index) {
     String score = item.score == 0 ? '-' : item.score.toString();
     String read = item.readVolumes == 0 ? '-' : item.readVolumes.toString();
     String total = item.totalVolumes == 0 ? '-' : item.totalVolumes.toString();

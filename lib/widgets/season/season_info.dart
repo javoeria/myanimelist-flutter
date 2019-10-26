@@ -3,20 +3,21 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat, DateFormat;
 import 'package:myanimelist/screens/anime_screen.dart';
+import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 
 class SeasonInfo extends StatelessWidget {
   SeasonInfo(this.anime);
 
-  final Anime anime;
+  final AnimeItem anime;
   final NumberFormat f = NumberFormat.decimalPattern();
   final DateFormat dateFormat = DateFormat('MMM d, yyyy, HH:mm');
 
-  String producersText(BuiltList<Producer> producers) {
+  String producersText(BuiltList<GenericInfo> producers) {
     if (producers.length == 0) {
       return '-';
     } else {
       List<String> names = [];
-      for (Producer p in producers) {
+      for (GenericInfo p in producers) {
         names.add(p.name);
       }
       return names.join(', ');
@@ -48,12 +49,7 @@ class SeasonInfo extends StatelessWidget {
             SizedBox(height: 4.0),
             Text(producersText(anime.producers) + ' | $episodes eps | ' + anime.source),
             SizedBox(height: 4.0),
-            Wrap(
-              spacing: 8.0,
-              children: anime.genres.map((genre) {
-                return Chip(label: Text(genre.name, style: TextStyle(fontSize: 12)));
-              }).toList(),
-            ),
+            GenreHorizontal(anime.genres, padding: 0.0),
             SizedBox(height: 4.0),
             Container(
               height: 242.0,

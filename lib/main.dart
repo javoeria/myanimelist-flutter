@@ -50,7 +50,7 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   final JikanApi jikanApi = JikanApi();
 
-  ProfileResult profile;
+  UserProfile profile;
   Season season;
   BuiltList<Top> topAiring;
   BuiltList<Top> topUpcoming;
@@ -68,7 +68,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if (username != null) {
       profile = await jikanApi.getUserProfile(username);
     }
-    season = await jikanApi.getSeason(2019, Fall());
+    season = await jikanApi.getSeason(2019, SeasonType.fall);
     topAiring = await jikanApi.getTop(TopType.anime, page: 1, subtype: TopSubtype.airing);
     topUpcoming = await jikanApi.getTop(TopType.anime, page: 1, subtype: TopSubtype.upcoming);
     setState(() => loading = false);

@@ -22,7 +22,7 @@ class SeasonHorizontal extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.chevron_right),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SeasonalAnimeScreen(year: 2019, type: Fall())));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SeasonalAnimeScreen(year: 2019, type: SeasonType.fall)));
                 },
               )
             ],
@@ -35,7 +35,7 @@ class SeasonHorizontal extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             itemCount: 20,
             itemBuilder: (context, index) {
-              Anime anime = season.anime.elementAt(index);
+              AnimeItem anime = season.anime.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: TitleAnime(anime.malId, anime.title, anime.imageUrl, type: TopType.anime),

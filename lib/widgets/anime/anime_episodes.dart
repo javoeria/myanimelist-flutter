@@ -42,7 +42,7 @@ class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveCl
     );
   }
 
-  Widget _itemBuilder(BuildContext context, AnimeEpisode episode, int index) {
+  Widget _itemBuilder(BuildContext context, Episode episode, int index) {
     String dateAired = episode.aired == null ? 'N/A' : f.format(DateTime.parse(episode.aired));
     return Column(
       children: <Widget>[

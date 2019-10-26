@@ -33,12 +33,12 @@ class AnimeListScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            UserAnimeList(username, type: AllAnimeListType(), order: order),
-            UserAnimeList(username, type: WatchingAnimeListType(), order: order),
-            UserAnimeList(username, type: CompletedAnimeListType(), order: order),
-            UserAnimeList(username, type: OnHoldAnimeListType(), order: order),
-            UserAnimeList(username, type: DroppedAnimeListType(), order: order),
-            UserAnimeList(username, type: PlanToWatchAnimeListType(), order: order),
+            UserAnimeList(username, type: AllListType(), order: order),
+            UserAnimeList(username, type: WatchingListType(), order: order),
+            UserAnimeList(username, type: CompletedListType(), order: order),
+            UserAnimeList(username, type: OnHoldListType(), order: order),
+            UserAnimeList(username, type: DroppedListType(), order: order),
+            UserAnimeList(username, type: PlanToWatchListType(), order: order),
           ],
         ),
       ),
@@ -50,7 +50,7 @@ class UserAnimeList extends StatefulWidget {
   UserAnimeList(this.username, {this.type, this.order});
 
   final String username;
-  final MangaAnimeListType type;
+  final AnimeMangaListType type;
   final String order;
 
   @override
@@ -97,7 +97,7 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
     );
   }
 
-  Widget _itemBuilder(BuildContext context, AnimeItem item, int index) {
+  Widget _itemBuilder(BuildContext context, UserItem item, int index) {
     String score = item.score == 0 ? '-' : item.score.toString();
     String watched = item.watchedEpisodes == 0 ? '-' : item.watchedEpisodes.toString();
     String total = item.totalEpisodes == 0 ? '-' : item.totalEpisodes.toString();

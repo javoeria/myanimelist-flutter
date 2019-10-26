@@ -28,8 +28,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final DateFormat dateFormat = DateFormat('MMM d, yy');
 
   ScrollController _scrollController;
-  ProfileResult profile;
-  BuiltList<FriendResult> friends;
+  UserProfile profile;
+  BuiltList<Friend> friends;
   bool loading = true;
 
   @override
@@ -45,7 +45,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       friends = await jikanApi.getUserFriends(widget.username);
     } catch (e) {
       print(e);
-      friends = BuiltList<FriendResult>([]);
+      friends = BuiltList<Friend>([]);
     }
     setState(() => loading = false);
   }

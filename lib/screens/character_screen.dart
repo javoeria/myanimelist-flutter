@@ -23,7 +23,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
   final NumberFormat f = NumberFormat.compact();
 
   ScrollController _scrollController;
-  CharacterInfo character;
+  Character character;
   BuiltList<Picture> pictures;
   bool loading = true;
 
@@ -112,7 +112,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
 class AnimeographyList extends StatelessWidget {
   AnimeographyList(this.list, {this.type});
 
-  final BuiltList<MangaCharacter> list;
+  final BuiltList<CharacterRole> list;
   final TopType type;
 
   @override
@@ -133,7 +133,7 @@ class AnimeographyList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             itemCount: list.length,
             itemBuilder: (context, index) {
-              MangaCharacter anime = list.elementAt(index);
+              CharacterRole anime = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: TitleAnime(anime.malId, anime.name, anime.imageUrl, width: 108.0, height: 163.0, type: type),

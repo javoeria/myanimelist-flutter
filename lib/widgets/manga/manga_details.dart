@@ -3,6 +3,7 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/profile/picture_list.dart';
+import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 
 class MangaDetails extends StatefulWidget {
   MangaDetails(this.id);
@@ -17,7 +18,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
   final JikanApi jikanApi = JikanApi();
   final NumberFormat f = NumberFormat.decimalPattern();
 
-  MangaInfo manga;
+  Manga manga;
   BuiltList<Picture> pictures;
   bool loading = true;
 
@@ -137,17 +138,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Center(
-            child: Wrap(
-              spacing: 8.0,
-              children: manga.genres.map((genre) {
-                return Chip(label: Text(genre.name));
-              }).toList(),
-            ),
-          ),
-        ),
+        GenreHorizontal(manga.genres),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 16.0),
           child: Column(

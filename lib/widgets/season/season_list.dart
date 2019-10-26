@@ -6,7 +6,7 @@ import 'package:myanimelist/widgets/season/season_info.dart';
 class SeasonList extends StatefulWidget {
   SeasonList(this.animeList);
 
-  final BuiltList<Anime> animeList;
+  final BuiltList<AnimeItem> animeList;
 
   @override
   _SeasonListState createState() => _SeasonListState();
@@ -24,7 +24,7 @@ class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMi
         separatorBuilder: (context, index) => Divider(height: 0.0),
         itemCount: widget.animeList.length,
         itemBuilder: (context, index) {
-          Anime anime = widget.animeList.elementAt(index);
+          AnimeItem anime = widget.animeList.elementAt(index);
           return SeasonInfo(anime);
         },
       ),

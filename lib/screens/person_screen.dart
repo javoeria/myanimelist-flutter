@@ -23,7 +23,7 @@ class _PersonScreenState extends State<PersonScreen> {
   final NumberFormat f = NumberFormat.compact();
 
   ScrollController _scrollController;
-  PersonInfo person;
+  Person person;
   BuiltList<Picture> pictures;
   bool loading = true;
 

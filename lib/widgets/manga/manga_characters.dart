@@ -13,7 +13,7 @@ class MangaCharacters extends StatefulWidget {
 }
 
 class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAliveClientMixin<MangaCharacters> {
-  Future<BuiltList<MangaCharacter>> _future;
+  Future<BuiltList<CharacterRole>> _future;
 
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<MangaCharacter> characterList = snapshot.data;
+        BuiltList<CharacterRole> characterList = snapshot.data;
         if (characterList.length == 0) {
           return ListTile(title: Text('No items found.'));
         }
@@ -40,7 +40,7 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
             itemCount: characterList.length,
             itemBuilder: (context, index) {
-              MangaCharacter character = characterList.elementAt(index);
+              CharacterRole character = characterList.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: Row(

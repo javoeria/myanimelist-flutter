@@ -31,7 +31,7 @@ class FavoriteList extends StatelessWidget {
 class FavoriteSection extends StatelessWidget {
   FavoriteSection(this.list, {this.type});
 
-  final BuiltList<FavoriteItem> list;
+  final BuiltList<Favorite> list;
   final TopType type;
   final double width = 108.0;
   final double height = 163.0;
@@ -71,7 +71,7 @@ class FavoriteSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             itemCount: list.length,
             itemBuilder: (context, index) {
-              FavoriteItem fav = list.elementAt(index);
+              Favorite fav = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: TitleAnime(fav.malId, fav.name, fav.imageUrl, width: width, height: height, type: type),

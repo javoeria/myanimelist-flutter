@@ -24,7 +24,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen(this.profile, this.season, this.topAiring, this.topUpcoming);
 
-  final ProfileResult profile;
+  final UserProfile profile;
   final Season season;
   final BuiltList<Top> topAiring;
   final BuiltList<Top> topUpcoming;
@@ -127,7 +127,7 @@ class HomeScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => SeasonalAnimeScreen(year: 2019, type: Fall())));
+                              MaterialPageRoute(builder: (context) => SeasonalAnimeScreen(year: 2019, type: SeasonType.fall)));
                         },
                       ),
                     ],
