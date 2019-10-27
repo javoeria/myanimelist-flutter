@@ -23,6 +23,13 @@ dependencies:
   font_awesome_flutter: ^8.5.0
   package_info: ^0.4.0+6
   page_indicator: ^0.3.0
+  cloud_firestore: ^0.12.9+5
+  #firebase_admob: ^0.9.0+7
+  firebase_analytics: ^5.0.2
+  firebase_core: ^0.4.0+9
+  firebase_crashlytics: ^0.1.0+3
+  firebase_performance: ^0.3.0+5
+  firebase_remote_config: ^0.2.0+7
   jikan_dart:
     path: ../jikan-dart/
   flutter_pagewise:
