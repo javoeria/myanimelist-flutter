@@ -6,8 +6,16 @@ import 'package:myanimelist/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_performance/firebase_performance.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 void main() async {
+  Crashlytics.instance.enableInDevMode = true;
+  FlutterError.onError = Crashlytics.instance.recordFlutterError;
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   // await prefs.setString('username', 'javoeria');
   print(prefs.getKeys());
@@ -18,6 +26,7 @@ class MyApp extends StatelessWidget {
   MyApp(this.prefs);
 
   final SharedPreferences prefs;
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +41,12 @@ class MyApp extends StatelessWidget {
         ),
         themedWidgetBuilder: (context, theme) {
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'MyAnimeList',
             theme: theme,
             home: LoadingScreen(),
+            navigatorObservers: [
+              FirebaseAnalyticsObserver(analytics: analytics),
+            ],
           );
         },
       ),
@@ -62,15 +74,49 @@ class _LoadingScreenState extends State<LoadingScreen> {
     load();
   }
 
+  SeasonType seasonClass(String season) {
+    switch (season.toLowerCase()) {
+      case 'spring':
+        return SeasonType.spring;
+        break;
+      case 'summer':
+        return SeasonType.summer;
+        break;
+      case 'fall':
+        return SeasonType.fall;
+        break;
+      case 'winter':
+        return SeasonType.winter;
+        break;
+      default:
+        throw 'SeasonType Error';
+    }
+  }
+
   void load() async {
+    final Trace mainTrace = FirebasePerformance.instance.newTrace('main_trace');
+    mainTrace.start();
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    RemoteConfig remoteConfig = await RemoteConfig.instance;
+    remoteConfig.setConfigSettings(RemoteConfigSettings(debugMode: true));
+    remoteConfig.setDefaults(<String, dynamic>{'year': 2019, 'season': 'fall'});
+    try {
+      await remoteConfig.fetch();
+      await remoteConfig.activateFetched();
+    } catch (e) {
+      print(e);
+    }
+
     String username = prefs.getString('username');
+    int year = remoteConfig.getInt('year');
+    SeasonType seasonType = seasonClass(remoteConfig.getString('season'));
     if (username != null) {
       profile = await jikanApi.getUserProfile(username);
     }
-    season = await jikanApi.getSeason(2019, SeasonType.fall);
+    season = await jikanApi.getSeason(year, seasonType);
     topAiring = await jikanApi.getTop(TopType.anime, page: 1, subtype: TopSubtype.airing);
     topUpcoming = await jikanApi.getTop(TopType.anime, page: 1, subtype: TopSubtype.upcoming);
+    mainTrace.stop();
     setState(() => loading = false);
   }
 

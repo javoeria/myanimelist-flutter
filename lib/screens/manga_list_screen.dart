@@ -131,7 +131,13 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
         ),
       ),
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MangaScreen(item.malId, item.title)));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MangaScreen(item.malId, item.title),
+            settings: RouteSettings(name: 'MangaScreen'),
+          ),
+        );
       },
     );
   }

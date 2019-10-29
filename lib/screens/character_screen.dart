@@ -6,6 +6,7 @@ import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/subtitle_anime.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 
 const kExpandedHeight = 280.0;
 
@@ -35,8 +36,11 @@ class _CharacterScreenState extends State<CharacterScreen> {
   }
 
   void load() async {
+    final Trace characterTrace = FirebasePerformance.instance.newTrace('character_trace');
+    characterTrace.start();
     character = await jikanApi.getCharacterInfo(widget.id);
     pictures = await jikanApi.getCharactersPictures(widget.id);
+    characterTrace.stop();
     setState(() => loading = false);
   }
 

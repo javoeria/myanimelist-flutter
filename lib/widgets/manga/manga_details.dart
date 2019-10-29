@@ -4,6 +4,7 @@ import 'package:intl/intl.dart' show NumberFormat;
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 
 class MangaDetails extends StatefulWidget {
   MangaDetails(this.id);
@@ -29,8 +30,11 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
   }
 
   void load() async {
+    final Trace mangaTrace = FirebasePerformance.instance.newTrace('manga_trace');
+    mangaTrace.start();
     manga = await jikanApi.getMangaInfo(widget.id);
     pictures = await jikanApi.getMangaPictures(widget.id);
+    mangaTrace.stop();
     setState(() => loading = false);
   }
 

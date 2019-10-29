@@ -75,24 +75,39 @@ class HomeScreen extends StatelessWidget {
                               title: Text('Profile'),
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => UserProfileScreen(profile.username)));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UserProfileScreen(profile.username),
+                                    settings: RouteSettings(name: 'UserProfileScreen'),
+                                  ),
+                                );
                               },
                             ),
                             ListTile(
                               title: Text('Anime List'),
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => AnimeListScreen(profile.username)));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AnimeListScreen(profile.username),
+                                    settings: RouteSettings(name: 'AnimeListScreen'),
+                                  ),
+                                );
                               },
                             ),
                             ListTile(
                               title: Text('Manga List'),
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => MangaListScreen(profile.username)));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MangaListScreen(profile.username),
+                                    settings: RouteSettings(name: 'MangaListScreen'),
+                                  ),
+                                );
                               },
                             ),
                           ],
@@ -110,8 +125,13 @@ class HomeScreen extends StatelessWidget {
                             delegate: CustomSearchDelegate(type: SearchType.anime),
                           );
                           if (selected != null) {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => AnimeScreen(selected.malId, selected.title)));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AnimeScreen(selected.malId, selected.title),
+                                settings: RouteSettings(name: 'AnimeScreen'),
+                              ),
+                            );
                           }
                         },
                       ),
@@ -119,15 +139,27 @@ class HomeScreen extends StatelessWidget {
                         title: Text('Top Anime'),
                         onTap: () {
                           Navigator.pop(context);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TopAnimeScreen()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TopAnimeScreen(),
+                              settings: RouteSettings(name: 'TopAnimeScreen'),
+                            ),
+                          );
                         },
                       ),
                       ListTile(
                         title: Text('Seasonal Anime'),
                         onTap: () {
                           Navigator.pop(context);
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => SeasonalAnimeScreen(year: 2019, type: SeasonType.fall)));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SeasonalAnimeScreen(year: season.seasonYear, type: season.seasonName),
+                              settings: RouteSettings(name: 'SeasonalAnimeScreen'),
+                            ),
+                          );
                         },
                       ),
                     ],
@@ -145,8 +177,13 @@ class HomeScreen extends StatelessWidget {
                             delegate: CustomSearchDelegate(type: SearchType.manga),
                           );
                           if (selected != null) {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => MangaScreen(selected.malId, selected.title)));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MangaScreen(selected.malId, selected.title),
+                                settings: RouteSettings(name: 'MangaScreen'),
+                              ),
+                            );
                           }
                         },
                       ),
@@ -154,7 +191,13 @@ class HomeScreen extends StatelessWidget {
                         title: Text('Top Manga'),
                         onTap: () {
                           Navigator.pop(context);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TopMangaScreen()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TopMangaScreen(),
+                              settings: RouteSettings(name: 'TopMangaScreen'),
+                            ),
+                          );
                         },
                       ),
                     ],
@@ -167,14 +210,26 @@ class HomeScreen extends StatelessWidget {
                         title: Text('People'),
                         onTap: () {
                           Navigator.pop(context);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TopPeopleScreen()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TopPeopleScreen(),
+                              settings: RouteSettings(name: 'TopPeopleScreen'),
+                            ),
+                          );
                         },
                       ),
                       ListTile(
                         title: Text('Characters'),
                         onTap: () {
                           Navigator.pop(context);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TopCharactersScreen()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TopCharactersScreen(),
+                              settings: RouteSettings(name: 'TopCharactersScreen'),
+                            ),
+                          );
                         },
                       ),
                     ],
@@ -194,7 +249,13 @@ class HomeScreen extends StatelessWidget {
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       PackageInfo packageInfo = await PackageInfo.fromPlatform();
                       Navigator.pop(context);
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(prefs, packageInfo)));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SettingsScreen(prefs, packageInfo),
+                          settings: RouteSettings(name: 'SettingsScreen'),
+                        ),
+                      );
                     },
                   ),
                   IconButton(

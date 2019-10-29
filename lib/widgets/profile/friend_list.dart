@@ -58,7 +58,13 @@ class FriendCard extends StatelessWidget {
           fit: BoxFit.cover,
           child: InkWell(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfileScreen(item.username)));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserProfileScreen(item.username),
+                  settings: RouteSettings(name: 'UserProfileScreen'),
+                ),
+              );
             },
           ),
         ),

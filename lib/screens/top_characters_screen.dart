@@ -45,7 +45,13 @@ class TopCharactersScreen extends StatelessWidget {
   Widget _itemBuilder(BuildContext context, Top top, int index) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => CharacterScreen(top.malId)));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CharacterScreen(top.malId),
+            settings: RouteSettings(name: 'CharacterScreen'),
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.all(4.0),

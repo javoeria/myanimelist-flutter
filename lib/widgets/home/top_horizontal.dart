@@ -25,7 +25,13 @@ class TopHorizontal extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.chevron_right),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => TopAnimeScreen(index: label == 'Airing' ? 1 : 2)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TopAnimeScreen(index: label == 'Airing' ? 1 : 2),
+                      settings: RouteSettings(name: 'TopAnimeScreen'),
+                    ),
+                  );
                 },
               )
             ],

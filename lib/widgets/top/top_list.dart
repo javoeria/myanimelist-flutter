@@ -83,9 +83,21 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
       ),
       onTap: () {
         if (widget.type == TopType.anime) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(top.malId, top.title)));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AnimeScreen(top.malId, top.title),
+              settings: RouteSettings(name: 'AnimeScreen'),
+            ),
+          );
         } else {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MangaScreen(top.malId, top.title)));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MangaScreen(top.malId, top.title),
+              settings: RouteSettings(name: 'MangaScreen'),
+            ),
+          );
         }
       },
     );

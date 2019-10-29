@@ -22,9 +22,21 @@ class CustomFilter extends StatelessWidget {
       },
       onSelected: (value) {
         if (type == 'anime') {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AnimeListScreen(username, order: value)));
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AnimeListScreen(username, order: value),
+              settings: RouteSettings(name: 'AnimeListScreen'),
+            ),
+          );
         } else {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MangaListScreen(username, order: value)));
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MangaListScreen(username, order: value),
+              settings: RouteSettings(name: 'MangaListScreen'),
+            ),
+          );
         }
       },
     );

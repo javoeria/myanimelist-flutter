@@ -39,7 +39,13 @@ class SeasonInfo extends StatelessWidget {
     String score = anime.score == null ? 'N/A' : anime.score.toString();
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(anime.malId, anime.title)));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AnimeScreen(anime.malId, anime.title),
+            settings: RouteSettings(name: 'AnimeScreen'),
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),

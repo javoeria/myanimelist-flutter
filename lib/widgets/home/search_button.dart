@@ -21,7 +21,13 @@ class SearchButton extends StatelessWidget {
           delegate: _delegate,
         );
         if (selected != null) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(selected.malId, selected.title)));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AnimeScreen(selected.malId, selected.title),
+              settings: RouteSettings(name: 'AnimeScreen'),
+            ),
+          );
         }
       },
     );

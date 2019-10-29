@@ -45,7 +45,13 @@ class TopPeopleScreen extends StatelessWidget {
   Widget _itemBuilder(BuildContext context, Top top, int index) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => PersonScreen(top.malId)));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PersonScreen(top.malId),
+            settings: RouteSettings(name: 'PersonScreen'),
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.all(4.0),

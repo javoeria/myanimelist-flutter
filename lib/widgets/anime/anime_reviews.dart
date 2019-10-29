@@ -54,8 +54,13 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                         fit: BoxFit.cover,
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => UserProfileScreen(review.reviewer.username)));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UserProfileScreen(review.reviewer.username),
+                                settings: RouteSettings(name: 'UserProfileScreen'),
+                              ),
+                            );
                           },
                         ),
                       ),

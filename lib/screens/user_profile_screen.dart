@@ -10,6 +10,7 @@ import 'package:myanimelist/widgets/profile/favorite_list.dart';
 import 'package:myanimelist/widgets/profile/friend_list.dart';
 import 'package:myanimelist/widgets/profile/manga_stats_section.dart';
 import 'package:page_indicator/page_indicator.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 
 const kExpandedHeight = 280.0;
 
@@ -40,6 +41,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   void load() async {
+    final Trace userTrace = FirebasePerformance.instance.newTrace('user_trace');
+    userTrace.start();
     profile = await jikanApi.getUserProfile(widget.username);
     try {
       friends = await jikanApi.getUserFriends(widget.username);
@@ -47,6 +50,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       print(e);
       friends = BuiltList<Friend>([]);
     }
+    userTrace.stop();
     setState(() => loading = false);
   }
 
@@ -162,7 +166,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           Text('Anime List', style: Theme.of(context).textTheme.button.copyWith(color: Colors.white)),
                       onPressed: () {
                         Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => AnimeListScreen(profile.username)));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AnimeListScreen(profile.username),
+                            settings: RouteSettings(name: 'AnimeListScreen'),
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -174,7 +183,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           Text('Manga List', style: Theme.of(context).textTheme.button.copyWith(color: Colors.white)),
                       onPressed: () {
                         Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => MangaListScreen(profile.username)));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MangaListScreen(profile.username),
+                            settings: RouteSettings(name: 'MangaListScreen'),
+                          ),
+                        );
                       },
                     ),
                   ),

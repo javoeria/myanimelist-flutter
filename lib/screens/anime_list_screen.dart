@@ -131,7 +131,13 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
         ),
       ),
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(item.malId, item.title)));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AnimeScreen(item.malId, item.title),
+            settings: RouteSettings(name: 'AnimeScreen'),
+          ),
+        );
       },
     );
   }

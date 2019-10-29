@@ -22,7 +22,13 @@ class SeasonHorizontal extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.chevron_right),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SeasonalAnimeScreen(year: 2019, type: SeasonType.fall)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SeasonalAnimeScreen(year: season.seasonYear, type: season.seasonName),
+                      settings: RouteSettings(name: 'SeasonalAnimeScreen'),
+                    ),
+                  );
                 },
               )
             ],

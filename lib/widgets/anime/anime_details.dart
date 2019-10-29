@@ -4,6 +4,7 @@ import 'package:intl/intl.dart' show NumberFormat;
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 
 class AnimeDetails extends StatefulWidget {
   AnimeDetails(this.id);
@@ -29,8 +30,11 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
   }
 
   void load() async {
+    final Trace animeTrace = FirebasePerformance.instance.newTrace('anime_trace');
+    animeTrace.start();
     anime = await jikanApi.getAnimeInfo(widget.id);
     pictures = await jikanApi.getAnimePictures(widget.id);
+    animeTrace.stop();
     setState(() => loading = false);
   }
 

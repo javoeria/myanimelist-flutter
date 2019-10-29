@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:myanimelist/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserDialog extends StatefulWidget {
   UserDialog({this.username});
@@ -42,10 +43,14 @@ class _UserDialogState extends State<UserDialog> {
             } else {
               try {
                 await JikanApi().getUserProfile(text);
+                Firestore.instance.collection('users').add({'username': text, 'datetime': DateTime.now()});
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.setString('username', text);
                 Navigator.pushAndRemoveUntil(
-                    context, MaterialPageRoute(builder: (context) => LoadingScreen()), (Route<dynamic> route) => false);
+                  context,
+                  MaterialPageRoute(builder: (context) => LoadingScreen()),
+                  (Route<dynamic> route) => false,
+                );
               } catch (e) {
                 print(e);
                 setState(() => _error = 'User not found');
