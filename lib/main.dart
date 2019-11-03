@@ -10,7 +10,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 void main() async {
   Crashlytics.instance.enableInDevMode = true;
@@ -97,25 +96,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
     final Trace mainTrace = FirebasePerformance.instance.newTrace('main_trace');
     mainTrace.start();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    RemoteConfig remoteConfig = await RemoteConfig.instance;
-    remoteConfig.setConfigSettings(RemoteConfigSettings(debugMode: true));
-    remoteConfig.setDefaults(<String, dynamic>{'year': 2019, 'season': 'fall'});
-    try {
-      await remoteConfig.fetch();
-      await remoteConfig.activateFetched();
-    } catch (e) {
-      print(e);
-    }
-
     String username = prefs.getString('username');
-    int year = remoteConfig.getInt('year');
-    SeasonType seasonType = seasonClass(remoteConfig.getString('season'));
     if (username != null) {
       profile = await jikanApi.getUserProfile(username);
     }
-    season = await jikanApi.getSeason(year, seasonType);
-    topAiring = await jikanApi.getTop(TopType.anime, page: 1, subtype: TopSubtype.airing);
-    topUpcoming = await jikanApi.getTop(TopType.anime, page: 1, subtype: TopSubtype.upcoming);
+    season = await jikanApi.getSeason();
+    topAiring = await jikanApi.getTop(TopType.anime, subtype: TopSubtype.airing);
+    topUpcoming = await jikanApi.getTop(TopType.anime, subtype: TopSubtype.upcoming);
     mainTrace.stop();
     setState(() => loading = false);
   }

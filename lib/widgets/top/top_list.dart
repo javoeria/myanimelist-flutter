@@ -38,7 +38,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
         pageSize: 50,
         itemBuilder: _itemBuilder,
         padding: const EdgeInsets.all(12.0),
-        pageFuture: (pageIndex) => JikanApi().getTop(widget.type, page: pageIndex + 1, subtype: widget.subtype),
+        pageFuture: (pageIndex) => JikanApi().getTop(widget.type, subtype: widget.subtype, page: pageIndex + 1),
       ),
     );
   }

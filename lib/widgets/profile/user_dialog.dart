@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:myanimelist/main.dart';
@@ -43,7 +44,7 @@ class _UserDialogState extends State<UserDialog> {
             } else {
               try {
                 await JikanApi().getUserProfile(text);
-                Firestore.instance.collection('users').add({'username': text, 'datetime': DateTime.now()});
+                if (kReleaseMode) Firestore.instance.collection('users').add({'username': text, 'datetime': DateTime.now()});
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.setString('username', text);
                 Navigator.pushAndRemoveUntil(

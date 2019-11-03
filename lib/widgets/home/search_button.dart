@@ -15,6 +15,7 @@ class SearchButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.search),
+      tooltip: 'Search anime',
       onPressed: () async {
         final Search selected = await showSearch<Search>(
           context: context,
@@ -45,6 +46,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
   Widget buildLeading(BuildContext context) {
     return IconButton(
       icon: BackButtonIcon(),
+      tooltip: 'Back',
       onPressed: () {
         close(context, null);
       },
@@ -65,7 +67,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
       );
     } else {
       return FutureBuilder(
-        future: jikanApi.search(type, query: query),
+        future: jikanApi.search(query, type),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             BuiltList<Search> searchList = snapshot.data;
@@ -101,7 +103,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) => jikanApi.search(type, query: query, page: pageIndex + 1),
+        pageFuture: (pageIndex) => jikanApi.search(query, type, page: pageIndex + 1),
       ),
     );
   }

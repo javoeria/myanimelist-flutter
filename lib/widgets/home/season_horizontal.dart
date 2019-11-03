@@ -21,6 +21,7 @@ class SeasonHorizontal extends StatelessWidget {
               Text('${season.seasonName} ${season.seasonYear} Anime', style: Theme.of(context).textTheme.title),
               IconButton(
                 icon: Icon(Icons.chevron_right),
+                key: Key('season_icon'),
                 onPressed: () {
                   Navigator.push(
                     context,

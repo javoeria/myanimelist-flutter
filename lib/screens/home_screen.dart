@@ -245,6 +245,7 @@ class HomeScreen extends StatelessWidget {
                 children: <Widget>[
                   IconButton(
                     icon: Icon(FontAwesomeIcons.cog, color: Theme.of(context).unselectedWidgetColor),
+                    tooltip: 'Settings',
                     onPressed: () async {
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -260,6 +261,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(FontAwesomeIcons.lightbulb, color: Theme.of(context).unselectedWidgetColor),
+                    tooltip: 'Theme',
                     onPressed: () {
                       Navigator.pop(context);
                       DynamicTheme.of(context).setBrightness(

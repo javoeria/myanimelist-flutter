@@ -24,6 +24,7 @@ class TopHorizontal extends StatelessWidget {
               Text('Top $label Anime', style: Theme.of(context).textTheme.title),
               IconButton(
                 icon: Icon(Icons.chevron_right),
+                key: Key('${label.toLowerCase()}_icon'),
                 onPressed: () {
                   Navigator.push(
                     context,

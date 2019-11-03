@@ -19,7 +19,7 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
   @override
   void initState() {
     super.initState();
-    _future = JikanApi().getCharacterStaff(widget.id);
+    _future = JikanApi().getAnimeCharactersStaff(widget.id);
   }
 
   @override

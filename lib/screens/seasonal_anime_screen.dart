@@ -50,7 +50,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
           actions: <Widget>[CustomMenu()],
         ),
         body: FutureBuilder(
-          future: JikanApi().getSeason(year, seasonClass(type)),
+          future: JikanApi().getSeason(year: year, season: seasonClass(type)),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return Center(child: CircularProgressIndicator());
