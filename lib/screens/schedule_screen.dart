@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/season/custom_menu.dart';
 import 'package:myanimelist/widgets/season/season_info.dart';
@@ -97,7 +97,7 @@ class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClient
   @override
   void initState() {
     super.initState();
-    _future = JikanApi().getSchedule(weekday: widget.day);
+    _future = Jikan().getSchedule(weekday: widget.day);
   }
 
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/home_screen.dart';
@@ -59,7 +59,7 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  final JikanApi jikanApi = JikanApi();
+  final Jikan jikan = Jikan();
 
   UserProfile profile;
   Season season;
@@ -98,11 +98,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.getString('username');
     if (username != null) {
-      profile = await jikanApi.getUserProfile(username);
+      profile = await jikan.getUserProfile(username);
     }
-    season = await jikanApi.getSeason();
-    topAiring = await jikanApi.getTop(TopType.anime, subtype: TopSubtype.airing);
-    topUpcoming = await jikanApi.getTop(TopType.anime, subtype: TopSubtype.upcoming);
+    season = await jikan.getSeason();
+    topAiring = await jikan.getTop(TopType.anime, subtype: TopSubtype.airing);
+    topUpcoming = await jikan.getTop(TopType.anime, subtype: TopSubtype.upcoming);
     mainTrace.stop();
     setState(() => loading = false);
   }

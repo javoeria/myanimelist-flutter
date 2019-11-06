@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:myanimelist/models/user_data.dart';
@@ -40,7 +40,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
 
   SearchType type;
   List<String> _suggestions = [];
-  final JikanApi jikanApi = JikanApi();
+  final Jikan jikan = Jikan();
 
   @override
   Widget buildLeading(BuildContext context) {
@@ -67,7 +67,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
       );
     } else {
       return FutureBuilder(
-        future: jikanApi.search(query, type),
+        future: jikan.search(query, type),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             BuiltList<Search> searchList = snapshot.data;
@@ -103,7 +103,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) => jikanApi.search(query, type, page: pageIndex + 1),
+        pageFuture: (pageIndex) => jikan.search(query, type, page: pageIndex + 1),
       ),
     );
   }

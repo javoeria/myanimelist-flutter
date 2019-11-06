@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/screens/seasonal_anime_screen.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 

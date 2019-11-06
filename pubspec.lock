@@ -231,9 +231,11 @@ packages:
   flutter_pagewise:
     dependency: "direct main"
     description:
-      path: "..\\flutter_pagewise"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "16e1651e5c2a4a720f15af7d4c09b4dc1d577abe"
+      url: "git://github.com/javoeria/flutter_pagewise.git"
+    source: git
     version: "1.2.3"
   flutter_test:
     dependency: "direct dev"
@@ -308,13 +310,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.3"
-  jikan_dart:
+  jikan_api:
     dependency: "direct main"
     description:
-      path: "..\\jikan-dart"
-      relative: true
-    source: path
-    version: "0.0.0"
+      name: jikan_api
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   js:
     dependency: transitive
     description:

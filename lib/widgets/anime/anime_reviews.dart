@@ -1,7 +1,7 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:myanimelist/screens/user_profile_screen.dart';
 
@@ -29,8 +29,8 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
           return ListTile(title: Text('No items found.'));
         },
         pageFuture: (pageIndex) => widget.anime
-            ? JikanApi().getAnimeReviews(widget.id, page: pageIndex + 1)
-            : JikanApi().getMangaReviews(widget.id, page: pageIndex + 1),
+            ? Jikan().getAnimeReviews(widget.id, page: pageIndex + 1)
+            : Jikan().getMangaReviews(widget.id, page: pageIndex + 1),
       ),
     );
   }

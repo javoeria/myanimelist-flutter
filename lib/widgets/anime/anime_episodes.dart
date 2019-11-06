@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 class AnimeEpisodes extends StatefulWidget {
@@ -37,7 +37,7 @@ class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveCl
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) => JikanApi().getAnimeEpisodes(widget.id, page: pageIndex + 1),
+        pageFuture: (pageIndex) => Jikan().getAnimeEpisodes(widget.id, page: pageIndex + 1),
       ),
     );
   }

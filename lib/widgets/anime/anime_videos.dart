@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,7 +18,7 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
   @override
   void initState() {
     super.initState();
-    _future = JikanApi().getAnimeVideos(widget.id);
+    _future = Jikan().getAnimeVideos(widget.id);
   }
 
   @override

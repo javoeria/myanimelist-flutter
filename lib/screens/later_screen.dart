@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/season/custom_menu.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
@@ -27,7 +27,7 @@ class LaterScreen extends StatelessWidget {
           actions: <Widget>[CustomMenu()],
         ),
         body: FutureBuilder(
-          future: JikanApi().getSeasonLater(),
+          future: Jikan().getSeasonLater(),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return Center(child: CircularProgressIndicator());

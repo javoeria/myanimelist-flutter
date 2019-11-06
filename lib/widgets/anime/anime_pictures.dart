@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 
 class AnimePictures extends StatefulWidget {
@@ -18,7 +18,7 @@ class _AnimePicturesState extends State<AnimePictures> with AutomaticKeepAliveCl
   @override
   void initState() {
     super.initState();
-    _future = widget.anime ? JikanApi().getAnimePictures(widget.id) : JikanApi().getMangaPictures(widget.id);
+    _future = widget.anime ? Jikan().getAnimePictures(widget.id) : Jikan().getMangaPictures(widget.id);
   }
 
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:url_launcher/url_launcher.dart';
@@ -21,7 +21,7 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
   @override
   void initState() {
     super.initState();
-    _future = widget.anime ? JikanApi().getAnimeNews(widget.id) : JikanApi().getMangaNews(widget.id);
+    _future = widget.anime ? Jikan().getAnimeNews(widget.id) : Jikan().getMangaNews(widget.id);
   }
 
   @override

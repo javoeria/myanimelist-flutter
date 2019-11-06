@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/profile/picture_list.dart';
@@ -16,7 +16,7 @@ class MangaDetails extends StatefulWidget {
 }
 
 class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClientMixin<MangaDetails> {
-  final JikanApi jikanApi = JikanApi();
+  final Jikan jikan = Jikan();
   final NumberFormat f = NumberFormat.decimalPattern();
 
   Manga manga;
@@ -32,8 +32,8 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
   void load() async {
     final Trace mangaTrace = FirebasePerformance.instance.newTrace('manga_trace');
     mangaTrace.start();
-    manga = await jikanApi.getMangaInfo(widget.id);
-    pictures = await jikanApi.getMangaPictures(widget.id);
+    manga = await jikan.getMangaInfo(widget.id);
+    pictures = await jikan.getMangaPictures(widget.id);
     mangaTrace.stop();
     setState(() => loading = false);
   }

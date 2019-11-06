@@ -30,10 +30,9 @@ dependencies:
   firebase_crashlytics: ^0.1.0+3
   firebase_performance: ^0.3.0+5
   firebase_remote_config: ^0.2.0+7
-  jikan_dart:
-    path: ../jikan-dart/
+  jikan_api: ^1.0.0
   flutter_pagewise:
-    path: ../flutter_pagewise/
+    git: git://github.com/javoeria/flutter_pagewise.git
 
 dev_dependencies:
   flutter_test:

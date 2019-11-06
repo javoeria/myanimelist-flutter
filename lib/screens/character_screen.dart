@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:myanimelist/widgets/profile/about_section.dart';
@@ -20,7 +20,7 @@ class CharacterScreen extends StatefulWidget {
 }
 
 class _CharacterScreenState extends State<CharacterScreen> {
-  final JikanApi jikanApi = JikanApi();
+  final Jikan jikan = Jikan();
   final NumberFormat f = NumberFormat.compact();
 
   ScrollController _scrollController;
@@ -38,8 +38,8 @@ class _CharacterScreenState extends State<CharacterScreen> {
   void load() async {
     final Trace characterTrace = FirebasePerformance.instance.newTrace('character_trace');
     characterTrace.start();
-    character = await jikanApi.getCharacterInfo(widget.id);
-    pictures = await jikanApi.getCharactersPictures(widget.id);
+    character = await jikan.getCharacterInfo(widget.id);
+    pictures = await jikan.getCharactersPictures(widget.id);
     characterTrace.stop();
     setState(() => loading = false);
   }

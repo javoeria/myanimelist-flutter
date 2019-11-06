@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat, DateFormat;
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/screens/anime_list_screen.dart';
@@ -24,7 +24,7 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  final JikanApi jikanApi = JikanApi();
+  final Jikan jikan = Jikan();
   final NumberFormat f = NumberFormat.compact();
   final DateFormat dateFormat = DateFormat('MMM d, yy');
 
@@ -43,9 +43,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   void load() async {
     final Trace userTrace = FirebasePerformance.instance.newTrace('user_trace');
     userTrace.start();
-    profile = await jikanApi.getUserProfile(widget.username);
+    profile = await jikan.getUserProfile(widget.username);
     try {
-      friends = await jikanApi.getUserFriends(widget.username);
+      friends = await jikan.getUserFriends(widget.username);
     } catch (e) {
       print(e);
       friends = BuiltList<Friend>([]);

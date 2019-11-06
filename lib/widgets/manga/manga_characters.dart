@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/title_anime.dart';
 
@@ -18,7 +18,7 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
   @override
   void initState() {
     super.initState();
-    _future = JikanApi().getMangaCharacters(widget.id);
+    _future = Jikan().getMangaCharacters(widget.id);
   }
 
   @override

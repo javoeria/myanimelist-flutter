@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
@@ -38,7 +38,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
         pageSize: 50,
         itemBuilder: _itemBuilder,
         padding: const EdgeInsets.all(12.0),
-        pageFuture: (pageIndex) => JikanApi().getTop(widget.type, subtype: widget.subtype, page: pageIndex + 1),
+        pageFuture: (pageIndex) => Jikan().getTop(widget.type, subtype: widget.subtype, page: pageIndex + 1),
       ),
     );
   }

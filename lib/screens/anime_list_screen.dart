@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/widgets/profile/custom_filter.dart';
 
@@ -33,12 +33,12 @@ class AnimeListScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            UserAnimeList(username, type: AllListType(), order: order),
-            UserAnimeList(username, type: WatchingListType(), order: order),
-            UserAnimeList(username, type: CompletedListType(), order: order),
-            UserAnimeList(username, type: OnHoldListType(), order: order),
-            UserAnimeList(username, type: DroppedListType(), order: order),
-            UserAnimeList(username, type: PlanToWatchListType(), order: order),
+            UserAnimeList(username, type: ListType.all, order: order),
+            UserAnimeList(username, type: ListType.watching, order: order),
+            UserAnimeList(username, type: ListType.completed, order: order),
+            UserAnimeList(username, type: ListType.onhold, order: order),
+            UserAnimeList(username, type: ListType.dropped, order: order),
+            UserAnimeList(username, type: ListType.plantowatch, order: order),
           ],
         ),
       ),
@@ -50,7 +50,7 @@ class UserAnimeList extends StatefulWidget {
   UserAnimeList(this.username, {this.type, this.order});
 
   final String username;
-  final AnimeMangaListType type;
+  final ListType type;
   final String order;
 
   @override
@@ -92,7 +92,7 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
           return ListTile(title: Text('No items found.'));
         },
         pageFuture: (pageIndex) =>
-            JikanApi().getUserAnimeList(widget.username, widget.type, order: widget.order, page: pageIndex + 1),
+            Jikan().getUserAnimeList(widget.username, widget.type, order: widget.order, page: pageIndex + 1),
       ),
     );
   }

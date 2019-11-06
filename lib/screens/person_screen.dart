@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:myanimelist/widgets/profile/about_section.dart';
@@ -20,7 +20,7 @@ class PersonScreen extends StatefulWidget {
 }
 
 class _PersonScreenState extends State<PersonScreen> {
-  final JikanApi jikanApi = JikanApi();
+  final Jikan jikan = Jikan();
   final NumberFormat f = NumberFormat.compact();
 
   ScrollController _scrollController;
@@ -38,8 +38,8 @@ class _PersonScreenState extends State<PersonScreen> {
   void load() async {
     final Trace personTrace = FirebasePerformance.instance.newTrace('person_trace');
     personTrace.start();
-    person = await jikanApi.getPersonInfo(widget.id);
-    pictures = await jikanApi.getPersonPictures(widget.id);
+    person = await jikan.getPersonInfo(widget.id);
+    pictures = await jikan.getPersonPictures(widget.id);
     personTrace.stop();
     setState(() => loading = false);
   }

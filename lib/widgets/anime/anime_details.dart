@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/profile/picture_list.dart';
@@ -16,7 +16,7 @@ class AnimeDetails extends StatefulWidget {
 }
 
 class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClientMixin<AnimeDetails> {
-  final JikanApi jikanApi = JikanApi();
+  final Jikan jikan = Jikan();
   final NumberFormat f = NumberFormat.decimalPattern();
 
   Anime anime;
@@ -32,8 +32,8 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
   void load() async {
     final Trace animeTrace = FirebasePerformance.instance.newTrace('anime_trace');
     animeTrace.start();
-    anime = await jikanApi.getAnimeInfo(widget.id);
-    pictures = await jikanApi.getAnimePictures(widget.id);
+    anime = await jikan.getAnimeInfo(widget.id);
+    pictures = await jikan.getAnimePictures(widget.id);
     animeTrace.stop();
     setState(() => loading = false);
   }

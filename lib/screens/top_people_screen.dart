@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/person_screen.dart';
@@ -9,7 +9,7 @@ import 'package:myanimelist/widgets/top/rank_image.dart';
 import 'package:provider/provider.dart';
 
 class TopPeopleScreen extends StatelessWidget {
-  final JikanApi jikanApi = JikanApi();
+  final Jikan jikan = Jikan();
   final TopType type = TopType.people;
   final NumberFormat f = NumberFormat.decimalPattern();
 
@@ -30,13 +30,13 @@ class TopPeopleScreen extends StatelessWidget {
                 childAspectRatio: 108.0 / 163.0,
                 padding: const EdgeInsets.all(16.0),
                 itemBuilder: (context, top, _) => RankImage(top, type: type),
-                pageFuture: (pageIndex) => jikanApi.getTop(type, page: pageIndex + 1),
+                pageFuture: (pageIndex) => jikan.getTop(type, page: pageIndex + 1),
               )
             : PagewiseListView(
                 pageSize: 50,
                 itemBuilder: _itemBuilder,
                 padding: const EdgeInsets.all(12.0),
-                pageFuture: (pageIndex) => jikanApi.getTop(type, page: pageIndex + 1),
+                pageFuture: (pageIndex) => jikan.getTop(type, page: pageIndex + 1),
               ),
       ),
     );

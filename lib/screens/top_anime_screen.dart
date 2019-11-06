@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/widgets/top/custom_view.dart';
 import 'package:myanimelist/widgets/top/top_grid.dart';
