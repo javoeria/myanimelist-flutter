@@ -1,45 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/models/user_list.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/widgets/profile/custom_filter.dart';
+import 'package:provider/provider.dart';
 
 class AnimeListScreen extends StatelessWidget {
-  AnimeListScreen(this.username, {this.order});
+  AnimeListScreen(this.username, {this.title, this.order, this.sort});
 
   final String username;
+  final String title;
   final String order;
+  final String sort;
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 6,
-      initialIndex: 0,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Anime List'),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: [
-              Tab(text: 'All Anime'),
-              Tab(text: 'Currently Watching'),
-              Tab(text: 'Completed'),
-              Tab(text: 'On Hold'),
-              Tab(text: 'Dropped'),
-              Tab(text: 'Plan to Watch'),
+    return Provider(
+      builder: (context) => UserList(username, title, order, sort, 'anime'),
+      child: DefaultTabController(
+        length: 6,
+        initialIndex: 0,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Anime List'),
+            bottom: TabBar(
+              isScrollable: true,
+              tabs: [
+                Tab(text: 'All Anime'),
+                Tab(text: 'Currently Watching'),
+                Tab(text: 'Completed'),
+                Tab(text: 'On Hold'),
+                Tab(text: 'Dropped'),
+                Tab(text: 'Plan to Watch'),
+              ],
+            ),
+            actions: <Widget>[CustomFilter()],
+          ),
+          body: TabBarView(
+            children: [
+              UserAnimeList(type: ListType.all),
+              UserAnimeList(type: ListType.watching),
+              UserAnimeList(type: ListType.completed),
+              UserAnimeList(type: ListType.onhold),
+              UserAnimeList(type: ListType.dropped),
+              UserAnimeList(type: ListType.plantowatch),
             ],
           ),
-          actions: <Widget>[CustomFilter(username, 'anime')],
-        ),
-        body: TabBarView(
-          children: [
-            UserAnimeList(username, type: ListType.all, order: order),
-            UserAnimeList(username, type: ListType.watching, order: order),
-            UserAnimeList(username, type: ListType.completed, order: order),
-            UserAnimeList(username, type: ListType.onhold, order: order),
-            UserAnimeList(username, type: ListType.dropped, order: order),
-            UserAnimeList(username, type: ListType.plantowatch, order: order),
-          ],
         ),
       ),
     );
@@ -47,11 +54,9 @@ class AnimeListScreen extends StatelessWidget {
 }
 
 class UserAnimeList extends StatefulWidget {
-  UserAnimeList(this.username, {this.type, this.order});
+  UserAnimeList({this.type});
 
-  final String username;
   final ListType type;
-  final String order;
 
   @override
   _UserAnimeListState createState() => _UserAnimeListState();
@@ -83,6 +88,7 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final provider = Provider.of<UserList>(context);
     return Scrollbar(
       child: PagewiseListView(
         pageSize: 300,
@@ -91,8 +97,14 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) =>
-            Jikan().getUserAnimeList(widget.username, widget.type, order: widget.order, page: pageIndex + 1),
+        pageFuture: (pageIndex) => Jikan().getUserAnimeList(
+          provider.username,
+          widget.type,
+          query: provider.title,
+          order: provider.order,
+          sort: provider.sort,
+          page: pageIndex + 1,
+        ),
       ),
     );
   }

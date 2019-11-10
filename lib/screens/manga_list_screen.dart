@@ -1,45 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/models/user_list.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/widgets/profile/custom_filter.dart';
+import 'package:provider/provider.dart';
 
 class MangaListScreen extends StatelessWidget {
-  MangaListScreen(this.username, {this.order});
+  MangaListScreen(this.username, {this.title, this.order, this.sort});
 
   final String username;
+  final String title;
   final String order;
+  final String sort;
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 6,
-      initialIndex: 0,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Manga List'),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: [
-              Tab(text: 'All Manga'),
-              Tab(text: 'Currently Reading'),
-              Tab(text: 'Completed'),
-              Tab(text: 'On Hold'),
-              Tab(text: 'Dropped'),
-              Tab(text: 'Plan to Read'),
+    return Provider(
+      builder: (context) => UserList(username, title, order, sort, 'manga'),
+      child: DefaultTabController(
+        length: 6,
+        initialIndex: 0,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Manga List'),
+            bottom: TabBar(
+              isScrollable: true,
+              tabs: [
+                Tab(text: 'All Manga'),
+                Tab(text: 'Currently Reading'),
+                Tab(text: 'Completed'),
+                Tab(text: 'On Hold'),
+                Tab(text: 'Dropped'),
+                Tab(text: 'Plan to Read'),
+              ],
+            ),
+            actions: <Widget>[CustomFilter()],
+          ),
+          body: TabBarView(
+            children: [
+              UserMangaList(type: ListType.all),
+              UserMangaList(type: ListType.reading),
+              UserMangaList(type: ListType.completed),
+              UserMangaList(type: ListType.onhold),
+              UserMangaList(type: ListType.dropped),
+              UserMangaList(type: ListType.plantoread),
             ],
           ),
-          actions: <Widget>[CustomFilter(username, 'manga')],
-        ),
-        body: TabBarView(
-          children: [
-            UserMangaList(username, type: ListType.all, order: order),
-            UserMangaList(username, type: ListType.reading, order: order),
-            UserMangaList(username, type: ListType.completed, order: order),
-            UserMangaList(username, type: ListType.onhold, order: order),
-            UserMangaList(username, type: ListType.dropped, order: order),
-            UserMangaList(username, type: ListType.plantoread, order: order),
-          ],
         ),
       ),
     );
@@ -47,11 +54,9 @@ class MangaListScreen extends StatelessWidget {
 }
 
 class UserMangaList extends StatefulWidget {
-  UserMangaList(this.username, {this.type, this.order});
+  UserMangaList({this.type});
 
-  final String username;
   final ListType type;
-  final String order;
 
   @override
   _UserMangaListState createState() => _UserMangaListState();
@@ -83,6 +88,7 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final provider = Provider.of<UserList>(context);
     return Scrollbar(
       child: PagewiseListView(
         pageSize: 300,
@@ -91,8 +97,14 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) =>
-            Jikan().getUserMangaList(widget.username, widget.type, order: widget.order, page: pageIndex + 1),
+        pageFuture: (pageIndex) => Jikan().getUserMangaList(
+          provider.username,
+          widget.type,
+          query: provider.title,
+          order: provider.order,
+          sort: provider.sort,
+          page: pageIndex + 1,
+        ),
       ),
     );
   }
