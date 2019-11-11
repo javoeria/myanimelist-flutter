@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:myanimelist/constants.dart';
 
 class AnimeEpisodes extends StatefulWidget {
   AnimeEpisodes(this.id);
@@ -32,7 +33,7 @@ class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveCl
     super.build(context);
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: 100,
+        pageSize: kEpisodePageSize,
         itemBuilder: _itemBuilder,
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));

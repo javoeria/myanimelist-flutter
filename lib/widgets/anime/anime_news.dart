@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:myanimelist/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AnimeNews extends StatefulWidget {
@@ -52,7 +53,12 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
                       article.imageUrl != null
                           ? Row(
                               children: <Widget>[
-                                Image.network(article.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                                Image.network(
+                                  article.imageUrl,
+                                  width: kImageWidth,
+                                  height: kImageHeight,
+                                  fit: BoxFit.cover,
+                                ),
                                 SizedBox(width: 8.0),
                               ],
                             )
@@ -65,8 +71,10 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
                             SizedBox(height: 4.0),
                             Text(article.intro, maxLines: 2, overflow: TextOverflow.ellipsis),
                             SizedBox(height: 4.0),
-                            Text(f.format(DateTime.parse(article.date)) + ' by ${article.authorName}',
-                                style: Theme.of(context).textTheme.caption),
+                            Text(
+                              f.format(DateTime.parse(article.date)) + ' by ${article.authorName}',
+                              style: Theme.of(context).textTheme.caption,
+                            ),
                           ],
                         ),
                       ),

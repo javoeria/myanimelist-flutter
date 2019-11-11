@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:firebase_performance/firebase_performance.dart';
@@ -99,7 +100,9 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       style: Theme.of(context).textTheme.headline.copyWith(fontSize: 34),
                       children: <TextSpan>[
                         TextSpan(
-                            text: ' (${f.format(anime.scoredBy)} users)', style: Theme.of(context).textTheme.caption),
+                          text: ' (${f.format(anime.scoredBy)} users)',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
                       ],
                     ),
                   ),
@@ -109,7 +112,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       text: 'Ranked: ',
                       style: Theme.of(context).textTheme.subhead,
                       children: <TextSpan>[
-                        TextSpan(text: rank, style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: rank, style: kTextStyleBold),
                       ],
                     ),
                   ),
@@ -118,7 +121,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       text: 'Popularity: ',
                       style: Theme.of(context).textTheme.subhead,
                       children: <TextSpan>[
-                        TextSpan(text: '#${anime.popularity}', style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: '#${anime.popularity}', style: kTextStyleBold),
                       ],
                     ),
                   ),
@@ -127,7 +130,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       text: 'Members: ',
                       style: Theme.of(context).textTheme.subhead,
                       children: <TextSpan>[
-                        TextSpan(text: f.format(anime.members), style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: f.format(anime.members), style: kTextStyleBold),
                       ],
                     ),
                   ),
@@ -136,7 +139,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       text: 'Favorites: ',
                       style: Theme.of(context).textTheme.subhead,
                       children: <TextSpan>[
-                        TextSpan(text: f.format(anime.favorites), style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: f.format(anime.favorites), style: kTextStyleBold),
                       ],
                     ),
                   ),

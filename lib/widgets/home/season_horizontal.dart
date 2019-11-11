@@ -45,7 +45,12 @@ class SeasonHorizontal extends StatelessWidget {
               AnimeItem anime = season.anime.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: TitleAnime(anime.malId, anime.title, anime.imageUrl, type: TopType.anime),
+                child: TitleAnime(
+                  anime.malId,
+                  anime.title,
+                  anime.imageUrl,
+                  type: TopType.anime,
+                ),
               );
             },
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class RoleList extends StatelessWidget {
@@ -28,8 +29,15 @@ class RoleList extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: <Widget>[
-                        TitleAnime(role.anime.malId, role.anime.name, role.anime.imageUrl,
-                            width: 50.0, height: 70.0, type: TopType.anime, showTitle: false),
+                        TitleAnime(
+                          role.anime.malId,
+                          role.anime.name,
+                          role.anime.imageUrl,
+                          width: kImageWidth,
+                          height: kImageHeight,
+                          type: TopType.anime,
+                          showTitle: false,
+                        ),
                         SizedBox(width: 8.0),
                         Expanded(child: Text(role.anime.name)),
                       ],
@@ -49,8 +57,14 @@ class RoleList extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: 8.0),
-                        TitleAnime(role.character.malId, '', role.character.imageUrl,
-                            width: 50.0, height: 70.0, type: TopType.characters),
+                        TitleAnime(
+                          role.character.malId,
+                          '',
+                          role.character.imageUrl,
+                          width: kImageWidth,
+                          height: kImageHeight,
+                          type: TopType.characters,
+                        ),
                       ],
                     ),
                   ),

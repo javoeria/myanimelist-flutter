@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/user_profile_screen.dart';
 
 class AnimeReviews extends StatefulWidget {
@@ -23,7 +24,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
     super.build(context);
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: 20,
+        pageSize: kReviewPageSize,
         itemBuilder: _itemBuilder,
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
@@ -49,8 +50,8 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                     children: <Widget>[
                       Ink.image(
                         image: NetworkImage(review.reviewer.imageUrl),
-                        width: 50.0,
-                        height: 70.0,
+                        width: kImageWidth,
+                        height: kImageHeight,
                         fit: BoxFit.cover,
                         child: InkWell(
                           onTap: () {
@@ -81,10 +82,11 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                       Text(f.format(DateTime.parse(review.date))),
                       SizedBox(height: 4.0),
                       Text(
-                          widget.anime
-                              ? '${review.reviewer.episodesSeen} episodes seen'
-                              : '${review.reviewer.chaptersRead} chapters read',
-                          style: Theme.of(context).textTheme.caption),
+                        widget.anime
+                            ? '${review.reviewer.episodesSeen} episodes seen'
+                            : '${review.reviewer.chaptersRead} chapters read',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
                     ],
                   ),
                 ],

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/subtitle_anime.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 import 'package:firebase_performance/firebase_performance.dart';
-
-const kExpandedHeight = 280.0;
 
 class CharacterScreen extends StatefulWidget {
   CharacterScreen(this.id);
@@ -62,28 +61,40 @@ class _CharacterScreenState extends State<CharacterScreen> {
           title: _showTitle ? Text(character.name) : null,
           flexibleSpace: FlexibleSpaceBar(
             background: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: kSliverAppBarPadding,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.network(character.imageUrl, width: 135.0, height: 210.0, fit: BoxFit.cover),
+                      Image.network(
+                        character.imageUrl,
+                        width: kSliverAppBarWidth,
+                        height: kSliverAppBarHeight,
+                        fit: BoxFit.cover,
+                      ),
                       SizedBox(width: 24.0),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(character.name, style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
-                          Text(character.nameKanji ?? '',
-                              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                          Text(
+                            character.name,
+                            style: Theme.of(context).textTheme.title.copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            character.nameKanji ?? '',
+                            style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                          ),
                           SizedBox(height: 24.0),
                           Row(
                             children: <Widget>[
                               Icon(Icons.person, color: Colors.white),
                               SizedBox(width: 4.0),
-                              Text(f.format(character.memberFavorites),
-                                  style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
+                              Text(
+                                f.format(character.memberFavorites),
+                                style: Theme.of(context).textTheme.title.copyWith(color: Colors.white),
+                              ),
                             ],
                           ),
                         ],
@@ -127,11 +138,13 @@ class AnimeographyList extends StatelessWidget {
         Divider(height: 0.0),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
-          child:
-              Text(type == TopType.anime ? 'Animeography' : 'Mangaography', style: Theme.of(context).textTheme.title),
+          child: Text(
+            type == TopType.anime ? 'Animeography' : 'Mangaography',
+            style: Theme.of(context).textTheme.title,
+          ),
         ),
         Container(
-          height: 163.0,
+          height: kContainerHeight,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -140,7 +153,14 @@ class AnimeographyList extends StatelessWidget {
               CharacterRole anime = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: TitleAnime(anime.malId, anime.name, anime.imageUrl, width: 108.0, height: 163.0, type: type),
+                child: TitleAnime(
+                  anime.malId,
+                  anime.name,
+                  anime.imageUrl,
+                  width: kContainerWidth,
+                  height: kContainerHeight,
+                  type: type,
+                ),
               );
             },
           ),
@@ -167,17 +187,22 @@ class VoiceList extends StatelessWidget {
           child: Text('Voice Actors', style: Theme.of(context).textTheme.title),
         ),
         Container(
-          height: 163.0,
+          height: kContainerHeight,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             itemCount: list.length,
             itemBuilder: (context, index) {
               VoiceActor anime = list.elementAt(index);
-              String image = anime.imageUrl.replaceFirst('v.jpg', '.jpg');
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: SubtitleAnime(anime.malId, anime.name, anime.language, image, type: TopType.people),
+                child: SubtitleAnime(
+                  anime.malId,
+                  anime.name,
+                  anime.language,
+                  anime.imageUrl.replaceFirst('v.jpg', '.jpg'),
+                  type: TopType.people,
+                ),
               );
             },
           ),

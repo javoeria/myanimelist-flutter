@@ -45,8 +45,12 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
                 spacing: 16.0,
                 runSpacing: 16.0,
                 children: recommendationList.map((Recommendation recommendation) {
-                  return TitleAnime(recommendation.malId, recommendation.title, recommendation.imageUrl,
-                      type: widget.anime ? TopType.anime : TopType.manga);
+                  return TitleAnime(
+                    recommendation.malId,
+                    recommendation.title,
+                    recommendation.imageUrl,
+                    type: widget.anime ? TopType.anime : TopType.manga,
+                  );
                 }).toList(),
               ),
             ),

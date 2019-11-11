@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/models/user_list.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/widgets/profile/custom_filter.dart';
@@ -66,19 +67,19 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
   Color statusColor(int status) {
     switch (status) {
       case 1:
-        return Colors.green[600];
+        return kWatchingColor;
         break;
       case 2:
-        return Colors.blue[900];
+        return kCompletedColor;
         break;
       case 3:
-        return Colors.yellow[700];
+        return kOnHoldColor;
         break;
       case 4:
-        return Colors.red[900];
+        return kDroppedColor;
         break;
       case 6:
-        return Colors.grey[400];
+        return kPlantoWatchColor;
         break;
       default:
         throw 'MangaStatus Error';
@@ -91,7 +92,7 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
     final provider = Provider.of<UserList>(context);
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: 300,
+        pageSize: kAnimePageSize,
         itemBuilder: _itemBuilder,
         padding: const EdgeInsets.all(12.0),
         noItemsFoundBuilder: (context) {
@@ -124,14 +125,22 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
               child: Row(
                 children: <Widget>[
                   Container(color: statusColor(item.readingStatus), width: 5.0, height: 70.0),
-                  Image.network(item.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                  Image.network(
+                    item.imageUrl,
+                    width: kImageWidth,
+                    height: kImageHeight,
+                    fit: BoxFit.cover,
+                  ),
                   SizedBox(width: 8.0),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(item.title, style: Theme.of(context).textTheme.subtitle),
-                        Text('${item.type} ($progress vols)', style: Theme.of(context).textTheme.caption),
+                        Text(
+                          '${item.type} ($progress vols)',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
                       ],
                     ),
                   ),

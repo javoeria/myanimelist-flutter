@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/character_screen.dart';
 import 'package:myanimelist/widgets/top/custom_view.dart';
@@ -23,7 +24,7 @@ class TopCharactersScreen extends StatelessWidget {
       body: Scrollbar(
         child: Provider.of<UserData>(context).gridView
             ? PagewiseGridView.extent(
-                pageSize: 50,
+                pageSize: kTopPageSize,
                 maxCrossAxisExtent: 108.0,
                 mainAxisSpacing: 16.0,
                 crossAxisSpacing: 16.0,
@@ -33,7 +34,7 @@ class TopCharactersScreen extends StatelessWidget {
                 pageFuture: (pageIndex) => jikan.getTop(type, page: pageIndex + 1),
               )
             : PagewiseListView(
-                pageSize: 50,
+                pageSize: kTopPageSize,
                 itemBuilder: _itemBuilder,
                 padding: const EdgeInsets.all(12.0),
                 pageFuture: (pageIndex) => jikan.getTop(type, page: pageIndex + 1),
@@ -61,14 +62,25 @@ class TopCharactersScreen extends StatelessWidget {
             Expanded(
               child: Row(
                 children: <Widget>[
-                  Image.network(top.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                  Image.network(
+                    top.imageUrl,
+                    width: kImageWidth,
+                    height: kImageHeight,
+                    fit: BoxFit.cover,
+                  ),
                   SizedBox(width: 8.0),
                   Expanded(
-                    child: Text('${top.rank}. ${top.title}', style: Theme.of(context).textTheme.subtitle),
+                    child: Text(
+                      '${top.rank}. ${top.title}',
+                      style: Theme.of(context).textTheme.subtitle,
+                    ),
                   ),
                   Row(
                     children: <Widget>[
-                      Text(f.format(top.favorites), style: Theme.of(context).textTheme.subhead),
+                      Text(
+                        f.format(top.favorites),
+                        style: Theme.of(context).textTheme.subhead,
+                      ),
                       Icon(Icons.person, color: Colors.grey),
                     ],
                   ),

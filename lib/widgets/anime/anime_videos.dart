@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AnimeVideos extends StatefulWidget {
@@ -83,8 +84,8 @@ class VideoImage extends StatelessWidget {
           ),
         ),
         Container(
-          height: height,
           width: width,
+          height: height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -113,16 +114,7 @@ class VideoImage extends StatelessWidget {
                       promo.title,
                       maxLines: 3,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12.0,
-                        shadows: <Shadow>[
-                          Shadow(
-                            offset: Offset(0.0, 0.0),
-                            blurRadius: 3.0,
-                          ),
-                        ],
-                      ),
+                      style: kTextStyleShadow,
                     ),
                   ),
                 ],

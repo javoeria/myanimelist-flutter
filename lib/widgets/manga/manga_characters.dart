@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class MangaCharacters extends StatefulWidget {
@@ -49,8 +50,14 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
                     Expanded(
                       child: Row(
                         children: <Widget>[
-                          TitleAnime(character.malId, '', character.imageUrl,
-                              width: 50.0, height: 70.0, type: TopType.characters),
+                          TitleAnime(
+                            character.malId,
+                            '',
+                            character.imageUrl,
+                            width: kImageWidth,
+                            height: kImageHeight,
+                            type: TopType.characters,
+                          ),
                           SizedBox(width: 8.0),
                           Expanded(
                             child: Column(

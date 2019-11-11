@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/character_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
@@ -85,16 +86,7 @@ class TitleAnime extends StatelessWidget {
                         title,
                         maxLines: 3,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.0,
-                          shadows: <Shadow>[
-                            Shadow(
-                              offset: Offset(0.0, 0.0),
-                              blurRadius: 3.0,
-                            ),
-                          ],
-                        ),
+                        style: kTextStyleShadow,
                       ),
                     ),
                   ),

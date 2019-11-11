@@ -62,8 +62,9 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
                                 style: DefaultTextStyle.of(context).style,
                                 children: <TextSpan>[
                                   TextSpan(
-                                      text: f.format(DateTime.parse(forum.datePosted)),
-                                      style: Theme.of(context).textTheme.caption),
+                                    text: f.format(DateTime.parse(forum.datePosted)),
+                                    style: Theme.of(context).textTheme.caption,
+                                  ),
                                 ],
                               ),
                             ),

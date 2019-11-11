@@ -10,6 +10,7 @@ class TopAnimeScreen extends StatelessWidget {
   TopAnimeScreen({this.index});
 
   final int index;
+  final TopType type = TopType.anime;
 
   @override
   Widget build(BuildContext context) {
@@ -38,28 +39,28 @@ class TopAnimeScreen extends StatelessWidget {
         body: Provider.of<UserData>(context).gridView
             ? TabBarView(
                 children: <Widget>[
-                  TopGrid(type: TopType.anime),
-                  TopGrid(type: TopType.anime, subtype: TopSubtype.airing),
-                  TopGrid(type: TopType.anime, subtype: TopSubtype.upcoming),
-                  TopGrid(type: TopType.anime, subtype: TopSubtype.tv),
-                  TopGrid(type: TopType.anime, subtype: TopSubtype.movie),
-                  TopGrid(type: TopType.anime, subtype: TopSubtype.ova),
-                  TopGrid(type: TopType.anime, subtype: TopSubtype.special),
-                  TopGrid(type: TopType.anime, subtype: TopSubtype.bypopularity),
-                  TopGrid(type: TopType.anime, subtype: TopSubtype.favorite),
+                  TopGrid(type: type),
+                  TopGrid(type: type, subtype: TopSubtype.airing),
+                  TopGrid(type: type, subtype: TopSubtype.upcoming),
+                  TopGrid(type: type, subtype: TopSubtype.tv),
+                  TopGrid(type: type, subtype: TopSubtype.movie),
+                  TopGrid(type: type, subtype: TopSubtype.ova),
+                  TopGrid(type: type, subtype: TopSubtype.special),
+                  TopGrid(type: type, subtype: TopSubtype.bypopularity),
+                  TopGrid(type: type, subtype: TopSubtype.favorite),
                 ],
               )
             : TabBarView(
                 children: <Widget>[
-                  TopList(type: TopType.anime),
-                  TopList(type: TopType.anime, subtype: TopSubtype.airing),
-                  TopList(type: TopType.anime, subtype: TopSubtype.upcoming),
-                  TopList(type: TopType.anime, subtype: TopSubtype.tv),
-                  TopList(type: TopType.anime, subtype: TopSubtype.movie),
-                  TopList(type: TopType.anime, subtype: TopSubtype.ova),
-                  TopList(type: TopType.anime, subtype: TopSubtype.special),
-                  TopList(type: TopType.anime, subtype: TopSubtype.bypopularity),
-                  TopList(type: TopType.anime, subtype: TopSubtype.favorite),
+                  TopList(type: type),
+                  TopList(type: type, subtype: TopSubtype.airing),
+                  TopList(type: type, subtype: TopSubtype.upcoming),
+                  TopList(type: type, subtype: TopSubtype.tv),
+                  TopList(type: type, subtype: TopSubtype.movie),
+                  TopList(type: type, subtype: TopSubtype.ova),
+                  TopList(type: type, subtype: TopSubtype.special),
+                  TopList(type: type, subtype: TopSubtype.bypopularity),
+                  TopList(type: type, subtype: TopSubtype.favorite),
                 ],
               ),
       ),

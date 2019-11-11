@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/constants.dart';
 
 class MangaStatsSection extends StatelessWidget {
   MangaStatsSection(this.stats);
@@ -60,22 +61,22 @@ class MangaStatsSection extends StatelessWidget {
                       Container(
                         height: 32.0,
                         width: stats.reading / stats.totalEntries * screenWidth,
-                        color: Colors.green[600],
+                        color: kWatchingColor,
                       ),
                       Container(
                         height: 32.0,
                         width: stats.completed / stats.totalEntries * screenWidth,
-                        color: Colors.blue[900],
+                        color: kCompletedColor,
                       ),
                       Container(
                         height: 32.0,
                         width: stats.onHold / stats.totalEntries * screenWidth,
-                        color: Colors.yellow[700],
+                        color: kOnHoldColor,
                       ),
                       Container(
                         height: 32.0,
                         width: stats.dropped / stats.totalEntries * screenWidth,
-                        color: Colors.red[900],
+                        color: kDroppedColor,
                       ),
                       Container(
                         height: 32.0,
@@ -97,7 +98,7 @@ class MangaStatsSection extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      CircleAvatar(backgroundColor: Colors.green[600], radius: 10.0),
+                      CircleAvatar(backgroundColor: kWatchingColor, radius: 10.0),
                       SizedBox(width: 8.0),
                       Text('Watching: ${stats.reading}'),
                     ],
@@ -105,7 +106,7 @@ class MangaStatsSection extends StatelessWidget {
                   SizedBox(height: 8.0),
                   Row(
                     children: <Widget>[
-                      CircleAvatar(backgroundColor: Colors.blue[900], radius: 10.0),
+                      CircleAvatar(backgroundColor: kCompletedColor, radius: 10.0),
                       SizedBox(width: 8.0),
                       Text('Completed: ${stats.completed}'),
                     ],
@@ -113,7 +114,7 @@ class MangaStatsSection extends StatelessWidget {
                   SizedBox(height: 8.0),
                   Row(
                     children: <Widget>[
-                      CircleAvatar(backgroundColor: Colors.yellow[700], radius: 10.0),
+                      CircleAvatar(backgroundColor: kOnHoldColor, radius: 10.0),
                       SizedBox(width: 8.0),
                       Text('On-Hold: ${stats.onHold}'),
                     ],
@@ -121,7 +122,7 @@ class MangaStatsSection extends StatelessWidget {
                   SizedBox(height: 8.0),
                   Row(
                     children: <Widget>[
-                      CircleAvatar(backgroundColor: Colors.red[900], radius: 10.0),
+                      CircleAvatar(backgroundColor: kDroppedColor, radius: 10.0),
                       SizedBox(width: 8.0),
                       Text('Dropped: ${stats.dropped}'),
                     ],

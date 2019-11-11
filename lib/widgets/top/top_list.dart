@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 
@@ -35,7 +36,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
     super.build(context);
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: 50,
+        pageSize: kTopPageSize,
         itemBuilder: _itemBuilder,
         padding: const EdgeInsets.all(12.0),
         pageFuture: (pageIndex) => Jikan().getTop(widget.type, subtype: widget.subtype, page: pageIndex + 1),
@@ -53,17 +54,33 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
             Expanded(
               child: Row(
                 children: <Widget>[
-                  Image.network(top.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                  Image.network(
+                    top.imageUrl,
+                    width: kImageWidth,
+                    height: kImageHeight,
+                    fit: BoxFit.cover,
+                  ),
                   SizedBox(width: 8.0),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('${top.rank}. ${top.title}', style: Theme.of(context).textTheme.subtitle),
-                        Text(top.type + ' ' + episodesText(top), style: Theme.of(context).textTheme.caption),
-                        Text((top.startDate ?? '') + ' - ' + (top.endDate ?? ''),
-                            style: Theme.of(context).textTheme.caption),
-                        Text(f.format(top.members) + ' members', style: Theme.of(context).textTheme.caption),
+                        Text(
+                          '${top.rank}. ${top.title}',
+                          style: Theme.of(context).textTheme.subtitle,
+                        ),
+                        Text(
+                          top.type + ' ' + episodesText(top),
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        Text(
+                          (top.startDate ?? '') + ' - ' + (top.endDate ?? ''),
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        Text(
+                          f.format(top.members) + ' members',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
                       ],
                     ),
                   ),

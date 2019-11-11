@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class FavoriteList extends StatelessWidget {
@@ -33,8 +34,8 @@ class FavoriteSection extends StatelessWidget {
 
   final BuiltList<Favorite> list;
   final TopType type;
-  final double width = 108.0;
-  final double height = 163.0;
+  final double width = kContainerWidth;
+  final double height = kContainerHeight;
 
   String favoriteTitle() {
     switch (type) {
@@ -74,7 +75,14 @@ class FavoriteSection extends StatelessWidget {
               Favorite fav = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: TitleAnime(fav.malId, fav.name, fav.imageUrl, width: width, height: height, type: type),
+                child: TitleAnime(
+                  fav.malId,
+                  fav.name,
+                  fav.imageUrl,
+                  width: width,
+                  height: height,
+                  type: type,
+                ),
               );
             },
           ),
