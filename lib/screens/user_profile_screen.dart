@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:intl/intl.dart' show NumberFormat, DateFormat;
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_list_screen.dart';
@@ -24,8 +24,7 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final Jikan jikan = Jikan();
-  final NumberFormat f = NumberFormat.compact();
-  final DateFormat dateFormat = DateFormat('MMM d, yy');
+  final DateFormat f = DateFormat('MMM d, yy');
 
   ScrollController _scrollController;
   UserProfile profile;
@@ -142,7 +141,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     Icon(Icons.cake, color: Colors.white, size: 20.0),
                                     SizedBox(width: 4.0),
                                     Text(
-                                      dateFormat.format(DateTime.parse(profile.birthday)),
+                                      f.format(DateTime.parse(profile.birthday)),
                                       style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
                                     ),
                                   ],
@@ -153,7 +152,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               Icon(Icons.access_time, color: Colors.white, size: 20.0),
                               SizedBox(width: 4.0),
                               Text(
-                                dateFormat.format(DateTime.parse(profile.lastOnline)),
+                                f.format(DateTime.parse(profile.lastOnline)),
                                 style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
                               ),
                             ],
@@ -236,7 +235,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
             ),
             _favoriteCount > 0 ? FavoriteList(profile.favorites) : Container(),
-            friends.length > 0 ? FriendList(friends) : Container(),
+            friends.isNotEmpty ? FriendList(friends) : Container(),
           ]),
         ),
       ]),

@@ -80,7 +80,7 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                           ],
                         ),
                       ),
-                      actors.length > 0
+                      actors.isNotEmpty
                           ? Expanded(
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,

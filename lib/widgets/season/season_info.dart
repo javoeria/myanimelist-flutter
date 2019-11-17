@@ -13,7 +13,7 @@ class SeasonInfo extends StatelessWidget {
   final DateFormat dateFormat = DateFormat('MMM d, yyyy, HH:mm');
 
   String producersText(BuiltList<GenericInfo> producers) {
-    if (producers.length == 0) {
+    if (producers.isEmpty) {
       return '-';
     } else {
       List<String> names = [];

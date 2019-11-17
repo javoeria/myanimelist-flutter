@@ -146,7 +146,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   SizedBox(height: 8.0),
                   Text(anime.type),
                   anime.premiered != null ? Text(anime.premiered) : Container(),
-                  anime.studios.length > 0 ? Text(anime.studios.first.name) : Container(),
+                  anime.studios.isNotEmpty ? Text(anime.studios.first.name) : Container(),
                 ],
               ),
             ],
@@ -312,7 +312,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
             ],
           ),
         ),
-        anime.openingThemes.length > 0
+        anime.openingThemes.isNotEmpty
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -333,7 +333,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 ],
               )
             : Container(),
-        anime.endingThemes.length > 0
+        anime.endingThemes.isNotEmpty
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

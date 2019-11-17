@@ -16,7 +16,7 @@ class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    if (widget.animeList.length == 0) {
+    if (widget.animeList.isEmpty) {
       return ListTile(title: Text('No items found.'));
     }
     return Scrollbar(

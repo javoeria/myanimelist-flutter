@@ -34,7 +34,7 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
         }
 
         BuiltList<Recommendation> recommendationList = snapshot.data;
-        if (recommendationList.length == 0) {
+        if (recommendationList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
         return Scrollbar(

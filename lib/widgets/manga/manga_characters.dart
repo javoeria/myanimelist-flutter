@@ -33,7 +33,7 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
         }
 
         BuiltList<CharacterRole> characterList = snapshot.data;
-        if (characterList.length == 0) {
+        if (characterList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
         return Scrollbar(

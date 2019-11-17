@@ -109,14 +109,14 @@ class _CharacterScreenState extends State<CharacterScreen> {
         SliverList(
           delegate: SliverChildListDelegate(<Widget>[
             AboutSection(character.about),
-            character.animeography.length > 0
+            character.animeography.isNotEmpty
                 ? AnimeographyList(character.animeography, type: TopType.anime)
                 : Container(),
-            character.mangaography.length > 0
+            character.mangaography.isNotEmpty
                 ? AnimeographyList(character.mangaography, type: TopType.manga)
                 : Container(),
-            character.voiceActors.length > 0 ? VoiceList(character.voiceActors) : Container(),
-            pictures.length > 0 ? PictureList(pictures) : Container(),
+            character.voiceActors.isNotEmpty ? VoiceList(character.voiceActors) : Container(),
+            pictures.isNotEmpty ? PictureList(pictures) : Container(),
           ]),
         ),
       ]),

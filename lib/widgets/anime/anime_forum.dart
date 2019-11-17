@@ -35,7 +35,7 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
         }
 
         BuiltList<Forum> forumList = snapshot.data;
-        if (forumList.length == 0) {
+        if (forumList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
         return Scrollbar(

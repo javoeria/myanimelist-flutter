@@ -111,7 +111,7 @@ class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClient
         }
 
         BuiltList<AnimeItem> animeList = animeBuiltList(snapshot.data);
-        if (animeList.length == 0) {
+        if (animeList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
         animeList = BuiltList.from(animeList.where((anime) => anime.kids == false && anime.r18 == false));

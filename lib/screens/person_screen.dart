@@ -109,10 +109,10 @@ class _PersonScreenState extends State<PersonScreen> {
         SliverList(
           delegate: SliverChildListDelegate(<Widget>[
             AboutSection(person.about),
-            person.voiceActingRoles.length > 0 ? RoleList(person.voiceActingRoles) : Container(),
-            person.animeStaffPositions.length > 0 ? StaffList(person.animeStaffPositions) : Container(),
-            person.publishedManga.length > 0 ? PublishList(person.publishedManga) : Container(),
-            pictures.length > 0 ? PictureList(pictures) : Container(),
+            person.voiceActingRoles.isNotEmpty ? RoleList(person.voiceActingRoles) : Container(),
+            person.animeStaffPositions.isNotEmpty ? StaffList(person.animeStaffPositions) : Container(),
+            person.publishedManga.isNotEmpty ? PublishList(person.publishedManga) : Container(),
+            pictures.isNotEmpty ? PictureList(pictures) : Container(),
           ]),
         ),
       ]),

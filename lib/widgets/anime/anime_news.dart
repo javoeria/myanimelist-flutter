@@ -36,7 +36,7 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
         }
 
         BuiltList<Article> articleList = snapshot.data;
-        if (articleList.length == 0) {
+        if (articleList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
         return Scrollbar(

@@ -14,27 +14,28 @@ dependencies:
   http: ^0.12.0+2
   intl: ^0.15.8
   provider: ^3.1.0
-  shared_preferences: ^0.5.3+4
+  shared_preferences: ^0.5.4+5
   dynamic_theme: ^1.0.1
-  url_launcher: ^5.1.4
+  url_launcher: ^5.2.5
   charts_flutter: ^0.8.1
-  expandable: ^3.0.0+1
+  expandable: ^3.0.1
   auto_size_text: ^2.1.0
   font_awesome_flutter: ^8.5.0
-  package_info: ^0.4.0+6
+  package_info: ^0.4.0+10
   page_indicator: ^0.3.0
-  cloud_firestore: ^0.12.9+5
-  #firebase_admob: ^0.9.0+7
-  firebase_analytics: ^5.0.2
-  firebase_core: ^0.4.0+9
-  firebase_crashlytics: ^0.1.0+3
-  firebase_performance: ^0.3.0+5
-  firebase_remote_config: ^0.2.0+7
+  cloud_firestore: ^0.12.10
+  #firebase_admob: ^0.9.0+9
+  firebase_analytics: ^5.0.6
+  firebase_core: ^0.4.1+5
+  firebase_crashlytics: ^0.1.1+2
+  firebase_performance: ^0.3.1+2
+  #firebase_remote_config: ^0.2.1
   jikan_api: ^1.0.0
   flutter_pagewise:
     git: git://github.com/javoeria/flutter_pagewise.git
 
 dev_dependencies:
+  pedantic: ^1.8.0
   flutter_test:
     sdk: flutter
   flutter_driver:

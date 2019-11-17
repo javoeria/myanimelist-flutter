@@ -78,7 +78,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
                           style: Theme.of(context).textTheme.caption,
                         ),
                         Text(
-                          f.format(top.members) + ' members',
+                          '${f.format(top.members)} members',
                           style: Theme.of(context).textTheme.caption,
                         ),
                       ],

@@ -184,7 +184,7 @@ class _ResultList extends StatelessWidget {
                           style: Theme.of(context).textTheme.caption,
                         ),
                         Text(
-                          f.format(search.members) + ' members',
+                          '${f.format(search.members)} members',
                           style: Theme.of(context).textTheme.caption,
                         ),
                       ],
