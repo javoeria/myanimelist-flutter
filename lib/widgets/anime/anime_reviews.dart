@@ -100,6 +100,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                 expanded: Text(review.content, softWrap: true),
                 tapHeaderToExpand: true,
                 hasIcon: true,
+                theme: ExpandableThemeData(iconColor: Colors.grey),
               ),
             ],
           ),

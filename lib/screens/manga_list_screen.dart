@@ -18,7 +18,8 @@ class MangaListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider(
-      builder: (context) => UserList(username, title, order, sort, 'manga'),
+      create: (context) => UserList(username, title, order, sort, 'manga'),
+      // dispose: (context, value) => value.dispose(),
       child: DefaultTabController(
         length: 6,
         initialIndex: 0,

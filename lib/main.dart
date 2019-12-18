@@ -12,6 +12,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Crashlytics.instance.enableInDevMode = true;
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      builder: (context) => UserData(prefs),
+      create: (context) => UserData(prefs),
       child: DynamicTheme(
         defaultBrightness: Brightness.light,
         data: (brightness) => ThemeData(

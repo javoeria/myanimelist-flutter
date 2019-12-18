@@ -10,9 +10,10 @@ class CustomFilter extends StatelessWidget {
     return IconButton(
       icon: Icon(Icons.filter_list),
       onPressed: () {
+        var json = Provider.of<UserList>(context).toJson();
         showDialog<void>(
           context: context,
-          builder: (context) => FilterDialog(Provider.of<UserList>(context).toJson()),
+          builder: (context) => FilterDialog(json),
         );
       },
     );

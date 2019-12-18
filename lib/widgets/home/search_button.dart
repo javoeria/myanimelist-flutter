@@ -124,6 +124,9 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
     }
     return null;
   }
+
+  @override
+  ThemeData appBarTheme(BuildContext context) => Theme.of(context);
 }
 
 class _ResultList extends StatelessWidget {
