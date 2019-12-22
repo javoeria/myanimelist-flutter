@@ -36,15 +36,17 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
         if (promoList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
-        return SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Center(
-            child: Wrap(
-              spacing: 16.0,
-              runSpacing: 16.0,
-              children: promoList.map((Promo promo) {
-                return VideoImage(promo);
-              }).toList(),
+        return Scrollbar(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Center(
+              child: Wrap(
+                spacing: 16.0,
+                runSpacing: 16.0,
+                children: promoList.map((Promo promo) {
+                  return VideoImage(promo);
+                }).toList(),
+              ),
             ),
           ),
         );
@@ -98,7 +100,7 @@ class VideoImage extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Icon(Icons.play_circle_outline),
+                      Icon(Icons.play_circle_outline, color: Colors.white),
                       Text(' Play', style: TextStyle(color: Colors.white)),
                     ],
                   ),

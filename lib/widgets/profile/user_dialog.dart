@@ -19,6 +19,12 @@ class _UserDialogState extends State<UserDialog> {
   String _error;
 
   @override
+  void initState() {
+    super.initState();
+    _textFieldController.text = widget.username;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text('Username'),

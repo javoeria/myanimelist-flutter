@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/widgets/season/custom_menu.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
+import 'package:provider/provider.dart';
 
 class LaterScreen extends StatelessWidget {
   @override
@@ -34,7 +36,10 @@ class LaterScreen extends StatelessWidget {
             }
 
             BuiltList<AnimeItem> animeList = snapshot.data.anime;
-            animeList = BuiltList.from(animeList.where((anime) => anime.kids == false && anime.r18 == false));
+            bool kids = Provider.of<UserData>(context).kidsGenre;
+            bool r18 = Provider.of<UserData>(context).r18Genre;
+            if (!kids) animeList = BuiltList.from(animeList.where((anime) => anime.kids == false));
+            if (!r18) animeList = BuiltList.from(animeList.where((anime) => anime.r18 == false));
             BuiltList<AnimeItem> tv = BuiltList.from(animeList.where((anime) => anime.type == 'TV'));
             BuiltList<AnimeItem> ona = BuiltList.from(animeList.where((anime) => anime.type == 'ONA'));
             BuiltList<AnimeItem> ova = BuiltList.from(animeList.where((anime) => anime.type == 'OVA'));
