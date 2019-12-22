@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         ),
         themedWidgetBuilder: (context, theme) {
           return MaterialApp(
-            title: 'MyAnimeList',
+            title: 'AnimeDB',
             theme: theme,
             home: LoadingScreen(),
             navigatorObservers: [

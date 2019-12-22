@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MyAnimeList'),
+        title: Text('AnimeDB'),
         actions: <Widget>[SearchButton()],
       ),
       body: ListView(
