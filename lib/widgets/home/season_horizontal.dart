@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/screens/seasonal_anime_screen.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
@@ -21,8 +21,15 @@ class SeasonHorizontal extends StatelessWidget {
               Text('${season.seasonName} ${season.seasonYear} Anime', style: Theme.of(context).textTheme.title),
               IconButton(
                 icon: Icon(Icons.chevron_right),
+                key: Key('season_icon'),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SeasonalAnimeScreen(year: 2019, type: SeasonType.fall)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SeasonalAnimeScreen(year: season.seasonYear, type: season.seasonName),
+                      settings: RouteSettings(name: 'SeasonalAnimeScreen'),
+                    ),
+                  );
                 },
               )
             ],
@@ -38,7 +45,12 @@ class SeasonHorizontal extends StatelessWidget {
               AnimeItem anime = season.anime.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: TitleAnime(anime.malId, anime.title, anime.imageUrl, type: TopType.anime),
+                child: TitleAnime(
+                  anime.malId,
+                  anime.title,
+                  anime.imageUrl,
+                  type: TopType.anime,
+                ),
               );
             },
           ),

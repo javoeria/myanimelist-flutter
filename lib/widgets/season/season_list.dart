@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/season/season_info.dart';
 
@@ -16,7 +16,7 @@ class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    if (widget.animeList.length == 0) {
+    if (widget.animeList.isEmpty) {
       return ListTile(title: Text('No items found.'));
     }
     return Scrollbar(

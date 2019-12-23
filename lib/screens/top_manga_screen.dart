@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/widgets/top/custom_view.dart';
 import 'package:myanimelist/widgets/top/top_grid.dart';
@@ -10,6 +10,7 @@ class TopMangaScreen extends StatelessWidget {
   TopMangaScreen({this.index});
 
   final int index;
+  final TopType type = TopType.manga;
 
   @override
   Widget build(BuildContext context) {
@@ -38,28 +39,28 @@ class TopMangaScreen extends StatelessWidget {
         body: Provider.of<UserData>(context).gridView
             ? TabBarView(
                 children: [
-                  TopGrid(type: TopType.manga),
-                  TopGrid(type: TopType.manga, subtype: TopSubtype.manga),
-                  TopGrid(type: TopType.manga, subtype: TopSubtype.novels),
-                  TopGrid(type: TopType.manga, subtype: TopSubtype.oneshots),
-                  TopGrid(type: TopType.manga, subtype: TopSubtype.doujin),
-                  TopGrid(type: TopType.manga, subtype: TopSubtype.manhwa),
-                  TopGrid(type: TopType.manga, subtype: TopSubtype.manhua),
-                  TopGrid(type: TopType.manga, subtype: TopSubtype.bypopularity),
-                  TopGrid(type: TopType.manga, subtype: TopSubtype.favorite),
+                  TopGrid(type: type),
+                  TopGrid(type: type, subtype: TopSubtype.manga),
+                  TopGrid(type: type, subtype: TopSubtype.novels),
+                  TopGrid(type: type, subtype: TopSubtype.oneshots),
+                  TopGrid(type: type, subtype: TopSubtype.doujin),
+                  TopGrid(type: type, subtype: TopSubtype.manhwa),
+                  TopGrid(type: type, subtype: TopSubtype.manhua),
+                  TopGrid(type: type, subtype: TopSubtype.bypopularity),
+                  TopGrid(type: type, subtype: TopSubtype.favorite),
                 ],
               )
             : TabBarView(
                 children: [
-                  TopList(type: TopType.manga),
-                  TopList(type: TopType.manga, subtype: TopSubtype.manga),
-                  TopList(type: TopType.manga, subtype: TopSubtype.novels),
-                  TopList(type: TopType.manga, subtype: TopSubtype.oneshots),
-                  TopList(type: TopType.manga, subtype: TopSubtype.doujin),
-                  TopList(type: TopType.manga, subtype: TopSubtype.manhwa),
-                  TopList(type: TopType.manga, subtype: TopSubtype.manhua),
-                  TopList(type: TopType.manga, subtype: TopSubtype.bypopularity),
-                  TopList(type: TopType.manga, subtype: TopSubtype.favorite),
+                  TopList(type: type),
+                  TopList(type: type, subtype: TopSubtype.manga),
+                  TopList(type: type, subtype: TopSubtype.novels),
+                  TopList(type: type, subtype: TopSubtype.oneshots),
+                  TopList(type: type, subtype: TopSubtype.doujin),
+                  TopList(type: type, subtype: TopSubtype.manhwa),
+                  TopList(type: type, subtype: TopSubtype.manhua),
+                  TopList(type: type, subtype: TopSubtype.bypopularity),
+                  TopList(type: type, subtype: TopSubtype.favorite),
                 ],
               ),
       ),

@@ -1,9 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:provider/provider.dart';
@@ -15,13 +16,20 @@ class SearchButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.search),
+      tooltip: 'Search anime',
       onPressed: () async {
         final Search selected = await showSearch<Search>(
           context: context,
           delegate: _delegate,
         );
         if (selected != null) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(selected.malId, selected.title)));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AnimeScreen(selected.malId, selected.title),
+              settings: RouteSettings(name: 'AnimeScreen'),
+            ),
+          );
         }
       },
     );
@@ -33,12 +41,13 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
 
   SearchType type;
   List<String> _suggestions = [];
-  final JikanApi jikanApi = JikanApi();
+  final Jikan jikan = Jikan();
 
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
       icon: BackButtonIcon(),
+      tooltip: 'Back',
       onPressed: () {
         close(context, null);
       },
@@ -59,7 +68,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
       );
     } else {
       return FutureBuilder(
-        future: jikanApi.search(type, query: query),
+        future: jikan.search(query, type),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             BuiltList<Search> searchList = snapshot.data;
@@ -89,20 +98,19 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
     Provider.of<UserData>(context).addHistory(query);
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: 50,
+        pageSize: kSearchPageSize,
         itemBuilder: (context, search, _) => _ResultList(search, type: type, searchDelegate: this),
         padding: const EdgeInsets.all(12.0),
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) => jikanApi.search(type, query: query, page: pageIndex + 1),
+        pageFuture: (pageIndex) => jikan.search(query, type, page: pageIndex + 1),
       ),
     );
   }
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    // TODO: better filter
     if (query.isNotEmpty) {
       return <Widget>[
         IconButton(
@@ -116,6 +124,9 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
     }
     return null;
   }
+
+  @override
+  ThemeData appBarTheme(BuildContext context) => Theme.of(context);
 }
 
 class _ResultList extends StatelessWidget {
@@ -153,18 +164,32 @@ class _ResultList extends StatelessWidget {
             Expanded(
               child: Row(
                 children: <Widget>[
-                  Image.network(search.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                  Image.network(
+                    search.imageUrl,
+                    width: kImageWidth,
+                    height: kImageHeight,
+                    fit: BoxFit.cover,
+                  ),
                   SizedBox(width: 8.0),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(search.title, style: Theme.of(context).textTheme.subtitle),
-                        Text(search.synopsis.split('.').first + '.',
-                            maxLines: 2, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.caption),
-                        Text(search.type + ' ' + episodesText(search) + ' - ' + score,
-                            style: Theme.of(context).textTheme.caption),
-                        Text(f.format(search.members) + ' members', style: Theme.of(context).textTheme.caption),
+                        Text(
+                          search.synopsis.split('.').first + '.',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        Text(
+                          search.type + ' ' + episodesText(search) + ' - ' + score,
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        Text(
+                          '${f.format(search.members)} members',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
                       ],
                     ),
                   ),

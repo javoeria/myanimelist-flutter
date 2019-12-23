@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/character_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
@@ -31,16 +32,40 @@ class TitleAnime extends StatelessWidget {
             onTap: () {
               switch (type) {
                 case TopType.anime:
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(id, title)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AnimeScreen(id, title),
+                      settings: RouteSettings(name: 'AnimeScreen'),
+                    ),
+                  );
                   break;
                 case TopType.manga:
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MangaScreen(id, title)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MangaScreen(id, title),
+                      settings: RouteSettings(name: 'MangaScreen'),
+                    ),
+                  );
                   break;
                 case TopType.people:
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => PersonScreen(id)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PersonScreen(id),
+                      settings: RouteSettings(name: 'PersonScreen'),
+                    ),
+                  );
                   break;
                 case TopType.characters:
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CharacterScreen(id)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CharacterScreen(id),
+                      settings: RouteSettings(name: 'CharacterScreen'),
+                    ),
+                  );
                   break;
                 default:
                   throw 'TopType Error';
@@ -61,16 +86,7 @@ class TitleAnime extends StatelessWidget {
                         title,
                         maxLines: 3,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.0,
-                          shadows: <Shadow>[
-                            Shadow(
-                              offset: Offset(0.0, 0.0),
-                              blurRadius: 3.0,
-                            ),
-                          ],
-                        ),
+                        style: kTextStyleShadow,
                       ),
                     ),
                   ),

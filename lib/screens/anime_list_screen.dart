@@ -1,45 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/constants.dart';
+import 'package:myanimelist/models/user_list.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/widgets/profile/custom_filter.dart';
+import 'package:provider/provider.dart';
 
 class AnimeListScreen extends StatelessWidget {
-  AnimeListScreen(this.username, {this.order});
+  AnimeListScreen(this.username, {this.title, this.order, this.sort});
 
   final String username;
+  final String title;
   final String order;
+  final String sort;
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 6,
-      initialIndex: 0,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Anime List'),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: [
-              Tab(text: 'All Anime'),
-              Tab(text: 'Currently Watching'),
-              Tab(text: 'Completed'),
-              Tab(text: 'On Hold'),
-              Tab(text: 'Dropped'),
-              Tab(text: 'Plan to Watch'),
+    return Provider(
+      create: (context) => UserList(username, title, order, sort, 'anime'),
+      // dispose: (context, value) => value.dispose(),
+      child: DefaultTabController(
+        length: 6,
+        initialIndex: 0,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Anime List'),
+            bottom: TabBar(
+              isScrollable: true,
+              tabs: [
+                Tab(text: 'All Anime'),
+                Tab(text: 'Currently Watching'),
+                Tab(text: 'Completed'),
+                Tab(text: 'On Hold'),
+                Tab(text: 'Dropped'),
+                Tab(text: 'Plan to Watch'),
+              ],
+            ),
+            actions: <Widget>[CustomFilter()],
+          ),
+          body: TabBarView(
+            children: [
+              UserAnimeList(type: ListType.all),
+              UserAnimeList(type: ListType.watching),
+              UserAnimeList(type: ListType.completed),
+              UserAnimeList(type: ListType.onhold),
+              UserAnimeList(type: ListType.dropped),
+              UserAnimeList(type: ListType.plantowatch),
             ],
           ),
-          actions: <Widget>[CustomFilter(username, 'anime')],
-        ),
-        body: TabBarView(
-          children: [
-            UserAnimeList(username, type: AllListType(), order: order),
-            UserAnimeList(username, type: WatchingListType(), order: order),
-            UserAnimeList(username, type: CompletedListType(), order: order),
-            UserAnimeList(username, type: OnHoldListType(), order: order),
-            UserAnimeList(username, type: DroppedListType(), order: order),
-            UserAnimeList(username, type: PlanToWatchListType(), order: order),
-          ],
         ),
       ),
     );
@@ -47,11 +56,9 @@ class AnimeListScreen extends StatelessWidget {
 }
 
 class UserAnimeList extends StatefulWidget {
-  UserAnimeList(this.username, {this.type, this.order});
+  UserAnimeList({this.type});
 
-  final String username;
-  final AnimeMangaListType type;
-  final String order;
+  final ListType type;
 
   @override
   _UserAnimeListState createState() => _UserAnimeListState();
@@ -61,19 +68,19 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
   Color statusColor(int status) {
     switch (status) {
       case 1:
-        return Colors.green[600];
+        return kWatchingColor;
         break;
       case 2:
-        return Colors.blue[900];
+        return kCompletedColor;
         break;
       case 3:
-        return Colors.yellow[700];
+        return kOnHoldColor;
         break;
       case 4:
-        return Colors.red[900];
+        return kDroppedColor;
         break;
       case 6:
-        return Colors.grey[400];
+        return kPlantoWatchColor;
         break;
       default:
         throw 'AnimeStatus Error';
@@ -83,16 +90,23 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final provider = Provider.of<UserList>(context);
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: 300,
+        pageSize: kAnimePageSize,
         itemBuilder: _itemBuilder,
         padding: const EdgeInsets.all(12.0),
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) =>
-            JikanApi().getUserAnimeList(widget.username, widget.type, order: widget.order, page: pageIndex + 1),
+        pageFuture: (pageIndex) => Jikan().getUserAnimeList(
+          provider.username,
+          widget.type,
+          query: provider.title,
+          order: provider.order,
+          sort: provider.sort,
+          page: pageIndex + 1,
+        ),
       ),
     );
   }
@@ -112,14 +126,22 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
               child: Row(
                 children: <Widget>[
                   Container(color: statusColor(item.watchingStatus), width: 5.0, height: 70.0),
-                  Image.network(item.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                  Image.network(
+                    item.imageUrl,
+                    width: kImageWidth,
+                    height: kImageHeight,
+                    fit: BoxFit.cover,
+                  ),
                   SizedBox(width: 8.0),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(item.title, style: Theme.of(context).textTheme.subtitle),
-                        Text('${item.type} ($progress eps)', style: Theme.of(context).textTheme.caption),
+                        Text(
+                          '${item.type} ($progress eps)',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
                       ],
                     ),
                   ),
@@ -131,7 +153,13 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
         ),
       ),
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(item.malId, item.title)));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AnimeScreen(item.malId, item.title),
+            settings: RouteSettings(name: 'AnimeScreen'),
+          ),
+        );
       },
     );
   }

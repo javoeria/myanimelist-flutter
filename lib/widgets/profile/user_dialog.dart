@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserDialog extends StatefulWidget {
   UserDialog({this.username});
@@ -15,6 +17,12 @@ class UserDialog extends StatefulWidget {
 class _UserDialogState extends State<UserDialog> {
   final TextEditingController _textFieldController = TextEditingController();
   String _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _textFieldController.text = widget.username;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +49,15 @@ class _UserDialogState extends State<UserDialog> {
               Navigator.pop(context);
             } else {
               try {
-                await JikanApi().getUserProfile(text);
+                await Jikan().getUserProfile(text);
+                if (kReleaseMode) Firestore.instance.collection('users').add({'username': text, 'datetime': DateTime.now()});
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.setString('username', text);
                 Navigator.pushAndRemoveUntil(
-                    context, MaterialPageRoute(builder: (context) => LoadingScreen()), (Route<dynamic> route) => false);
+                  context,
+                  MaterialPageRoute(builder: (context) => LoadingScreen()),
+                  (Route<dynamic> route) => false,
+                );
               } catch (e) {
                 print(e);
                 setState(() => _error = 'User not found');

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:url_launcher/url_launcher.dart';
@@ -21,7 +21,7 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
   @override
   void initState() {
     super.initState();
-    _future = widget.anime ? JikanApi().getAnimeForum(widget.id) : JikanApi().getMangaForum(widget.id);
+    _future = widget.anime ? Jikan().getAnimeForum(widget.id) : Jikan().getMangaForum(widget.id);
   }
 
   @override
@@ -35,7 +35,7 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
         }
 
         BuiltList<Forum> forumList = snapshot.data;
-        if (forumList.length == 0) {
+        if (forumList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
         return Scrollbar(
@@ -62,8 +62,9 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
                                 style: DefaultTextStyle.of(context).style,
                                 children: <TextSpan>[
                                   TextSpan(
-                                      text: f.format(DateTime.parse(forum.datePosted)),
-                                      style: Theme.of(context).textTheme.caption),
+                                    text: f.format(DateTime.parse(forum.datePosted)),
+                                    style: Theme.of(context).textTheme.caption,
+                                  ),
                                 ],
                               ),
                             ),

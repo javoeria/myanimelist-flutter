@@ -1,45 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/constants.dart';
+import 'package:myanimelist/models/user_list.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/widgets/profile/custom_filter.dart';
+import 'package:provider/provider.dart';
 
 class MangaListScreen extends StatelessWidget {
-  MangaListScreen(this.username, {this.order});
+  MangaListScreen(this.username, {this.title, this.order, this.sort});
 
   final String username;
+  final String title;
   final String order;
+  final String sort;
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 6,
-      initialIndex: 0,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Manga List'),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: [
-              Tab(text: 'All Manga'),
-              Tab(text: 'Currently Reading'),
-              Tab(text: 'Completed'),
-              Tab(text: 'On Hold'),
-              Tab(text: 'Dropped'),
-              Tab(text: 'Plan to Read'),
+    return Provider(
+      create: (context) => UserList(username, title, order, sort, 'manga'),
+      // dispose: (context, value) => value.dispose(),
+      child: DefaultTabController(
+        length: 6,
+        initialIndex: 0,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Manga List'),
+            bottom: TabBar(
+              isScrollable: true,
+              tabs: [
+                Tab(text: 'All Manga'),
+                Tab(text: 'Currently Reading'),
+                Tab(text: 'Completed'),
+                Tab(text: 'On Hold'),
+                Tab(text: 'Dropped'),
+                Tab(text: 'Plan to Read'),
+              ],
+            ),
+            actions: <Widget>[CustomFilter()],
+          ),
+          body: TabBarView(
+            children: [
+              UserMangaList(type: ListType.all),
+              UserMangaList(type: ListType.reading),
+              UserMangaList(type: ListType.completed),
+              UserMangaList(type: ListType.onhold),
+              UserMangaList(type: ListType.dropped),
+              UserMangaList(type: ListType.plantoread),
             ],
           ),
-          actions: <Widget>[CustomFilter(username, 'manga')],
-        ),
-        body: TabBarView(
-          children: [
-            UserMangaList(username, type: AllListType(), order: order),
-            UserMangaList(username, type: ReadingListType(), order: order),
-            UserMangaList(username, type: CompletedListType(), order: order),
-            UserMangaList(username, type: OnHoldListType(), order: order),
-            UserMangaList(username, type: DroppedListType(), order: order),
-            UserMangaList(username, type: PlanToReadListType(), order: order),
-          ],
         ),
       ),
     );
@@ -47,11 +56,9 @@ class MangaListScreen extends StatelessWidget {
 }
 
 class UserMangaList extends StatefulWidget {
-  UserMangaList(this.username, {this.type, this.order});
+  UserMangaList({this.type});
 
-  final String username;
-  final AnimeMangaListType type;
-  final String order;
+  final ListType type;
 
   @override
   _UserMangaListState createState() => _UserMangaListState();
@@ -61,19 +68,19 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
   Color statusColor(int status) {
     switch (status) {
       case 1:
-        return Colors.green[600];
+        return kWatchingColor;
         break;
       case 2:
-        return Colors.blue[900];
+        return kCompletedColor;
         break;
       case 3:
-        return Colors.yellow[700];
+        return kOnHoldColor;
         break;
       case 4:
-        return Colors.red[900];
+        return kDroppedColor;
         break;
       case 6:
-        return Colors.grey[400];
+        return kPlantoWatchColor;
         break;
       default:
         throw 'MangaStatus Error';
@@ -83,16 +90,23 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final provider = Provider.of<UserList>(context);
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: 300,
+        pageSize: kAnimePageSize,
         itemBuilder: _itemBuilder,
         padding: const EdgeInsets.all(12.0),
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) =>
-            JikanApi().getUserMangaList(widget.username, widget.type, order: widget.order, page: pageIndex + 1),
+        pageFuture: (pageIndex) => Jikan().getUserMangaList(
+          provider.username,
+          widget.type,
+          query: provider.title,
+          order: provider.order,
+          sort: provider.sort,
+          page: pageIndex + 1,
+        ),
       ),
     );
   }
@@ -112,14 +126,22 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
               child: Row(
                 children: <Widget>[
                   Container(color: statusColor(item.readingStatus), width: 5.0, height: 70.0),
-                  Image.network(item.imageUrl, width: 50.0, height: 70.0, fit: BoxFit.cover),
+                  Image.network(
+                    item.imageUrl,
+                    width: kImageWidth,
+                    height: kImageHeight,
+                    fit: BoxFit.cover,
+                  ),
                   SizedBox(width: 8.0),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(item.title, style: Theme.of(context).textTheme.subtitle),
-                        Text('${item.type} ($progress vols)', style: Theme.of(context).textTheme.caption),
+                        Text(
+                          '${item.type} ($progress vols)',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
                       ],
                     ),
                   ),
@@ -131,7 +153,13 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
         ),
       ),
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MangaScreen(item.malId, item.title)));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MangaScreen(item.malId, item.title),
+            settings: RouteSettings(name: 'MangaScreen'),
+          ),
+        );
       },
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/character_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
@@ -10,8 +11,8 @@ class RankImage extends StatelessWidget {
 
   final Top top;
   final TopType type;
-  final double width = 108.0;
-  final double height = 163.0;
+  final double width = kContainerWidth;
+  final double height = kContainerHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +28,40 @@ class RankImage extends StatelessWidget {
               int id = top.malId;
               switch (type) {
                 case TopType.anime:
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(id, top.title)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AnimeScreen(id, top.title),
+                      settings: RouteSettings(name: 'AnimeScreen'),
+                    ),
+                  );
                   break;
                 case TopType.manga:
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MangaScreen(id, top.title)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MangaScreen(id, top.title),
+                      settings: RouteSettings(name: 'MangaScreen'),
+                    ),
+                  );
                   break;
                 case TopType.people:
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => PersonScreen(id)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PersonScreen(id),
+                      settings: RouteSettings(name: 'PersonScreen'),
+                    ),
+                  );
                   break;
                 case TopType.characters:
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CharacterScreen(id)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CharacterScreen(id),
+                      settings: RouteSettings(name: 'CharacterScreen'),
+                    ),
+                  );
                   break;
                 default:
                   throw 'TopType Error';
@@ -45,8 +70,8 @@ class RankImage extends StatelessWidget {
           ),
         ),
         Container(
-          height: height,
           width: width,
+          height: height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -68,16 +93,7 @@ class RankImage extends StatelessWidget {
                       top.title,
                       maxLines: 3,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12.0,
-                        shadows: <Shadow>[
-                          Shadow(
-                            offset: Offset(0.0, 0.0),
-                            blurRadius: 3.0,
-                          ),
-                        ],
-                      ),
+                      style: kTextStyleShadow,
                     ),
                   ),
                 ],

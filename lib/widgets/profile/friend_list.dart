@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/user_profile_screen.dart';
 
 class FriendList extends StatelessWidget {
@@ -19,7 +20,7 @@ class FriendList extends StatelessWidget {
           child: Text('Friends', style: Theme.of(context).textTheme.title),
         ),
         Container(
-          height: 163.0,
+          height: kContainerHeight,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -43,8 +44,8 @@ class FriendCard extends StatelessWidget {
   FriendCard(this.item);
 
   final Friend item;
-  final double width = 108.0;
-  final double height = 163.0;
+  final double width = kContainerWidth;
+  final double height = kContainerHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,13 @@ class FriendCard extends StatelessWidget {
           fit: BoxFit.cover,
           child: InkWell(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfileScreen(item.username)));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserProfileScreen(item.username),
+                  settings: RouteSettings(name: 'UserProfileScreen'),
+                ),
+              );
             },
           ),
         ),
@@ -74,16 +81,7 @@ class FriendCard extends StatelessWidget {
                   item.username,
                   maxLines: 3,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12.0,
-                    shadows: <Shadow>[
-                      Shadow(
-                        offset: Offset(0.0, 0.0),
-                        blurRadius: 3.0,
-                      ),
-                    ],
-                  ),
+                  style: kTextStyleShadow,
                 ),
               ),
             ),

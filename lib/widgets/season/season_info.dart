@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat, DateFormat;
 import 'package:myanimelist/screens/anime_screen.dart';
@@ -13,7 +13,7 @@ class SeasonInfo extends StatelessWidget {
   final DateFormat dateFormat = DateFormat('MMM d, yyyy, HH:mm');
 
   String producersText(BuiltList<GenericInfo> producers) {
-    if (producers.length == 0) {
+    if (producers.isEmpty) {
       return '-';
     } else {
       List<String> names = [];
@@ -39,7 +39,13 @@ class SeasonInfo extends StatelessWidget {
     String score = anime.score == null ? 'N/A' : anime.score.toString();
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AnimeScreen(anime.malId, anime.title)));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AnimeScreen(anime.malId, anime.title),
+            settings: RouteSettings(name: 'AnimeScreen'),
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),

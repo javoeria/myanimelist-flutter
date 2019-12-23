@@ -1,8 +1,9 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/user_profile_screen.dart';
 
 class AnimeReviews extends StatefulWidget {
@@ -23,14 +24,14 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
     super.build(context);
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: 20,
+        pageSize: kReviewPageSize,
         itemBuilder: _itemBuilder,
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
         pageFuture: (pageIndex) => widget.anime
-            ? JikanApi().getAnimeReviews(widget.id, page: pageIndex + 1)
-            : JikanApi().getMangaReviews(widget.id, page: pageIndex + 1),
+            ? Jikan().getAnimeReviews(widget.id, page: pageIndex + 1)
+            : Jikan().getMangaReviews(widget.id, page: pageIndex + 1),
       ),
     );
   }
@@ -49,13 +50,18 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                     children: <Widget>[
                       Ink.image(
                         image: NetworkImage(review.reviewer.imageUrl),
-                        width: 50.0,
-                        height: 70.0,
+                        width: kImageWidth,
+                        height: kImageHeight,
                         fit: BoxFit.cover,
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => UserProfileScreen(review.reviewer.username)));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UserProfileScreen(review.reviewer.username),
+                                settings: RouteSettings(name: 'UserProfileScreen'),
+                              ),
+                            );
                           },
                         ),
                       ),
@@ -76,10 +82,11 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                       Text(f.format(DateTime.parse(review.date))),
                       SizedBox(height: 4.0),
                       Text(
-                          widget.anime
-                              ? '${review.reviewer.episodesSeen} episodes seen'
-                              : '${review.reviewer.chaptersRead} chapters read',
-                          style: Theme.of(context).textTheme.caption),
+                        widget.anime
+                            ? '${review.reviewer.episodesSeen} episodes seen'
+                            : '${review.reviewer.chaptersRead} chapters read',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
                     ],
                   ),
                 ],
@@ -93,6 +100,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                 expanded: Text(review.content, softWrap: true),
                 tapHeaderToExpand: true,
                 hasIcon: true,
+                theme: ExpandableThemeData(iconColor: Colors.grey),
               ),
             ],
           ),

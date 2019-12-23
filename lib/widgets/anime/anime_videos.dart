@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AnimeVideos extends StatefulWidget {
@@ -18,7 +19,7 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
   @override
   void initState() {
     super.initState();
-    _future = JikanApi().getAnimeVideos(widget.id);
+    _future = Jikan().getAnimeVideos(widget.id);
   }
 
   @override
@@ -32,18 +33,20 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
         }
 
         BuiltList<Promo> promoList = snapshot.data;
-        if (promoList.length == 0) {
+        if (promoList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
-        return SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Center(
-            child: Wrap(
-              spacing: 16.0,
-              runSpacing: 16.0,
-              children: promoList.map((Promo promo) {
-                return VideoImage(promo);
-              }).toList(),
+        return Scrollbar(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Center(
+              child: Wrap(
+                spacing: 16.0,
+                runSpacing: 16.0,
+                children: promoList.map((Promo promo) {
+                  return VideoImage(promo);
+                }).toList(),
+              ),
             ),
           ),
         );
@@ -83,8 +86,8 @@ class VideoImage extends StatelessWidget {
           ),
         ),
         Container(
-          height: height,
           width: width,
+          height: height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -97,7 +100,7 @@ class VideoImage extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Icon(Icons.play_circle_outline),
+                      Icon(Icons.play_circle_outline, color: Colors.white),
                       Text(' Play', style: TextStyle(color: Colors.white)),
                     ],
                   ),
@@ -113,16 +116,7 @@ class VideoImage extends StatelessWidget {
                       promo.title,
                       maxLines: 3,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12.0,
-                        shadows: <Shadow>[
-                          Shadow(
-                            offset: Offset(0.0, 0.0),
-                            blurRadius: 3.0,
-                          ),
-                        ],
-                      ),
+                      style: kTextStyleShadow,
                     ),
                   ),
                 ],

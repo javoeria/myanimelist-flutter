@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 
 class PictureList extends StatelessWidget {
   PictureList(this.list);
@@ -18,7 +19,7 @@ class PictureList extends StatelessWidget {
           child: Text('Pictures', style: Theme.of(context).textTheme.title),
         ),
         Container(
-          height: 163.0,
+          height: kContainerHeight,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -27,7 +28,12 @@ class PictureList extends StatelessWidget {
               Picture picture = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Image.network(picture.large, width: 108.0, height: 163.0, fit: BoxFit.cover),
+                child: Image.network(
+                  picture.large,
+                  width: kContainerWidth,
+                  height: kContainerHeight,
+                  fit: BoxFit.cover,
+                ),
               );
             },
           ),

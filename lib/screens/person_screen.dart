@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/profile/role_list.dart';
 import 'package:myanimelist/widgets/subtitle_anime.dart';
-
-const kExpandedHeight = 280.0;
+import 'package:firebase_performance/firebase_performance.dart';
 
 class PersonScreen extends StatefulWidget {
   PersonScreen(this.id);
@@ -19,7 +19,7 @@ class PersonScreen extends StatefulWidget {
 }
 
 class _PersonScreenState extends State<PersonScreen> {
-  final JikanApi jikanApi = JikanApi();
+  final Jikan jikan = Jikan();
   final NumberFormat f = NumberFormat.compact();
 
   ScrollController _scrollController;
@@ -35,8 +35,11 @@ class _PersonScreenState extends State<PersonScreen> {
   }
 
   void load() async {
-    person = await jikanApi.getPersonInfo(widget.id);
-    pictures = await jikanApi.getPersonPictures(widget.id);
+    final Trace personTrace = FirebasePerformance.instance.newTrace('person_trace');
+    personTrace.start();
+    person = await jikan.getPersonInfo(widget.id);
+    pictures = await jikan.getPersonPictures(widget.id);
+    personTrace.stop();
     setState(() => loading = false);
   }
 
@@ -58,28 +61,40 @@ class _PersonScreenState extends State<PersonScreen> {
           title: _showTitle ? Text(person.name) : null,
           flexibleSpace: FlexibleSpaceBar(
             background: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: kSliverAppBarPadding,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.network(person.imageUrl, width: 135.0, height: 210.0, fit: BoxFit.cover),
+                      Image.network(
+                        person.imageUrl,
+                        width: kSliverAppBarWidth,
+                        height: kSliverAppBarHeight,
+                        fit: BoxFit.cover,
+                      ),
                       SizedBox(width: 24.0),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(person.name, style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
-                          Text((person.familyName ?? '') + (person.givenName ?? ''),
-                              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)),
+                          Text(
+                            person.name,
+                            style: Theme.of(context).textTheme.title.copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            (person.familyName ?? '') + (person.givenName ?? ''),
+                            style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                          ),
                           SizedBox(height: 24.0),
                           Row(
                             children: <Widget>[
                               Icon(Icons.person, color: Colors.white),
                               SizedBox(width: 4.0),
-                              Text(f.format(person.memberFavorites),
-                                  style: Theme.of(context).textTheme.title.copyWith(color: Colors.white)),
+                              Text(
+                                f.format(person.memberFavorites),
+                                style: Theme.of(context).textTheme.title.copyWith(color: Colors.white),
+                              ),
                             ],
                           ),
                         ],
@@ -94,10 +109,10 @@ class _PersonScreenState extends State<PersonScreen> {
         SliverList(
           delegate: SliverChildListDelegate(<Widget>[
             AboutSection(person.about),
-            person.voiceActingRoles.length > 0 ? RoleList(person.voiceActingRoles) : Container(),
-            person.animeStaffPositions.length > 0 ? StaffList(person.animeStaffPositions) : Container(),
-            person.publishedManga.length > 0 ? PublishList(person.publishedManga) : Container(),
-            pictures.length > 0 ? PictureList(pictures) : Container(),
+            person.voiceActingRoles.isNotEmpty ? RoleList(person.voiceActingRoles) : Container(),
+            person.animeStaffPositions.isNotEmpty ? StaffList(person.animeStaffPositions) : Container(),
+            person.publishedManga.isNotEmpty ? PublishList(person.publishedManga) : Container(),
+            pictures.isNotEmpty ? PictureList(pictures) : Container(),
           ]),
         ),
       ]),
@@ -121,7 +136,7 @@ class StaffList extends StatelessWidget {
           child: Text('Anime Staff Positions', style: Theme.of(context).textTheme.title),
         ),
         Container(
-          height: 163.0,
+          height: kContainerHeight,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -130,8 +145,13 @@ class StaffList extends StatelessWidget {
               AnimeStaff staff = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: SubtitleAnime(staff.anime.malId, staff.anime.name, staff.position, staff.anime.imageUrl,
-                    type: TopType.anime),
+                child: SubtitleAnime(
+                  staff.anime.malId,
+                  staff.anime.name,
+                  staff.position,
+                  staff.anime.imageUrl,
+                  type: TopType.anime,
+                ),
               );
             },
           ),
@@ -158,7 +178,7 @@ class PublishList extends StatelessWidget {
           child: Text('Published Manga', style: Theme.of(context).textTheme.title),
         ),
         Container(
-          height: 163.0,
+          height: kContainerHeight,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -167,8 +187,13 @@ class PublishList extends StatelessWidget {
               PublishedManga publish = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: SubtitleAnime(publish.manga.malId, publish.manga.name, publish.position, publish.manga.imageUrl,
-                    type: TopType.manga),
+                child: SubtitleAnime(
+                  publish.manga.malId,
+                  publish.manga.name,
+                  publish.position,
+                  publish.manga.imageUrl,
+                  type: TopType.manga,
+                ),
               );
             },
           ),

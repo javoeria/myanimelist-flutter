@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/title_anime.dart';
 
@@ -20,8 +20,7 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
   @override
   void initState() {
     super.initState();
-    _future =
-        widget.anime ? JikanApi().getAnimeRecommendations(widget.id) : JikanApi().getMangaRecommendations(widget.id);
+    _future = widget.anime ? Jikan().getAnimeRecommendations(widget.id) : Jikan().getMangaRecommendations(widget.id);
   }
 
   @override
@@ -35,7 +34,7 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
         }
 
         BuiltList<Recommendation> recommendationList = snapshot.data;
-        if (recommendationList.length == 0) {
+        if (recommendationList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
         return Scrollbar(
@@ -46,8 +45,12 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
                 spacing: 16.0,
                 runSpacing: 16.0,
                 children: recommendationList.map((Recommendation recommendation) {
-                  return TitleAnime(recommendation.malId, recommendation.title, recommendation.imageUrl,
-                      type: widget.anime ? TopType.anime : TopType.manga);
+                  return TitleAnime(
+                    recommendation.malId,
+                    recommendation.title,
+                    recommendation.imageUrl,
+                    type: widget.anime ? TopType.anime : TopType.manga,
+                  );
                 }).toList(),
               ),
             ),

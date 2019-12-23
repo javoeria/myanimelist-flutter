@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class AnimeCharactersStaff extends StatefulWidget {
@@ -19,7 +20,7 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
   @override
   void initState() {
     super.initState();
-    _future = JikanApi().getCharacterStaff(widget.id);
+    _future = Jikan().getAnimeCharactersStaff(widget.id);
   }
 
   @override
@@ -57,8 +58,14 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                       Expanded(
                         child: Row(
                           children: <Widget>[
-                            TitleAnime(character.malId, '', character.imageUrl,
-                                width: 50.0, height: 70.0, type: TopType.characters),
+                            TitleAnime(
+                              character.malId,
+                              '',
+                              character.imageUrl,
+                              width: kImageWidth,
+                              height: kImageHeight,
+                              type: TopType.characters,
+                            ),
                             SizedBox(width: 8.0),
                             Expanded(
                               child: Column(
@@ -73,7 +80,7 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                           ],
                         ),
                       ),
-                      actors.length > 0
+                      actors.isNotEmpty
                           ? Expanded(
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
@@ -89,8 +96,14 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                                     ),
                                   ),
                                   SizedBox(width: 8.0),
-                                  TitleAnime(actors.first.malId, '', actors.first.imageUrl.replaceFirst('/r/23x32', ''),
-                                      width: 50.0, height: 70.0, type: TopType.people),
+                                  TitleAnime(
+                                    actors.first.malId,
+                                    '',
+                                    actors.first.imageUrl.replaceFirst('/r/23x32', ''),
+                                    width: kImageWidth,
+                                    height: kImageHeight,
+                                    type: TopType.people,
+                                  ),
                                 ],
                               ),
                             )
@@ -104,7 +117,14 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                   child: Row(
                     children: <Widget>[
-                      TitleAnime(staff.malId, '', staff.imageUrl, width: 50.0, height: 70.0, type: TopType.people),
+                      TitleAnime(
+                        staff.malId,
+                        '',
+                        staff.imageUrl,
+                        width: kImageWidth,
+                        height: kImageHeight,
+                        type: TopType.people,
+                      ),
                       SizedBox(width: 8.0),
                       Expanded(
                         child: Column(

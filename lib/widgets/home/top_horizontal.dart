@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/screens/top_anime_screen.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
@@ -24,8 +24,15 @@ class TopHorizontal extends StatelessWidget {
               Text('Top $label Anime', style: Theme.of(context).textTheme.title),
               IconButton(
                 icon: Icon(Icons.chevron_right),
+                key: Key('${label.toLowerCase()}_icon'),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => TopAnimeScreen(index: label == 'Airing' ? 1 : 2)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TopAnimeScreen(index: label == 'Airing' ? 1 : 2),
+                      settings: RouteSettings(name: 'TopAnimeScreen'),
+                    ),
+                  );
                 },
               )
             ],
@@ -41,7 +48,12 @@ class TopHorizontal extends StatelessWidget {
               Top anime = top.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: TitleAnime(anime.malId, anime.title, anime.imageUrl, type: TopType.anime),
+                child: TitleAnime(
+                  anime.malId,
+                  anime.title,
+                  anime.imageUrl,
+                  type: TopType.anime,
+                ),
               );
             },
           ),

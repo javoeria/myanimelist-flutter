@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Crashlytics.instance.enableInDevMode = true;
+  FlutterError.onError = Crashlytics.instance.recordFlutterError;
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   // await prefs.setString('username', 'javoeria');
   print(prefs.getKeys());
@@ -18,11 +26,12 @@ class MyApp extends StatelessWidget {
   MyApp(this.prefs);
 
   final SharedPreferences prefs;
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      builder: (context) => UserData(prefs),
+      create: (context) => UserData(prefs),
       child: DynamicTheme(
         defaultBrightness: Brightness.light,
         data: (brightness) => ThemeData(
@@ -32,9 +41,12 @@ class MyApp extends StatelessWidget {
         ),
         themedWidgetBuilder: (context, theme) {
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'AnimeDB',
             theme: theme,
             home: LoadingScreen(),
+            navigatorObservers: [
+              FirebaseAnalyticsObserver(analytics: analytics),
+            ],
           );
         },
       ),
@@ -48,7 +60,7 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  final JikanApi jikanApi = JikanApi();
+  final Jikan jikan = Jikan();
 
   UserProfile profile;
   Season season;
@@ -62,15 +74,37 @@ class _LoadingScreenState extends State<LoadingScreen> {
     load();
   }
 
+  SeasonType seasonClass(String season) {
+    switch (season.toLowerCase()) {
+      case 'spring':
+        return SeasonType.spring;
+        break;
+      case 'summer':
+        return SeasonType.summer;
+        break;
+      case 'fall':
+        return SeasonType.fall;
+        break;
+      case 'winter':
+        return SeasonType.winter;
+        break;
+      default:
+        throw 'SeasonType Error';
+    }
+  }
+
   void load() async {
+    final Trace mainTrace = FirebasePerformance.instance.newTrace('main_trace');
+    mainTrace.start();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.getString('username');
     if (username != null) {
-      profile = await jikanApi.getUserProfile(username);
+      profile = await jikan.getUserProfile(username);
     }
-    season = await jikanApi.getSeason(2019, SeasonType.fall);
-    topAiring = await jikanApi.getTop(TopType.anime, page: 1, subtype: TopSubtype.airing);
-    topUpcoming = await jikanApi.getTop(TopType.anime, page: 1, subtype: TopSubtype.upcoming);
+    season = await jikan.getSeason();
+    topAiring = await jikan.getTop(TopType.anime, subtype: TopSubtype.airing);
+    topUpcoming = await jikan.getTop(TopType.anime, subtype: TopSubtype.upcoming);
+    mainTrace.stop();
     setState(() => loading = false);
   }
 

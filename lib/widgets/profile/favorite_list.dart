@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class FavoriteList extends StatelessWidget {
@@ -18,10 +19,10 @@ class FavoriteList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 8.0),
           child: Text('Favorites', style: Theme.of(context).textTheme.title),
         ),
-        favorites.anime.length > 0 ? FavoriteSection(favorites.anime, type: TopType.anime) : Container(),
-        favorites.manga.length > 0 ? FavoriteSection(favorites.manga, type: TopType.manga) : Container(),
-        favorites.characters.length > 0 ? FavoriteSection(favorites.characters, type: TopType.characters) : Container(),
-        favorites.people.length > 0 ? FavoriteSection(favorites.people, type: TopType.people) : Container(),
+        favorites.anime.isNotEmpty ? FavoriteSection(favorites.anime, type: TopType.anime) : Container(),
+        favorites.manga.isNotEmpty ? FavoriteSection(favorites.manga, type: TopType.manga) : Container(),
+        favorites.characters.isNotEmpty ? FavoriteSection(favorites.characters, type: TopType.characters) : Container(),
+        favorites.people.isNotEmpty ? FavoriteSection(favorites.people, type: TopType.people) : Container(),
         SizedBox(height: 12.0),
       ],
     );
@@ -33,8 +34,8 @@ class FavoriteSection extends StatelessWidget {
 
   final BuiltList<Favorite> list;
   final TopType type;
-  final double width = 108.0;
-  final double height = 163.0;
+  final double width = kContainerWidth;
+  final double height = kContainerHeight;
 
   String favoriteTitle() {
     switch (type) {
@@ -74,7 +75,14 @@ class FavoriteSection extends StatelessWidget {
               Favorite fav = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: TitleAnime(fav.malId, fav.name, fav.imageUrl, width: width, height: height, type: type),
+                child: TitleAnime(
+                  fav.malId,
+                  fav.name,
+                  fav.imageUrl,
+                  width: width,
+                  height: height,
+                  type: type,
+                ),
               );
             },
           ),

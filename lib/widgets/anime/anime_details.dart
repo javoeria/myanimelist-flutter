@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 
 class AnimeDetails extends StatefulWidget {
   AnimeDetails(this.id);
@@ -15,7 +17,7 @@ class AnimeDetails extends StatefulWidget {
 }
 
 class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClientMixin<AnimeDetails> {
-  final JikanApi jikanApi = JikanApi();
+  final Jikan jikan = Jikan();
   final NumberFormat f = NumberFormat.decimalPattern();
 
   Anime anime;
@@ -29,8 +31,11 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
   }
 
   void load() async {
-    anime = await jikanApi.getAnimeInfo(widget.id);
-    pictures = await jikanApi.getAnimePictures(widget.id);
+    final Trace animeTrace = FirebasePerformance.instance.newTrace('anime_trace');
+    animeTrace.start();
+    anime = await jikan.getAnimeInfo(widget.id);
+    pictures = await jikan.getAnimePictures(widget.id);
+    animeTrace.stop();
     setState(() => loading = false);
   }
 
@@ -95,7 +100,9 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       style: Theme.of(context).textTheme.headline.copyWith(fontSize: 34),
                       children: <TextSpan>[
                         TextSpan(
-                            text: ' (${f.format(anime.scoredBy)} users)', style: Theme.of(context).textTheme.caption),
+                          text: ' (${f.format(anime.scoredBy)} users)',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
                       ],
                     ),
                   ),
@@ -105,7 +112,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       text: 'Ranked: ',
                       style: Theme.of(context).textTheme.subhead,
                       children: <TextSpan>[
-                        TextSpan(text: rank, style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: rank, style: kTextStyleBold),
                       ],
                     ),
                   ),
@@ -114,7 +121,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       text: 'Popularity: ',
                       style: Theme.of(context).textTheme.subhead,
                       children: <TextSpan>[
-                        TextSpan(text: '#${anime.popularity}', style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: '#${anime.popularity}', style: kTextStyleBold),
                       ],
                     ),
                   ),
@@ -123,7 +130,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       text: 'Members: ',
                       style: Theme.of(context).textTheme.subhead,
                       children: <TextSpan>[
-                        TextSpan(text: f.format(anime.members), style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: f.format(anime.members), style: kTextStyleBold),
                       ],
                     ),
                   ),
@@ -132,14 +139,14 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       text: 'Favorites: ',
                       style: Theme.of(context).textTheme.subhead,
                       children: <TextSpan>[
-                        TextSpan(text: f.format(anime.favorites), style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: f.format(anime.favorites), style: kTextStyleBold),
                       ],
                     ),
                   ),
                   SizedBox(height: 8.0),
                   Text(anime.type),
                   anime.premiered != null ? Text(anime.premiered) : Container(),
-                  anime.studios.length > 0 ? Text(anime.studios.first.name) : Container(),
+                  anime.studios.isNotEmpty ? Text(anime.studios.first.name) : Container(),
                 ],
               ),
             ],
@@ -305,7 +312,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
             ],
           ),
         ),
-        anime.openingThemes.length > 0
+        anime.openingThemes.isNotEmpty
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -326,7 +333,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 ],
               )
             : Container(),
-        anime.endingThemes.length > 0
+        anime.endingThemes.isNotEmpty
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -20,7 +20,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
   @override
   void initState() {
     super.initState();
-    _future = widget.anime ? JikanApi().getAnimeStats(widget.id) : JikanApi().getMangaStats(widget.id);
+    _future = widget.anime ? Jikan().getAnimeStats(widget.id) : Jikan().getMangaStats(widget.id);
   }
 
   @override

@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:jikan_dart/jikan_dart.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/widgets/season/custom_menu.dart';
 import 'package:myanimelist/widgets/season/season_info.dart';
+import 'package:provider/provider.dart';
 
 class ScheduleScreen extends StatelessWidget {
   @override
@@ -97,7 +99,7 @@ class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClient
   @override
   void initState() {
     super.initState();
-    _future = JikanApi().getSchedule(weekday: widget.day);
+    _future = Jikan().getSchedule(weekday: widget.day);
   }
 
   @override
@@ -111,10 +113,13 @@ class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClient
         }
 
         BuiltList<AnimeItem> animeList = animeBuiltList(snapshot.data);
-        if (animeList.length == 0) {
+        if (animeList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
-        animeList = BuiltList.from(animeList.where((anime) => anime.kids == false && anime.r18 == false));
+        bool kids = Provider.of<UserData>(context).kidsGenre;
+        bool r18 = Provider.of<UserData>(context).r18Genre;
+        if (!kids) animeList = BuiltList.from(animeList.where((anime) => anime.kids == false));
+        if (!r18) animeList = BuiltList.from(animeList.where((anime) => anime.r18 == false));
         return Scrollbar(
           child: ListView.separated(
             separatorBuilder: (context, index) => Divider(height: 0.0),

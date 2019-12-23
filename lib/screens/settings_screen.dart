@@ -33,49 +33,54 @@ class SettingsScreen extends StatelessWidget {
           ),
           ListTile(
             title: Text('Kids'),
-            subtitle: Text('Show entries with Kids genres.'),
-            trailing: Checkbox(
-              value: false,
+            subtitle: Text('Show entries with Kids genres'),
+            trailing: Switch(
+              value: Provider.of<UserData>(context).kidsGenre,
               activeColor: Colors.indigo,
-              onChanged: (value) {},
+              onChanged: (value) {
+                Provider.of<UserData>(context).toogleKids();
+              },
             ),
           ),
           ListTile(
             title: Text('R18+'),
-            subtitle: Text('Show entries with Hentai/Yaoi/Yuri genres.'),
-            trailing: Checkbox(
-              value: false,
+            subtitle: Text('Show entries with Hentai/Yaoi/Yuri genres'),
+            trailing: Switch(
+              value: Provider.of<UserData>(context).r18Genre,
               activeColor: Colors.indigo,
-              onChanged: (value) {},
+              onChanged: (value) {
+                Provider.of<UserData>(context).toogleR18();
+              },
             ),
           ),
           ListTile(
-            title: Text('Night mode'),
-            subtitle: Text('Enable/disable app dark theme.'),
+            title: Text('Dark mode'),
+            subtitle: Text('Choose between light and dark color palettes'),
             trailing: Switch(
               value: Theme.of(context).brightness == Brightness.dark,
               activeColor: Colors.indigo,
               onChanged: (value) {
                 DynamicTheme.of(context).setBrightness(
-                    Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark);
+                  Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark,
+                );
               },
             ),
           ),
+          // ListTile(
+          //   title: Text('Clear history'),
+          //   subtitle: Text('Remove local searches from this device'),
+          //   onTap: () {
+          //     Provider.of<UserData>(context).removeHistoryAll();
+          //   },
+          // ),
+          // ListTile(
+          //   title: Text('Rate this app'),
+          //   subtitle: Text('Your feedback is very important to us'),
+          //   onTap: () {},
+          // ),
           ListTile(
-            title: Text('Clear history'),
-            subtitle: Text('Remove local searches from this device.'),
-            onTap: () {
-              Provider.of<UserData>(context).removeHistoryAll();
-            },
-          ),
-          ListTile(
-            title: Text('Rate this app'),
-            subtitle: Text('Your feedback is very important to us.'),
-            onTap: () {},
-          ),
-          ListTile(
-            title: Text('MyAnimeList version'),
-            subtitle: Text(packageInfo.version),
+            title: Text('${packageInfo.appName} version'),
+            subtitle: Text('${packageInfo.version}-${packageInfo.buildNumber}'),
           ),
         ],
       ),
