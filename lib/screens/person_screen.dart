@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
@@ -68,36 +69,41 @@ class _PersonScreenState extends State<PersonScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.network(
-                        person.imageUrl,
-                        width: kSliverAppBarWidth,
-                        height: kSliverAppBarHeight,
-                        fit: BoxFit.cover,
+                      Expanded(
+                        child: Image.network(
+                          person.imageUrl,
+                          width: kSliverAppBarWidth,
+                          height: kSliverAppBarHeight,
+                          fit: BoxFit.contain,
+                        ),
                       ),
-                      SizedBox(width: 24.0),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            person.name,
-                            style: Theme.of(context).textTheme.title.copyWith(color: Colors.white),
-                          ),
-                          Text(
-                            (person.familyName ?? '') + (person.givenName ?? ''),
-                            style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
-                          ),
-                          SizedBox(height: 24.0),
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.person, color: Colors.white),
-                              SizedBox(width: 4.0),
-                              Text(
-                                f.format(person.memberFavorites),
-                                style: Theme.of(context).textTheme.title.copyWith(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            AutoSizeText(
+                              person.name,
+                              style: Theme.of(context).textTheme.title.copyWith(color: Colors.white),
+                              maxLines: 2,
+                            ),
+                            AutoSizeText(
+                              (person.familyName ?? '') + (person.givenName ?? ''),
+                              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                              maxLines: 1,
+                            ),
+                            SizedBox(height: 24.0),
+                            Row(
+                              children: <Widget>[
+                                Icon(Icons.person, color: Colors.white),
+                                SizedBox(width: 4.0),
+                                Text(
+                                  f.format(person.memberFavorites),
+                                  style: Theme.of(context).textTheme.title.copyWith(color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

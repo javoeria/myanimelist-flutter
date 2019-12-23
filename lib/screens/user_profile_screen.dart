@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -84,80 +85,85 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      profile.imageUrl != null
-                          ? Image.network(
-                              profile.imageUrl,
-                              width: kSliverAppBarWidth,
-                              height: kSliverAppBarHeight,
-                              fit: BoxFit.cover,
-                            )
-                          : Container(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(Icons.camera_alt),
-                                  Text('No Picture'),
-                                ],
-                              ),
-                              width: kSliverAppBarWidth,
-                              height: kSliverAppBarHeight,
-                              color: Colors.grey),
-                      SizedBox(width: 24.0),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            profile.username,
-                            style: Theme.of(context).textTheme.title.copyWith(color: Colors.white),
-                          ),
-                          SizedBox(height: 24.0),
-                          profile.gender != null
-                              ? Row(
+                      Expanded(
+                        child: profile.imageUrl != null
+                            ? Image.network(
+                                profile.imageUrl,
+                                width: kSliverAppBarWidth,
+                                height: kSliverAppBarHeight,
+                                fit: BoxFit.contain,
+                              )
+                            : Container(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    Icon(Icons.person, color: Colors.white, size: 20.0),
-                                    SizedBox(width: 4.0),
-                                    Text(
-                                      profile.gender,
-                                      style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
-                                    ),
+                                    Icon(Icons.camera_alt),
+                                    Text('No Picture'),
                                   ],
-                                )
-                              : Container(),
-                          profile.location != null
-                              ? Row(
-                                  children: <Widget>[
-                                    Icon(Icons.place, color: Colors.white, size: 20.0),
-                                    SizedBox(width: 4.0),
-                                    Text(
-                                      profile.location,
-                                      style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
-                                    ),
-                                  ],
-                                )
-                              : Container(),
-                          profile.birthday != null
-                              ? Row(
-                                  children: <Widget>[
-                                    Icon(Icons.cake, color: Colors.white, size: 20.0),
-                                    SizedBox(width: 4.0),
-                                    Text(
-                                      f.format(DateTime.parse(profile.birthday)),
-                                      style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
-                                    ),
-                                  ],
-                                )
-                              : Container(),
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.access_time, color: Colors.white, size: 20.0),
-                              SizedBox(width: 4.0),
-                              Text(
-                                f.format(DateTime.parse(profile.lastOnline)),
-                                style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ],
+                                ),
+                                width: kSliverAppBarWidth,
+                                height: kSliverAppBarHeight,
+                                color: Colors.grey),
+                      ),
+                      SizedBox(width: 16.0),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            AutoSizeText(
+                              profile.username,
+                              style: Theme.of(context).textTheme.title.copyWith(color: Colors.white),
+                              maxLines: 1,
+                            ),
+                            SizedBox(height: 24.0),
+                            profile.gender != null
+                                ? Row(
+                                    children: <Widget>[
+                                      Icon(Icons.person, color: Colors.white, size: 20.0),
+                                      SizedBox(width: 4.0),
+                                      Text(
+                                        profile.gender,
+                                        style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                                      ),
+                                    ],
+                                  )
+                                : Container(),
+                            profile.location != null
+                                ? Row(
+                                    children: <Widget>[
+                                      Icon(Icons.place, color: Colors.white, size: 20.0),
+                                      SizedBox(width: 4.0),
+                                      Text(
+                                        profile.location,
+                                        style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                                      ),
+                                    ],
+                                  )
+                                : Container(),
+                            profile.birthday != null
+                                ? Row(
+                                    children: <Widget>[
+                                      Icon(Icons.cake, color: Colors.white, size: 20.0),
+                                      SizedBox(width: 4.0),
+                                      Text(
+                                        f.format(DateTime.parse(profile.birthday)),
+                                        style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                                      ),
+                                    ],
+                                  )
+                                : Container(),
+                            Row(
+                              children: <Widget>[
+                                Icon(Icons.access_time, color: Colors.white, size: 20.0),
+                                SizedBox(width: 4.0),
+                                Text(
+                                  f.format(DateTime.parse(profile.lastOnline)),
+                                  style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
