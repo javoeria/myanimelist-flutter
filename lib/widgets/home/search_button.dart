@@ -126,7 +126,13 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
   }
 
   @override
-  ThemeData appBarTheme(BuildContext context) => Theme.of(context);
+  ThemeData appBarTheme(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return theme.copyWith(
+      inputDecorationTheme: InputDecorationTheme(hintStyle: TextStyle(color: Colors.white54)),
+      textTheme: theme.textTheme.copyWith(title: theme.textTheme.title.copyWith(color: Colors.white)),
+    );
+  }
 }
 
 class _ResultList extends StatelessWidget {
