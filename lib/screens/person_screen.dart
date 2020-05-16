@@ -83,12 +83,12 @@ class _PersonScreenState extends State<PersonScreen> {
                           children: <Widget>[
                             AutoSizeText(
                               person.name,
-                              style: Theme.of(context).textTheme.title.copyWith(color: Colors.white),
+                              style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
                               maxLines: 2,
                             ),
                             AutoSizeText(
                               (person.familyName ?? '') + (person.givenName ?? ''),
-                              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                              style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
                               maxLines: 1,
                             ),
                             SizedBox(height: 24.0),
@@ -98,7 +98,7 @@ class _PersonScreenState extends State<PersonScreen> {
                                 SizedBox(width: 4.0),
                                 Text(
                                   f.format(person.memberFavorites),
-                                  style: Theme.of(context).textTheme.title.copyWith(color: Colors.white),
+                                  style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
                                 ),
                               ],
                             ),
@@ -139,7 +139,7 @@ class StaffList extends StatelessWidget {
         Divider(height: 0.0),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
-          child: Text('Anime Staff Positions', style: Theme.of(context).textTheme.title),
+          child: Text('Anime Staff Positions', style: Theme.of(context).textTheme.headline6),
         ),
         Container(
           height: kContainerHeight,
@@ -181,7 +181,7 @@ class PublishList extends StatelessWidget {
         Divider(height: 0.0),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
-          child: Text('Published Manga', style: Theme.of(context).textTheme.title),
+          child: Text('Published Manga', style: Theme.of(context).textTheme.headline6),
         ),
         Container(
           height: kContainerHeight,

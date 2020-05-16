@@ -130,7 +130,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
       inputDecorationTheme: InputDecorationTheme(hintStyle: TextStyle(color: Colors.white54)),
-      textTheme: theme.textTheme.copyWith(title: theme.textTheme.title.copyWith(color: Colors.white)),
+      textTheme: theme.textTheme.copyWith(headline6: theme.textTheme.headline6.copyWith(color: Colors.white)),
     );
   }
 }
@@ -181,7 +181,7 @@ class _ResultList extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(search.title, style: Theme.of(context).textTheme.subtitle),
+                        Text(search.title, style: Theme.of(context).textTheme.subtitle2),
                         Text(
                           search.synopsis.split('.').first + '.',
                           maxLines: 2,
@@ -225,7 +225,7 @@ class _SuggestionList extends StatelessWidget {
         if (history) {
           return ListTile(
             leading: Icon(Icons.history),
-            title: Text(suggestion, style: Theme.of(context).textTheme.subhead),
+            title: Text(suggestion, style: Theme.of(context).textTheme.subtitle1),
             onTap: () {
               onSelected(suggestion);
             },
@@ -239,7 +239,7 @@ class _SuggestionList extends StatelessWidget {
         } else {
           return ListTile(
             leading: Icon(Icons.search),
-            title: Text(suggestion, style: Theme.of(context).textTheme.subhead),
+            title: Text(suggestion, style: Theme.of(context).textTheme.subtitle1),
             onTap: () {
               onSelected(suggestion);
             },

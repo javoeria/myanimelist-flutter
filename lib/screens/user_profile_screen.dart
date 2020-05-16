@@ -112,7 +112,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           children: <Widget>[
                             AutoSizeText(
                               profile.username,
-                              style: Theme.of(context).textTheme.title.copyWith(color: Colors.white),
+                              style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
                               maxLines: 1,
                             ),
                             SizedBox(height: 24.0),
@@ -123,7 +123,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       SizedBox(width: 4.0),
                                       Text(
                                         profile.gender,
-                                        style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                                        style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
                                       ),
                                     ],
                                   )
@@ -135,7 +135,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       SizedBox(width: 4.0),
                                       Text(
                                         profile.location,
-                                        style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                                        style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
                                       ),
                                     ],
                                   )
@@ -147,7 +147,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       SizedBox(width: 4.0),
                                       Text(
                                         f.format(DateTime.parse(profile.birthday)),
-                                        style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                                        style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
                                       ),
                                     ],
                                   )
@@ -158,7 +158,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 SizedBox(width: 4.0),
                                 Text(
                                   f.format(DateTime.parse(profile.lastOnline)),
-                                  style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                                  style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
                                 ),
                               ],
                             ),
@@ -222,7 +222,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             profile.about != null ? AboutSection(profile.about) : Container(),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text('Statistics', style: Theme.of(context).textTheme.title),
+              child: Text('Statistics', style: Theme.of(context).textTheme.headline6),
             ),
             Container(
               height: 263.0,

@@ -13,7 +13,7 @@ class AboutSection extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Text('About', style: Theme.of(context).textTheme.title),
+          child: Text('About', style: Theme.of(context).textTheme.headline6),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),

@@ -72,14 +72,14 @@ class TopPeopleScreen extends StatelessWidget {
                   Expanded(
                     child: Text(
                       '${top.rank}. ${top.title}',
-                      style: Theme.of(context).textTheme.subtitle,
+                      style: Theme.of(context).textTheme.subtitle2,
                     ),
                   ),
                   Row(
                     children: <Widget>[
                       Text(
                         f.format(top.favorites),
-                        style: Theme.of(context).textTheme.subhead,
+                        style: Theme.of(context).textTheme.subtitle1,
                       ),
                       Icon(Icons.person, color: Colors.grey),
                     ],
