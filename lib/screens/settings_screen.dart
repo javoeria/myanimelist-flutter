@@ -38,7 +38,7 @@ class SettingsScreen extends StatelessWidget {
               value: Provider.of<UserData>(context).kidsGenre,
               activeColor: Colors.indigo,
               onChanged: (value) {
-                Provider.of<UserData>(context).toogleKids();
+                Provider.of<UserData>(context, listen: false).toogleKids();
               },
             ),
           ),
@@ -49,7 +49,7 @@ class SettingsScreen extends StatelessWidget {
               value: Provider.of<UserData>(context).r18Genre,
               activeColor: Colors.indigo,
               onChanged: (value) {
-                Provider.of<UserData>(context).toogleR18();
+                Provider.of<UserData>(context, listen: false).toogleR18();
               },
             ),
           ),
@@ -70,7 +70,7 @@ class SettingsScreen extends StatelessWidget {
           //   title: Text('Clear history'),
           //   subtitle: Text('Remove local searches from this device'),
           //   onTap: () {
-          //     Provider.of<UserData>(context).removeHistoryAll();
+          //     Provider.of<UserData>(context, listen: false).removeHistoryAll();
           //   },
           // ),
           // ListTile(

@@ -95,7 +95,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
       return Center(child: Text('Minimum 3 letters'));
     }
 
-    Provider.of<UserData>(context).addHistory(query);
+    Provider.of<UserData>(context, listen: false).addHistory(query);
     return Scrollbar(
       child: PagewiseListView(
         pageSize: kSearchPageSize,
@@ -232,7 +232,7 @@ class _SuggestionList extends StatelessWidget {
             onLongPress: () async {
               bool action = await _historyDialog(context, suggestion);
               if (action == true) {
-                Provider.of<UserData>(context).removeHistory(suggestion);
+                Provider.of<UserData>(context, listen: false).removeHistory(suggestion);
               }
             },
           );
