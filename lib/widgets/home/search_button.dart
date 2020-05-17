@@ -220,8 +220,8 @@ class _SuggestionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: min(suggestions.length, 10),
-      itemBuilder: (BuildContext context, int i) {
-        final String suggestion = suggestions[i];
+      itemBuilder: (BuildContext context, int index) {
+        final String suggestion = suggestions[index];
         if (history) {
           return ListTile(
             leading: Icon(Icons.history),
@@ -238,6 +238,7 @@ class _SuggestionList extends StatelessWidget {
           );
         } else {
           return ListTile(
+            key: Key('suggestion_$index'),
             leading: Icon(Icons.search),
             title: Text(suggestion, style: Theme.of(context).textTheme.subtitle1),
             onTap: () {
