@@ -149,6 +149,16 @@ void main() {
       await driver.tap(find.pageBack());
     });
 
+    test('genres anime screen', () async {
+      await driver.tap(menuIconFinder);
+      await driver.tap(animeTextFinder);
+      await driver.tap(find.text('Genres Anime'));
+      await driver.tap(find.text('Action'));
+      await takeScreenshot('genre_anime');
+      await driver.tap(find.pageBack());
+      await driver.tap(find.pageBack());
+    });
+
     test('search manga screen', () async {
       await driver.tap(menuIconFinder);
       await driver.tap(mangaTextFinder);
@@ -173,6 +183,16 @@ void main() {
       await driver.tap(find.text('Top Manhua'));
       await driver.tap(find.text('Most Popular'));
       await driver.tap(find.text('Most Favorited'));
+      await driver.tap(find.pageBack());
+    });
+
+    test('genres manga screen', () async {
+      await driver.tap(menuIconFinder);
+      await driver.tap(mangaTextFinder);
+      await driver.tap(find.text('Genres Manga'));
+      await driver.tap(find.text('Action'));
+      await takeScreenshot('genre_manga');
+      await driver.tap(find.pageBack());
       await driver.tap(find.pageBack());
     });
 
