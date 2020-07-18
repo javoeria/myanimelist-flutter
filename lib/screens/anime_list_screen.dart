@@ -101,7 +101,7 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
         },
         pageFuture: (pageIndex) => Jikan().getUserAnimeList(
           provider.username,
-          widget.type,
+          type: widget.type,
           query: provider.title,
           order: provider.order,
           sort: provider.sort,

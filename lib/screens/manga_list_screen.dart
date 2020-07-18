@@ -101,7 +101,7 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
         },
         pageFuture: (pageIndex) => Jikan().getUserMangaList(
           provider.username,
-          widget.type,
+          type: widget.type,
           query: provider.title,
           order: provider.order,
           sort: provider.sort,

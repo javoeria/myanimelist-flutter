@@ -67,7 +67,10 @@ class SeasonInfo extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.topLeft,
                       child: SingleChildScrollView(
-                        child: Text(anime.synopsis, style: Theme.of(context).textTheme.caption),
+                        child: Text(
+                          anime.synopsis ?? 'No synopsis information has been added to this title.',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
                       ),
                     ),
                   ),

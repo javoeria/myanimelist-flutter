@@ -39,7 +39,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
     final Trace characterTrace = FirebasePerformance.instance.newTrace('character_trace');
     characterTrace.start();
     character = await jikan.getCharacterInfo(widget.id);
-    pictures = await jikan.getCharactersPictures(widget.id);
+    pictures = await jikan.getCharacterPictures(widget.id);
     characterTrace.stop();
     setState(() => loading = false);
   }
