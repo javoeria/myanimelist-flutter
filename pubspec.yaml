@@ -1,5 +1,5 @@
 name: myanimelist
-description: A new Flutter application.
+description: The best way to explore all anime and manga.
 
 version: 1.0.0+1
 
@@ -11,23 +11,23 @@ dependencies:
     sdk: flutter
 
   intl: ^0.16.1
-  provider: ^4.3.1
-  shared_preferences: ^0.5.8
+  provider: ^4.3.2
+  shared_preferences: ^0.5.12
   dynamic_theme: ^1.0.1
-  url_launcher: ^5.5.0
+  url_launcher: ^5.7.2
   charts_flutter: ^0.9.0
   expandable: ^4.1.4
   auto_size_text: ^2.1.0
   font_awesome_flutter: ^8.8.1
-  package_info: ^0.4.1
+  package_info: ^0.4.3
   page_indicator: ^0.3.0
-  cloud_firestore: ^0.13.7
-  # firebase_admob: ^0.9.3+2
-  firebase_analytics: ^5.0.16
-  firebase_core: ^0.4.5
-  firebase_crashlytics: ^0.1.3+3
-  firebase_performance: ^0.3.2
-  # firebase_remote_config: ^0.3.1
+  cloud_firestore: ^0.14.0
+  # firebase_admob: ^0.9.3
+  firebase_analytics: ^6.0.0
+  firebase_core: ^0.5.0
+  firebase_crashlytics: ^0.2.0
+  firebase_performance: ^0.4.0
+  # firebase_remote_config: ^0.4.0
   jikan_api: ^1.3.1
   slack_notifier: ^1.0.0
   flutter_pagewise:
@@ -35,7 +35,7 @@ dependencies:
 
 dev_dependencies:
   pedantic: ^1.9.0
-  flutter_launcher_icons: ^0.7.5
+  flutter_launcher_icons: ^0.8.0
   flutter_native_splash: ^0.1.9
   flutter_driver:
     sdk: flutter

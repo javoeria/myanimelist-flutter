@@ -51,7 +51,7 @@ class _UserDialogState extends State<UserDialog> {
               try {
                 await Jikan().getUserProfile(text);
                 if (kReleaseMode) {
-                  Firestore.instance.collection('users').add({'username': text, 'datetime': DateTime.now()});
+                  FirebaseFirestore.instance.collection('users').add({'username': text, 'datetime': DateTime.now()});
                 }
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.setString('username', text);
