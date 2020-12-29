@@ -1,7 +1,7 @@
 name: myanimelist
 description: The best way to explore all anime and manga.
 
-version: 1.0.0+1
+version: 1.0.0+4
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -44,12 +44,12 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: false
-  image_path: "images/icon.png"
+  image_path: "images/maneki.png"
 
 flutter_native_splash:
   android: true
   ios: false
-  image: "images/splash.png"
+  image: "images/maneki.png"
   color: "f5f5f5"
 
 flutter:
