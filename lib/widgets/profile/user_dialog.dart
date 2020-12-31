@@ -27,7 +27,7 @@ class _UserDialogState extends State<UserDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Username'),
+      title: Text('MAL Username'),
       content: TextField(
         autofocus: true,
         controller: _textFieldController,

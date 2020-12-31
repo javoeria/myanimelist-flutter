@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ArchiveScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<String> items = [];
+    List<String> items = ['Spring 2021', 'Winter 2021'];
     for (int i = 2020; i >= 1917; i--) {
       items.add('Fall $i');
       items.add('Summer $i');

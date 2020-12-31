@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/profile/user_dialog.dart';
 import 'package:package_info/package_info.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:myanimelist/models/user_data.dart';
@@ -73,11 +75,11 @@ class SettingsScreen extends StatelessWidget {
           //     Provider.of<UserData>(context, listen: false).removeHistoryAll();
           //   },
           // ),
-          // ListTile(
-          //   title: Text('Rate this app'),
-          //   subtitle: Text('Your feedback is very important to us'),
-          //   onTap: () {},
-          // ),
+          ListTile(
+            title: Text('Rate app'),
+            subtitle: Text('Your feedback is very important to us'),
+            onTap: () => RateMyApp(googlePlayIdentifier: kGooglePlayId).launchStore(),
+          ),
           ListTile(
             title: Text('${packageInfo.appName} version'),
             subtitle: Text('${packageInfo.version}-${packageInfo.buildNumber}'),

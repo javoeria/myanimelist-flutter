@@ -3,7 +3,7 @@ import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('MyAnimeList App', () {
+  group('AnimeDB App', () {
     final menuIconFinder = find.byTooltip('Open navigation menu');
     final userTextFinder = find.text('User');
     final animeTextFinder = find.text('Anime');
@@ -24,7 +24,7 @@ void main() {
     });
 
     setUp(() {
-      sleep(const Duration(seconds: 1));
+      sleep(const Duration(seconds: 4));
     });
 
     takeScreenshot(String name) async {
