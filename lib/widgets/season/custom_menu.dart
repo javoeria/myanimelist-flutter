@@ -5,19 +5,28 @@ import 'package:myanimelist/screens/schedule_screen.dart';
 import 'package:myanimelist/screens/seasonal_anime_screen.dart';
 
 class CustomMenu extends StatelessWidget {
+  List<String> lastSeasons() {
+    int year = DateTime.now().year;
+    int month = DateTime.now().month;
+    List<String> common = ['Later', 'Schedule', 'Archive'];
+    if (month == 1) {
+      return ['Summer ${year - 1}', 'Fall ${year - 1}', 'Winter $year', 'Spring $year'] + common;
+    } else if (month >= 2 && month < 5) {
+      return ['Fall ${year - 1}', 'Winter $year', 'Spring $year', 'Summer $year'] + common;
+    } else if (month >= 5 && month < 8) {
+      return ['Winter $year', 'Spring $year', 'Summer $year', 'Fall $year'] + common;
+    } else if (month >= 8 && month < 11) {
+      return ['Spring $year', 'Summer $year', 'Fall $year', 'Winter ${year + 1}'] + common;
+    } else {
+      return ['Summer $year', 'Fall $year', 'Winter ${year + 1}', 'Spring ${year + 1}'] + common;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
       itemBuilder: (context) {
-        return [
-          PopupMenuItem(child: Text('Summer 2020'), value: 'Summer 2020'),
-          PopupMenuItem(child: Text('Fall 2020'), value: 'Fall 2020'),
-          PopupMenuItem(child: Text('Winter 2021'), value: 'Winter 2021'),
-          PopupMenuItem(child: Text('Spring 2021'), value: 'Spring 2021'),
-          PopupMenuItem(child: Text('Later'), value: 'Later'),
-          PopupMenuItem(child: Text('Schedule'), value: 'Schedule'),
-          PopupMenuItem(child: Text('Archive'), value: 'Archive'),
-        ];
+        return lastSeasons().map((season) => PopupMenuItem(child: Text(season), value: season)).toList();
       },
       onSelected: (value) async {
         if (value == 'Later') {
