@@ -28,6 +28,7 @@ class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMi
     super.build(context);
     bool kids = Provider.of<UserData>(context).kidsGenre;
     bool r18 = Provider.of<UserData>(context).r18Genre;
+    _animeList = BuiltList.from(_animeList.where((anime) => !anime.genres.map((i) => i.name).contains('Hentai')));
     if (!kids) _animeList = BuiltList.from(_animeList.where((anime) => anime.kids == false));
     if (!r18) _animeList = BuiltList.from(_animeList.where((anime) => anime.r18 == false));
 

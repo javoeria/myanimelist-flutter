@@ -96,6 +96,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
     }
 
     Provider.of<UserData>(context, listen: false).addHistory(query);
+    String excludeHentai = '&genre=12&genre_exclude=0&order_by=members&sort=desc';
     return Scrollbar(
       child: PagewiseListView(
         pageSize: kSearchPageSize,
@@ -104,7 +105,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) => jikan.search(query, type, page: pageIndex + 1),
+        pageFuture: (pageIndex) => jikan.search(query, type, custom: excludeHentai, page: pageIndex + 1),
       ),
     );
   }

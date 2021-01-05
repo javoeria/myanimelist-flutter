@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat, DateFormat;
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
+import 'package:provider/provider.dart';
 
 class GenreMangaScreen extends StatelessWidget {
   @override
@@ -22,7 +24,7 @@ class GenreMangaScreen extends StatelessWidget {
       'Game': 11,
       'Gender Bender': 44,
       'Harem': 35,
-      'Hentai': 12,
+//    'Hentai': 12,
       'Historical': 13,
       'Horror': 14,
       'Josei': 42,
@@ -45,7 +47,7 @@ class GenreMangaScreen extends StatelessWidget {
       'Shoujo Ai': 26,
       'Shounen': 27,
       'Shounen Ai': 28,
-      'Slice Of Life': 36,
+      'Slice of Life': 36,
       'Space': 29,
       'Sports': 30,
       'Super Power': 31,
@@ -107,6 +109,18 @@ class GenreMangaList extends StatelessWidget {
 
           GenreList genre = snapshot.data;
           BuiltList<MangaItem> mangaList = genre.manga;
+          bool kids = Provider.of<UserData>(context).kidsGenre;
+          bool r18 = Provider.of<UserData>(context).r18Genre;
+          mangaList = BuiltList.from(mangaList.where((manga) => !manga.genres.map((i) => i.name).contains('Hentai')));
+          if (!kids) {
+            mangaList = BuiltList.from(mangaList.where((manga) => !manga.genres.map((i) => i.name).contains('Kids')));
+          }
+          if (!r18) {
+            mangaList = BuiltList.from(mangaList.where((manga) =>
+                !manga.genres.map((i) => i.name).contains('Yaoi') &&
+                !manga.genres.map((i) => i.name).contains('Yuri')));
+          }
+
           if (mangaList.isEmpty) {
             return ListTile(title: Text('No items found.'));
           }
