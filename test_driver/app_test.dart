@@ -176,9 +176,9 @@ void main() {
       await takeScreenshot('top_manga');
       await driver.tap(find.text('All Manga'));
       // await driver.tap(find.text('Top Manga'));
-      await driver.tap(find.text('Top Novels'));
       await driver.tap(find.text('Top One-shots'));
       await driver.tap(find.text('Top Doujinshi'));
+      await driver.tap(find.text('Top Novels'));
       await driver.tap(find.text('Top Manhwa'));
       await driver.tap(find.text('Top Manhua'));
       await driver.tap(find.text('Most Popular'));
