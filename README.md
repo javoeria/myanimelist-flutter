@@ -1,16 +1,40 @@
-# myanimelist
+# AnimeDB - Anime & Manga Database
 
-A new Flutter application.
+<a href="https://play.google.com/store/apps/details?id=com.javier.myanimelist"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="75"></a>
 
-## Getting Started
+AnimeDB is an unofficial [MyAnimeList](https://myanimelist.net/) app that tracks the most active online anime and manga community and database.
 
-This project is a starting point for a Flutter application.
+Open-source project made with [Flutter](https://flutter.dev/) and icon by [Icons8](https://icons8.com/).
 
-A few resources to get you started if this is your first Flutter project:
+## Features
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### Anime
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [x] Anime Search
+- [x] Top Anime
+- [x] Seasonal Anime
+- [x] Genres
+- [ ] Studios
+- [ ] Videos
+- [ ] Reviews
+- [ ] Recommendations
+
+### Manga
+
+- [x] Manga Search
+- [x] Top Manga
+- [x] Genres
+- [ ] Magazines
+- [ ] Reviews
+- [ ] Recommendations
+
+### Industry
+
+- [ ] News
+- [x] People
+- [x] Characters
+
+### Watch
+
+- [ ] Episode Videos
+- [ ] Promotional Videos
