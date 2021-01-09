@@ -1,7 +1,7 @@
 name: myanimelist
 description: The best way to explore all anime and manga.
 
-version: 1.0.2+6
+version: 1.0.3+7
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

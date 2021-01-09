@@ -51,7 +51,7 @@ class SeasonInfo extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Column(
           children: <Widget>[
-            Text(anime.title, style: Theme.of(context).textTheme.headline6),
+            Text(anime.title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6),
             SizedBox(height: 4.0),
             Text(producersText(anime.producers) + ' | $episodes eps | ' + anime.source),
             SizedBox(height: 4.0),

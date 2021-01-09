@@ -76,7 +76,7 @@ class GenreMangaScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => GenreMangaList(values[index], keys[index]),
-                    settings: RouteSettings(name: 'GenreManga${keys[index]}'),
+                    settings: RouteSettings(name: '${keys[index]}MangaScreen'),
                   ),
                 );
               },

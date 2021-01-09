@@ -69,7 +69,7 @@ class GenreAnimeScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => GenreAnimeList(values[index], keys[index]),
-                    settings: RouteSettings(name: "GenreAnime${keys[index]}"),
+                    settings: RouteSettings(name: '${keys[index]}AnimeScreen'),
                   ),
                 );
               },

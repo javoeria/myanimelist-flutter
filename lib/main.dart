@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => UserData(prefs),
       child: DynamicTheme(
-        defaultBrightness: Brightness.light,
+        defaultBrightness: WidgetsBinding.instance.window.platformBrightness,
         data: (brightness) => ThemeData(
           primarySwatch: Colors.indigo,
           accentColor: brightness == Brightness.light ? Colors.indigo : Colors.blue,

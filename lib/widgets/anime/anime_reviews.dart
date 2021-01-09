@@ -97,7 +97,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                   child: Text('Overall Rating: ${review.reviewer.scores.overall}'),
                 ),
                 collapsed: Text(review.content, softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),
-                expanded: Text(review.content, softWrap: true),
+                expanded: Text(review.content.replaceAll('\\n', ''), softWrap: true),
                 theme: ExpandableThemeData(iconColor: Colors.grey, tapHeaderToExpand: true, hasIcon: true),
               ),
             ],
