@@ -90,10 +90,10 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   RichText(
                     text: TextSpan(
                       text: score,
-                      style: Theme.of(context).textTheme.headline.copyWith(fontSize: 34),
+                      style: Theme.of(context).textTheme.headline5.copyWith(fontSize: 34),
                       children: <TextSpan>[
                         TextSpan(
-                          text: ' (${f.format(manga.scoredBy)} users)',
+                          text: manga.scoredBy == null ? '' : ' (${f.format(manga.scoredBy)} users)',
                           style: Theme.of(context).textTheme.caption,
                         ),
                       ],
@@ -103,7 +103,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   RichText(
                     text: TextSpan(
                       text: 'Ranked: ',
-                      style: Theme.of(context).textTheme.subhead,
+                      style: Theme.of(context).textTheme.subtitle1,
                       children: <TextSpan>[
                         TextSpan(text: rank, style: kTextStyleBold),
                       ],
@@ -112,7 +112,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   RichText(
                     text: TextSpan(
                       text: 'Popularity: ',
-                      style: Theme.of(context).textTheme.subhead,
+                      style: Theme.of(context).textTheme.subtitle1,
                       children: <TextSpan>[
                         TextSpan(text: '#${manga.popularity}', style: kTextStyleBold),
                       ],
@@ -121,7 +121,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   RichText(
                     text: TextSpan(
                       text: 'Members: ',
-                      style: Theme.of(context).textTheme.subhead,
+                      style: Theme.of(context).textTheme.subtitle1,
                       children: <TextSpan>[
                         TextSpan(text: f.format(manga.members), style: kTextStyleBold),
                       ],
@@ -130,7 +130,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   RichText(
                     text: TextSpan(
                       text: 'Favorites: ',
-                      style: Theme.of(context).textTheme.subhead,
+                      style: Theme.of(context).textTheme.subtitle1,
                       children: <TextSpan>[
                         TextSpan(text: f.format(manga.favorites), style: kTextStyleBold),
                       ],
@@ -151,7 +151,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Synopsis', style: Theme.of(context).textTheme.title),
+              Text('Synopsis', style: Theme.of(context).textTheme.headline6),
               SizedBox(height: 16.0),
               Text(manga.synopsis ?? '(No synopsis yet.)', softWrap: true),
             ],
@@ -164,7 +164,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   Divider(height: 0.0),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Text('Background', style: Theme.of(context).textTheme.title),
+                    child: Text('Background', style: Theme.of(context).textTheme.headline6),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
@@ -179,12 +179,12 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Information', style: Theme.of(context).textTheme.title),
+              Text('Information', style: Theme.of(context).textTheme.headline6),
               SizedBox(height: 16.0),
               RichText(
                 text: TextSpan(
                   text: 'Type: ',
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                   children: <TextSpan>[
                     TextSpan(text: manga.type, style: DefaultTextStyle.of(context).style),
                   ],
@@ -193,7 +193,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Volumes: ',
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                   children: <TextSpan>[
                     TextSpan(text: volumes, style: DefaultTextStyle.of(context).style),
                   ],
@@ -202,7 +202,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Chapters: ',
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                   children: <TextSpan>[
                     TextSpan(text: chapters, style: DefaultTextStyle.of(context).style),
                   ],
@@ -211,7 +211,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Status: ',
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                   children: <TextSpan>[
                     TextSpan(text: manga.status, style: DefaultTextStyle.of(context).style),
                   ],
@@ -220,7 +220,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Published: ',
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                   children: <TextSpan>[
                     TextSpan(text: manga.published.string, style: DefaultTextStyle.of(context).style),
                   ],
@@ -229,7 +229,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Genres: ',
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                   children: <TextSpan>[
                     TextSpan(text: _genresText, style: DefaultTextStyle.of(context).style),
                   ],
@@ -238,7 +238,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Authors: ',
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                   children: <TextSpan>[
                     TextSpan(text: _authorsText, style: DefaultTextStyle.of(context).style),
                   ],
@@ -247,7 +247,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Serialization: ',
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                   children: <TextSpan>[
                     TextSpan(text: _serializationText, style: DefaultTextStyle.of(context).style),
                   ],

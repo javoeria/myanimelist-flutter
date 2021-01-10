@@ -27,7 +27,7 @@ class _UserDialogState extends State<UserDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Username'),
+      title: Text('MAL Username'),
       content: TextField(
         autofocus: true,
         controller: _textFieldController,
@@ -50,7 +50,9 @@ class _UserDialogState extends State<UserDialog> {
             } else {
               try {
                 await Jikan().getUserProfile(text);
-                if (kReleaseMode) Firestore.instance.collection('users').add({'username': text, 'datetime': DateTime.now()});
+                if (kReleaseMode) {
+                  FirebaseFirestore.instance.collection('users').add({'username': text, 'datetime': DateTime.now()});
+                }
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.setString('username', text);
                 Navigator.pushAndRemoveUntil(

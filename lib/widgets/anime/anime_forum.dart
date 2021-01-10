@@ -54,7 +54,7 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(forum.title, style: Theme.of(context).textTheme.body2),
+                            Text(forum.title, style: Theme.of(context).textTheme.bodyText1),
                             SizedBox(height: 4.0),
                             RichText(
                               text: TextSpan(

@@ -95,7 +95,8 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
       return Center(child: Text('Minimum 3 letters'));
     }
 
-    Provider.of<UserData>(context).addHistory(query);
+    Provider.of<UserData>(context, listen: false).addHistory(query);
+    String excludeHentai = '&genre=12&genre_exclude=0&order_by=members&sort=desc';
     return Scrollbar(
       child: PagewiseListView(
         pageSize: kSearchPageSize,
@@ -104,7 +105,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) => jikan.search(query, type, page: pageIndex + 1),
+        pageFuture: (pageIndex) => jikan.search(query, type, custom: excludeHentai, page: pageIndex + 1),
       ),
     );
   }
@@ -126,7 +127,13 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
   }
 
   @override
-  ThemeData appBarTheme(BuildContext context) => Theme.of(context);
+  ThemeData appBarTheme(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return theme.copyWith(
+      inputDecorationTheme: InputDecorationTheme(hintStyle: TextStyle(color: Colors.white54)),
+      textTheme: theme.textTheme.copyWith(headline6: theme.textTheme.headline6.copyWith(color: Colors.white)),
+    );
+  }
 }
 
 class _ResultList extends StatelessWidget {
@@ -175,7 +182,7 @@ class _ResultList extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(search.title, style: Theme.of(context).textTheme.subtitle),
+                        Text(search.title, style: Theme.of(context).textTheme.subtitle2),
                         Text(
                           search.synopsis.split('.').first + '.',
                           maxLines: 2,
@@ -214,26 +221,27 @@ class _SuggestionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: min(suggestions.length, 10),
-      itemBuilder: (BuildContext context, int i) {
-        final String suggestion = suggestions[i];
+      itemBuilder: (BuildContext context, int index) {
+        final String suggestion = suggestions[index];
         if (history) {
           return ListTile(
             leading: Icon(Icons.history),
-            title: Text(suggestion, style: Theme.of(context).textTheme.subhead),
+            title: Text(suggestion, style: Theme.of(context).textTheme.subtitle1),
             onTap: () {
               onSelected(suggestion);
             },
             onLongPress: () async {
               bool action = await _historyDialog(context, suggestion);
               if (action == true) {
-                Provider.of<UserData>(context).removeHistory(suggestion);
+                Provider.of<UserData>(context, listen: false).removeHistory(suggestion);
               }
             },
           );
         } else {
           return ListTile(
+            key: Key('suggestion_$index'),
             leading: Icon(Icons.search),
-            title: Text(suggestion, style: Theme.of(context).textTheme.subhead),
+            title: Text(suggestion, style: Theme.of(context).textTheme.subtitle1),
             onTap: () {
               onSelected(suggestion);
             },

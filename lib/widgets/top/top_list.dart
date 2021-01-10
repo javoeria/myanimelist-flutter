@@ -67,7 +67,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
                       children: <Widget>[
                         Text(
                           '${top.rank}. ${top.title}',
-                          style: Theme.of(context).textTheme.subtitle,
+                          style: Theme.of(context).textTheme.subtitle2,
                         ),
                         Text(
                           top.type + ' ' + episodesText(top),
@@ -90,7 +90,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
             widget.subtype != TopSubtype.upcoming
                 ? Row(
                     children: <Widget>[
-                      Text(top.score.toString(), style: Theme.of(context).textTheme.subhead),
+                      Text(top.score.toString(), style: Theme.of(context).textTheme.subtitle1),
                       Icon(Icons.star, color: Colors.amber),
                     ],
                   )

@@ -1,11 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/widgets/season/custom_menu.dart';
-import 'package:myanimelist/widgets/season/season_info.dart';
-import 'package:provider/provider.dart';
+import 'package:myanimelist/widgets/season/season_list.dart';
 
 class ScheduleScreen extends StatelessWidget {
   @override
@@ -32,108 +28,30 @@ class ScheduleScreen extends StatelessWidget {
           ),
           actions: <Widget>[CustomMenu()],
         ),
-        body: TabBarView(
-          children: [
-            WeekDayList(day: WeekDay.monday),
-            WeekDayList(day: WeekDay.tuesday),
-            WeekDayList(day: WeekDay.wednesday),
-            WeekDayList(day: WeekDay.thursday),
-            WeekDayList(day: WeekDay.friday),
-            WeekDayList(day: WeekDay.saturday),
-            WeekDayList(day: WeekDay.sunday),
-            WeekDayList(day: WeekDay.other),
-            WeekDayList(day: WeekDay.unknown),
-          ],
+        body: FutureBuilder(
+          future: Jikan().getSchedule(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            Schedule schedule = snapshot.data;
+            return TabBarView(
+              children: [
+                SeasonList(schedule.monday),
+                SeasonList(schedule.tuesday),
+                SeasonList(schedule.wednesday),
+                SeasonList(schedule.thursday),
+                SeasonList(schedule.friday),
+                SeasonList(schedule.saturday),
+                SeasonList(schedule.sunday),
+                SeasonList(schedule.other),
+                SeasonList(schedule.unknown),
+              ],
+            );
+          },
         ),
       ),
     );
   }
-}
-
-class WeekDayList extends StatefulWidget {
-  WeekDayList({this.day});
-
-  final WeekDay day;
-
-  @override
-  _WeekDayListState createState() => _WeekDayListState();
-}
-
-class _WeekDayListState extends State<WeekDayList> with AutomaticKeepAliveClientMixin<WeekDayList> {
-  Future<Schedule> _future;
-
-  BuiltList<AnimeItem> animeBuiltList(Schedule schedule) {
-    switch (describeEnum(widget.day)) {
-      case 'monday':
-        return schedule.monday;
-        break;
-      case 'tuesday':
-        return schedule.tuesday;
-        break;
-      case 'wednesday':
-        return schedule.wednesday;
-        break;
-      case 'thursday':
-        return schedule.thursday;
-        break;
-      case 'friday':
-        return schedule.friday;
-        break;
-      case 'saturday':
-        return schedule.saturday;
-        break;
-      case 'sunday':
-        return schedule.sunday;
-        break;
-      case 'other':
-        return schedule.other;
-        break;
-      case 'unknown':
-        return schedule.unknown;
-        break;
-      default:
-        throw 'Schedule Error';
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _future = Jikan().getSchedule(weekday: widget.day);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return FutureBuilder(
-      future: _future,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Center(child: CircularProgressIndicator());
-        }
-
-        BuiltList<AnimeItem> animeList = animeBuiltList(snapshot.data);
-        if (animeList.isEmpty) {
-          return ListTile(title: Text('No items found.'));
-        }
-        bool kids = Provider.of<UserData>(context).kidsGenre;
-        bool r18 = Provider.of<UserData>(context).r18Genre;
-        if (!kids) animeList = BuiltList.from(animeList.where((anime) => anime.kids == false));
-        if (!r18) animeList = BuiltList.from(animeList.where((anime) => anime.r18 == false));
-        return Scrollbar(
-          child: ListView.separated(
-            separatorBuilder: (context, index) => Divider(height: 0.0),
-            itemCount: animeList.length,
-            itemBuilder: (context, index) {
-              AnimeItem anime = animeList.elementAt(index);
-              return SeasonInfo(anime);
-            },
-          ),
-        );
-      },
-    );
-  }
-
-  @override
-  bool get wantKeepAlive => true;
 }

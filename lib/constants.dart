@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+const kGooglePlayId = 'com.javier.myanimelist';
+const kSlackToken = 'T014XKJ2C31/B014XKLF2S3/jtDgfbsVzEUusc2i2mUk3o2b';
+
 const kAnimePageSize = 300;
 const kEpisodePageSize = 100;
 const kSearchPageSize = 50;

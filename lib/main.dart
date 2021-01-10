@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/home_screen.dart';
 import 'package:provider/provider.dart';
@@ -8,14 +10,18 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
+import 'package:slack_notifier/slack_notifier.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Crashlytics.instance.enableInDevMode = true;
-  FlutterError.onError = Crashlytics.instance.recordFlutterError;
+  await Firebase.initializeApp();
+  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kReleaseMode);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
+  if (kReleaseMode) SlackNotifier(kSlackToken).send('main', channel: 'jikan');
   SharedPreferences prefs = await SharedPreferences.getInstance();
   // await prefs.setString('username', 'javoeria');
   print(prefs.getKeys());
@@ -33,7 +39,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => UserData(prefs),
       child: DynamicTheme(
-        defaultBrightness: Brightness.light,
+        defaultBrightness: WidgetsBinding.instance.window.platformBrightness,
         data: (brightness) => ThemeData(
           primarySwatch: Colors.indigo,
           accentColor: brightness == Brightness.light ? Colors.indigo : Colors.blue,

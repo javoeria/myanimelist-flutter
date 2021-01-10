@@ -67,7 +67,7 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(article.title, style: Theme.of(context).textTheme.body2),
+                            Text(article.title, style: Theme.of(context).textTheme.bodyText1),
                             SizedBox(height: 4.0),
                             Text(article.intro, maxLines: 2, overflow: TextOverflow.ellipsis),
                             SizedBox(height: 4.0),

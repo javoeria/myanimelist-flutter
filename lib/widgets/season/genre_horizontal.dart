@@ -12,9 +12,11 @@ class GenreHorizontal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 48.0,
+      alignment: Alignment.center,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: padding),
+        shrinkWrap: true,
         itemCount: genreList.length,
         itemBuilder: (context, index) {
           GenericInfo genre = genreList[index];

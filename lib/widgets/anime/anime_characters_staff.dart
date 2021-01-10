@@ -99,7 +99,7 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                                   TitleAnime(
                                     actors.first.malId,
                                     '',
-                                    actors.first.imageUrl.replaceFirst('/r/23x32', ''),
+                                    actors.first.imageUrl.replaceFirst('/r/42x62', ''),
                                     width: kImageWidth,
                                     height: kImageHeight,
                                     type: TopType.people,

@@ -16,7 +16,7 @@ class PictureList extends StatelessWidget {
         Divider(height: 0.0),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
-          child: Text('Pictures', style: Theme.of(context).textTheme.title),
+          child: Text('Pictures', style: Theme.of(context).textTheme.headline6),
         ),
         Container(
           height: kContainerHeight,
@@ -28,11 +28,25 @@ class PictureList extends StatelessWidget {
               Picture picture = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Image.network(
-                  picture.large,
-                  width: kContainerWidth,
-                  height: kContainerHeight,
-                  fit: BoxFit.cover,
+                child: GestureDetector(
+                  child: Hero(
+                    tag: 'imageHero$index',
+                    child: Image.network(
+                      picture.large,
+                      width: kContainerWidth,
+                      height: kContainerHeight,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ImageScreen(index, picture.large),
+                        settings: RouteSettings(name: 'ImageScreen'),
+                      ),
+                    );
+                  },
                 ),
               );
             },
@@ -40,6 +54,28 @@ class PictureList extends StatelessWidget {
         ),
         SizedBox(height: 12.0),
       ],
+    );
+  }
+}
+
+class ImageScreen extends StatelessWidget {
+  ImageScreen(this.index, this.url);
+
+  final int index;
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        child: Center(
+          child: Hero(
+            tag: 'imageHero$index',
+            child: Image.network(url),
+          ),
+        ),
+        onTap: () => Navigator.pop(context),
+      ),
     );
   }
 }

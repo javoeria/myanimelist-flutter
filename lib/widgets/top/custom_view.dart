@@ -8,7 +8,7 @@ class CustomView extends StatelessWidget {
     return IconButton(
       icon: Provider.of<UserData>(context).gridView ? Icon(Icons.view_headline) : Icon(Icons.apps),
       onPressed: () {
-        Provider.of<UserData>(context).toogleView();
+        Provider.of<UserData>(context, listen: false).toogleView();
       },
     );
   }

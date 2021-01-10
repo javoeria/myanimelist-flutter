@@ -4,6 +4,8 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
+import 'package:myanimelist/screens/genre_anime_screen.dart';
+import 'package:myanimelist/screens/genre_manga_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/settings_screen.dart';
 import 'package:myanimelist/widgets/home/search_button.dart';
@@ -162,6 +164,19 @@ class HomeScreen extends StatelessWidget {
                           );
                         },
                       ),
+                      ListTile(
+                        title: Text('Genres Anime'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GenreAnimeScreen(),
+                              settings: RouteSettings(name: 'GenreAnimeScreen'),
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                   ExpansionTile(
@@ -196,6 +211,19 @@ class HomeScreen extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) => TopMangaScreen(),
                               settings: RouteSettings(name: 'TopMangaScreen'),
+                            ),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Genres Manga'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GenreMangaScreen(),
+                              settings: RouteSettings(name: 'GenreMangaScreen'),
                             ),
                           );
                         },

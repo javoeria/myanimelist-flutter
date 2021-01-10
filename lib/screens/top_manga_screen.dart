@@ -25,9 +25,9 @@ class TopMangaScreen extends StatelessWidget {
             tabs: [
               Tab(text: 'All Manga'),
               Tab(text: 'Top Manga'),
-              Tab(text: 'Top Novels'),
               Tab(text: 'Top One-shots'),
               Tab(text: 'Top Doujinshi'),
+              Tab(text: 'Top Novels'),
               Tab(text: 'Top Manhwa'),
               Tab(text: 'Top Manhua'),
               Tab(text: 'Most Popular'),
@@ -41,9 +41,9 @@ class TopMangaScreen extends StatelessWidget {
                 children: [
                   TopGrid(type: type),
                   TopGrid(type: type, subtype: TopSubtype.manga),
-                  TopGrid(type: type, subtype: TopSubtype.novels),
                   TopGrid(type: type, subtype: TopSubtype.oneshots),
                   TopGrid(type: type, subtype: TopSubtype.doujin),
+                  TopGrid(type: type, subtype: TopSubtype.novels),
                   TopGrid(type: type, subtype: TopSubtype.manhwa),
                   TopGrid(type: type, subtype: TopSubtype.manhua),
                   TopGrid(type: type, subtype: TopSubtype.bypopularity),
@@ -54,9 +54,9 @@ class TopMangaScreen extends StatelessWidget {
                 children: [
                   TopList(type: type),
                   TopList(type: type, subtype: TopSubtype.manga),
-                  TopList(type: type, subtype: TopSubtype.novels),
                   TopList(type: type, subtype: TopSubtype.oneshots),
                   TopList(type: type, subtype: TopSubtype.doujin),
+                  TopList(type: type, subtype: TopSubtype.novels),
                   TopList(type: type, subtype: TopSubtype.manhwa),
                   TopList(type: type, subtype: TopSubtype.manhua),
                   TopList(type: type, subtype: TopSubtype.bypopularity),

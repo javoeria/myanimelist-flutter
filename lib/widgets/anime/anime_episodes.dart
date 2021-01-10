@@ -52,7 +52,7 @@ class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveCl
           subtitle: subtitleText(episode.titleRomanji, episode.titleJapanese),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(episode.episodeId.toString(), style: Theme.of(context).textTheme.title),
+            child: Text(episode.episodeId.toString(), style: Theme.of(context).textTheme.headline6),
           ),
           trailing: Text(dateAired),
         ),

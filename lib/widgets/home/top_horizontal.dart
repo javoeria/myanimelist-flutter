@@ -21,7 +21,7 @@ class TopHorizontal extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Top $label Anime', style: Theme.of(context).textTheme.title),
+              Text('Top $label Anime', style: Theme.of(context).textTheme.headline6),
               IconButton(
                 icon: Icon(Icons.chevron_right),
                 key: Key('${label.toLowerCase()}_icon'),
