@@ -3,6 +3,8 @@ import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:myanimelist/main.dart';
+import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/genre_anime_screen.dart';
 import 'package:myanimelist/screens/genre_manga_screen.dart';
@@ -62,11 +64,15 @@ class HomeScreen extends StatelessWidget {
                       ? ListTile(
                           title: Text('Login'),
                           leading: Icon(FontAwesomeIcons.signInAlt, color: Theme.of(context).unselectedWidgetColor),
-                          onTap: () {
-                            showDialog<void>(
-                              context: context,
-                              builder: (context) => UserDialog(),
-                            );
+                          onTap: () async {
+                            String username = await MalClient().login();
+                            if (username != null) {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(builder: (context) => LoadingScreen()),
+                                (Route<dynamic> route) => false,
+                              );
+                            }
                           },
                         )
                       : ExpansionTile(
