@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:myanimelist/constants.dart';
@@ -26,6 +27,7 @@ class MalClient {
       print(queryParams);
       if (queryParams['error'] == 'access_denied') return null;
 
+      Fluttertoast.showToast(msg: 'Login Successful');
       final tokenJson = await _generateTokens(verifier, queryParams['code']);
       final username = await _getUserName(tokenJson['access_token']);
       if (kReleaseMode) {
@@ -52,6 +54,36 @@ class MalClient {
       SlackNotifier(kSlackToken).send('User Refresh $username', channel: 'jikan');
     }
     return tokenJson['access_token'];
+  }
+
+  Future<Map<String, dynamic>> getStatus(int id, {bool anime = true}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = prefs.getString('username');
+    if (username == null) return null;
+
+    final doc = await FirebaseFirestore.instance.collection('test').doc(username).get();
+    if (doc.data() == null) return null;
+
+    String accessToken = doc.data()['access_token'];
+    DateTime expiredAt = doc.data()['datetime'].toDate().add(Duration(seconds: doc.data()['expires_in']));
+    if (DateTime.now().isAfter(expiredAt)) accessToken = await refresh();
+
+    final statusJson = anime ? await _getAnimeStatus(id, accessToken) : await _getMangaStatus(id, accessToken);
+    return statusJson;
+  }
+
+  Future<Map<String, dynamic>> setStatus(int id,
+      {bool anime = true, String status, String score, String episodes, String volumes, String chapters}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = prefs.getString('username');
+    final doc = await FirebaseFirestore.instance.collection('test').doc(username).get();
+
+    String accessToken = doc.data()['access_token'];
+    final statusJson = anime
+        ? await _setAnimeStatus(id, accessToken, status: status, score: score, episodes: episodes)
+        : await _setMangaStatus(id, accessToken, status: status, score: score, volumes: volumes, chapters: chapters);
+    if (kReleaseMode) SlackNotifier(kSlackToken).send('Edit Status $username $id $statusJson}', channel: 'jikan');
+    return statusJson;
   }
 
   String _generateCodeVerifier() {
@@ -89,5 +121,64 @@ class MalClient {
     final response = await http.get('$apiBaseUrl/users/@me', headers: {'Authorization': 'Bearer $accessToken'});
     final userJson = jsonDecode(response.body);
     return userJson['name'];
+  }
+
+  Future<Map<String, dynamic>> _getAnimeStatus(int id, String accessToken) async {
+    final url = '$apiBaseUrl/anime/$id?fields=my_list_status,num_episodes';
+    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final animeJson = jsonDecode(response.body);
+    if (animeJson['my_list_status'] == null) {
+      animeJson['my_list_status'] = {'score': 0, 'num_episodes_watched': '', 'text': 'ADD TO MY LIST'};
+    } else {
+      animeJson['my_list_status']['text'] = animeJson['my_list_status']['status'].replaceAll('_', ' ').toUpperCase();
+    }
+    animeJson['my_list_status']['id'] = id;
+    animeJson['my_list_status']['total_episodes'] = animeJson['num_episodes'] ?? 0;
+    return animeJson['my_list_status'];
+  }
+
+  Future<Map<String, dynamic>> _getMangaStatus(int id, String accessToken) async {
+    final url = '$apiBaseUrl/manga/$id?fields=my_list_status,num_volumes,num_chapters';
+    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final mangaJson = jsonDecode(response.body);
+    if (mangaJson['my_list_status'] == null) {
+      mangaJson['my_list_status'] = {
+        'score': 0,
+        'num_volumes_read': '',
+        'num_chapters_read': '',
+        'text': 'ADD TO MY LIST'
+      };
+    } else {
+      mangaJson['my_list_status']['text'] = mangaJson['my_list_status']['status'].replaceAll('_', ' ').toUpperCase();
+    }
+    mangaJson['my_list_status']['id'] = id;
+    mangaJson['my_list_status']['total_volumes'] = mangaJson['num_volumes'] ?? 0;
+    mangaJson['my_list_status']['total_chapters'] = mangaJson['num_chapters'] ?? 0;
+    return mangaJson['my_list_status'];
+  }
+
+  Future<Map<String, dynamic>> _setAnimeStatus(int id, String accessToken,
+      {String status, String score, String episodes}) async {
+    final params = {
+      'status': status,
+      'score': score,
+      'num_watched_episodes': episodes == '?' ? '0' : episodes,
+    };
+    final url = '$apiBaseUrl/anime/$id/my_list_status';
+    final response = await http.put(url, body: params, headers: {'Authorization': 'Bearer $accessToken'});
+    return jsonDecode(response.body);
+  }
+
+  Future<Map<String, dynamic>> _setMangaStatus(int id, String accessToken,
+      {String status, String score, String volumes, String chapters}) async {
+    final params = {
+      'status': status,
+      'score': score,
+      'num_volumes_read': volumes == '?' ? '0' : volumes,
+      'num_chapters_read': chapters == '?' ? '0' : chapters,
+    };
+    final url = '$apiBaseUrl/manga/$id/my_list_status';
+    final response = await http.put(url, body: params, headers: {'Authorization': 'Bearer $accessToken'});
+    return jsonDecode(response.body);
   }
 }

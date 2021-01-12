@@ -31,6 +31,7 @@ dependencies:
   jikan_api: ^1.4.0
   slack_notifier: ^1.0.0
   rate_my_app: ^0.7.2
+  fluttertoast: ^7.1.6
   flutter_web_auth: ^0.2.4
   flutter_pagewise:
     git: git://github.com/javoeria/flutter_pagewise.git

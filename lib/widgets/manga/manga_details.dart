@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
+import 'package:myanimelist/oauth.dart';
+import 'package:myanimelist/widgets/manga/manga_dialog.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:firebase_performance/firebase_performance.dart';
@@ -22,6 +25,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
 
   Manga manga;
   BuiltList<Picture> pictures;
+  Map<String, dynamic> status;
   bool loading = true;
 
   @override
@@ -35,6 +39,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
     mangaTrace.start();
     manga = await jikan.getMangaInfo(widget.id);
     pictures = await jikan.getMangaPictures(widget.id);
+    status = await MalClient().getStatus(widget.id, anime: false);
     mangaTrace.stop();
     setState(() => loading = false);
   }
@@ -61,6 +66,29 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
       names.add(ser.name);
     }
     return names.join(', ');
+  }
+
+  Color get _statusColor {
+    switch (status['text']) {
+      case 'READING':
+        return kWatchingColor;
+        break;
+      case 'COMPLETED':
+        return kCompletedColor;
+        break;
+      case 'ON HOLD':
+        return kOnHoldColor;
+        break;
+      case 'DROPPED':
+        return kDroppedColor;
+        break;
+      case 'PLAN TO READ':
+      case 'ADD TO MY LIST':
+        return kPlantoWatchColor;
+        break;
+      default:
+        throw 'MangaStatus Error';
+    }
   }
 
   @override
@@ -145,7 +173,37 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
             ],
           ),
         ),
-        GenreHorizontal(manga.genres),
+        // GenreHorizontal(manga.genres),
+        status != null
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: OutlinedButton(
+                  child: Text(
+                    status['text'],
+                    style: Theme.of(context).textTheme.button.copyWith(color: _statusColor),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(width: 2, color: _statusColor),
+                  ),
+                  onPressed: () async {
+                    final newStatus = await showDialog<dynamic>(
+                      context: context,
+                      builder: (context) => MangaDialog(status),
+                    );
+                    if (newStatus != null && newStatus['status'] != null) {
+                      setState(() {
+                        status['status'] = newStatus['status'];
+                        status['score'] = newStatus['score'];
+                        status['num_chapters_read'] = newStatus['num_chapters_read'];
+                        status['num_volumes_read'] = newStatus['num_volumes_read'];
+                        status['text'] = newStatus['status'].replaceAll('_', ' ').toUpperCase();
+                      });
+                      Fluttertoast.showToast(msg: 'Update Successful');
+                    }
+                  },
+                ),
+              )
+            : Container(),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 16.0),
           child: Column(
