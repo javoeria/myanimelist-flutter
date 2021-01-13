@@ -6,6 +6,7 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/widgets/anime/anime_dialog.dart';
+import 'package:myanimelist/widgets/anime/related_list.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:firebase_performance/firebase_performance.dart';
@@ -26,6 +27,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
   Anime anime;
   BuiltList<Picture> pictures;
   Map<String, dynamic> status;
+  List<dynamic> related;
   bool loading = true;
 
   @override
@@ -40,6 +42,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     anime = await jikan.getAnimeInfo(widget.id);
     pictures = await jikan.getAnimePictures(widget.id);
     status = await MalClient().getStatus(widget.id);
+    related = await MalClient().getRelated(widget.id);
     animeTrace.stop();
     setState(() => loading = false);
   }
@@ -411,6 +414,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 ],
               )
             : Container(),
+        if (related != null && related.isNotEmpty) RelatedList(related),
         PictureList(pictures),
       ],
     );

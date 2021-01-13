@@ -86,6 +86,40 @@ class MalClient {
     return statusJson;
   }
 
+  Future<List<dynamic>> getRelated(int id, {bool anime = true}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = prefs.getString('username');
+    if (username == null) return null;
+
+    final doc = await FirebaseFirestore.instance.collection('test').doc(username).get();
+    if (doc.data() == null) return null;
+
+    String accessToken = doc.data()['access_token'];
+    DateTime expiredAt = doc.data()['datetime'].toDate().add(Duration(seconds: doc.data()['expires_in']));
+    if (DateTime.now().isAfter(expiredAt)) accessToken = await refresh();
+
+    final relatedJson = anime ? await _getAnimeRelated(id, accessToken) : await _getMangaRelated(id, accessToken);
+    return relatedJson;
+  }
+
+  Future<List<dynamic>> getSuggestions() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = prefs.getString('username');
+    if (username == null) return null;
+
+    final doc = await FirebaseFirestore.instance.collection('test').doc(username).get();
+    if (doc.data() == null) return null;
+
+    String accessToken = doc.data()['access_token'];
+    DateTime expiredAt = doc.data()['datetime'].toDate().add(Duration(seconds: doc.data()['expires_in']));
+    if (DateTime.now().isAfter(expiredAt)) accessToken = await refresh();
+
+    final url = '$apiBaseUrl/anime/suggestions?limit=20';
+    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final suggestionsJson = jsonDecode(response.body);
+    return suggestionsJson['data'];
+  }
+
   String _generateCodeVerifier() {
     final random = Random.secure();
     final values = List<int>.generate(200, (i) => random.nextInt(256));
@@ -180,5 +214,19 @@ class MalClient {
     final url = '$apiBaseUrl/manga/$id/my_list_status';
     final response = await http.put(url, body: params, headers: {'Authorization': 'Bearer $accessToken'});
     return jsonDecode(response.body);
+  }
+
+  Future<List<dynamic>> _getAnimeRelated(int id, String accessToken) async {
+    final url = '$apiBaseUrl/anime/$id?fields=related_anime';
+    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final animeJson = jsonDecode(response.body);
+    return animeJson['related_anime'];
+  }
+
+  Future<List<dynamic>> _getMangaRelated(int id, String accessToken) async {
+    final url = '$apiBaseUrl/manga/$id?fields=related_manga';
+    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final mangaJson = jsonDecode(response.body);
+    return mangaJson['related_manga'];
   }
 }

@@ -4,6 +4,7 @@ import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/models/user_data.dart';
+import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
@@ -72,6 +73,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Season season;
   BuiltList<Top> topAiring;
   BuiltList<Top> topUpcoming;
+  List<dynamic> suggestions;
   bool loading = true;
 
   @override
@@ -106,6 +108,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     String username = prefs.getString('username');
     if (username != null) {
       profile = await jikan.getUserProfile(username);
+      suggestions = await MalClient().getSuggestions();
     }
     season = await jikan.getSeason();
     topAiring = await jikan.getTop(TopType.anime, subtype: TopSubtype.airing);
@@ -119,7 +122,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if (loading) {
       return Scaffold(body: Center(child: CircularProgressIndicator()));
     } else {
-      return HomeScreen(profile, season, topAiring, topUpcoming);
+      return HomeScreen(profile, season, topAiring, topUpcoming, suggestions);
     }
   }
 }
