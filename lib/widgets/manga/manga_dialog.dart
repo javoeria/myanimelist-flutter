@@ -182,7 +182,7 @@ class _MangaDialogState extends State<MangaDialog> {
                   onPressed: () {
                     if (_textFieldController2.text.isEmpty) {
                       _textFieldController2.text = '0';
-                    } else if (total == '?' || int.parse(_textFieldController2.text) < int.parse(total)) {
+                    } else if (total2 == '?' || int.parse(_textFieldController2.text) < int.parse(total2)) {
                       _textFieldController2.text = (int.parse(_textFieldController2.text) + 1).toString();
                     }
                   },

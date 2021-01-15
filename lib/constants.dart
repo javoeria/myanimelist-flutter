@@ -9,11 +9,11 @@ const kSearchPageSize = 50;
 const kTopPageSize = 50;
 const kReviewPageSize = 20;
 
-const kWatchingColor = Color(0xFF43A047);    // Colors.green[600]
-const kCompletedColor = Color(0xFF0D47A1);   // Colors.blue[900]
-const kOnHoldColor = Color(0xFFFBC02D);      // Colors.yellow[700]
-const kDroppedColor = Color(0xFFB71C1C);     // Colors.red[900]
-const kPlantoWatchColor = Color(0xFFBDBDBD); // Colors.grey[400]
+const kWatchingColor = Color(0xFF2DB039);
+const kCompletedColor = Color(0xFF26448F);
+const kOnHoldColor = Color(0xFFF9D457);
+const kDroppedColor = Color(0xFFA12F31);
+const kPlantoWatchColor = Color(0xFFC3C3C3);
 
 const kImageWidth = 50.0;
 const kImageHeight = 70.0;

@@ -22,7 +22,6 @@ import 'package:myanimelist/screens/seasonal_anime_screen.dart';
 import 'package:myanimelist/screens/anime_list_screen.dart';
 import 'package:myanimelist/screens/manga_list_screen.dart';
 import 'package:myanimelist/screens/user_profile_screen.dart';
-import 'package:myanimelist/widgets/profile/user_dialog.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

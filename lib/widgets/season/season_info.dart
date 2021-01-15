@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat, DateFormat;
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
@@ -11,25 +10,18 @@ class SeasonInfo extends StatelessWidget {
   final AnimeItem anime;
   final NumberFormat f = NumberFormat.decimalPattern();
   final DateFormat dateFormat = DateFormat('MMM d, yyyy, HH:mm');
+  final DateFormat dateFormat2 = DateFormat('MMM d, yyyy');
 
-  String producersText(BuiltList<GenericInfo> producers) {
-    if (producers.isEmpty) {
-      return '-';
-    } else {
-      List<String> names = [];
-      for (GenericInfo p in producers) {
-        names.add(p.name);
-      }
-      return names.join(', ');
-    }
+  String get _producersText {
+    return anime.producers.isEmpty ? '-' : anime.producers.first.name;
   }
 
-  String airingText(String date) {
-    if (date == null) {
+  String get _airingText {
+    if (anime.airingStart == null) {
       return '??';
     } else {
-      DateTime dateTime = DateTime.parse(date).add(Duration(hours: 9));
-      return dateFormat.format(dateTime) + ' (JST)';
+      DateTime japanTime = DateTime.parse(anime.airingStart).add(Duration(hours: 9));
+      return anime.type == 'TV' ? dateFormat.format(japanTime) + ' (JST)' : dateFormat2.format(japanTime);
     }
   }
 
@@ -53,7 +45,7 @@ class SeasonInfo extends StatelessWidget {
           children: <Widget>[
             Text(anime.title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6),
             SizedBox(height: 4.0),
-            Text(producersText(anime.producers) + ' | $episodes eps | ' + anime.source),
+            Text(_producersText + ' | $episodes eps | ' + anime.source),
             SizedBox(height: 4.0),
             GenreHorizontal(anime.genres, padding: 0.0),
             SizedBox(height: 4.0),
@@ -81,7 +73,7 @@ class SeasonInfo extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(anime.type + ' - ' + airingText(anime.airingStart)),
+                Text(anime.type + ' - ' + _airingText),
                 Row(
                   children: <Widget>[
                     Icon(Icons.star_border, color: Colors.grey, size: 20.0),

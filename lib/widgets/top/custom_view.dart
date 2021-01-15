@@ -7,8 +7,10 @@ class CustomView extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Provider.of<UserData>(context).gridView ? Icon(Icons.view_headline) : Icon(Icons.apps),
+      key: Key('top_view'),
+      tooltip: 'Change view',
       onPressed: () {
-        Provider.of<UserData>(context, listen: false).toogleView();
+        Provider.of<UserData>(context, listen: false).toggleView();
       },
     );
   }

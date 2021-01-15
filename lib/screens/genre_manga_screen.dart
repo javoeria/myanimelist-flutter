@@ -147,24 +147,16 @@ class MangaInfo extends StatelessWidget {
   final NumberFormat f = NumberFormat.decimalPattern();
   final DateFormat dateFormat = DateFormat('MMM d, yyyy');
 
-  String authorsText(BuiltList<GenericInfo> authors) {
-    if (authors.isEmpty) {
-      return '-';
-    } else {
-      List<String> names = [];
-      for (GenericInfo p in authors) {
-        names.add(p.name);
-      }
-      return names.join(', ');
-    }
+  String get _authorsText {
+    return manga.authors.isEmpty ? '-' : manga.authors.first.name;
   }
 
-  String publishingText(String date) {
-    if (date == null) {
+  String get _publishingText {
+    if (manga.publishingStart == null) {
       return '??';
     } else {
-      DateTime dateTime = DateTime.parse(date);
-      return dateFormat.format(dateTime);
+      DateTime japanTime = DateTime.parse(manga.publishingStart).add(Duration(hours: 9));
+      return dateFormat.format(japanTime);
     }
   }
 
@@ -188,7 +180,7 @@ class MangaInfo extends StatelessWidget {
           children: <Widget>[
             Text(manga.title, style: Theme.of(context).textTheme.headline6),
             SizedBox(height: 4.0),
-            Text(authorsText(manga.authors) + ' | $volumes vols | ' + manga.type),
+            Text(_authorsText + ' | $volumes vols | ' + manga.type),
             SizedBox(height: 4.0),
             GenreHorizontal(manga.genres, padding: 0.0),
             SizedBox(height: 4.0),
@@ -213,7 +205,7 @@ class MangaInfo extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(publishingText(manga.publishingStart)),
+                Text(_publishingText),
                 Row(
                   children: <Widget>[
                     Icon(Icons.star_border, color: Colors.grey, size: 20.0),

@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:slack_notifier/slack_notifier.dart';
 
-const clientId = '';
+const clientId = '030823330de353c3bb50727a8c2f864f';
 const tokenUri = 'https://myanimelist.net/v1/oauth2/token';
 const authorizeUri = 'https://myanimelist.net/v1/oauth2/authorize';
 const apiBaseUrl = 'https://api.myanimelist.net/v2';
@@ -25,48 +25,45 @@ class MalClient {
       final uri = await FlutterWebAuth.authenticate(url: loginUrl, callbackUrlScheme: 'javoeria.animedb');
       final queryParams = Uri.parse(uri).queryParameters;
       print(queryParams);
-      if (queryParams['error'] == 'access_denied') return null;
+      if (queryParams['code'] == null) return null;
 
       Fluttertoast.showToast(msg: 'Login Successful');
       final tokenJson = await _generateTokens(verifier, queryParams['code']);
       final username = await _getUserName(tokenJson['access_token']);
-      if (kReleaseMode) {
-        tokenJson['datetime'] = DateTime.now();
-        FirebaseFirestore.instance.collection('test').doc(username).set(tokenJson);
-        SlackNotifier(kSlackToken).send('User Login $username', channel: 'jikan');
-      }
+      tokenJson['datetime'] = DateTime.now();
+      FirebaseFirestore.instance.collection('users').doc(username).set(tokenJson);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('username', username);
+      if (kReleaseMode) SlackNotifier(kSlackToken).send('User Login $username', channel: 'jikan');
       return username;
     } on PlatformException {
       return null;
     }
   }
 
-  Future<String> refresh() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String username = prefs.getString('username');
-    final doc = await FirebaseFirestore.instance.collection('test').doc(username).get();
-    final tokenJson = await _refreshTokens(doc.data()['refresh_token']);
-    if (kReleaseMode) {
-      tokenJson['datetime'] = DateTime.now();
-      FirebaseFirestore.instance.collection('test').doc(username).set(tokenJson);
-      SlackNotifier(kSlackToken).send('User Refresh $username', channel: 'jikan');
-    }
-    return tokenJson['access_token'];
+  Future<List<dynamic>> getSuggestions() async {
+    String accessToken = await _getAcessToken();
+    if (accessToken == null) return [];
+
+    final url = '$apiBaseUrl/anime/suggestions?limit=20';
+    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final suggestionsJson = jsonDecode(response.body);
+    return suggestionsJson['data'];
+  }
+
+  Future<List<dynamic>> getRelated(int id, {bool anime = true}) async {
+    String accessToken = await _getAcessToken();
+    if (accessToken == null) return [];
+
+    final url = anime ? '$apiBaseUrl/anime/$id?fields=related_anime' : '$apiBaseUrl/manga/$id?fields=related_manga';
+    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final relatedJson = jsonDecode(response.body);
+    return anime ? relatedJson['related_anime'] : relatedJson['related_manga'];
   }
 
   Future<Map<String, dynamic>> getStatus(int id, {bool anime = true}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String username = prefs.getString('username');
-    if (username == null) return null;
-
-    final doc = await FirebaseFirestore.instance.collection('test').doc(username).get();
-    if (doc.data() == null) return null;
-
-    String accessToken = doc.data()['access_token'];
-    DateTime expiredAt = doc.data()['datetime'].toDate().add(Duration(seconds: doc.data()['expires_in']));
-    if (DateTime.now().isAfter(expiredAt)) accessToken = await refresh();
+    String accessToken = await _getAcessToken();
+    if (accessToken == null) return null;
 
     final statusJson = anime ? await _getAnimeStatus(id, accessToken) : await _getMangaStatus(id, accessToken);
     return statusJson;
@@ -76,7 +73,7 @@ class MalClient {
       {bool anime = true, String status, String score, String episodes, String volumes, String chapters}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.getString('username');
-    final doc = await FirebaseFirestore.instance.collection('test').doc(username).get();
+    final doc = await FirebaseFirestore.instance.collection('users').doc(username).get();
 
     String accessToken = doc.data()['access_token'];
     final statusJson = anime
@@ -84,40 +81,6 @@ class MalClient {
         : await _setMangaStatus(id, accessToken, status: status, score: score, volumes: volumes, chapters: chapters);
     if (kReleaseMode) SlackNotifier(kSlackToken).send('Edit Status $username $id $statusJson}', channel: 'jikan');
     return statusJson;
-  }
-
-  Future<List<dynamic>> getRelated(int id, {bool anime = true}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String username = prefs.getString('username');
-    if (username == null) return null;
-
-    final doc = await FirebaseFirestore.instance.collection('test').doc(username).get();
-    if (doc.data() == null) return null;
-
-    String accessToken = doc.data()['access_token'];
-    DateTime expiredAt = doc.data()['datetime'].toDate().add(Duration(seconds: doc.data()['expires_in']));
-    if (DateTime.now().isAfter(expiredAt)) accessToken = await refresh();
-
-    final relatedJson = anime ? await _getAnimeRelated(id, accessToken) : await _getMangaRelated(id, accessToken);
-    return relatedJson;
-  }
-
-  Future<List<dynamic>> getSuggestions() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String username = prefs.getString('username');
-    if (username == null) return null;
-
-    final doc = await FirebaseFirestore.instance.collection('test').doc(username).get();
-    if (doc.data() == null) return null;
-
-    String accessToken = doc.data()['access_token'];
-    DateTime expiredAt = doc.data()['datetime'].toDate().add(Duration(seconds: doc.data()['expires_in']));
-    if (DateTime.now().isAfter(expiredAt)) accessToken = await refresh();
-
-    final url = '$apiBaseUrl/anime/suggestions?limit=20';
-    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
-    final suggestionsJson = jsonDecode(response.body);
-    return suggestionsJson['data'];
   }
 
   String _generateCodeVerifier() {
@@ -216,17 +179,23 @@ class MalClient {
     return jsonDecode(response.body);
   }
 
-  Future<List<dynamic>> _getAnimeRelated(int id, String accessToken) async {
-    final url = '$apiBaseUrl/anime/$id?fields=related_anime';
-    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
-    final animeJson = jsonDecode(response.body);
-    return animeJson['related_anime'];
-  }
+  Future<String> _getAcessToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = prefs.getString('username');
+    if (username == null) return null;
 
-  Future<List<dynamic>> _getMangaRelated(int id, String accessToken) async {
-    final url = '$apiBaseUrl/manga/$id?fields=related_manga';
-    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
-    final mangaJson = jsonDecode(response.body);
-    return mangaJson['related_manga'];
+    final doc = await FirebaseFirestore.instance.collection('users').doc(username).get();
+    if (doc.data() == null) return null;
+
+    String accessToken = doc.data()['access_token'];
+    DateTime expiredAt = doc.data()['datetime'].toDate().add(Duration(seconds: doc.data()['expires_in']));
+    if (DateTime.now().isAfter(expiredAt)) {
+      final tokenJson = await _refreshTokens(doc.data()['refresh_token']);
+      tokenJson['datetime'] = DateTime.now();
+      FirebaseFirestore.instance.collection('users').doc(username).set(tokenJson);
+      if (kReleaseMode) SlackNotifier(kSlackToken).send('User Refresh $username', channel: 'jikan');
+      accessToken = tokenJson['access_token'];
+    }
+    return accessToken;
   }
 }

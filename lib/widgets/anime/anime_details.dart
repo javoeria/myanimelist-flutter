@@ -8,7 +8,6 @@ import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/widgets/anime/anime_dialog.dart';
 import 'package:myanimelist/widgets/anime/related_list.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
-import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 class AnimeDetails extends StatefulWidget {
@@ -48,35 +47,19 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
   }
 
   String get _producersText {
-    List<String> names = [];
-    for (GenericInfo prod in anime.producers) {
-      names.add(prod.name);
-    }
-    return names.join(', ');
+    return anime.producers.isEmpty ? 'None found' : anime.producers.map((i) => i.name).join(', ');
   }
 
   String get _licensorsText {
-    List<String> names = [];
-    for (GenericInfo lic in anime.licensors) {
-      names.add(lic.name);
-    }
-    return names.join(', ');
+    return anime.licensors.isEmpty ? 'None found' : anime.licensors.map((i) => i.name).join(', ');
   }
 
   String get _studiosText {
-    List<String> names = [];
-    for (GenericInfo stud in anime.studios) {
-      names.add(stud.name);
-    }
-    return names.join(', ');
+    return anime.studios.isEmpty ? 'None found' : anime.studios.map((i) => i.name).join(', ');
   }
 
   String get _genresText {
-    List<String> names = [];
-    for (GenericInfo gen in anime.genres) {
-      names.add(gen.name);
-    }
-    return names.join(', ');
+    return anime.genres.isEmpty ? 'None found' : anime.genres.map((i) => i.name).join(', ');
   }
 
   Color get _statusColor {
@@ -183,7 +166,6 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
             ],
           ),
         ),
-        // GenreHorizontal(anime.genres),
         status != null
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -214,7 +196,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
               )
             : Container(),
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 16.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -385,9 +367,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: anime.openingThemes.map((op) {
-                        return Text(op);
-                      }).toList(),
+                      children: anime.openingThemes.map((op) => Text(op)).toList(),
                     ),
                   ),
                 ],
@@ -406,9 +386,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: anime.endingThemes.map((ed) {
-                        return Text(ed);
-                      }).toList(),
+                      children: anime.endingThemes.map((ed) => Text(ed)).toList(),
                     ),
                   ),
                 ],

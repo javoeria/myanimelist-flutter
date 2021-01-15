@@ -8,7 +8,6 @@ import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/widgets/anime/related_list.dart';
 import 'package:myanimelist/widgets/manga/manga_dialog.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
-import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 class MangaDetails extends StatefulWidget {
@@ -48,27 +47,15 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
   }
 
   String get _genresText {
-    List<String> names = [];
-    for (GenericInfo gen in manga.genres) {
-      names.add(gen.name);
-    }
-    return names.join(', ');
+    return manga.genres.isEmpty ? 'None found' : manga.genres.map((i) => i.name).join(', ');
   }
 
   String get _authorsText {
-    List<String> names = [];
-    for (GenericInfo aut in manga.authors) {
-      names.add(aut.name);
-    }
-    return names.join(', ');
+    return manga.authors.isEmpty ? 'None found' : manga.authors.map((i) => i.name).join(', ');
   }
 
   String get _serializationText {
-    List<String> names = [];
-    for (GenericInfo ser in manga.serializations) {
-      names.add(ser.name);
-    }
-    return names.join(', ');
+    return manga.serializations.isEmpty ? 'None found' : manga.serializations.map((i) => i.name).join(', ');
   }
 
   Color get _statusColor {
@@ -176,7 +163,6 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
             ],
           ),
         ),
-        // GenreHorizontal(manga.genres),
         status != null
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -208,7 +194,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
               )
             : Container(),
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 16.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

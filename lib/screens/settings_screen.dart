@@ -1,12 +1,15 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:myanimelist/constants.dart';
-import 'package:myanimelist/widgets/profile/user_dialog.dart';
+import 'package:myanimelist/main.dart';
+import 'package:myanimelist/oauth.dart';
 import 'package:package_info/package_info.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:myanimelist/models/user_data.dart';
+import 'package:slack_notifier/slack_notifier.dart';
 
 class SettingsScreen extends StatelessWidget {
   SettingsScreen(this.prefs, this.packageInfo);
@@ -24,13 +27,31 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           ListTile(
-            title: Text('Username'),
-            subtitle: username != null ? Text(username) : null,
-            onTap: () {
-              showDialog<void>(
-                context: context,
-                builder: (context) => UserDialog(username: username),
-              );
+            title: username == null ? Text('Login') : Text('Logout'),
+            onTap: () async {
+              bool action = true;
+              if (username == null) {
+                if (kReleaseMode) {
+                  username = await MalClient().login();
+                } else {
+                  username = 'javoeria';
+                  await prefs.setString('username', username);
+                }
+              } else {
+                action = await _logoutDialog(context);
+                if (action == true) {
+                  await prefs.remove('username');
+                  if (kReleaseMode) SlackNotifier(kSlackToken).send('User Logout $username', channel: 'jikan');
+                }
+              }
+
+              if (username != null && action == true) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoadingScreen()),
+                  (Route<dynamic> route) => false,
+                );
+              }
             },
           ),
           ListTile(
@@ -40,7 +61,7 @@ class SettingsScreen extends StatelessWidget {
               value: Provider.of<UserData>(context).kidsGenre,
               activeColor: Colors.indigo,
               onChanged: (value) {
-                Provider.of<UserData>(context, listen: false).toogleKids();
+                Provider.of<UserData>(context, listen: false).toggleKids();
               },
             ),
           ),
@@ -51,7 +72,7 @@ class SettingsScreen extends StatelessWidget {
               value: Provider.of<UserData>(context).r18Genre,
               activeColor: Colors.indigo,
               onChanged: (value) {
-                Provider.of<UserData>(context, listen: false).toogleR18();
+                Provider.of<UserData>(context, listen: false).toggleR18();
               },
             ),
           ),
@@ -88,4 +109,29 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<bool> _logoutDialog(BuildContext context) async {
+  return showDialog<bool>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Text('Are you sure you want to logout?'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('NO'),
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+          ),
+          FlatButton(
+            child: Text('YES'),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

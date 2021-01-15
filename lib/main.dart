@@ -22,9 +22,7 @@ void main() async {
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kReleaseMode);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-  if (kReleaseMode) SlackNotifier(kSlackToken).send('main', channel: 'jikan');
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  // await prefs.setString('username', 'javoeria');
   print(prefs.getKeys());
   runApp(MyApp(prefs));
 }
@@ -109,6 +107,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if (username != null) {
       profile = await jikan.getUserProfile(username);
       suggestions = await MalClient().getSuggestions();
+      if (kReleaseMode) SlackNotifier(kSlackToken).send('Main $username', channel: 'jikan');
     }
     season = await jikan.getSeason();
     topAiring = await jikan.getTop(TopType.anime, subtype: TopSubtype.airing);

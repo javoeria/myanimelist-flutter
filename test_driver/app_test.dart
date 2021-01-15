@@ -24,7 +24,7 @@ void main() {
     });
 
     setUp(() {
-      sleep(const Duration(seconds: 4));
+      sleep(const Duration(seconds: 10));
     });
 
     takeScreenshot(String name) async {
@@ -48,11 +48,10 @@ void main() {
       await driver.tap(find.byTooltip('Back'));
     });
 
-    test('login dialog', () async {
+    test('settings screen', () async {
       await driver.tap(menuIconFinder);
+      await driver.tap(find.byTooltip('Settings'));
       await driver.tap(find.text('Login'));
-      await driver.enterText('javoeria');
-      await driver.tap(find.text('OK'));
       await driver.waitUntilNoTransientCallbacks();
       await driver.tap(menuIconFinder);
       await driver.tap(find.byTooltip('Theme'));
@@ -200,18 +199,13 @@ void main() {
       await driver.tap(menuIconFinder);
       await driver.tap(industryTextFinder);
       await driver.tap(find.text('People'));
+      await driver.tap(find.byValueKey('top_view'));
       await takeScreenshot('people');
       await driver.tap(find.pageBack());
       await driver.tap(menuIconFinder);
       await driver.tap(industryTextFinder);
       await driver.tap(find.text('Characters'));
       await takeScreenshot('characters');
-      await driver.tap(find.pageBack());
-    });
-
-    test('settings screen', () async {
-      await driver.tap(menuIconFinder);
-      await driver.tap(find.byTooltip('Settings'));
       await driver.tap(find.pageBack());
     });
   });
