@@ -23,19 +23,19 @@ class UserData extends ChangeNotifier {
   List<String> _history;
   List<String> get history => _history;
 
-  void toogleView() {
+  void toggleView() {
     _gridView = !_gridView;
     prefs.setBool('gridView', _gridView);
     notifyListeners();
   }
 
-  void toogleKids() {
+  void toggleKids() {
     _kidsGenre = !_kidsGenre;
     prefs.setBool('kidsGenre', _kidsGenre);
     notifyListeners();
   }
 
-  void toogleR18() {
+  void toggleR18() {
     _r18Genre = !_r18Genre;
     prefs.setBool('r18Genre', _r18Genre);
     notifyListeners();

@@ -1,7 +1,7 @@
 name: myanimelist
 description: The best way to explore all anime and manga.
 
-version: 1.0.3+7
+version: 1.1.0+8
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -31,6 +31,8 @@ dependencies:
   jikan_api: ^1.4.0
   slack_notifier: ^1.0.0
   rate_my_app: ^0.7.2
+  fluttertoast: ^7.1.6
+  flutter_web_auth: ^0.2.4
   flutter_pagewise:
     git: git://github.com/javoeria/flutter_pagewise.git
 

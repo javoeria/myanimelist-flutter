@@ -1,0 +1,55 @@
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/widgets/title_anime.dart';
+
+class SuggestionHorizontal extends StatelessWidget {
+  SuggestionHorizontal(this.suggestions);
+
+  final List<dynamic> suggestions;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Divider(height: 0.0),
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text('My Anime Suggestions', style: Theme.of(context).textTheme.headline6),
+              IconButton(
+                icon: Icon(Icons.help_outline),
+                onPressed: (() => Fluttertoast.showToast(
+                    msg: "These suggestions are generated based on MAL's Anime and Manga rankings.")),
+              )
+            ],
+          ),
+        ),
+        Container(
+          height: 220.0,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            itemCount: suggestions.length,
+            itemBuilder: (context, index) {
+              Map<String, dynamic> item = suggestions.elementAt(index);
+              return Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: TitleAnime(
+                  item['node']['id'],
+                  item['node']['title'],
+                  item['node']['main_picture']['large'],
+                  type: TopType.anime,
+                ),
+              );
+            },
+          ),
+        ),
+        SizedBox(height: 12.0),
+      ],
+    );
+  }
+}

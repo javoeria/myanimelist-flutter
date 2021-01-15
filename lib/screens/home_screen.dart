@@ -3,6 +3,8 @@ import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:myanimelist/main.dart';
+import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/genre_anime_screen.dart';
 import 'package:myanimelist/screens/genre_manga_screen.dart';
@@ -10,6 +12,7 @@ import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/settings_screen.dart';
 import 'package:myanimelist/widgets/home/search_button.dart';
 import 'package:myanimelist/widgets/home/season_horizontal.dart';
+import 'package:myanimelist/widgets/home/suggestion_horizontal.dart';
 import 'package:myanimelist/widgets/home/top_horizontal.dart';
 import 'package:myanimelist/screens/top_anime_screen.dart';
 import 'package:myanimelist/screens/top_manga_screen.dart';
@@ -19,17 +22,17 @@ import 'package:myanimelist/screens/seasonal_anime_screen.dart';
 import 'package:myanimelist/screens/anime_list_screen.dart';
 import 'package:myanimelist/screens/manga_list_screen.dart';
 import 'package:myanimelist/screens/user_profile_screen.dart';
-import 'package:myanimelist/widgets/profile/user_dialog.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen(this.profile, this.season, this.topAiring, this.topUpcoming);
+  HomeScreen(this.profile, this.season, this.topAiring, this.topUpcoming, this.suggestions);
 
   final UserProfile profile;
   final Season season;
   final BuiltList<Top> topAiring;
   final BuiltList<Top> topUpcoming;
+  final List<dynamic> suggestions;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +46,7 @@ class HomeScreen extends StatelessWidget {
           SeasonHorizontal(season),
           TopHorizontal(topAiring, label: 'Airing'),
           TopHorizontal(topUpcoming, label: 'Upcoming'),
+          if (suggestions != null && suggestions.isNotEmpty) SuggestionHorizontal(suggestions),
         ],
       ),
       drawer: Drawer(
@@ -62,11 +66,15 @@ class HomeScreen extends StatelessWidget {
                       ? ListTile(
                           title: Text('Login'),
                           leading: Icon(FontAwesomeIcons.signInAlt, color: Theme.of(context).unselectedWidgetColor),
-                          onTap: () {
-                            showDialog<void>(
-                              context: context,
-                              builder: (context) => UserDialog(),
-                            );
+                          onTap: () async {
+                            String username = await MalClient().login();
+                            if (username != null) {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(builder: (context) => LoadingScreen()),
+                                (Route<dynamic> route) => false,
+                              );
+                            }
                           },
                         )
                       : ExpansionTile(
