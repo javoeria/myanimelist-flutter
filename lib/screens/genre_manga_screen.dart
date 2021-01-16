@@ -101,13 +101,13 @@ class GenreMangaList extends StatelessWidget {
         title: Text('$genre Manga'),
       ),
       body: FutureBuilder(
-        future: Jikan().getGenre(GenreType.manga, Genre.values[id - 1]),
+        future: Jikan().getGenre(id, GenreType.manga),
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          GenreList genre = snapshot.data;
+          Genre genre = snapshot.data;
           BuiltList<MangaItem> mangaList = genre.manga;
           bool kids = Provider.of<UserData>(context).kidsGenre;
           bool r18 = Provider.of<UserData>(context).r18Genre;
@@ -180,7 +180,7 @@ class MangaInfo extends StatelessWidget {
           children: <Widget>[
             Text(manga.title, style: Theme.of(context).textTheme.headline6),
             SizedBox(height: 4.0),
-            Text(_authorsText + ' | $volumes vols | ' + manga.type),
+            Text('$_authorsText | $volumes vols | ${manga.type}'),
             SizedBox(height: 4.0),
             GenreHorizontal(manga.genres, padding: 0.0),
             SizedBox(height: 4.0),

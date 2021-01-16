@@ -72,7 +72,7 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
                             Text(article.intro, maxLines: 2, overflow: TextOverflow.ellipsis),
                             SizedBox(height: 4.0),
                             Text(
-                              f.format(DateTime.parse(article.date)) + ' by ${article.authorName}',
+                              '${f.format(DateTime.parse(article.date))} by ${article.authorName}',
                               style: Theme.of(context).textTheme.caption,
                             ),
                           ],

@@ -94,13 +94,13 @@ class GenreAnimeList extends StatelessWidget {
         title: Text('$genre Anime'),
       ),
       body: FutureBuilder(
-        future: Jikan().getGenre(GenreType.anime, Genre.values[id - 1]),
+        future: Jikan().getGenre(id, GenreType.anime),
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          GenreList genre = snapshot.data;
+          Genre genre = snapshot.data;
           return SeasonList(genre.anime);
         },
       ),

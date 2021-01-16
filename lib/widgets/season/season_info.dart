@@ -21,7 +21,7 @@ class SeasonInfo extends StatelessWidget {
       return '??';
     } else {
       DateTime japanTime = DateTime.parse(anime.airingStart).add(Duration(hours: 9));
-      return anime.type == 'TV' ? dateFormat.format(japanTime) + ' (JST)' : dateFormat2.format(japanTime);
+      return anime.type == 'TV' ? '${dateFormat.format(japanTime)} (JST)' : dateFormat2.format(japanTime);
     }
   }
 
@@ -45,7 +45,7 @@ class SeasonInfo extends StatelessWidget {
           children: <Widget>[
             Text(anime.title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6),
             SizedBox(height: 4.0),
-            Text(_producersText + ' | $episodes eps | ' + anime.source),
+            Text('$_producersText | $episodes eps | ${anime.source}'),
             SizedBox(height: 4.0),
             GenreHorizontal(anime.genres, padding: 0.0),
             SizedBox(height: 4.0),
@@ -73,7 +73,7 @@ class SeasonInfo extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(anime.type + ' - ' + _airingText),
+                Text('${anime.type} - $_airingText'),
                 Row(
                   children: <Widget>[
                     Icon(Icons.star_border, color: Colors.grey, size: 20.0),

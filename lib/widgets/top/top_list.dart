@@ -70,11 +70,11 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
                           style: Theme.of(context).textTheme.subtitle2,
                         ),
                         Text(
-                          top.type + ' ' + episodesText(top),
+                          '${top.type} ${episodesText(top)}',
                           style: Theme.of(context).textTheme.caption,
                         ),
                         Text(
-                          (top.startDate ?? '') + ' - ' + (top.endDate ?? ''),
+                          top.startDate == null ? '-' : '${top.startDate} - ${top.endDate ?? ''}',
                           style: Theme.of(context).textTheme.caption,
                         ),
                         Text(

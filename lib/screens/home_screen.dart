@@ -3,6 +3,7 @@ import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/main.dart';
 import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
@@ -59,8 +60,9 @@ class HomeScreen extends StatelessWidget {
                   UserAccountsDrawerHeader(
                     accountName: Text(profile == null ? '' : profile.username),
                     accountEmail: null,
-                    currentAccountPicture:
-                        profile == null ? Container() : CircleAvatar(backgroundImage: NetworkImage(profile.imageUrl)),
+                    currentAccountPicture: profile == null
+                        ? Container()
+                        : CircleAvatar(backgroundImage: NetworkImage(profile.imageUrl ?? kDefaultImage)),
                   ),
                   profile == null
                       ? ListTile(

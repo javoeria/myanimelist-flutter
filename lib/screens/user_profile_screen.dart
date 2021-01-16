@@ -43,12 +43,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     final Trace userTrace = FirebasePerformance.instance.newTrace('user_trace');
     userTrace.start();
     profile = await jikan.getUserProfile(widget.username);
-    try {
-      friends = await jikan.getUserFriends(widget.username);
-    } catch (e) {
-      print(e);
-      friends = BuiltList<Friend>([]);
-    }
+    friends = await jikan.getUserFriends(widget.username);
     userTrace.stop();
     setState(() => loading = false);
   }
@@ -97,8 +92,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    Icon(Icons.camera_alt),
-                                    Text('No Picture'),
+                                    Icon(Icons.camera_alt, size: 48.0, color: Colors.grey[700]),
+                                    Text('No Picture', style: TextStyle(color: Colors.grey[700])),
                                   ],
                                 ),
                                 width: kSliverAppBarWidth,

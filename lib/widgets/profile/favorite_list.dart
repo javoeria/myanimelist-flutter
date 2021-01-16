@@ -37,7 +37,7 @@ class FavoriteSection extends StatelessWidget {
   final double width = kContainerWidth;
   final double height = kContainerHeight;
 
-  String favoriteTitle() {
+  String get _favoriteTitle {
     switch (type) {
       case TopType.anime:
         return 'Anime';
@@ -63,7 +63,7 @@ class FavoriteSection extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text(favoriteTitle(), style: Theme.of(context).textTheme.subtitle1),
+          child: Text(_favoriteTitle, style: Theme.of(context).textTheme.subtitle1),
         ),
         Container(
           height: height,

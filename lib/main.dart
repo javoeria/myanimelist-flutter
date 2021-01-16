@@ -80,25 +80,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
     load();
   }
 
-  SeasonType seasonClass(String season) {
-    switch (season.toLowerCase()) {
-      case 'spring':
-        return SeasonType.spring;
-        break;
-      case 'summer':
-        return SeasonType.summer;
-        break;
-      case 'fall':
-        return SeasonType.fall;
-        break;
-      case 'winter':
-        return SeasonType.winter;
-        break;
-      default:
-        throw 'SeasonType Error';
-    }
-  }
-
   void load() async {
     final Trace mainTrace = FirebasePerformance.instance.newTrace('main_trace');
     mainTrace.start();

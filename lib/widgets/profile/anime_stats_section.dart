@@ -83,7 +83,7 @@ class AnimeStatsSection extends StatelessWidget {
                       Container(
                         height: 32.0,
                         width: stats.planToWatch / stats.totalEntries * screenWidth,
-                        color: Colors.grey,
+                        color: kPlantoWatchColor,
                       ),
                     ],
                   ),
@@ -132,7 +132,7 @@ class AnimeStatsSection extends StatelessWidget {
                   SizedBox(height: 8.0),
                   Row(
                     children: <Widget>[
-                      CircleAvatar(backgroundColor: Colors.grey, radius: 10.0),
+                      CircleAvatar(backgroundColor: kPlantoWatchColor, radius: 10.0),
                       SizedBox(width: 8.0),
                       Text('Plan to Watch: ${f.format(stats.planToWatch)}'),
                     ],

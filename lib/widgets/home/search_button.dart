@@ -144,7 +144,7 @@ class _ResultList extends StatelessWidget {
   final SearchDelegate<Search> searchDelegate;
   final NumberFormat f = NumberFormat.decimalPattern();
 
-  String episodesText(Search search) {
+  String get _episodesText {
     if (type == SearchType.anime) {
       String episodes = search.episodes == 0 ? '?' : search.episodes.toString();
       return '($episodes eps)';
@@ -152,7 +152,7 @@ class _ResultList extends StatelessWidget {
       String volumes = search.volumes == 0 ? '?' : search.volumes.toString();
       return '($volumes vols)';
     } else {
-      throw 'TopType Error';
+      throw 'SearchType Error';
     }
   }
 
@@ -184,13 +184,13 @@ class _ResultList extends StatelessWidget {
                       children: <Widget>[
                         Text(search.title, style: Theme.of(context).textTheme.subtitle2),
                         Text(
-                          search.synopsis.split('.').first + '.',
+                          '${search.synopsis.split('.').first}.',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.caption,
                         ),
                         Text(
-                          search.type + ' ' + episodesText(search) + ' - ' + score,
+                          '${search.type} $_episodesText - $score',
                           style: Theme.of(context).textTheme.caption,
                         ),
                         Text(
@@ -221,7 +221,7 @@ class _SuggestionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: min(suggestions.length, 10),
-      itemBuilder: (BuildContext context, int index) {
+      itemBuilder: (context, index) {
         final String suggestion = suggestions[index];
         if (history) {
           return ListTile(

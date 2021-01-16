@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const kGooglePlayId = 'com.javier.myanimelist';
+const kDefaultImage = 'https://cdn.myanimelist.net/images/questionmark_50.gif';
 const kSlackToken = 'T014XKJ2C31/B014XKLF2S3/jtDgfbsVzEUusc2i2mUk3o2b';
 
 const kAnimePageSize = 300;
