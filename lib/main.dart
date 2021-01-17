@@ -14,6 +14,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:slack_notifier/slack_notifier.dart';
 
 void main() async {
@@ -22,9 +23,23 @@ void main() async {
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kReleaseMode);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
+  await setupRemoteConfig();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   print(prefs.getKeys());
   runApp(MyApp(prefs));
+}
+
+Future<RemoteConfig> setupRemoteConfig() async {
+  final RemoteConfig remoteConfig = await RemoteConfig.instance;
+  remoteConfig.setConfigSettings(RemoteConfigSettings(debugMode: true));
+  remoteConfig.setDefaults(<String, dynamic>{'v4_alpha': false});
+  try {
+    await remoteConfig.fetch(expiration: const Duration(seconds: 0));
+    await remoteConfig.activateFetched();
+  } on FetchThrottledException catch (e) {
+    print(e);
+  }
+  return remoteConfig;
 }
 
 class MyApp extends StatelessWidget {
@@ -72,6 +87,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   BuiltList<Top> topAiring;
   BuiltList<Top> topUpcoming;
   List<dynamic> suggestions;
+  bool v4Alpha;
   bool loading = true;
 
   @override
@@ -93,6 +109,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
     season = await jikan.getSeason();
     topAiring = await jikan.getTop(TopType.anime, subtype: TopSubtype.airing);
     topUpcoming = await jikan.getTop(TopType.anime, subtype: TopSubtype.upcoming);
+    RemoteConfig remoteConfig = await RemoteConfig.instance;
+    v4Alpha = remoteConfig.getBool('v4_alpha');
     mainTrace.stop();
     setState(() => loading = false);
   }
@@ -102,7 +120,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if (loading) {
       return Scaffold(body: Center(child: CircularProgressIndicator()));
     } else {
-      return HomeScreen(profile, season, topAiring, topUpcoming, suggestions);
+      return HomeScreen(profile, season, topAiring, topUpcoming, suggestions, v4: v4Alpha);
     }
   }
 }

@@ -27,13 +27,14 @@ import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen(this.profile, this.season, this.topAiring, this.topUpcoming, this.suggestions);
+  HomeScreen(this.profile, this.season, this.topAiring, this.topUpcoming, this.suggestions, {this.v4});
 
   final UserProfile profile;
   final Season season;
   final BuiltList<Top> topAiring;
   final BuiltList<Top> topUpcoming;
   final List<dynamic> suggestions;
+  final bool v4;
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +182,7 @@ class HomeScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => GenreAnimeScreen(),
+                              builder: (context) => GenreAnimeScreen(showCount: v4),
                               settings: RouteSettings(name: 'GenreAnimeScreen'),
                             ),
                           );
@@ -232,7 +233,7 @@ class HomeScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => GenreMangaScreen(),
+                              builder: (context) => GenreMangaScreen(showCount: v4),
                               settings: RouteSettings(name: 'GenreMangaScreen'),
                             ),
                           );

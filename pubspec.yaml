@@ -27,7 +27,7 @@ dependencies:
   firebase_core: ^0.5.3
   firebase_crashlytics: ^0.2.4
   firebase_performance: ^0.4.3
-  # firebase_remote_config: ^0.4.3
+  firebase_remote_config: ^0.4.3
   jikan_api: ^1.5.0
   slack_notifier: ^1.0.0
   rate_my_app: ^0.7.2

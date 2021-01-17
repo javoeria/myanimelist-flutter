@@ -2,64 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat, DateFormat;
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/jikan_v4.dart';
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:provider/provider.dart';
 
-class GenreMangaScreen extends StatelessWidget {
+class GenreMangaScreen extends StatefulWidget {
+  GenreMangaScreen({this.showCount});
+
+  final bool showCount;
+
+  @override
+  _GenreMangaScreenState createState() => _GenreMangaScreenState();
+}
+
+class _GenreMangaScreenState extends State<GenreMangaScreen> {
+  List<dynamic> items = GenreList.manga.where((genre) => genre['name'] != 'Hentai').toList();
+  bool loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loading = widget.showCount;
+    if (loading) load();
+  }
+
+  void load() async {
+    items = await JikanV4().getGenreList(anime: false);
+    setState(() => loading = false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    Map<String, int> items = {
-      'Action': 1,
-      'Adventure': 2,
-      'Cars': 3,
-      'Comedy': 4,
-      'Dementia': 5,
-      'Demons': 6,
-      'Doujinshi': 43,
-      'Drama': 8,
-      'Ecchi': 9,
-      'Fantasy': 10,
-      'Game': 11,
-      'Gender Bender': 44,
-      'Harem': 35,
-//    'Hentai': 12,
-      'Historical': 13,
-      'Horror': 14,
-      'Josei': 42,
-      'Kids': 15,
-      'Magic': 16,
-      'Martial Arts': 17,
-      'Mecha': 18,
-      'Military': 38,
-      'Music': 19,
-      'Mystery': 7,
-      'Parody': 20,
-      'Police': 39,
-      'Psychological': 40,
-      'Romance': 22,
-      'Samurai': 21,
-      'School': 23,
-      'Sci-Fi': 24,
-      'Seinen': 41,
-      'Shoujo': 25,
-      'Shoujo Ai': 26,
-      'Shounen': 27,
-      'Shounen Ai': 28,
-      'Slice of Life': 36,
-      'Space': 29,
-      'Sports': 30,
-      'Super Power': 31,
-      'Supernatural': 37,
-      'Thriller': 45,
-      'Vampire': 32,
-      'Yaoi': 33,
-      'Yuri': 34,
-    };
+    if (loading) {
+      return Scaffold(appBar: AppBar(title: Text('Genres Manga')), body: Center(child: CircularProgressIndicator()));
+    }
 
-    List<String> keys = items.keys.toList();
-    List<int> values = items.values.toList();
     return Scaffold(
       appBar: AppBar(
         title: Text('Genres Manga'),
@@ -69,14 +48,16 @@ class GenreMangaScreen extends StatelessWidget {
           separatorBuilder: (context, index) => Divider(height: 0.0),
           itemCount: items.length,
           itemBuilder: (context, index) {
+            Map<String, dynamic> item = items.elementAt(index);
             return ListTile(
-              title: Text(keys.elementAt(index)),
+              title: Text(item['name']),
+              trailing: item['count'] != null ? Chip(label: Text(item['count'].toString())) : null,
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => GenreMangaList(values[index], keys[index]),
-                    settings: RouteSettings(name: '${keys[index]}MangaScreen'),
+                    builder: (context) => GenreMangaList(item['mal_id'], item['name']),
+                    settings: RouteSettings(name: '${item['name']}MangaScreen'),
                   ),
                 );
               },
