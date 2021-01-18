@@ -19,4 +19,10 @@ class JikanV4 {
     final producersJson = jsonDecode(response.body);
     return BuiltList<Map<String, dynamic>>(producersJson['data']);
   }
+
+  Future<List<dynamic>> getVideos(String type, String subtype) async {
+    final response = await http.get('$apiBaseUrl/watch/$type/$subtype');
+    final videosJson = jsonDecode(response.body);
+    return videosJson['data'];
+  }
 }

@@ -12,6 +12,7 @@ import 'package:myanimelist/screens/genre_manga_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/producer_screen.dart';
 import 'package:myanimelist/screens/settings_screen.dart';
+import 'package:myanimelist/screens/watch_screen.dart';
 import 'package:myanimelist/widgets/home/search_button.dart';
 import 'package:myanimelist/widgets/home/season_horizontal.dart';
 import 'package:myanimelist/widgets/home/suggestion_horizontal.dart';
@@ -302,6 +303,39 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  if (v4)
+                    ExpansionTile(
+                      title: Text('Watch'),
+                      leading: Icon(FontAwesomeIcons.youtube),
+                      children: <Widget>[
+                        ListTile(
+                          title: Text('Episode Videos'),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WatchScreen(),
+                                settings: RouteSettings(name: 'EpisodeVideosScreen'),
+                              ),
+                            );
+                          },
+                        ),
+                        ListTile(
+                          title: Text('Promotional Videos'),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WatchScreen(episodes: false),
+                                settings: RouteSettings(name: 'PromotionalVideosScreen'),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                 ],
               ),
             ),
