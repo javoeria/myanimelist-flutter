@@ -10,6 +10,7 @@ import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/genre_anime_screen.dart';
 import 'package:myanimelist/screens/genre_manga_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
+import 'package:myanimelist/screens/producer_screen.dart';
 import 'package:myanimelist/screens/settings_screen.dart';
 import 'package:myanimelist/widgets/home/search_button.dart';
 import 'package:myanimelist/widgets/home/season_horizontal.dart';
@@ -188,6 +189,20 @@ class HomeScreen extends StatelessWidget {
                           );
                         },
                       ),
+                      if (v4)
+                        ListTile(
+                          title: Text('Studios'),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProducerScreen(),
+                                settings: RouteSettings(name: 'StudioScreen'),
+                              ),
+                            );
+                          },
+                        ),
                     ],
                   ),
                   ExpansionTile(
@@ -239,6 +254,20 @@ class HomeScreen extends StatelessWidget {
                           );
                         },
                       ),
+                      if (v4)
+                        ListTile(
+                          title: Text('Magazines'),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProducerScreen(anime: false),
+                                settings: RouteSettings(name: 'MagazineScreen'),
+                              ),
+                            );
+                          },
+                        ),
                     ],
                   ),
                   ExpansionTile(
