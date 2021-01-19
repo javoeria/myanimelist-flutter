@@ -11,6 +11,8 @@ import 'package:myanimelist/screens/genre_anime_screen.dart';
 import 'package:myanimelist/screens/genre_manga_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/producer_screen.dart';
+import 'package:myanimelist/screens/recommendation_screen.dart';
+import 'package:myanimelist/screens/review_screen.dart';
 import 'package:myanimelist/screens/settings_screen.dart';
 import 'package:myanimelist/screens/watch_screen.dart';
 import 'package:myanimelist/widgets/home/search_button.dart';
@@ -204,6 +206,34 @@ class HomeScreen extends StatelessWidget {
                             );
                           },
                         ),
+                      if (v4)
+                        ListTile(
+                          title: Text('Reviews'),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ReviewScreen(),
+                                settings: RouteSettings(name: 'ReviewAnimeScreen'),
+                              ),
+                            );
+                          },
+                        ),
+                      if (v4)
+                        ListTile(
+                          title: Text('Recommendations'),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RecommendationScreen(),
+                                settings: RouteSettings(name: 'RecommendationAnimeScreen'),
+                              ),
+                            );
+                          },
+                        ),
                     ],
                   ),
                   ExpansionTile(
@@ -265,6 +295,34 @@ class HomeScreen extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => ProducerScreen(anime: false),
                                 settings: RouteSettings(name: 'MagazineScreen'),
+                              ),
+                            );
+                          },
+                        ),
+                      if (v4)
+                        ListTile(
+                          title: Text('Reviews'),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ReviewScreen(anime: false),
+                                settings: RouteSettings(name: 'ReviewMangaScreen'),
+                              ),
+                            );
+                          },
+                        ),
+                      if (v4)
+                        ListTile(
+                          title: Text('Recommendations'),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RecommendationScreen(anime: false),
+                                settings: RouteSettings(name: 'RecommendationMangaScreen'),
                               ),
                             );
                           },

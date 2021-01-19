@@ -25,4 +25,18 @@ class JikanV4 {
     final videosJson = jsonDecode(response.body);
     return videosJson['data'];
   }
+
+  Future<List<dynamic>> getReviews({bool anime = true}) async {
+    final type = anime ? 'anime' : 'manga';
+    final response = await http.get('$apiBaseUrl/reviews/$type');
+    final reviewsJson = jsonDecode(response.body);
+    return reviewsJson['data'];
+  }
+
+  Future<List<dynamic>> getRecommendations({bool anime = true}) async {
+    final type = anime ? 'anime' : 'manga';
+    final response = await http.get('$apiBaseUrl/recommendations/$type');
+    final recommendationsJson = jsonDecode(response.body);
+    return recommendationsJson['data'];
+  }
 }
