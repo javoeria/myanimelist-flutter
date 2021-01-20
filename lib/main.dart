@@ -20,6 +20,8 @@ import 'package:slack_notifier/slack_notifier.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseAnalytics().setAnalyticsCollectionEnabled(kReleaseMode);
+  FirebasePerformance.instance.setPerformanceCollectionEnabled(kReleaseMode);
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kReleaseMode);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
@@ -31,8 +33,15 @@ void main() async {
 
 Future<RemoteConfig> setupRemoteConfig() async {
   final RemoteConfig remoteConfig = await RemoteConfig.instance;
-  remoteConfig.setConfigSettings(RemoteConfigSettings(debugMode: true));
-  remoteConfig.setDefaults(<String, dynamic>{'v4_alpha': false});
+  remoteConfig.setConfigSettings(RemoteConfigSettings(minimumFetchIntervalMillis: 3600000));
+  remoteConfig.setDefaults(<String, dynamic>{
+    'v4_genres': false,
+    'v4_magazines': false,
+    'v4_producers': false,
+    'v4_recommendations': false,
+    'v4_reviews': false,
+    'v4_watch': false,
+  });
   try {
     await remoteConfig.fetch(expiration: const Duration(seconds: 0));
     await remoteConfig.activateFetched();
@@ -87,7 +96,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   BuiltList<Top> topAiring;
   BuiltList<Top> topUpcoming;
   List<dynamic> suggestions;
-  bool v4Alpha;
+  RemoteConfig remoteConfig;
   bool loading = true;
 
   @override
@@ -109,8 +118,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     season = await jikan.getSeason();
     topAiring = await jikan.getTop(TopType.anime, subtype: TopSubtype.airing);
     topUpcoming = await jikan.getTop(TopType.anime, subtype: TopSubtype.upcoming);
-    RemoteConfig remoteConfig = await RemoteConfig.instance;
-    v4Alpha = remoteConfig.getBool('v4_alpha');
+    remoteConfig = await RemoteConfig.instance;
     mainTrace.stop();
     setState(() => loading = false);
   }
@@ -120,7 +128,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if (loading) {
       return Scaffold(body: Center(child: CircularProgressIndicator()));
     } else {
-      return HomeScreen(profile, season, topAiring, topUpcoming, suggestions, v4: v4Alpha);
+      return HomeScreen(profile, season, topAiring, topUpcoming, suggestions, remoteConfig);
     }
   }
 }

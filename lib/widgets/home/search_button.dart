@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_api/jikan_api.dart';
@@ -95,6 +96,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
       return Center(child: Text('Minimum 3 letters'));
     }
 
+    FirebaseAnalytics().logSearch(searchTerm: query);
     Provider.of<UserData>(context, listen: false).addHistory(query);
     String excludeHentai = '&genre=12&genre_exclude=0&order_by=members&sort=desc';
     return Scrollbar(
