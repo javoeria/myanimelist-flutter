@@ -14,7 +14,7 @@ class ProducerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(anime ? 'Studios Screen' : 'Magazines Screen'),
+        title: Text(anime ? 'Anime Studios / Producers' : 'Manga Magazines'),
       ),
       body: Scrollbar(
         child: PagewiseListView(

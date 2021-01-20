@@ -31,12 +31,12 @@ class _GenreAnimeScreenState extends State<GenreAnimeScreen> {
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return Scaffold(appBar: AppBar(title: Text('Genres Anime')), body: Center(child: CircularProgressIndicator()));
+      return Scaffold(appBar: AppBar(title: Text('Anime Genres')), body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Genres Anime'),
+        title: Text('Anime Genres'),
       ),
       body: Scrollbar(
         child: ListView.separated(
