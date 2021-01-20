@@ -151,7 +151,7 @@ void main() {
     test('genres anime screen', () async {
       await driver.tap(menuIconFinder);
       await driver.tap(animeTextFinder);
-      await driver.tap(find.text('Genres Anime'));
+      await driver.tap(find.text('Genres'));
       await driver.tap(find.text('Action'));
       await takeScreenshot('genre_anime');
       await driver.tap(find.pageBack());
@@ -188,7 +188,7 @@ void main() {
     test('genres manga screen', () async {
       await driver.tap(menuIconFinder);
       await driver.tap(mangaTextFinder);
-      await driver.tap(find.text('Genres Manga'));
+      await driver.tap(find.text('Genres'));
       await driver.tap(find.text('Action'));
       await takeScreenshot('genre_manga');
       await driver.tap(find.pageBack());

@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
@@ -32,12 +33,14 @@ class SettingsScreen extends StatelessWidget {
               bool action = true;
               if (username == null) {
                 if (kReleaseMode) {
+                  FirebaseAnalytics().logLogin();
                   username = await MalClient().login();
                 } else {
                   username = 'javoeria';
                   await prefs.setString('username', username);
                 }
               } else {
+                FirebaseAnalytics().logEvent(name: 'logout');
                 action = await _logoutDialog(context);
                 if (action == true) {
                   await prefs.remove('username');
@@ -61,6 +64,7 @@ class SettingsScreen extends StatelessWidget {
               value: Provider.of<UserData>(context).kidsGenre,
               activeColor: Colors.indigo,
               onChanged: (value) {
+                FirebaseAnalytics().logEvent(name: 'kids');
                 Provider.of<UserData>(context, listen: false).toggleKids();
               },
             ),
@@ -72,6 +76,7 @@ class SettingsScreen extends StatelessWidget {
               value: Provider.of<UserData>(context).r18Genre,
               activeColor: Colors.indigo,
               onChanged: (value) {
+                FirebaseAnalytics().logEvent(name: 'r18+');
                 Provider.of<UserData>(context, listen: false).toggleR18();
               },
             ),
@@ -83,6 +88,7 @@ class SettingsScreen extends StatelessWidget {
               value: Theme.of(context).brightness == Brightness.dark,
               activeColor: Colors.indigo,
               onChanged: (value) {
+                FirebaseAnalytics().logEvent(name: 'theme');
                 DynamicTheme.of(context).setBrightness(
                   Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark,
                 );
@@ -99,7 +105,10 @@ class SettingsScreen extends StatelessWidget {
           ListTile(
             title: Text('Rate app'),
             subtitle: Text('Your feedback is very important to us'),
-            onTap: () => RateMyApp(googlePlayIdentifier: kGooglePlayId).launchStore(),
+            onTap: () {
+              FirebaseAnalytics().logEvent(name: 'rate');
+              RateMyApp(googlePlayIdentifier: kGooglePlayId).launchStore();
+            },
           ),
           ListTile(
             title: Text('${packageInfo.appName} version'),

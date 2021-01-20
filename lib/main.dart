@@ -14,17 +14,41 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:slack_notifier/slack_notifier.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseAnalytics().setAnalyticsCollectionEnabled(kReleaseMode);
+  FirebasePerformance.instance.setPerformanceCollectionEnabled(kReleaseMode);
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kReleaseMode);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
+  await setupRemoteConfig();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   print(prefs.getKeys());
   runApp(MyApp(prefs));
+}
+
+Future<RemoteConfig> setupRemoteConfig() async {
+  final RemoteConfig remoteConfig = await RemoteConfig.instance;
+  remoteConfig.setConfigSettings(RemoteConfigSettings(minimumFetchIntervalMillis: 3600000));
+  remoteConfig.setDefaults(<String, dynamic>{
+    'v4_genres': false,
+    'v4_magazines': false,
+    'v4_producers': false,
+    'v4_recommendations': false,
+    'v4_reviews': false,
+    'v4_watch': false,
+  });
+  try {
+    await remoteConfig.fetch(expiration: const Duration(seconds: 0));
+    await remoteConfig.activateFetched();
+  } on FetchThrottledException catch (e) {
+    print(e);
+  }
+  return remoteConfig;
 }
 
 class MyApp extends StatelessWidget {
@@ -72,6 +96,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   BuiltList<Top> topAiring;
   BuiltList<Top> topUpcoming;
   List<dynamic> suggestions;
+  RemoteConfig remoteConfig;
   bool loading = true;
 
   @override
@@ -93,6 +118,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     season = await jikan.getSeason();
     topAiring = await jikan.getTop(TopType.anime, subtype: TopSubtype.airing);
     topUpcoming = await jikan.getTop(TopType.anime, subtype: TopSubtype.upcoming);
+    remoteConfig = await RemoteConfig.instance;
     mainTrace.stop();
     setState(() => loading = false);
   }
@@ -102,7 +128,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if (loading) {
       return Scaffold(body: Center(child: CircularProgressIndicator()));
     } else {
-      return HomeScreen(profile, season, topAiring, topUpcoming, suggestions);
+      return HomeScreen(profile, season, topAiring, topUpcoming, suggestions, remoteConfig);
     }
   }
 }
