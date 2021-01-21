@@ -1,6 +1,8 @@
 name: myanimelist
 description: The best way to explore all anime and manga.
 
+publish_to: 'none'
+
 version: 1.1.2+10
 
 environment:
@@ -37,12 +39,13 @@ dependencies:
     git: git://github.com/javoeria/flutter_pagewise.git
 
 dev_dependencies:
+  flutter_driver:
+    sdk: flutter
+  test: ^1.16.0-nullsafety
+
   pedantic: ^1.9.2
   flutter_launcher_icons: ^0.8.1
   flutter_native_splash: ^0.2.7
-  flutter_driver:
-    sdk: flutter
-  test: any
 
 flutter_icons:
   android: true
@@ -57,6 +60,5 @@ flutter_native_splash:
 
 flutter:
   uses-material-design: true
-
   assets:
     - images/
