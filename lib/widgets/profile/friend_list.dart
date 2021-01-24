@@ -49,27 +49,22 @@ class FriendCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: <Widget>[
-        Ink.image(
-          image: NetworkImage(item.imageUrl),
-          width: width,
-          height: height,
-          fit: BoxFit.cover,
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => UserProfileScreen(item.username),
-                  settings: RouteSettings(name: 'UserProfileScreen'),
-                ),
-              );
-            },
-          ),
-        ),
-        Stack(
+    return Ink.image(
+      image: NetworkImage(item.imageUrl),
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UserProfileScreen(item.username),
+              settings: RouteSettings(name: 'UserProfileScreen'),
+            ),
+          );
+        },
+        child: Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: <Widget>[
             Image.asset('images/box_shadow.png', width: width, height: 40.0, fit: BoxFit.cover),
@@ -87,7 +82,7 @@ class FriendCard extends StatelessWidget {
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 }
