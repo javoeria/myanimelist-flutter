@@ -14,8 +14,8 @@ class SubtitleAnime extends StatelessWidget {
   final String subtitle;
   final String image;
   final TopType type;
-  final double width = kContainerWidth;
-  final double height = kContainerHeight;
+  final double width = kImageWidthM;
+  final double height = kImageHeightM;
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat, DateFormat;
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
@@ -87,10 +88,10 @@ class MangaInfo extends StatelessWidget {
             GenreHorizontal(manga.genres, padding: 0.0),
             SizedBox(height: 4.0),
             Container(
-              height: 242.0,
+              height: kImageHeightXL,
               child: Row(
                 children: <Widget>[
-                  Image.network(manga.imageUrl, width: 167.0, height: 242.0, fit: BoxFit.cover),
+                  Image.network(manga.imageUrl, width: kImageWidthXL, height: kImageHeightXL, fit: BoxFit.cover),
                   SizedBox(width: 8.0),
                   Expanded(
                     child: Container(

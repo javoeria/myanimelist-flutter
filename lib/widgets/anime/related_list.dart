@@ -23,7 +23,7 @@ class RelatedList extends StatelessWidget {
           ),
         ),
         Container(
-          height: kContainerHeight,
+          height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),

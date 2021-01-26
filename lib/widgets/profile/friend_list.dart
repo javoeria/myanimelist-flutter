@@ -20,7 +20,7 @@ class FriendList extends StatelessWidget {
           child: Text('Friends', style: Theme.of(context).textTheme.headline6),
         ),
         Container(
-          height: kContainerHeight,
+          height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -44,8 +44,8 @@ class FriendCard extends StatelessWidget {
   FriendCard(this.item);
 
   final Friend item;
-  final double width = kContainerWidth;
-  final double height = kContainerHeight;
+  final double width = kImageWidthM;
+  final double height = kImageHeightM;
 
   @override
   Widget build(BuildContext context) {

@@ -19,7 +19,7 @@ class PictureList extends StatelessWidget {
           child: Text('Pictures', style: Theme.of(context).textTheme.headline6),
         ),
         Container(
-          height: kContainerHeight,
+          height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -33,8 +33,8 @@ class PictureList extends StatelessWidget {
                     tag: 'imageHero$index',
                     child: Image.network(
                       picture.large,
-                      width: kContainerWidth,
-                      height: kContainerHeight,
+                      width: kImageWidthM,
+                      height: kImageHeightM,
                       fit: BoxFit.cover,
                     ),
                   ),

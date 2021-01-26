@@ -25,10 +25,10 @@ class TopCharactersScreen extends StatelessWidget {
         child: Provider.of<UserData>(context).gridView
             ? PagewiseGridView.extent(
                 pageSize: kTopPageSize,
-                maxCrossAxisExtent: 108.0,
+                maxCrossAxisExtent: kImageWidthM,
                 mainAxisSpacing: 16.0,
                 crossAxisSpacing: 16.0,
-                childAspectRatio: 108.0 / 163.0,
+                childAspectRatio: kImageWidthM / kImageHeightM,
                 padding: const EdgeInsets.all(16.0),
                 itemBuilder: (context, top, _) => RankImage(top, type: type),
                 pageFuture: (pageIndex) => jikan.getTop(type, page: pageIndex + 1),
@@ -64,8 +64,8 @@ class TopCharactersScreen extends StatelessWidget {
                 children: <Widget>[
                   Image.network(
                     top.imageUrl,
-                    width: kImageWidth,
-                    height: kImageHeight,
+                    width: kImageWidthS,
+                    height: kImageHeightS,
                     fit: BoxFit.cover,
                   ),
                   SizedBox(width: 8.0),

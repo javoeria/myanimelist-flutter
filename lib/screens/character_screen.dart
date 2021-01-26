@@ -154,7 +154,7 @@ class AnimeographyList extends StatelessWidget {
           ),
         ),
         Container(
-          height: kContainerHeight,
+          height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -167,8 +167,8 @@ class AnimeographyList extends StatelessWidget {
                   anime.malId,
                   anime.name,
                   anime.imageUrl,
-                  width: kContainerWidth,
-                  height: kContainerHeight,
+                  width: kImageWidthM,
+                  height: kImageHeightM,
                   type: type,
                 ),
               );
@@ -197,7 +197,7 @@ class VoiceList extends StatelessWidget {
           child: Text('Voice Actors', style: Theme.of(context).textTheme.headline6),
         ),
         Container(
-          height: kContainerHeight,
+          height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),

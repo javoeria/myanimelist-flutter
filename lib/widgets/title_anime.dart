@@ -8,7 +8,7 @@ import 'package:myanimelist/screens/person_screen.dart';
 
 class TitleAnime extends StatelessWidget {
   TitleAnime(this.id, this.title, this.image,
-      {this.width = 160.0, this.height = 220.0, this.type, this.showTitle = true});
+      {this.width = kImageWidthL, this.height = kImageHeightL, this.type, this.showTitle = true});
 
   final int id;
   final String title;

@@ -176,8 +176,8 @@ class _ResultList extends StatelessWidget {
                 children: <Widget>[
                   Image.network(
                     search.imageUrl,
-                    width: kImageWidth,
-                    height: kImageHeight,
+                    width: kImageWidthS,
+                    height: kImageHeightS,
                     fit: BoxFit.cover,
                   ),
                   SizedBox(width: 8.0),

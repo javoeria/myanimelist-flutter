@@ -56,8 +56,8 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
                 children: <Widget>[
                   Image.network(
                     top.imageUrl,
-                    width: kImageWidth,
-                    height: kImageHeight,
+                    width: kImageWidthS,
+                    height: kImageHeightS,
                     fit: BoxFit.cover,
                   ),
                   SizedBox(width: 8.0),

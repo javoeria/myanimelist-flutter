@@ -50,8 +50,8 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                     children: <Widget>[
                       Ink.image(
                         image: NetworkImage(review.reviewer.imageUrl),
-                        width: kImageWidth,
-                        height: kImageHeight,
+                        width: kImageWidthS,
+                        height: kImageHeightS,
                         fit: BoxFit.cover,
                         child: InkWell(
                           onTap: () {

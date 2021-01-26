@@ -159,7 +159,7 @@ class StaffList extends StatelessWidget {
           child: Text('Anime Staff Positions', style: Theme.of(context).textTheme.headline6),
         ),
         Container(
-          height: kContainerHeight,
+          height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -201,7 +201,7 @@ class PublishList extends StatelessWidget {
           child: Text('Published Manga', style: Theme.of(context).textTheme.headline6),
         ),
         Container(
-          height: kContainerHeight,
+          height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),

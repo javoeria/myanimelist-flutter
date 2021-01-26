@@ -47,8 +47,8 @@ class ReviewScreen extends StatelessWidget {
                             children: <Widget>[
                               Ink.image(
                                 image: NetworkImage(item['user']['images']['jpg']['image_url']),
-                                width: kImageWidth,
-                                height: kImageHeight,
+                                width: kImageWidthS,
+                                height: kImageHeightS,
                                 fit: BoxFit.cover,
                                 child: InkWell(
                                   onTap: () {
@@ -91,8 +91,8 @@ class ReviewScreen extends StatelessWidget {
                               SizedBox(width: 8.0),
                               Ink.image(
                                 image: NetworkImage(item['entry']['images']['jpg']['large_image_url']),
-                                width: kImageWidth,
-                                height: kImageHeight,
+                                width: kImageWidthS,
+                                height: kImageHeightS,
                                 fit: BoxFit.cover,
                                 child: InkWell(
                                   onTap: () {

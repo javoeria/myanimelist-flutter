@@ -82,7 +82,7 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
                     children: [
                       VideoImage(promo),
                       Container(
-                        width: 160.0,
+                        width: kImageWidthL,
                         child: InkWell(
                           child: Padding(
                             padding: const EdgeInsets.only(top: 4.0),

@@ -11,8 +11,8 @@ class RankImage extends StatelessWidget {
 
   final Top top;
   final TopType type;
-  final double width = kContainerWidth;
-  final double height = kContainerHeight;
+  final double width = kImageWidthM;
+  final double height = kImageHeightM;
 
   @override
   Widget build(BuildContext context) {

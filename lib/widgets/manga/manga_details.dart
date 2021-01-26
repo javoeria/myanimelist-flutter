@@ -99,7 +99,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.network(manga.imageUrl, width: 167.0, height: 242.0, fit: BoxFit.cover),
+              Image.network(manga.imageUrl, width: kImageWidthXL, height: kImageHeightXL, fit: BoxFit.cover),
               SizedBox(width: 16.0),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

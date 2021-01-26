@@ -125,11 +125,11 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
             Expanded(
               child: Row(
                 children: <Widget>[
-                  Container(color: statusColor(item.readingStatus), width: 5.0, height: 70.0),
+                  Container(color: statusColor(item.readingStatus), width: 5.0, height: kImageHeightS),
                   Image.network(
                     item.imageUrl,
-                    width: kImageWidth,
-                    height: kImageHeight,
+                    width: kImageWidthS,
+                    height: kImageHeightS,
                     fit: BoxFit.cover,
                   ),
                   SizedBox(width: 8.0),
