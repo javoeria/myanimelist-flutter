@@ -21,7 +21,7 @@ class CharacterScreen extends StatefulWidget {
 
 class _CharacterScreenState extends State<CharacterScreen> {
   final Jikan jikan = Jikan();
-  final NumberFormat f = NumberFormat.compact();
+  final NumberFormat f = NumberFormat.decimalPattern();
 
   ScrollController _scrollController;
   Character character;
@@ -75,8 +75,10 @@ class _CharacterScreenState extends State<CharacterScreen> {
                           width: kSliverAppBarWidth,
                           height: kSliverAppBarHeight,
                           fit: BoxFit.contain,
+                          alignment: Alignment.centerRight,
                         ),
                       ),
+                      SizedBox(width: 16.0),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,19 +88,21 @@ class _CharacterScreenState extends State<CharacterScreen> {
                               style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
                               maxLines: 2,
                             ),
-                            AutoSizeText(
-                              character.nameKanji ?? '',
-                              style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
-                              maxLines: 1,
-                            ),
+                            character.nameKanji != null
+                                ? AutoSizeText(
+                                    character.nameKanji,
+                                    style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                    maxLines: 1,
+                                  )
+                                : Container(),
                             SizedBox(height: 24.0),
                             Row(
                               children: <Widget>[
-                                Icon(Icons.person, color: Colors.white),
+                                Icon(Icons.person, color: Colors.white, size: 20.0),
                                 SizedBox(width: 4.0),
                                 Text(
                                   f.format(character.memberFavorites),
-                                  style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
+                                  style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
                                 ),
                               ],
                             ),
@@ -206,7 +210,7 @@ class VoiceList extends StatelessWidget {
                   anime.malId,
                   anime.name,
                   anime.language,
-                  anime.imageUrl.replaceFirst('v.jpg', '.jpg'),
+                  anime.imageUrl,
                   type: TopType.people,
                 ),
               );

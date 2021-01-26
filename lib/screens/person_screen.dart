@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:intl/intl.dart' show NumberFormat;
+import 'package:intl/intl.dart' show NumberFormat, DateFormat;
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
@@ -21,7 +21,8 @@ class PersonScreen extends StatefulWidget {
 
 class _PersonScreenState extends State<PersonScreen> {
   final Jikan jikan = Jikan();
-  final NumberFormat f = NumberFormat.compact();
+  final NumberFormat f = NumberFormat.decimalPattern();
+  final DateFormat dateFormat = DateFormat('MMM d, yy');
 
   ScrollController _scrollController;
   Person person;
@@ -75,8 +76,10 @@ class _PersonScreenState extends State<PersonScreen> {
                           width: kSliverAppBarWidth,
                           height: kSliverAppBarHeight,
                           fit: BoxFit.contain,
+                          alignment: Alignment.centerRight,
                         ),
                       ),
+                      SizedBox(width: 16.0),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,22 +89,36 @@ class _PersonScreenState extends State<PersonScreen> {
                               style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
                               maxLines: 2,
                             ),
-                            AutoSizeText(
-                              (person.familyName ?? '') + (person.givenName ?? ''),
-                              style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
-                              maxLines: 1,
-                            ),
+                            person.familyName != null && person.givenName != null
+                                ? AutoSizeText(
+                                    '${person.familyName} ${person.givenName}',
+                                    style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                    maxLines: 1,
+                                  )
+                                : Container(),
                             SizedBox(height: 24.0),
                             Row(
                               children: <Widget>[
-                                Icon(Icons.person, color: Colors.white),
+                                Icon(Icons.person, color: Colors.white, size: 20.0),
                                 SizedBox(width: 4.0),
                                 Text(
                                   f.format(person.memberFavorites),
-                                  style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
+                                  style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
                                 ),
                               ],
                             ),
+                            person.birthday != null
+                                ? Row(
+                                    children: <Widget>[
+                                      Icon(Icons.cake, color: Colors.white, size: 20.0),
+                                      SizedBox(width: 4.0),
+                                      Text(
+                                        dateFormat.format(DateTime.parse(person.birthday)),
+                                        style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                      ),
+                                    ],
+                                  )
+                                : Container(),
                           ],
                         ),
                       ),

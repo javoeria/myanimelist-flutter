@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
@@ -262,13 +263,13 @@ Future<bool> _historyDialog(BuildContext context, String suggestion) async {
         content: Text('Clear $suggestion from your history?'),
         actions: <Widget>[
           FlatButton(
-            child: Text('CANCEL'),
+            child: Text('NO'),
             onPressed: () {
               Navigator.of(context).pop(false);
             },
           ),
           FlatButton(
-            child: Text('CLEAR'),
+            child: Text('YES'),
             onPressed: () {
               Navigator.of(context).pop(true);
             },

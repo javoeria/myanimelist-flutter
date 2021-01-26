@@ -237,6 +237,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Volumes: ',
@@ -246,6 +247,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Chapters: ',
@@ -255,6 +257,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Status: ',
@@ -264,6 +267,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Published: ',
@@ -273,6 +277,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Genres: ',
@@ -282,6 +287,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Authors: ',
@@ -291,6 +297,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Serialization: ',

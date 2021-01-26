@@ -62,8 +62,8 @@ class VideoImage extends StatelessWidget {
   VideoImage(this.promo);
 
   final Promo promo;
-  final double width = 320.0;
-  final double height = 180.0;
+  final double width = 300.0;
+  final double height = 170.0;
 
   @override
   Widget build(BuildContext context) {
