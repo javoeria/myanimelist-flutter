@@ -85,7 +85,7 @@ class MangaInfo extends StatelessWidget {
             SizedBox(height: 4.0),
             Text('$_authorsText | $volumes vols | ${manga.type}'),
             SizedBox(height: 4.0),
-            GenreHorizontal(manga.genres, padding: 0.0),
+            GenreHorizontal(manga.genres, anime: false),
             SizedBox(height: 4.0),
             Container(
               height: kImageHeightXL,

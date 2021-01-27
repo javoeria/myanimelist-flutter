@@ -48,7 +48,7 @@ class SeasonInfo extends StatelessWidget {
             SizedBox(height: 4.0),
             Text('$_producersText | $episodes eps | ${anime.source}'),
             SizedBox(height: 4.0),
-            GenreHorizontal(anime.genres, padding: 0.0),
+            GenreHorizontal(anime.genres),
             SizedBox(height: 4.0),
             Container(
               height: kImageHeightXL,

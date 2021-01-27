@@ -143,9 +143,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     children: <Widget>[
                                       Icon(Icons.place, color: Colors.white, size: 20.0),
                                       SizedBox(width: 4.0),
-                                      Text(
-                                        profile.location,
-                                        style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                      Expanded(
+                                        child: Text(
+                                          profile.location,
+                                          style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                     ],
                                   )

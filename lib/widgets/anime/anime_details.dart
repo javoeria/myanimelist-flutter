@@ -8,6 +8,7 @@ import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/widgets/anime/anime_dialog.dart';
 import 'package:myanimelist/widgets/anime/related_list.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
+import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 class AnimeDetails extends StatefulWidget {
@@ -205,6 +206,10 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
               Text(anime.synopsis ?? '(No synopsis yet.)', softWrap: true),
             ],
           ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: GenreHorizontal(anime.genres),
         ),
         anime.background != null
             ? Column(
