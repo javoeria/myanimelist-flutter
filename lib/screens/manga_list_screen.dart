@@ -115,7 +115,7 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
     String score = item.score == 0 ? '-' : item.score.toString();
     String read = item.readVolumes == 0 ? '-' : item.readVolumes.toString();
     String total = item.totalVolumes == 0 ? '-' : item.totalVolumes.toString();
-    String progress = read == total ? total : '$read / $total';
+    String progress = item.readingStatus == 2 ? total : '$read / $total';
     return InkWell(
       child: Padding(
         padding: const EdgeInsets.all(4.0),

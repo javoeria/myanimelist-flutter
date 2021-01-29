@@ -14,19 +14,18 @@ Open-source project made with [Flutter](https://flutter.dev/) and icon by [Icons
 - [x] Top Anime
 - [x] Seasonal Anime
 - [x] Genres
-- [ ] Studios
-- [ ] Videos
-- [ ] Reviews
-- [ ] Recommendations
+- [x] Studios
+- [x] Reviews
+- [x] Recommendations
 
 ### Manga
 
 - [x] Manga Search
 - [x] Top Manga
 - [x] Genres
-- [ ] Magazines
-- [ ] Reviews
-- [ ] Recommendations
+- [x] Magazines
+- [x] Reviews
+- [x] Recommendations
 
 ### Industry
 
@@ -36,5 +35,5 @@ Open-source project made with [Flutter](https://flutter.dev/) and icon by [Icons
 
 ### Watch
 
-- [ ] Episode Videos
-- [ ] Promotional Videos
+- [x] Episode Videos
+- [x] Promotional Videos
