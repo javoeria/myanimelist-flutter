@@ -20,7 +20,7 @@ class FriendList extends StatelessWidget {
           child: Text('Friends', style: Theme.of(context).textTheme.headline6),
         ),
         Container(
-          height: kContainerHeight,
+          height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -44,32 +44,27 @@ class FriendCard extends StatelessWidget {
   FriendCard(this.item);
 
   final Friend item;
-  final double width = kContainerWidth;
-  final double height = kContainerHeight;
+  final double width = kImageWidthM;
+  final double height = kImageHeightM;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: <Widget>[
-        Ink.image(
-          image: NetworkImage(item.imageUrl),
-          width: width,
-          height: height,
-          fit: BoxFit.cover,
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => UserProfileScreen(item.username),
-                  settings: RouteSettings(name: 'UserProfileScreen'),
-                ),
-              );
-            },
-          ),
-        ),
-        Stack(
+    return Ink.image(
+      image: NetworkImage(item.imageUrl),
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UserProfileScreen(item.username),
+              settings: RouteSettings(name: 'UserProfileScreen'),
+            ),
+          );
+        },
+        child: Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: <Widget>[
             Image.asset('images/box_shadow.png', width: width, height: 40.0, fit: BoxFit.cover),
@@ -87,7 +82,7 @@ class FriendCard extends StatelessWidget {
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 }

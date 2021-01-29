@@ -11,65 +11,61 @@ class RankImage extends StatelessWidget {
 
   final Top top;
   final TopType type;
-  final double width = kContainerWidth;
-  final double height = kContainerHeight;
+  final double width = kImageWidthM;
+  final double height = kImageHeightM;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Ink.image(
-          image: NetworkImage(top.imageUrl),
-          width: width,
-          height: height,
-          fit: BoxFit.cover,
-          child: InkWell(
-            onTap: () {
-              int id = top.malId;
-              switch (type) {
-                case TopType.anime:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AnimeScreen(id, top.title),
-                      settings: RouteSettings(name: 'AnimeScreen'),
-                    ),
-                  );
-                  break;
-                case TopType.manga:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MangaScreen(id, top.title),
-                      settings: RouteSettings(name: 'MangaScreen'),
-                    ),
-                  );
-                  break;
-                case TopType.people:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PersonScreen(id),
-                      settings: RouteSettings(name: 'PersonScreen'),
-                    ),
-                  );
-                  break;
-                case TopType.characters:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CharacterScreen(id),
-                      settings: RouteSettings(name: 'CharacterScreen'),
-                    ),
-                  );
-                  break;
-                default:
-                  throw 'TopType Error';
-              }
-            },
-          ),
-        ),
-        Container(
+    return Ink.image(
+      image: NetworkImage(top.imageUrl),
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
+      child: InkWell(
+        onTap: () {
+          int id = top.malId;
+          switch (type) {
+            case TopType.anime:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AnimeScreen(id, top.title),
+                  settings: RouteSettings(name: 'AnimeScreen'),
+                ),
+              );
+              break;
+            case TopType.manga:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MangaScreen(id, top.title),
+                  settings: RouteSettings(name: 'MangaScreen'),
+                ),
+              );
+              break;
+            case TopType.people:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PersonScreen(id),
+                  settings: RouteSettings(name: 'PersonScreen'),
+                ),
+              );
+              break;
+            case TopType.characters:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CharacterScreen(id),
+                  settings: RouteSettings(name: 'CharacterScreen'),
+                ),
+              );
+              break;
+            default:
+              throw 'TopType Error';
+          }
+        },
+        child: Container(
           width: width,
           height: height,
           child: Column(
@@ -101,7 +97,7 @@ class RankImage extends StatelessWidget {
             ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

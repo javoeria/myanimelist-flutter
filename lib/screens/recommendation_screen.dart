@@ -43,7 +43,7 @@ class RecommendationScreen extends StatelessWidget {
                             item['entry'][0]['images']['jpg']['large_image_url'],
                             type: type,
                           ),
-                          Icon(Icons.chevron_right),
+                          Icon(Icons.swap_horiz),
                           TitleAnime(
                             item['entry'][1]['mal_id'],
                             item['entry'][1]['title'],

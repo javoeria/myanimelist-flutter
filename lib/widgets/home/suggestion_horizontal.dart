@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class SuggestionHorizontal extends StatelessWidget {
@@ -29,7 +30,7 @@ class SuggestionHorizontal extends StatelessWidget {
           ),
         ),
         Container(
-          height: 220.0,
+          height: kImageHeightL,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),

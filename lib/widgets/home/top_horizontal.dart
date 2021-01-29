@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/top_anime_screen.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
@@ -39,11 +42,11 @@ class TopHorizontal extends StatelessWidget {
           ),
         ),
         Container(
-          height: 220.0,
+          height: kImageHeightL,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            itemCount: 20,
+            itemCount: min(top.length, 20),
             itemBuilder: (context, index) {
               Top anime = top.elementAt(index);
               return Padding(

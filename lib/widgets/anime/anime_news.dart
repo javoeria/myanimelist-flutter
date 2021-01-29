@@ -55,8 +55,8 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
                               children: <Widget>[
                                 Image.network(
                                   article.imageUrl,
-                                  width: kImageWidth,
-                                  height: kImageHeight,
+                                  width: kImageWidthS,
+                                  height: kImageHeightS,
                                   fit: BoxFit.cover,
                                 ),
                                 SizedBox(width: 8.0),

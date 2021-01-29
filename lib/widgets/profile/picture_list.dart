@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 class PictureList extends StatelessWidget {
   PictureList(this.list);
@@ -10,6 +12,7 @@ class PictureList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BuiltList<Picture> _uniqList = BuiltList.from(list.toSet());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -19,34 +22,31 @@ class PictureList extends StatelessWidget {
           child: Text('Pictures', style: Theme.of(context).textTheme.headline6),
         ),
         Container(
-          height: kContainerHeight,
+          height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            itemCount: list.length,
+            itemCount: _uniqList.length,
             itemBuilder: (context, index) {
-              Picture picture = list.elementAt(index);
+              Picture picture = _uniqList.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: GestureDetector(
-                  child: Hero(
-                    tag: 'imageHero$index',
-                    child: Image.network(
-                      picture.large,
-                      width: kContainerWidth,
-                      height: kContainerHeight,
-                      fit: BoxFit.cover,
-                    ),
+                child: Ink.image(
+                  image: NetworkImage(picture.large),
+                  width: kImageWidthM,
+                  height: kImageHeightM,
+                  fit: BoxFit.cover,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ImageScreen(_uniqList.map((i) => i.large).toList(), index),
+                          settings: RouteSettings(name: 'ImageScreen'),
+                        ),
+                      );
+                    },
                   ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ImageScreen(index, picture.large),
-                        settings: RouteSettings(name: 'ImageScreen'),
-                      ),
-                    );
-                  },
                 ),
               );
             },
@@ -58,24 +58,79 @@ class PictureList extends StatelessWidget {
   }
 }
 
-class ImageScreen extends StatelessWidget {
-  ImageScreen(this.index, this.url);
+class ImageScreen extends StatefulWidget {
+  ImageScreen(this.imagePaths, this.currentIndex);
 
-  final int index;
-  final String url;
+  final List<String> imagePaths;
+  final int currentIndex;
+
+  @override
+  _ImageScreenState createState() => _ImageScreenState();
+}
+
+class _ImageScreenState extends State<ImageScreen> {
+  int _currentIndex;
+  PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.currentIndex;
+    _pageController = PageController(initialPage: _currentIndex);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        child: Center(
-          child: Hero(
-            tag: 'imageHero$index',
-            child: Image.network(url),
-          ),
-        ),
-        onTap: () => Navigator.pop(context),
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
       ),
+      body: Stack(
+        alignment: AlignmentDirectional.bottomCenter,
+        children: <Widget>[
+          _buildPhotoViewGallery(),
+          _buildDotIndicator(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPhotoViewGallery() {
+    return PhotoViewGallery.builder(
+      itemCount: widget.imagePaths.length,
+      builder: (context, index) {
+        return PhotoViewGalleryPageOptions(
+          imageProvider: NetworkImage(widget.imagePaths[index]),
+          minScale: PhotoViewComputedScale.contained,
+          maxScale: PhotoViewComputedScale.covered,
+        );
+      },
+      scrollPhysics: const BouncingScrollPhysics(),
+      pageController: _pageController,
+      loadingBuilder: (context, event) {
+        return Center(child: CircularProgressIndicator());
+      },
+      onPageChanged: (index) {
+        setState(() => _currentIndex = index);
+      },
+    );
+  }
+
+  Widget _buildDotIndicator() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: widget.imagePaths.map((String image) {
+        return Container(
+          width: 8.0,
+          height: 8.0,
+          margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _currentIndex == widget.imagePaths.indexOf(image) ? Colors.white : Colors.grey[700],
+          ),
+        );
+      }).toList(),
     );
   }
 }

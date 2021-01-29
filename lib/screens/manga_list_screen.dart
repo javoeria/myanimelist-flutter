@@ -115,7 +115,7 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
     String score = item.score == 0 ? '-' : item.score.toString();
     String read = item.readVolumes == 0 ? '-' : item.readVolumes.toString();
     String total = item.totalVolumes == 0 ? '-' : item.totalVolumes.toString();
-    String progress = read == total ? total : '$read / $total';
+    String progress = item.readingStatus == 2 ? total : '$read / $total';
     return InkWell(
       child: Padding(
         padding: const EdgeInsets.all(4.0),
@@ -125,11 +125,11 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
             Expanded(
               child: Row(
                 children: <Widget>[
-                  Container(color: statusColor(item.readingStatus), width: 5.0, height: 70.0),
+                  Container(color: statusColor(item.readingStatus), width: 5.0, height: kImageHeightS),
                   Image.network(
                     item.imageUrl,
-                    width: kImageWidth,
-                    height: kImageHeight,
+                    width: kImageWidthS,
+                    height: kImageHeightS,
                     fit: BoxFit.cover,
                   ),
                   SizedBox(width: 8.0),

@@ -8,6 +8,7 @@ import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/widgets/anime/related_list.dart';
 import 'package:myanimelist/widgets/manga/manga_dialog.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
+import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 class MangaDetails extends StatefulWidget {
@@ -99,7 +100,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.network(manga.imageUrl, width: 167.0, height: 242.0, fit: BoxFit.cover),
+              Image.network(manga.imageUrl, width: kImageWidthXL, height: kImageHeightXL, fit: BoxFit.cover),
               SizedBox(width: 16.0),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -204,6 +205,10 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
             ],
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: GenreHorizontal(manga.genres, anime: false),
+        ),
         manga.background != null
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,6 +242,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Volumes: ',
@@ -246,6 +252,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Chapters: ',
@@ -255,6 +262,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Status: ',
@@ -264,6 +272,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Published: ',
@@ -273,6 +282,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Genres: ',
@@ -282,6 +292,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Authors: ',
@@ -291,6 +302,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Serialization: ',

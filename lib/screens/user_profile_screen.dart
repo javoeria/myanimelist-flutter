@@ -87,18 +87,23 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 width: kSliverAppBarWidth,
                                 height: kSliverAppBarHeight,
                                 fit: BoxFit.contain,
+                                alignment: Alignment.centerRight,
                               )
-                            : Container(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Icon(Icons.camera_alt, size: 48.0, color: Colors.grey[700]),
-                                    Text('No Picture', style: TextStyle(color: Colors.grey[700])),
-                                  ],
+                            : Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(Icons.camera_alt, size: 48.0, color: Colors.grey[700]),
+                                      Text('No Picture', style: TextStyle(color: Colors.grey[700])),
+                                    ],
+                                  ),
+                                  width: 200.0,
+                                  height: 200.0,
+                                  color: Colors.grey,
                                 ),
-                                width: kSliverAppBarWidth,
-                                height: kSliverAppBarHeight,
-                                color: Colors.grey),
+                              ),
                       ),
                       SizedBox(width: 16.0),
                       Expanded(
@@ -111,6 +116,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               maxLines: 1,
                             ),
                             SizedBox(height: 24.0),
+                            Row(
+                              children: <Widget>[
+                                Icon(Icons.access_time, color: Colors.white, size: 20.0),
+                                SizedBox(width: 4.0),
+                                Text(
+                                  f.format(DateTime.parse(profile.lastOnline)),
+                                  style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                ),
+                              ],
+                            ),
                             profile.gender != null
                                 ? Row(
                                     children: <Widget>[
@@ -128,9 +143,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     children: <Widget>[
                                       Icon(Icons.place, color: Colors.white, size: 20.0),
                                       SizedBox(width: 4.0),
-                                      Text(
-                                        profile.location,
-                                        style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                      Expanded(
+                                        child: Text(
+                                          profile.location,
+                                          style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                     ],
                                   )
@@ -147,16 +166,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     ],
                                   )
                                 : Container(),
-                            Row(
-                              children: <Widget>[
-                                Icon(Icons.access_time, color: Colors.white, size: 20.0),
-                                SizedBox(width: 4.0),
-                                Text(
-                                  f.format(DateTime.parse(profile.lastOnline)),
-                                  style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
-                                ),
-                              ],
-                            ),
                           ],
                         ),
                       ),
@@ -169,6 +178,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         ),
         SliverList(
           delegate: SliverChildListDelegate(<Widget>[
+            profile.about != null ? AboutSection(profile.about) : Container(),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -214,7 +224,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
             ),
             Divider(height: 0.0),
-            profile.about != null ? AboutSection(profile.about) : Container(),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text('Statistics', style: Theme.of(context).textTheme.headline6),

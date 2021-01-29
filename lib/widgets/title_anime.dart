@@ -8,7 +8,7 @@ import 'package:myanimelist/screens/person_screen.dart';
 
 class TitleAnime extends StatelessWidget {
   TitleAnime(this.id, this.title, this.image,
-      {this.width = 160.0, this.height = 220.0, this.type, this.showTitle = true});
+      {this.width = kImageWidthL, this.height = kImageHeightL, this.type, this.showTitle = true});
 
   final int id;
   final String title;
@@ -20,60 +20,55 @@ class TitleAnime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: <Widget>[
-        Ink.image(
-          image: NetworkImage(image),
-          width: width,
-          height: height,
-          fit: BoxFit.cover,
-          child: InkWell(
-            onTap: () {
-              switch (type) {
-                case TopType.anime:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AnimeScreen(id, title),
-                      settings: RouteSettings(name: 'AnimeScreen'),
-                    ),
-                  );
-                  break;
-                case TopType.manga:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MangaScreen(id, title),
-                      settings: RouteSettings(name: 'MangaScreen'),
-                    ),
-                  );
-                  break;
-                case TopType.people:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PersonScreen(id),
-                      settings: RouteSettings(name: 'PersonScreen'),
-                    ),
-                  );
-                  break;
-                case TopType.characters:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CharacterScreen(id),
-                      settings: RouteSettings(name: 'CharacterScreen'),
-                    ),
-                  );
-                  break;
-                default:
-                  throw 'TopType Error';
-              }
-            },
-          ),
-        ),
-        title != '' && showTitle
+    return Ink.image(
+      image: NetworkImage(image),
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
+      child: InkWell(
+        onTap: () {
+          switch (type) {
+            case TopType.anime:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AnimeScreen(id, title),
+                  settings: RouteSettings(name: 'AnimeScreen'),
+                ),
+              );
+              break;
+            case TopType.manga:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MangaScreen(id, title),
+                  settings: RouteSettings(name: 'MangaScreen'),
+                ),
+              );
+              break;
+            case TopType.people:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PersonScreen(id),
+                  settings: RouteSettings(name: 'PersonScreen'),
+                ),
+              );
+              break;
+            case TopType.characters:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CharacterScreen(id),
+                  settings: RouteSettings(name: 'CharacterScreen'),
+                ),
+              );
+              break;
+            default:
+              throw 'TopType Error';
+          }
+        },
+        child: title != '' && showTitle
             ? Stack(
                 alignment: AlignmentDirectional.bottomCenter,
                 children: <Widget>[
@@ -93,7 +88,7 @@ class TitleAnime extends StatelessWidget {
                 ],
               )
             : Container(),
-      ],
+      ),
     );
   }
 }

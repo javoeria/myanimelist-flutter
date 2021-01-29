@@ -16,12 +16,16 @@ const kOnHoldColor = Color(0xFFF9D457);
 const kDroppedColor = Color(0xFFA12F31);
 const kPlantoWatchColor = Color(0xFFC3C3C3);
 
-const kImageWidth = 50.0;
-const kImageHeight = 70.0;
-const kContainerWidth = 108.0;
-const kContainerHeight = 163.0;
-const kExpandedHeight = 280.0;
+const kImageWidthS = 50.0;
+const kImageHeightS = 70.0;
+const kImageWidthM = 108.0;
+const kImageHeightM = 163.0;
+const kImageWidthL = 160.0;
+const kImageHeightL = 220.0;
+const kImageWidthXL = 167.0;
+const kImageHeightXL = 242.0;
 
+const kExpandedHeight = 280.0;
 const kSliverAppBarWidth = 135.0;
 const kSliverAppBarHeight = 210.0;
 const kSliverAppBarPadding = EdgeInsets.all(24.0);

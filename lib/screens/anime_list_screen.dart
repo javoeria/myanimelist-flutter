@@ -115,7 +115,7 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
     String score = item.score == 0 ? '-' : item.score.toString();
     String watched = item.watchedEpisodes == 0 ? '-' : item.watchedEpisodes.toString();
     String total = item.totalEpisodes == 0 ? '-' : item.totalEpisodes.toString();
-    String progress = watched == total ? total : '$watched / $total';
+    String progress = item.watchingStatus == 2 ? total : '$watched / $total';
     return InkWell(
       child: Padding(
         padding: const EdgeInsets.all(4.0),
@@ -125,11 +125,11 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
             Expanded(
               child: Row(
                 children: <Widget>[
-                  Container(color: statusColor(item.watchingStatus), width: 5.0, height: 70.0),
+                  Container(color: statusColor(item.watchingStatus), width: 5.0, height: kImageHeightS),
                   Image.network(
                     item.imageUrl,
-                    width: kImageWidth,
-                    height: kImageHeight,
+                    width: kImageWidthS,
+                    height: kImageHeightS,
                     fit: BoxFit.cover,
                   ),
                   SizedBox(width: 8.0),

@@ -34,8 +34,8 @@ class FavoriteSection extends StatelessWidget {
 
   final BuiltList<Favorite> list;
   final TopType type;
-  final double width = kContainerWidth;
-  final double height = kContainerHeight;
+  final double width = kImageWidthM;
+  final double height = kImageHeightM;
 
   String get _favoriteTitle {
     switch (type) {

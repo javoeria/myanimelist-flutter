@@ -8,6 +8,7 @@ import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/widgets/anime/anime_dialog.dart';
 import 'package:myanimelist/widgets/anime/related_list.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
+import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 class AnimeDetails extends StatefulWidget {
@@ -102,7 +103,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.network(anime.imageUrl, width: 167.0, height: 242.0, fit: BoxFit.cover),
+              Image.network(anime.imageUrl, width: kImageWidthXL, height: kImageHeightXL, fit: BoxFit.cover),
               SizedBox(width: 16.0),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -206,6 +207,10 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
             ],
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: GenreHorizontal(anime.genres),
+        ),
         anime.background != null
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,6 +244,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Episodes: ',
@@ -248,6 +254,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Status: ',
@@ -257,6 +264,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Aired: ',
@@ -266,25 +274,32 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               anime.premiered != null
-                  ? RichText(
-                      text: TextSpan(
-                        text: 'Premiered: ',
-                        style: Theme.of(context).textTheme.bodyText1,
-                        children: <TextSpan>[
-                          TextSpan(text: anime.premiered, style: DefaultTextStyle.of(context).style),
-                        ],
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'Premiered: ',
+                          style: Theme.of(context).textTheme.bodyText1,
+                          children: <TextSpan>[
+                            TextSpan(text: anime.premiered, style: DefaultTextStyle.of(context).style),
+                          ],
+                        ),
                       ),
                     )
                   : Container(),
               anime.broadcast != null
-                  ? RichText(
-                      text: TextSpan(
-                        text: 'Broadcast: ',
-                        style: Theme.of(context).textTheme.bodyText1,
-                        children: <TextSpan>[
-                          TextSpan(text: anime.broadcast, style: DefaultTextStyle.of(context).style),
-                        ],
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'Broadcast: ',
+                          style: Theme.of(context).textTheme.bodyText1,
+                          children: <TextSpan>[
+                            TextSpan(text: anime.broadcast, style: DefaultTextStyle.of(context).style),
+                          ],
+                        ),
                       ),
                     )
                   : Container(),
@@ -297,6 +312,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Licensors: ',
@@ -306,6 +322,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Studios: ',
@@ -315,6 +332,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Source: ',
@@ -324,6 +342,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Genres: ',
@@ -333,6 +352,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Duration: ',
@@ -342,6 +362,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ],
                 ),
               ),
+              SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
                   text: 'Rating: ',

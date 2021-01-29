@@ -50,8 +50,8 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                     children: <Widget>[
                       Ink.image(
                         image: NetworkImage(review.reviewer.imageUrl),
-                        width: kImageWidth,
-                        height: kImageHeight,
+                        width: kImageWidthS,
+                        height: kImageHeightS,
                         fit: BoxFit.cover,
                         child: InkWell(
                           onTap: () {
@@ -93,7 +93,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
               ),
               ExpandablePanel(
                 header: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Text('Overall Rating: ${review.reviewer.scores.overall}'),
                 ),
                 collapsed: Text(review.content, softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),

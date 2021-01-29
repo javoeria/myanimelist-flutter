@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat, DateFormat;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 
@@ -47,13 +48,13 @@ class SeasonInfo extends StatelessWidget {
             SizedBox(height: 4.0),
             Text('$_producersText | $episodes eps | ${anime.source}'),
             SizedBox(height: 4.0),
-            GenreHorizontal(anime.genres, padding: 0.0),
+            GenreHorizontal(anime.genres),
             SizedBox(height: 4.0),
             Container(
-              height: 242.0,
+              height: kImageHeightXL,
               child: Row(
                 children: <Widget>[
-                  Image.network(anime.imageUrl, width: 167.0, height: 242.0, fit: BoxFit.cover),
+                  Image.network(anime.imageUrl, width: kImageWidthXL, height: kImageHeightXL, fit: BoxFit.cover),
                   SizedBox(width: 8.0),
                   Expanded(
                     child: Container(

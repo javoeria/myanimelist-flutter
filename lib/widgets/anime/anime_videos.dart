@@ -62,30 +62,26 @@ class VideoImage extends StatelessWidget {
   VideoImage(this.promo);
 
   final Promo promo;
-  final double width = 320.0;
-  final double height = 180.0;
+  final double width = 300.0;
+  final double height = 170.0;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Ink.image(
-          image: NetworkImage(promo.imageUrl),
-          width: width,
-          height: height,
-          fit: BoxFit.cover,
-          child: InkWell(
-            onTap: () async {
-              String url = promo.videoUrl;
-              if (await canLaunch(url)) {
-                await launch(url);
-              } else {
-                throw 'Could not launch $url';
-              }
-            },
-          ),
-        ),
-        Container(
+    return Ink.image(
+      image: NetworkImage(promo.imageUrl),
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
+      child: InkWell(
+        onTap: () async {
+          String url = promo.videoUrl;
+          if (await canLaunch(url)) {
+            await launch(url);
+          } else {
+            throw 'Could not launch $url';
+          }
+        },
+        child: Container(
           width: width,
           height: height,
           child: Column(
@@ -124,7 +120,7 @@ class VideoImage extends StatelessWidget {
             ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

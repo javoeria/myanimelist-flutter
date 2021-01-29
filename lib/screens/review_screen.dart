@@ -38,8 +38,29 @@ class ReviewScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(item['entry']['title'], style: Theme.of(context).textTheme.bodyText1),
-                      SizedBox(height: 16.0),
+                      InkWell(
+                        child: Text(item['entry']['title'], style: Theme.of(context).textTheme.bodyText1),
+                        onTap: () {
+                          if (anime) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AnimeScreen(item['entry']['mal_id'], item['entry']['title']),
+                                settings: RouteSettings(name: 'AnimeScreen'),
+                              ),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MangaScreen(item['entry']['mal_id'], item['entry']['title']),
+                                settings: RouteSettings(name: 'MangaScreen'),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      SizedBox(height: 12.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -47,8 +68,8 @@ class ReviewScreen extends StatelessWidget {
                             children: <Widget>[
                               Ink.image(
                                 image: NetworkImage(item['user']['images']['jpg']['image_url']),
-                                width: kImageWidth,
-                                height: kImageHeight,
+                                width: kImageWidthS,
+                                height: kImageHeightS,
                                 fit: BoxFit.cover,
                                 child: InkWell(
                                   onTap: () {
@@ -91,8 +112,8 @@ class ReviewScreen extends StatelessWidget {
                               SizedBox(width: 8.0),
                               Ink.image(
                                 image: NetworkImage(item['entry']['images']['jpg']['large_image_url']),
-                                width: kImageWidth,
-                                height: kImageHeight,
+                                width: kImageWidthS,
+                                height: kImageHeightS,
                                 fit: BoxFit.cover,
                                 child: InkWell(
                                   onTap: () {
@@ -124,7 +145,7 @@ class ReviewScreen extends StatelessWidget {
                       ),
                       ExpandablePanel(
                         header: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
                           child: Text('Overall Rating: ${item['scores']['overall']}'),
                         ),
                         collapsed: Text(item['review'], softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),

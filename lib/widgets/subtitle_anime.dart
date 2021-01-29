@@ -14,65 +14,60 @@ class SubtitleAnime extends StatelessWidget {
   final String subtitle;
   final String image;
   final TopType type;
-  final double width = kContainerWidth;
-  final double height = kContainerHeight;
+  final double width = kImageWidthM;
+  final double height = kImageHeightM;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: <Widget>[
-        Ink.image(
-          image: NetworkImage(image),
-          width: width,
-          height: height,
-          fit: BoxFit.cover,
-          child: InkWell(
-            onTap: () {
-              switch (type) {
-                case TopType.anime:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AnimeScreen(id, title),
-                      settings: RouteSettings(name: 'AnimeScreen'),
-                    ),
-                  );
-                  break;
-                case TopType.manga:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MangaScreen(id, title),
-                      settings: RouteSettings(name: 'MangaScreen'),
-                    ),
-                  );
-                  break;
-                case TopType.people:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PersonScreen(id),
-                      settings: RouteSettings(name: 'PersonScreen'),
-                    ),
-                  );
-                  break;
-                case TopType.characters:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CharacterScreen(id),
-                      settings: RouteSettings(name: 'CharacterScreen'),
-                    ),
-                  );
-                  break;
-                default:
-                  throw 'TopType Error';
-              }
-            },
-          ),
-        ),
-        title != ''
+    return Ink.image(
+      image: NetworkImage(image),
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
+      child: InkWell(
+        onTap: () {
+          switch (type) {
+            case TopType.anime:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AnimeScreen(id, title),
+                  settings: RouteSettings(name: 'AnimeScreen'),
+                ),
+              );
+              break;
+            case TopType.manga:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MangaScreen(id, title),
+                  settings: RouteSettings(name: 'MangaScreen'),
+                ),
+              );
+              break;
+            case TopType.people:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PersonScreen(id),
+                  settings: RouteSettings(name: 'PersonScreen'),
+                ),
+              );
+              break;
+            case TopType.characters:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CharacterScreen(id),
+                  settings: RouteSettings(name: 'CharacterScreen'),
+                ),
+              );
+              break;
+            default:
+              throw 'TopType Error';
+          }
+        },
+        child: title != ''
             ? Stack(
                 alignment: AlignmentDirectional.bottomCenter,
                 children: <Widget>[
@@ -103,7 +98,7 @@ class SubtitleAnime extends StatelessWidget {
                 ],
               )
             : Container(),
-      ],
+      ),
     );
   }
 }
