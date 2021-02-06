@@ -9,6 +9,7 @@ import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/main.dart';
 import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
+import 'package:myanimelist/screens/feed_screen.dart';
 import 'package:myanimelist/screens/genre_anime_screen.dart';
 import 'package:myanimelist/screens/genre_manga_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
@@ -352,6 +353,34 @@ class HomeScreen extends StatelessWidget {
                     title: Text('Industry'),
                     leading: Icon(FontAwesomeIcons.briefcase),
                     children: <Widget>[
+                      ListTile(
+                        title: Text('News'),
+                        onTap: () {
+                          FirebaseAnalytics().logSelectContent(contentType: 'industry', itemId: 'news');
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FeedScreen(),
+                              settings: RouteSettings(name: 'NewsScreen'),
+                            ),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Featured Articles'),
+                        onTap: () {
+                          FirebaseAnalytics().logSelectContent(contentType: 'industry', itemId: 'articles');
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FeedScreen(news: false),
+                              settings: RouteSettings(name: 'FeaturedArticlesScreen'),
+                            ),
+                          );
+                        },
+                      ),
                       ListTile(
                         title: Text('People'),
                         onTap: () {

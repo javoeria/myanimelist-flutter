@@ -27,7 +27,6 @@ void main() async {
 
   await setupRemoteConfig();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  print(prefs.getKeys());
   runApp(MyApp(prefs));
 }
 

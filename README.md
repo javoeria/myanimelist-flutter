@@ -29,7 +29,8 @@ Open-source project made with [Flutter](https://flutter.dev/) and icon by [Icons
 
 ### Industry
 
-- [ ] News
+- [x] News
+- [x] Featured Articles
 - [x] People
 - [x] Characters
 
