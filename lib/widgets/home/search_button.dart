@@ -262,13 +262,13 @@ Future<bool> _historyDialog(BuildContext context, String suggestion) async {
       return AlertDialog(
         content: Text('Clear $suggestion from your history?'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text('NO'),
             onPressed: () {
               Navigator.of(context).pop(false);
             },
           ),
-          FlatButton(
+          TextButton(
             child: Text('YES'),
             onPressed: () {
               Navigator.of(context).pop(true);

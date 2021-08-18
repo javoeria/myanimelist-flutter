@@ -127,7 +127,7 @@ class _FilterDialogState extends State<FilterDialog> {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: Text('CLEAR'),
           onPressed: () {
             Navigator.pop(context);
@@ -150,7 +150,7 @@ class _FilterDialogState extends State<FilterDialog> {
             }
           },
         ),
-        FlatButton(
+        TextButton(
           child: Text('APPLY'),
           onPressed: () {
             Navigator.pop(context);

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
@@ -32,7 +33,10 @@ void main() async {
 
 Future<RemoteConfig> setupRemoteConfig() async {
   final RemoteConfig remoteConfig = await RemoteConfig.instance;
-  remoteConfig.setConfigSettings(RemoteConfigSettings(minimumFetchIntervalMillis: 3600000));
+  remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(seconds: 10),
+    minimumFetchInterval: const Duration(hours: 1),
+  ));
   remoteConfig.setDefaults(<String, dynamic>{
     'v4_genres': false,
     'v4_magazines': false,
@@ -42,9 +46,8 @@ Future<RemoteConfig> setupRemoteConfig() async {
     'v4_watch': false,
   });
   try {
-    await remoteConfig.fetch(expiration: const Duration(seconds: 0));
-    await remoteConfig.activateFetched();
-  } on FetchThrottledException catch (e) {
+    await remoteConfig.fetchAndActivate();
+  } on PlatformException catch (e) {
     print(e);
   }
   return remoteConfig;

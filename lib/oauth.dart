@@ -46,7 +46,7 @@ class MalClient {
     if (accessToken == null) return [];
 
     final url = '$apiBaseUrl/anime/suggestions?limit=20';
-    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final response = await http.get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
     final suggestionsJson = jsonDecode(response.body);
     return suggestionsJson['data'];
   }
@@ -56,7 +56,7 @@ class MalClient {
     if (accessToken == null) return [];
 
     final url = anime ? '$apiBaseUrl/anime/$id?fields=related_anime' : '$apiBaseUrl/manga/$id?fields=related_manga';
-    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final response = await http.get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
     final relatedJson = jsonDecode(response.body);
     return anime ? relatedJson['related_anime'] : relatedJson['related_manga'];
   }
@@ -100,7 +100,7 @@ class MalClient {
       'code_verifier': verifier,
       'grant_type': 'authorization_code',
     };
-    final response = await http.post(tokenUri, body: params);
+    final response = await http.post(Uri.parse(tokenUri), body: params);
     return jsonDecode(response.body);
   }
 
@@ -110,19 +110,20 @@ class MalClient {
       'grant_type': 'refresh_token',
       'refresh_token': refreshToken,
     };
-    final response = await http.post(tokenUri, body: params);
+    final response = await http.post(Uri.parse(tokenUri), body: params);
     return jsonDecode(response.body);
   }
 
   Future<String> _getUserName(String accessToken) async {
-    final response = await http.get('$apiBaseUrl/users/@me', headers: {'Authorization': 'Bearer $accessToken'});
+    final response =
+        await http.get(Uri.parse('$apiBaseUrl/users/@me'), headers: {'Authorization': 'Bearer $accessToken'});
     final userJson = jsonDecode(response.body);
     return userJson['name'];
   }
 
   Future<Map<String, dynamic>> _getAnimeStatus(int id, String accessToken) async {
     final url = '$apiBaseUrl/anime/$id?fields=my_list_status,num_episodes';
-    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final response = await http.get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
     final animeJson = jsonDecode(response.body);
     if (animeJson['my_list_status'] == null) {
       animeJson['my_list_status'] = {'score': 0, 'num_episodes_watched': '', 'text': 'ADD TO MY LIST'};
@@ -136,7 +137,7 @@ class MalClient {
 
   Future<Map<String, dynamic>> _getMangaStatus(int id, String accessToken) async {
     final url = '$apiBaseUrl/manga/$id?fields=my_list_status,num_volumes,num_chapters';
-    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final response = await http.get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
     final mangaJson = jsonDecode(response.body);
     if (mangaJson['my_list_status'] == null) {
       mangaJson['my_list_status'] = {
@@ -162,7 +163,7 @@ class MalClient {
       'num_watched_episodes': episodes == '?' ? '0' : episodes,
     };
     final url = '$apiBaseUrl/anime/$id/my_list_status';
-    final response = await http.put(url, body: params, headers: {'Authorization': 'Bearer $accessToken'});
+    final response = await http.put(Uri.parse(url), body: params, headers: {'Authorization': 'Bearer $accessToken'});
     return jsonDecode(response.body);
   }
 
@@ -175,7 +176,7 @@ class MalClient {
       'num_chapters_read': chapters == '?' ? '0' : chapters,
     };
     final url = '$apiBaseUrl/manga/$id/my_list_status';
-    final response = await http.put(url, body: params, headers: {'Authorization': 'Bearer $accessToken'});
+    final response = await http.put(Uri.parse(url), body: params, headers: {'Authorization': 'Bearer $accessToken'});
     return jsonDecode(response.body);
   }
 

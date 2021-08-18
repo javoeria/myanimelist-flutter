@@ -127,13 +127,13 @@ Future<bool> _logoutDialog(BuildContext context) async {
       return AlertDialog(
         content: Text('Are you sure you want to logout?'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text('NO'),
             onPressed: () {
               Navigator.of(context).pop(false);
             },
           ),
-          FlatButton(
+          TextButton(
             child: Text('YES'),
             onPressed: () {
               Navigator.of(context).pop(true);

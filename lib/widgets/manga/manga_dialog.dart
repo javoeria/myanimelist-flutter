@@ -217,13 +217,13 @@ class _MangaDialogState extends State<MangaDialog> {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: Text('CANCEL'),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
+        TextButton(
           child: Text('OK'),
           onPressed: () async {
             final result = await MalClient().setStatus(

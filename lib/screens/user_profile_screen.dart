@@ -184,8 +184,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: RaisedButton(
-                      color: Colors.indigo,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: Colors.indigo),
                       child: Text(
                         'Anime List',
                         style: Theme.of(context).textTheme.button.copyWith(color: Colors.white),
@@ -203,8 +203,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                   SizedBox(width: 16.0),
                   Expanded(
-                    child: RaisedButton(
-                      color: Colors.indigo,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: Colors.indigo),
                       child: Text(
                         'Manga List',
                         style: Theme.of(context).textTheme.button.copyWith(color: Colors.white),

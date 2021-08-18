@@ -10,7 +10,7 @@ class FeedScreen extends StatelessWidget {
 
   Future<List<XmlElement>> getXmlData() async {
     final type = news ? 'news' : 'featured';
-    final response = await http.get('https://myanimelist.net/rss/$type.xml');
+    final response = await http.get(Uri.parse('https://myanimelist.net/rss/$type.xml'));
     final data = XmlDocument.parse(response.body);
     return data.findAllElements('item').toList();
   }
