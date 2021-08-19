@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => UserData(prefs),
       child: DynamicTheme(
-        defaultBrightness: WidgetsBinding.instance.window.platformBrightness,
+        defaultBrightness: WidgetsBinding.instance!.window.platformBrightness,
         data: (brightness) => ThemeData(
           primarySwatch: Colors.indigo,
           accentColor: brightness == Brightness.light ? Colors.indigo : Colors.blue,
@@ -93,12 +93,12 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   final Jikan jikan = Jikan();
 
-  UserProfile profile;
-  Season season;
-  BuiltList<Top> topAiring;
-  BuiltList<Top> topUpcoming;
-  List<dynamic> suggestions;
-  RemoteConfig remoteConfig;
+  UserProfile? profile;
+  late Season season;
+  late BuiltList<Top> topAiring;
+  late BuiltList<Top> topUpcoming;
+  List<dynamic>? suggestions;
+  late RemoteConfig remoteConfig;
   bool loading = true;
 
   @override
@@ -111,7 +111,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     final Trace mainTrace = FirebasePerformance.instance.newTrace('main_trace');
     mainTrace.start();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String username = prefs.getString('username');
+    String? username = prefs.getString('username');
     if (username != null) {
       profile = await jikan.getUserProfile(username);
       suggestions = await MalClient().getSuggestions();

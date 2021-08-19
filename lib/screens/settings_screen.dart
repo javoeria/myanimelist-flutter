@@ -20,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String username = prefs.getString('username');
+    String? username = prefs.getString('username');
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
@@ -30,14 +30,14 @@ class SettingsScreen extends StatelessWidget {
           ListTile(
             title: username == null ? Text('Login') : Text('Logout'),
             onTap: () async {
-              bool action = true;
+              bool? action = true;
               if (username == null) {
                 if (kReleaseMode) {
                   FirebaseAnalytics().logLogin();
                   username = await MalClient().login();
                 } else {
                   username = 'javoeria';
-                  await prefs.setString('username', username);
+                  await prefs.setString('username', username!);
                 }
               } else {
                 FirebaseAnalytics().logEvent(name: 'logout');
@@ -89,7 +89,7 @@ class SettingsScreen extends StatelessWidget {
               activeColor: Colors.indigo,
               onChanged: (value) {
                 FirebaseAnalytics().logEvent(name: 'theme');
-                DynamicTheme.of(context).setBrightness(
+                DynamicTheme.of(context)!.setBrightness(
                   Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark,
                 );
               },
@@ -120,7 +120,7 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-Future<bool> _logoutDialog(BuildContext context) async {
+Future<bool?> _logoutDialog(BuildContext context) async {
   return showDialog<bool>(
     context: context,
     builder: (BuildContext context) {

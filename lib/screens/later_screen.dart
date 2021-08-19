@@ -28,12 +28,12 @@ class LaterScreen extends StatelessWidget {
         ),
         body: FutureBuilder(
           future: Jikan().getSeasonLater(),
-          builder: (context, snapshot) {
+          builder: (context, AsyncSnapshot<Season> snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return Center(child: CircularProgressIndicator());
             }
 
-            BuiltList<AnimeItem> animeList = snapshot.data.anime;
+            BuiltList<AnimeItem> animeList = snapshot.data!.anime;
             BuiltList<AnimeItem> tv = BuiltList.from(animeList.where((anime) => anime.type == 'TV'));
             BuiltList<AnimeItem> ona = BuiltList.from(animeList.where((anime) => anime.type == 'ONA'));
             BuiltList<AnimeItem> ova = BuiltList.from(animeList.where((anime) => anime.type == 'OVA'));

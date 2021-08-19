@@ -30,14 +30,14 @@ class TopPeopleScreen extends StatelessWidget {
                 crossAxisSpacing: 16.0,
                 childAspectRatio: kImageWidthM / kImageHeightM,
                 padding: const EdgeInsets.all(16.0),
-                itemBuilder: (context, top, _) => RankImage(top, type: type),
-                pageFuture: (pageIndex) => jikan.getTop(type, page: pageIndex + 1),
+                itemBuilder: (context, Top top, _) => RankImage(top, type: type),
+                pageFuture: (pageIndex) => jikan.getTop(type, page: pageIndex! + 1),
               )
             : PagewiseListView(
                 pageSize: kTopPageSize,
                 itemBuilder: _itemBuilder,
                 padding: const EdgeInsets.all(12.0),
-                pageFuture: (pageIndex) => jikan.getTop(type, page: pageIndex + 1),
+                pageFuture: (pageIndex) => jikan.getTop(type, page: pageIndex! + 1),
               ),
       ),
     );

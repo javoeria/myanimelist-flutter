@@ -17,12 +17,12 @@ class RecommendationScreen extends StatelessWidget {
       ),
       body: FutureBuilder(
         future: JikanV4().getRecommendations(anime: anime),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          List<dynamic> items = snapshot.data;
+          List<dynamic> items = snapshot.data!;
           return Scrollbar(
             child: ListView.separated(
               separatorBuilder: (context, index) => Divider(height: 0.0),

@@ -11,9 +11,9 @@ class MangaListScreen extends StatelessWidget {
   MangaListScreen(this.username, {this.title, this.order, this.sort});
 
   final String username;
-  final String title;
-  final String order;
-  final String sort;
+  final String? title;
+  final String? order;
+  final String? sort;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class MangaListScreen extends StatelessWidget {
 }
 
 class UserMangaList extends StatefulWidget {
-  UserMangaList({this.type});
+  UserMangaList({required this.type});
 
   final ListType type;
 
@@ -104,8 +104,8 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
           type: widget.type,
           query: provider.title,
           order: provider.order,
-          sort: provider.sort,
-          page: pageIndex + 1,
+          sort: provider.sort ?? 'desc',
+          page: pageIndex! + 1,
         ),
       ),
     );
@@ -125,7 +125,7 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
             Expanded(
               child: Row(
                 children: <Widget>[
-                  Container(color: statusColor(item.readingStatus), width: 5.0, height: kImageHeightS),
+                  Container(color: statusColor(item.readingStatus!), width: 5.0, height: kImageHeightS),
                   Image.network(
                     item.imageUrl,
                     width: kImageWidthS,

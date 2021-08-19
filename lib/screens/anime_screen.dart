@@ -13,7 +13,7 @@ class AnimeScreen extends StatelessWidget {
   AnimeScreen(this.id, this.title);
 
   final int id;
-  final String title;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {

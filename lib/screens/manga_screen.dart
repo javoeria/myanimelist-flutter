@@ -11,7 +11,7 @@ class MangaScreen extends StatelessWidget {
   MangaScreen(this.id, this.title);
 
   final int id;
-  final String title;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {

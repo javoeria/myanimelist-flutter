@@ -7,7 +7,7 @@ import 'package:myanimelist/widgets/top/top_list.dart';
 import 'package:provider/provider.dart';
 
 class TopAnimeScreen extends StatelessWidget {
-  TopAnimeScreen({this.index});
+  TopAnimeScreen({this.index = 0});
 
   final int index;
   final TopType type = TopType.anime;
@@ -16,7 +16,7 @@ class TopAnimeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 9,
-      initialIndex: index ?? 0,
+      initialIndex: index,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Top Anime'),

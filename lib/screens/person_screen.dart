@@ -24,9 +24,9 @@ class _PersonScreenState extends State<PersonScreen> {
   final NumberFormat f = NumberFormat.decimalPattern();
   final DateFormat dateFormat = DateFormat('MMM d, yy');
 
-  ScrollController _scrollController;
-  Person person;
-  BuiltList<Picture> pictures;
+  late ScrollController _scrollController;
+  late Person person;
+  late BuiltList<Picture> pictures;
   bool loading = true;
 
   @override
@@ -86,13 +86,13 @@ class _PersonScreenState extends State<PersonScreen> {
                           children: <Widget>[
                             AutoSizeText(
                               person.name,
-                              style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
+                              style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
                               maxLines: 2,
                             ),
                             person.familyName != null && person.givenName != null
                                 ? AutoSizeText(
                                     '${person.familyName} ${person.givenName}',
-                                    style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                    style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                     maxLines: 1,
                                   )
                                 : Container(),
@@ -103,7 +103,7 @@ class _PersonScreenState extends State<PersonScreen> {
                                 SizedBox(width: 4.0),
                                 Text(
                                   f.format(person.memberFavorites),
-                                  style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                  style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                 ),
                               ],
                             ),
@@ -113,8 +113,8 @@ class _PersonScreenState extends State<PersonScreen> {
                                       Icon(Icons.cake, color: Colors.white, size: 20.0),
                                       SizedBox(width: 4.0),
                                       Text(
-                                        dateFormat.format(DateTime.parse(person.birthday)),
-                                        style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                        dateFormat.format(DateTime.parse(person.birthday!)),
+                                        style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                       ),
                                     ],
                                   )
@@ -172,7 +172,7 @@ class StaffList extends StatelessWidget {
                   staff.anime.malId,
                   staff.anime.name,
                   staff.position,
-                  staff.anime.imageUrl,
+                  staff.anime.imageUrl!,
                   type: TopType.anime,
                 ),
               );
@@ -214,7 +214,7 @@ class PublishList extends StatelessWidget {
                   publish.manga.malId,
                   publish.manga.name,
                   publish.position,
-                  publish.manga.imageUrl,
+                  publish.manga.imageUrl!,
                   type: TopType.manga,
                 ),
               );

@@ -11,16 +11,16 @@ class UserData extends ChangeNotifier {
 
   final SharedPreferences prefs;
 
-  bool _gridView;
+  late bool _gridView;
   bool get gridView => _gridView;
 
-  bool _kidsGenre;
+  late bool _kidsGenre;
   bool get kidsGenre => _kidsGenre;
 
-  bool _r18Genre;
+  late bool _r18Genre;
   bool get r18Genre => _r18Genre;
 
-  List<String> _history;
+  late List<String> _history;
   List<String> get history => _history;
 
   void toggleView() {

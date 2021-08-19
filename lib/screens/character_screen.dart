@@ -23,9 +23,9 @@ class _CharacterScreenState extends State<CharacterScreen> {
   final Jikan jikan = Jikan();
   final NumberFormat f = NumberFormat.decimalPattern();
 
-  ScrollController _scrollController;
-  Character character;
-  BuiltList<Picture> pictures;
+  late ScrollController _scrollController;
+  late Character character;
+  late BuiltList<Picture> pictures;
   bool loading = true;
 
   @override
@@ -85,13 +85,13 @@ class _CharacterScreenState extends State<CharacterScreen> {
                           children: <Widget>[
                             AutoSizeText(
                               character.name,
-                              style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
+                              style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
                               maxLines: 2,
                             ),
                             character.nameKanji != null
                                 ? AutoSizeText(
-                                    character.nameKanji,
-                                    style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                    character.nameKanji!,
+                                    style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                     maxLines: 1,
                                   )
                                 : Container(),
@@ -102,7 +102,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
                                 SizedBox(width: 4.0),
                                 Text(
                                   f.format(character.memberFavorites),
-                                  style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                  style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                 ),
                               ],
                             ),
@@ -135,7 +135,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
 }
 
 class AnimeographyList extends StatelessWidget {
-  AnimeographyList(this.list, {this.type});
+  AnimeographyList(this.list, {required this.type});
 
   final BuiltList<CharacterRole> list;
   final TopType type;

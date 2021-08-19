@@ -5,7 +5,7 @@ import 'package:myanimelist/widgets/season/custom_menu.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
 
 class SeasonalAnimeScreen extends StatelessWidget {
-  SeasonalAnimeScreen({this.year, this.type});
+  SeasonalAnimeScreen({required this.year, required this.type});
 
   final int year;
   final String type;
@@ -51,12 +51,12 @@ class SeasonalAnimeScreen extends StatelessWidget {
         ),
         body: FutureBuilder(
           future: Jikan().getSeason(year: year, season: seasonClass(type)),
-          builder: (context, snapshot) {
+          builder: (context, AsyncSnapshot<Season> snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return Center(child: CircularProgressIndicator());
             }
 
-            BuiltList<AnimeItem> animeList = snapshot.data.anime;
+            BuiltList<AnimeItem> animeList = snapshot.data!.anime;
             BuiltList<AnimeItem> tv = BuiltList.from(animeList.where((anime) => anime.type == 'TV'));
             BuiltList<AnimeItem> ona = BuiltList.from(animeList.where((anime) => anime.type == 'ONA'));
             BuiltList<AnimeItem> ova = BuiltList.from(animeList.where((anime) => anime.type == 'OVA'));

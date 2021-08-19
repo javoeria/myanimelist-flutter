@@ -38,7 +38,7 @@ class WatchScreen extends StatelessWidget {
 }
 
 class AnimeVideos extends StatefulWidget {
-  AnimeVideos({this.type, this.subtype = ''});
+  AnimeVideos({required this.type, this.subtype = ''});
 
   final String type;
   final String subtype;
@@ -48,7 +48,7 @@ class AnimeVideos extends StatefulWidget {
 }
 
 class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClientMixin<AnimeVideos> {
-  Future<List<dynamic>> _future;
+  late Future<List<dynamic>> _future;
 
   @override
   void initState() {
@@ -61,12 +61,12 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        List<dynamic> promoList = snapshot.data;
+        List<dynamic> promoList = snapshot.data!;
         if (promoList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }

@@ -4,7 +4,7 @@ import 'package:myanimelist/jikan_v4.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
 
 class GenreAnimeScreen extends StatefulWidget {
-  GenreAnimeScreen({this.showCount});
+  GenreAnimeScreen({required this.showCount});
 
   final bool showCount;
 
@@ -78,13 +78,13 @@ class GenreAnimeList extends StatelessWidget {
       ),
       body: FutureBuilder(
         future: Jikan().getGenre(id, GenreType.anime),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot<Genre> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          Genre genre = snapshot.data;
-          return SeasonList(genre.anime);
+          Genre genre = snapshot.data!;
+          return SeasonList(genre.anime!);
         },
       ),
     );

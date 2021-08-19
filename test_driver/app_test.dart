@@ -12,7 +12,7 @@ void main() {
     final industryTextFinder = find.text('Industry');
     final watchTextFinder = find.text('Watch');
 
-    FlutterDriver driver;
+    late FlutterDriver driver;
 
     setUpAll(() async {
       driver = await FlutterDriver.connect();
@@ -20,16 +20,14 @@ void main() {
     });
 
     tearDownAll(() async {
-      if (driver != null) {
-        await driver.close();
-      }
+      driver.close();
     });
 
     setUp(() {
       sleep(const Duration(seconds: 10));
     });
 
-    void takeScreenshot(String name) async {
+    Future<void> takeScreenshot(String name) async {
       final int timestamp = DateTime.now().millisecondsSinceEpoch;
       final File file = File('screenshots/${timestamp}_$name.png');
       final List<int> pixels = await driver.screenshot();
