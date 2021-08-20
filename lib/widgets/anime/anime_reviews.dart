@@ -30,8 +30,8 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
           return ListTile(title: Text('No items found.'));
         },
         pageFuture: (pageIndex) => widget.anime
-            ? Jikan().getAnimeReviews(widget.id, page: pageIndex + 1)
-            : Jikan().getMangaReviews(widget.id, page: pageIndex + 1),
+            ? Jikan().getAnimeReviews(widget.id, page: pageIndex! + 1)
+            : Jikan().getMangaReviews(widget.id, page: pageIndex! + 1),
       ),
     );
   }

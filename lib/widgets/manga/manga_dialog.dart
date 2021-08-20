@@ -16,8 +16,8 @@ class _MangaDialogState extends State<MangaDialog> {
   final List<String> _scores = ['0', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'];
   final TextEditingController _textFieldController = TextEditingController();
   final TextEditingController _textFieldController2 = TextEditingController();
-  String _selectedStatus;
-  String _selectedScore;
+  late String _selectedStatus;
+  late String _selectedScore;
 
   @override
   void initState() {
@@ -125,7 +125,7 @@ class _MangaDialogState extends State<MangaDialog> {
                         _textFieldController.text = total;
                         _textFieldController2.text = total2;
                       }
-                      setState(() => _selectedStatus = value);
+                      setState(() => _selectedStatus = value!);
                     },
                   ),
                 ),
@@ -207,7 +207,7 @@ class _MangaDialogState extends State<MangaDialog> {
                       );
                     }).toList(),
                     onChanged: (value) {
-                      setState(() => _selectedScore = value);
+                      setState(() => _selectedScore = value!);
                     },
                   ),
                 ),

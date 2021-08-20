@@ -15,7 +15,7 @@ class AnimeCharactersStaff extends StatefulWidget {
 
 class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
     with AutomaticKeepAliveClientMixin<AnimeCharactersStaff> {
-  Future<CharacterStaff> _future;
+  late Future<CharacterStaff> _future;
 
   @override
   void initState() {
@@ -28,12 +28,12 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<CharacterStaff> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        CharacterStaff list = snapshot.data;
+        CharacterStaff list = snapshot.data!;
         if ((list.characters.length + list.staff.length) == 0) {
           return ListTile(title: Text('No items found.'));
         }
@@ -49,7 +49,7 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
               final item = items[index];
               if (item is CharacterItem) {
                 CharacterRole character = item.character;
-                BuiltList<VoiceActor> actors = character.voiceActors;
+                BuiltList<VoiceActor> actors = character.voiceActors!;
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                   child: Row(

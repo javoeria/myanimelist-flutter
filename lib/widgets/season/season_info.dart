@@ -21,7 +21,7 @@ class SeasonInfo extends StatelessWidget {
     if (anime.airingStart == null) {
       return '??';
     } else {
-      DateTime japanTime = DateTime.parse(anime.airingStart).add(Duration(hours: 9));
+      DateTime japanTime = DateTime.parse(anime.airingStart!).add(Duration(hours: 9));
       return anime.type == 'TV' ? '${dateFormat.format(japanTime)} (JST)' : dateFormat2.format(japanTime);
     }
   }

@@ -14,7 +14,7 @@ class AnimeVideos extends StatefulWidget {
 }
 
 class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClientMixin<AnimeVideos> {
-  Future<BuiltList<Promo>> _future;
+  late Future<BuiltList<Promo>> _future;
 
   @override
   void initState() {
@@ -27,12 +27,12 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<BuiltList<Promo>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<Promo> promoList = snapshot.data;
+        BuiltList<Promo> promoList = snapshot.data!;
         if (promoList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }

@@ -16,7 +16,7 @@ class AnimeEpisodes extends StatefulWidget {
 class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveClientMixin<AnimeEpisodes> {
   final DateFormat f = DateFormat('MMM d, yyyy');
 
-  Widget subtitleText(String titleRomanji, String titleJapanese) {
+  Widget? subtitleText(String? titleRomanji, String? titleJapanese) {
     if (titleRomanji != null && titleJapanese != null) {
       return Text('$titleRomanji - $titleJapanese');
     } else if (titleRomanji != null) {
@@ -38,13 +38,13 @@ class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveCl
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) => Jikan().getAnimeEpisodes(widget.id, page: pageIndex + 1),
+        pageFuture: (pageIndex) => Jikan().getAnimeEpisodes(widget.id, page: pageIndex! + 1),
       ),
     );
   }
 
   Widget _itemBuilder(BuildContext context, Episode episode, int index) {
-    String dateAired = episode.aired == null ? 'N/A' : f.format(DateTime.parse(episode.aired));
+    String dateAired = episode.aired == null ? 'N/A' : f.format(DateTime.parse(episode.aired!));
     return Column(
       children: <Widget>[
         ListTile(

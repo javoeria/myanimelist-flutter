@@ -7,7 +7,7 @@ import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/person_screen.dart';
 
 class SubtitleAnime extends StatelessWidget {
-  SubtitleAnime(this.id, this.title, this.subtitle, this.image, {this.type});
+  SubtitleAnime(this.id, this.title, this.subtitle, this.image, {this.type = TopType.anime});
 
   final int id;
   final String title;

@@ -62,7 +62,7 @@ class MangaStatsSection extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         height: 32.0,
-                        width: stats.reading / stats.totalEntries * screenWidth,
+                        width: stats.reading! / stats.totalEntries * screenWidth,
                         color: kWatchingColor,
                       ),
                       Container(
@@ -82,7 +82,7 @@ class MangaStatsSection extends StatelessWidget {
                       ),
                       Container(
                         height: 32.0,
-                        width: stats.planToRead / stats.totalEntries * screenWidth,
+                        width: stats.planToRead! / stats.totalEntries * screenWidth,
                         color: kPlantoWatchColor,
                       ),
                     ],

@@ -15,7 +15,7 @@ class SeasonList extends StatefulWidget {
 }
 
 class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMixin<SeasonList> {
-  BuiltList<AnimeItem> _animeList;
+  late BuiltList<AnimeItem> _animeList;
 
   @override
   void initState() {

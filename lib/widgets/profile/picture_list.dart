@@ -69,8 +69,8 @@ class ImageScreen extends StatefulWidget {
 }
 
 class _ImageScreenState extends State<ImageScreen> {
-  int _currentIndex;
-  PageController _pageController;
+  late int _currentIndex;
+  late PageController _pageController;
 
   @override
   void initState() {

@@ -29,7 +29,7 @@ class SeasonHorizontal extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SeasonalAnimeScreen(year: season.seasonYear, type: season.seasonName),
+                      builder: (context) => SeasonalAnimeScreen(year: season.seasonYear!, type: season.seasonName),
                       settings: RouteSettings(name: 'SeasonalAnimeScreen'),
                     ),
                   );

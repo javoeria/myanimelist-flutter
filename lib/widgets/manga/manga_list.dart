@@ -58,7 +58,7 @@ class MangaInfo extends StatelessWidget {
     if (manga.publishingStart == null) {
       return '??';
     } else {
-      DateTime japanTime = DateTime.parse(manga.publishingStart).add(Duration(hours: 9));
+      DateTime japanTime = DateTime.parse(manga.publishingStart!).add(Duration(hours: 9));
       return dateFormat.format(japanTime);
     }
   }
@@ -97,7 +97,10 @@ class MangaInfo extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.topLeft,
                       child: SingleChildScrollView(
-                        child: Text(manga.synopsis, style: Theme.of(context).textTheme.caption),
+                        child: Text(
+                          manga.synopsis ?? 'No synopsis information has been added to this title.',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
                       ),
                     ),
                   ),

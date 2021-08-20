@@ -93,7 +93,7 @@ class RoleItem extends StatelessWidget {
                 TitleAnime(
                   role.anime.malId,
                   role.anime.name,
-                  role.anime.imageUrl,
+                  role.anime.imageUrl!,
                   width: kImageWidthS,
                   height: kImageHeightS,
                   type: TopType.anime,
@@ -121,7 +121,7 @@ class RoleItem extends StatelessWidget {
                 TitleAnime(
                   role.character.malId,
                   '',
-                  role.character.imageUrl,
+                  role.character.imageUrl!,
                   width: kImageWidthS,
                   height: kImageHeightS,
                   type: TopType.characters,

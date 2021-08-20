@@ -23,7 +23,7 @@ class CustomFilter extends StatelessWidget {
 class FilterDialog extends StatefulWidget {
   FilterDialog(this.json);
 
-  final Map<String, String> json;
+  final Map<String, String?> json;
 
   @override
   _FilterDialogState createState() => _FilterDialogState();
@@ -32,14 +32,14 @@ class FilterDialog extends StatefulWidget {
 class _FilterDialogState extends State<FilterDialog> {
   final List<String> _orders = ['title', 'score', 'type', 'progress'];
   final TextEditingController _textFieldController = TextEditingController();
-  String _selectedOrder;
-  String _selectedSort;
+  String? _selectedOrder;
+  String? _selectedSort;
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      _textFieldController.text = widget.json['query'];
+      _textFieldController.text = widget.json['query'] ?? '';
       _selectedOrder = widget.json['order'];
       _selectedSort = widget.json['sort'];
     });
@@ -89,7 +89,7 @@ class _FilterDialogState extends State<FilterDialog> {
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
-                        _selectedOrder = value;
+                        _selectedOrder = value!;
                         if (_selectedSort == null) _selectedSort = 'desc';
                       });
                     },
@@ -116,7 +116,7 @@ class _FilterDialogState extends State<FilterDialog> {
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
-                        _selectedSort = value;
+                        _selectedSort = value!;
                       });
                     },
                   ),
@@ -135,7 +135,7 @@ class _FilterDialogState extends State<FilterDialog> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AnimeListScreen(widget.json['username']),
+                  builder: (context) => AnimeListScreen(widget.json['username']!),
                   settings: RouteSettings(name: 'AnimeListScreen'),
                 ),
               );
@@ -143,7 +143,7 @@ class _FilterDialogState extends State<FilterDialog> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MangaListScreen(widget.json['username']),
+                  builder: (context) => MangaListScreen(widget.json['username']!),
                   settings: RouteSettings(name: 'MangaListScreen'),
                 ),
               );
@@ -159,7 +159,7 @@ class _FilterDialogState extends State<FilterDialog> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AnimeListScreen(
-                    widget.json['username'],
+                    widget.json['username']!,
                     title: _textFieldController.text,
                     order: _selectedOrder,
                     sort: _selectedSort,
@@ -172,7 +172,7 @@ class _FilterDialogState extends State<FilterDialog> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => MangaListScreen(
-                    widget.json['username'],
+                    widget.json['username']!,
                     title: _textFieldController.text,
                     order: _selectedOrder,
                     sort: _selectedSort,

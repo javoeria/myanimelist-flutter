@@ -16,7 +16,7 @@ class AnimeForum extends StatefulWidget {
 
 class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMixin<AnimeForum> {
   final DateFormat f = DateFormat('MMM d, yyyy');
-  Future<BuiltList<Forum>> _future;
+  late Future<BuiltList<Forum>> _future;
 
   @override
   void initState() {
@@ -29,12 +29,12 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<BuiltList<Forum>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<Forum> forumList = snapshot.data;
+        BuiltList<Forum> forumList = snapshot.data!;
         if (forumList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }

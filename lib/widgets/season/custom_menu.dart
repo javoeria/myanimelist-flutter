@@ -28,7 +28,7 @@ class CustomMenu extends StatelessWidget {
       itemBuilder: (context) {
         return lastSeasons().map((season) => PopupMenuItem(child: Text(season), value: season)).toList();
       },
-      onSelected: (value) async {
+      onSelected: (String value) async {
         if (value == 'Later') {
           Navigator.pushReplacement(
             context,
@@ -46,7 +46,7 @@ class CustomMenu extends StatelessWidget {
             ),
           );
         } else if (value == 'Archive') {
-          String newValue = await Navigator.push(
+          String? newValue = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ArchiveScreen(),

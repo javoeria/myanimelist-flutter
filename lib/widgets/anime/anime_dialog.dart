@@ -15,8 +15,8 @@ class _AnimeDialogState extends State<AnimeDialog> {
   final List<String> _status = ['watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch'];
   final List<String> _scores = ['0', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'];
   final TextEditingController _textFieldController = TextEditingController();
-  String _selectedStatus;
-  String _selectedScore;
+  late String _selectedStatus;
+  late String _selectedScore;
 
   @override
   void initState() {
@@ -119,7 +119,7 @@ class _AnimeDialogState extends State<AnimeDialog> {
                     }).toList(),
                     onChanged: (value) {
                       if (value == 'completed') _textFieldController.text = total;
-                      setState(() => _selectedStatus = value);
+                      setState(() => _selectedStatus = value!);
                     },
                   ),
                 ),
@@ -172,7 +172,7 @@ class _AnimeDialogState extends State<AnimeDialog> {
                       );
                     }).toList(),
                     onChanged: (value) {
-                      setState(() => _selectedScore = value);
+                      setState(() => _selectedScore = value!);
                     },
                   ),
                 ),

@@ -30,7 +30,7 @@ class FavoriteList extends StatelessWidget {
 }
 
 class FavoriteSection extends StatelessWidget {
-  FavoriteSection(this.list, {this.type});
+  FavoriteSection(this.list, {required this.type});
 
   final BuiltList<Favorite> list;
   final TopType type;

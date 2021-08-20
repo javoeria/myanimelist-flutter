@@ -20,7 +20,7 @@ class SearchButton extends StatelessWidget {
       icon: Icon(Icons.search),
       tooltip: 'Search anime',
       onPressed: () async {
-        final Search selected = await showSearch<Search>(
+        final Search? selected = await showSearch<Search>(
           context: context,
           delegate: _delegate,
         );
@@ -51,7 +51,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
       icon: BackButtonIcon(),
       tooltip: 'Back',
       onPressed: () {
-        close(context, null);
+        Navigator.pop(context);
       },
     );
   }
@@ -71,10 +71,10 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
     } else {
       return FutureBuilder(
         future: jikan.search(query, type),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot<BuiltList<Search>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            BuiltList<Search> searchList = snapshot.data;
-            List<String> titleList = searchList.map((search) => search.title).toList();
+            BuiltList<Search> searchList = snapshot.data!;
+            List<String> titleList = searchList.map((search) => search.title!).toList();
             _suggestions = titleList;
           }
 
@@ -103,12 +103,12 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
     return Scrollbar(
       child: PagewiseListView(
         pageSize: kSearchPageSize,
-        itemBuilder: (context, search, _) => _ResultList(search, type: type, searchDelegate: this),
+        itemBuilder: (context, Search search, _) => _ResultList(search, type: type, searchDelegate: this),
         padding: const EdgeInsets.all(12.0),
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) => jikan.search(query, type, custom: excludeHentai, page: pageIndex + 1),
+        pageFuture: (pageIndex) => jikan.search(query, type, custom: excludeHentai, page: pageIndex! + 1),
       ),
     );
   }
@@ -126,7 +126,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
         ),
       ];
     }
-    return null;
+    return [];
   }
 
   @override
@@ -134,13 +134,13 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
       inputDecorationTheme: InputDecorationTheme(hintStyle: TextStyle(color: Colors.white54)),
-      textTheme: theme.textTheme.copyWith(headline6: theme.textTheme.headline6.copyWith(color: Colors.white)),
+      textTheme: theme.textTheme.copyWith(headline6: theme.textTheme.headline6!.copyWith(color: Colors.white)),
     );
   }
 }
 
 class _ResultList extends StatelessWidget {
-  _ResultList(this.search, {this.type, this.searchDelegate});
+  _ResultList(this.search, {required this.type, required this.searchDelegate});
 
   final Search search;
   final SearchType type;
@@ -185,9 +185,9 @@ class _ResultList extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(search.title, style: Theme.of(context).textTheme.subtitle2),
+                        Text(search.title!, style: Theme.of(context).textTheme.subtitle2),
                         Text(
-                          '${search.synopsis.split('.').first}.',
+                          '${search.synopsis!.split('.').first}.',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.caption,
@@ -214,7 +214,7 @@ class _ResultList extends StatelessWidget {
 }
 
 class _SuggestionList extends StatelessWidget {
-  _SuggestionList({this.history, this.suggestions, this.onSelected});
+  _SuggestionList({required this.history, required this.suggestions, required this.onSelected});
 
   final bool history;
   final List<String> suggestions;
@@ -234,7 +234,7 @@ class _SuggestionList extends StatelessWidget {
               onSelected(suggestion);
             },
             onLongPress: () async {
-              bool action = await _historyDialog(context, suggestion);
+              bool? action = await _historyDialog(context, suggestion);
               if (action == true) {
                 Provider.of<UserData>(context, listen: false).removeHistory(suggestion);
               }
@@ -255,7 +255,7 @@ class _SuggestionList extends StatelessWidget {
   }
 }
 
-Future<bool> _historyDialog(BuildContext context, String suggestion) async {
+Future<bool?> _historyDialog(BuildContext context, String suggestion) async {
   return showDialog<bool>(
     context: context,
     builder: (BuildContext context) {

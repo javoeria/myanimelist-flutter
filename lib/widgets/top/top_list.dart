@@ -7,10 +7,10 @@ import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 
 class TopList extends StatefulWidget {
-  TopList({@required this.type, this.subtype});
+  TopList({required this.type, this.subtype});
 
   final TopType type;
-  final TopSubtype subtype;
+  final TopSubtype? subtype;
 
   @override
   _TopListState createState() => _TopListState();
@@ -39,7 +39,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
         pageSize: kTopPageSize,
         itemBuilder: _itemBuilder,
         padding: const EdgeInsets.all(12.0),
-        pageFuture: (pageIndex) => Jikan().getTop(widget.type, subtype: widget.subtype, page: pageIndex + 1),
+        pageFuture: (pageIndex) => Jikan().getTop(widget.type, subtype: widget.subtype, page: pageIndex! + 1),
       ),
     );
   }

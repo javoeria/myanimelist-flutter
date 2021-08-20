@@ -8,7 +8,7 @@ import 'package:myanimelist/screens/top_anime_screen.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class TopHorizontal extends StatelessWidget {
-  TopHorizontal(this.top, {this.label});
+  TopHorizontal(this.top, {required this.label});
 
   final BuiltList<Top> top;
   final String label;
