@@ -8,7 +8,7 @@ import 'package:myanimelist/widgets/manga/manga_characters.dart';
 import 'package:myanimelist/widgets/manga/manga_details.dart';
 
 class MangaScreen extends StatelessWidget {
-  MangaScreen(this.id, this.title);
+  const MangaScreen(this.id, this.title);
 
   final int id;
   final String? title;
@@ -23,7 +23,7 @@ class MangaScreen extends StatelessWidget {
           title: Text(title ?? 'Manga'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: [
+            tabs: const [
               Tab(text: 'Details'),
               Tab(text: 'Reviews'),
               Tab(text: 'Recommendations'),

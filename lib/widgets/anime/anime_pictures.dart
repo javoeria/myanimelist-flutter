@@ -4,7 +4,7 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
 
 class AnimePictures extends StatefulWidget {
-  AnimePictures(this.id, {this.anime = true});
+  const AnimePictures(this.id, {this.anime = true});
 
   final int id;
   final bool anime;

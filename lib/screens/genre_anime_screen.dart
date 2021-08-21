@@ -4,7 +4,7 @@ import 'package:myanimelist/jikan_v4.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
 
 class GenreAnimeScreen extends StatefulWidget {
-  GenreAnimeScreen({required this.showCount});
+  const GenreAnimeScreen({required this.showCount});
 
   final bool showCount;
 
@@ -65,7 +65,7 @@ class _GenreAnimeScreenState extends State<GenreAnimeScreen> {
 }
 
 class GenreAnimeList extends StatelessWidget {
-  GenreAnimeList(this.id, this.genre);
+  const GenreAnimeList(this.id, this.genre);
 
   final int id;
   final String genre;

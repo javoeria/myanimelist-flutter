@@ -50,7 +50,7 @@ class SeasonInfo extends StatelessWidget {
             SizedBox(height: 4.0),
             GenreHorizontal(anime.genres),
             SizedBox(height: 4.0),
-            Container(
+            SizedBox(
               height: kImageHeightXL,
               child: Row(
                 children: <Widget>[

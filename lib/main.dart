@@ -32,7 +32,7 @@ void main() async {
 }
 
 Future<RemoteConfig> setupRemoteConfig() async {
-  final RemoteConfig remoteConfig = await RemoteConfig.instance;
+  final RemoteConfig remoteConfig = RemoteConfig.instance;
   remoteConfig.setConfigSettings(RemoteConfigSettings(
     fetchTimeout: const Duration(seconds: 10),
     minimumFetchInterval: const Duration(hours: 1),
@@ -120,7 +120,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     season = await jikan.getSeason();
     topAiring = await jikan.getTop(TopType.anime, subtype: TopSubtype.airing);
     topUpcoming = await jikan.getTop(TopType.anime, subtype: TopSubtype.upcoming);
-    remoteConfig = await RemoteConfig.instance;
+    remoteConfig = RemoteConfig.instance;
     mainTrace.stop();
     setState(() => loading = false);
   }

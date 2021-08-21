@@ -9,7 +9,7 @@ import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:provider/provider.dart';
 
 class MangaList extends StatelessWidget {
-  MangaList(this.mangaList);
+  const MangaList(this.mangaList);
 
   final BuiltList<MangaItem> mangaList;
 
@@ -87,7 +87,7 @@ class MangaInfo extends StatelessWidget {
             SizedBox(height: 4.0),
             GenreHorizontal(manga.genres, anime: false),
             SizedBox(height: 4.0),
-            Container(
+            SizedBox(
               height: kImageHeightXL,
               child: Row(
                 children: <Widget>[

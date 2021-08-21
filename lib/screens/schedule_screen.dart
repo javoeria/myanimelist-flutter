@@ -14,7 +14,7 @@ class ScheduleScreen extends StatelessWidget {
           title: Text('Schedule'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: [
+            tabs: const [
               Tab(text: 'Monday'),
               Tab(text: 'Tuesday'),
               Tab(text: 'Wednesday'),

@@ -5,7 +5,7 @@ import 'package:myanimelist/widgets/season/custom_menu.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
 
 class SeasonalAnimeScreen extends StatelessWidget {
-  SeasonalAnimeScreen({required this.year, required this.type});
+  const SeasonalAnimeScreen({required this.year, required this.type});
 
   final int year;
   final String type;
@@ -14,16 +14,12 @@ class SeasonalAnimeScreen extends StatelessWidget {
     switch (season.toLowerCase()) {
       case 'spring':
         return SeasonType.spring;
-        break;
       case 'summer':
         return SeasonType.summer;
-        break;
       case 'fall':
         return SeasonType.fall;
-        break;
       case 'winter':
         return SeasonType.winter;
-        break;
       default:
         throw 'SeasonType Error';
     }
@@ -39,7 +35,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
           title: Text('$type $year'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: [
+            tabs: const [
               Tab(text: 'TV'),
               Tab(text: 'ONA'),
               Tab(text: 'OVA'),

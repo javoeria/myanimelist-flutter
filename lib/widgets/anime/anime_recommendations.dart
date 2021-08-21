@@ -4,7 +4,7 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class AnimeRecommendations extends StatefulWidget {
-  AnimeRecommendations(this.id, {this.anime = true});
+  const AnimeRecommendations(this.id, {this.anime = true});
 
   final int id;
   final bool anime;

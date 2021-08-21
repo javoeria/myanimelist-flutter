@@ -11,7 +11,7 @@ import 'package:myanimelist/widgets/title_anime.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 class CharacterScreen extends StatefulWidget {
-  CharacterScreen(this.id);
+  const CharacterScreen(this.id);
 
   final int id;
 
@@ -135,7 +135,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
 }
 
 class AnimeographyList extends StatelessWidget {
-  AnimeographyList(this.list, {required this.type});
+  const AnimeographyList(this.list, {required this.type});
 
   final BuiltList<CharacterRole> list;
   final TopType type;
@@ -153,7 +153,7 @@ class AnimeographyList extends StatelessWidget {
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
-        Container(
+        SizedBox(
           height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -182,7 +182,7 @@ class AnimeographyList extends StatelessWidget {
 }
 
 class VoiceList extends StatelessWidget {
-  VoiceList(this.list);
+  const VoiceList(this.list);
 
   final BuiltList<VoiceActor> list;
 
@@ -196,7 +196,7 @@ class VoiceList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Text('Voice Actors', style: Theme.of(context).textTheme.headline6),
         ),
-        Container(
+        SizedBox(
           height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

@@ -7,7 +7,7 @@ import 'package:myanimelist/widgets/top/top_list.dart';
 import 'package:provider/provider.dart';
 
 class TopAnimeScreen extends StatelessWidget {
-  TopAnimeScreen({this.index = 0});
+  const TopAnimeScreen({this.index = 0});
 
   final int index;
   final TopType type = TopType.anime;
@@ -22,7 +22,7 @@ class TopAnimeScreen extends StatelessWidget {
           title: Text('Top Anime'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: [
+            tabs: const [
               Tab(text: 'All Anime'),
               Tab(text: 'Top Airing'),
               Tab(text: 'Top Upcoming'),

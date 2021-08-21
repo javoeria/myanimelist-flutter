@@ -15,7 +15,7 @@ class LaterScreen extends StatelessWidget {
           title: Text('Later'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: [
+            tabs: const [
               Tab(text: 'TV'),
               Tab(text: 'ONA'),
               Tab(text: 'OVA'),

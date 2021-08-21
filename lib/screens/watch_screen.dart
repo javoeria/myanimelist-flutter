@@ -5,7 +5,7 @@ import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class WatchScreen extends StatelessWidget {
-  WatchScreen({this.episodes = true});
+  const WatchScreen({this.episodes = true});
 
   final bool episodes;
 
@@ -20,7 +20,7 @@ class WatchScreen extends StatelessWidget {
           title: Text(episodes ? 'Episode Videos' : 'Promotional Videos'),
           bottom: TabBar(
             isScrollable: false,
-            tabs: [
+            tabs: const [
               Tab(text: 'Just Added'),
               Tab(text: 'Most Popular'),
             ],
@@ -38,7 +38,7 @@ class WatchScreen extends StatelessWidget {
 }
 
 class AnimeVideos extends StatefulWidget {
-  AnimeVideos({required this.type, this.subtype = ''});
+  const AnimeVideos({required this.type, this.subtype = ''});
 
   final String type;
   final String subtype;
@@ -81,7 +81,7 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
                   return Column(
                     children: [
                       VideoImage(promo),
-                      Container(
+                      SizedBox(
                         width: kImageWidthL,
                         child: InkWell(
                           child: Padding(
@@ -115,7 +115,7 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
 }
 
 class VideoImage extends StatelessWidget {
-  VideoImage(this.promo);
+  const VideoImage(this.promo);
 
   final Map<String, dynamic> promo;
   final double width = 160.0;
@@ -137,7 +137,7 @@ class VideoImage extends StatelessWidget {
             throw 'Could not launch $url';
           }
         },
-        child: Container(
+        child: SizedBox(
           width: width,
           height: height,
           child: Column(
@@ -151,7 +151,7 @@ class VideoImage extends StatelessWidget {
                   color: Colors.black54,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Icon(Icons.play_circle_outline, color: Colors.white),
                       Text(' Play', style: TextStyle(color: Colors.white)),
                     ],

@@ -5,7 +5,7 @@ import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class SuggestionHorizontal extends StatelessWidget {
-  SuggestionHorizontal(this.suggestions);
+  const SuggestionHorizontal(this.suggestions);
 
   final List<dynamic> suggestions;
 
@@ -29,7 +29,7 @@ class SuggestionHorizontal extends StatelessWidget {
             ],
           ),
         ),
-        Container(
+        SizedBox(
           height: kImageHeightL,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

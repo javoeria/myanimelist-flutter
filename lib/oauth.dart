@@ -45,7 +45,7 @@ class MalClient {
     String? accessToken = await _getAcessToken();
     if (accessToken == null) return [];
 
-    final url = '$apiBaseUrl/anime/suggestions?limit=20';
+    const url = '$apiBaseUrl/anime/suggestions?limit=20';
     final response = await http.get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
     final suggestionsJson = jsonDecode(response.body);
     return suggestionsJson['data'];

@@ -6,7 +6,7 @@ import 'package:myanimelist/widgets/manga/manga_list.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
 
 class ProducerScreen extends StatelessWidget {
-  ProducerScreen({this.anime = true});
+  const ProducerScreen({this.anime = true});
 
   final bool anime;
 
@@ -54,7 +54,7 @@ class ProducerScreen extends StatelessWidget {
 }
 
 class ProducerList extends StatelessWidget {
-  ProducerList(this.id, this.name);
+  const ProducerList(this.id, this.name);
 
   final int id;
   final String name;
@@ -81,7 +81,7 @@ class ProducerList extends StatelessWidget {
 }
 
 class MagazineList extends StatelessWidget {
-  MagazineList(this.id, this.name);
+  const MagazineList(this.id, this.name);
 
   final int id;
   final String name;

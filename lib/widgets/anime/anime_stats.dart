@@ -4,7 +4,7 @@ import 'package:intl/intl.dart' show NumberFormat;
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class AnimeStats extends StatefulWidget {
-  AnimeStats(this.id, {this.anime = true});
+  const AnimeStats(this.id, {this.anime = true});
 
   final int id;
   final bool anime;
@@ -142,9 +142,9 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text('Score Stats', style: Theme.of(context).textTheme.headline6),
-                  Container(
-                    child: HorizontalBarChart(stats.scores),
+                  SizedBox(
                     height: 400.0,
+                    child: HorizontalBarChart(stats.scores),
                   ),
                 ],
               ),
@@ -160,7 +160,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
 }
 
 class HorizontalBarChart extends StatelessWidget {
-  HorizontalBarChart(this.scores);
+  const HorizontalBarChart(this.scores);
 
   final Scores scores;
 

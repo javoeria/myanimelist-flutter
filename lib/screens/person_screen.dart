@@ -11,7 +11,7 @@ import 'package:myanimelist/widgets/subtitle_anime.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 class PersonScreen extends StatefulWidget {
-  PersonScreen(this.id);
+  const PersonScreen(this.id);
 
   final int id;
 
@@ -144,7 +144,7 @@ class _PersonScreenState extends State<PersonScreen> {
 }
 
 class StaffList extends StatelessWidget {
-  StaffList(this.list);
+  const StaffList(this.list);
 
   final BuiltList<AnimeStaff> list;
 
@@ -158,7 +158,7 @@ class StaffList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Text('Anime Staff Positions', style: Theme.of(context).textTheme.headline6),
         ),
-        Container(
+        SizedBox(
           height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -186,7 +186,7 @@ class StaffList extends StatelessWidget {
 }
 
 class PublishList extends StatelessWidget {
-  PublishList(this.list);
+  const PublishList(this.list);
 
   final BuiltList<PublishedManga> list;
 
@@ -200,7 +200,7 @@ class PublishList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Text('Published Manga', style: Theme.of(context).textTheme.headline6),
         ),
-        Container(
+        SizedBox(
           height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

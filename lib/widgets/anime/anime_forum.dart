@@ -5,7 +5,7 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:url_launcher/url_launcher.dart';
 
 class AnimeForum extends StatefulWidget {
-  AnimeForum(this.id, {this.anime = true});
+  const AnimeForum(this.id, {this.anime = true});
 
   final int id;
   final bool anime;

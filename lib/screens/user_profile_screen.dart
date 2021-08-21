@@ -15,7 +15,7 @@ import 'package:page_indicator/page_indicator.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  UserProfileScreen(this.username);
+  const UserProfileScreen(this.username);
 
   final String username;
 
@@ -228,7 +228,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Text('Statistics', style: Theme.of(context).textTheme.headline6),
             ),
-            Container(
+            SizedBox(
               height: 263.0,
               child: PageIndicatorContainer(
                 length: 2,

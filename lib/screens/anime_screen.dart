@@ -10,7 +10,7 @@ import 'package:myanimelist/widgets/anime/anime_stats.dart';
 import 'package:myanimelist/widgets/anime/anime_videos.dart';
 
 class AnimeScreen extends StatelessWidget {
-  AnimeScreen(this.id, this.title);
+  const AnimeScreen(this.id, this.title);
 
   final int id;
   final String? title;
@@ -25,7 +25,7 @@ class AnimeScreen extends StatelessWidget {
           title: Text(title ?? 'Anime'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: [
+            tabs: const [
               Tab(text: 'Details'),
               Tab(text: 'Videos'),
               Tab(text: 'Episodes'),

@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:xml/xml.dart';
 
 class FeedScreen extends StatelessWidget {
-  FeedScreen({this.news = true});
+  const FeedScreen({this.news = true});
 
   final bool news;
 

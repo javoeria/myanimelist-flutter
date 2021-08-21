@@ -6,7 +6,7 @@ import 'package:myanimelist/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AnimeNews extends StatefulWidget {
-  AnimeNews(this.id, {this.anime = true});
+  const AnimeNews(this.id, {this.anime = true});
 
   final int id;
   final bool anime;

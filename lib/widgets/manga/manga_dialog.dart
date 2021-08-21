@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:myanimelist/oauth.dart';
 
 class MangaDialog extends StatefulWidget {
-  MangaDialog(this.json);
+  const MangaDialog(this.json);
 
   final Map<String, dynamic> json;
 
@@ -34,19 +34,14 @@ class _MangaDialogState extends State<MangaDialog> {
     switch (status) {
       case 'reading':
         return 'Reading';
-        break;
       case 'completed':
         return 'Completed';
-        break;
       case 'on_hold':
         return 'On-Hold';
-        break;
       case 'dropped':
         return 'Dropped';
-        break;
       case 'plan_to_read':
         return 'Plan to Read';
-        break;
       default:
         throw 'MangaStatus Error';
     }
@@ -56,37 +51,26 @@ class _MangaDialogState extends State<MangaDialog> {
     switch (score) {
       case '10':
         return '(10) Masterpiece';
-        break;
       case '9':
         return '(9) Great';
-        break;
       case '8':
         return '(8) Very Good';
-        break;
       case '7':
         return '(7) Good';
-        break;
       case '6':
         return '(6) Fine';
-        break;
       case '5':
         return '(5) Average';
-        break;
       case '4':
         return '(4) Bad';
-        break;
       case '3':
         return '(3) Very Bad';
-        break;
       case '2':
         return '(2) Horrible';
-        break;
       case '1':
         return '(1) Appalling';
-        break;
       case '0':
         return 'Select';
-        break;
       default:
         throw 'Score Error';
     }
@@ -99,7 +83,7 @@ class _MangaDialogState extends State<MangaDialog> {
     return AlertDialog(
       title: Text('Edit Status'),
       contentPadding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 0.0),
-      content: Container(
+      content: SizedBox(
         height: 200.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

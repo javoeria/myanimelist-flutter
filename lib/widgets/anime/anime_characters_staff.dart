@@ -5,7 +5,7 @@ import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class AnimeCharactersStaff extends StatefulWidget {
-  AnimeCharactersStaff(this.id);
+  const AnimeCharactersStaff(this.id);
 
   final int id;
 

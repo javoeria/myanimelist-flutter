@@ -5,7 +5,7 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:myanimelist/constants.dart';
 
 class AnimeEpisodes extends StatefulWidget {
-  AnimeEpisodes(this.id);
+  const AnimeEpisodes(this.id);
 
   final int id;
 

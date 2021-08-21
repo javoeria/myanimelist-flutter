@@ -7,7 +7,7 @@ import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/user_profile_screen.dart';
 
 class AnimeReviews extends StatefulWidget {
-  AnimeReviews(this.id, {this.anime = true});
+  const AnimeReviews(this.id, {this.anime = true});
 
   final int id;
   final bool anime;

@@ -5,7 +5,7 @@ import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class RoleList extends StatelessWidget {
-  RoleList(this.list);
+  const RoleList(this.list);
 
   final BuiltList<VoiceActing> list;
 
@@ -51,7 +51,7 @@ class RoleList extends StatelessWidget {
 }
 
 class FullRoleList extends StatelessWidget {
-  FullRoleList(this.list);
+  const FullRoleList(this.list);
 
   final BuiltList<VoiceActing> list;
 
@@ -76,7 +76,7 @@ class FullRoleList extends StatelessWidget {
 }
 
 class RoleItem extends StatelessWidget {
-  RoleItem(this.role);
+  const RoleItem(this.role);
 
   final VoiceActing role;
 

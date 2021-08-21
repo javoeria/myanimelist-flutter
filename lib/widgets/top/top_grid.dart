@@ -5,7 +5,7 @@ import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/top/rank_image.dart';
 
 class TopGrid extends StatefulWidget {
-  TopGrid({required this.type, this.subtype});
+  const TopGrid({required this.type, this.subtype});
 
   final TopType type;
   final TopSubtype? subtype;

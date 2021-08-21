@@ -4,7 +4,7 @@ import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/subtitle_anime.dart';
 
 class RelatedList extends StatelessWidget {
-  RelatedList(this.list, {this.anime = true});
+  const RelatedList(this.list, {this.anime = true});
 
   final List<dynamic> list;
   final bool anime;
@@ -22,7 +22,7 @@ class RelatedList extends StatelessWidget {
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
-        Container(
+        SizedBox(
           height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

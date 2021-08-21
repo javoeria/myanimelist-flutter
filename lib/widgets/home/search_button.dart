@@ -58,7 +58,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (query == null || query.isEmpty || query.length < 3) {
+    if (query.isEmpty || query.length < 3) {
       _suggestions.clear();
       return _SuggestionList(
         history: true,
@@ -93,7 +93,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
 
   @override
   Widget buildResults(BuildContext context) {
-    if (query == null || query.isEmpty || query.length < 3) {
+    if (query.isEmpty || query.length < 3) {
       return Center(child: Text('Minimum 3 letters'));
     }
 
@@ -214,7 +214,7 @@ class _ResultList extends StatelessWidget {
 }
 
 class _SuggestionList extends StatelessWidget {
-  _SuggestionList({required this.history, required this.suggestions, required this.onSelected});
+  const _SuggestionList({required this.history, required this.suggestions, required this.onSelected});
 
   final bool history;
   final List<String> suggestions;

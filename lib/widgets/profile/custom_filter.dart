@@ -10,7 +10,7 @@ class CustomFilter extends StatelessWidget {
     return IconButton(
       icon: Icon(Icons.filter_list),
       onPressed: () {
-        var json = Provider.of<UserList>(context, listen: false).toJson();
+        final json = Provider.of<UserList>(context, listen: false).toJson();
         showDialog<void>(
           context: context,
           builder: (context) => FilterDialog(json),
@@ -21,7 +21,7 @@ class CustomFilter extends StatelessWidget {
 }
 
 class FilterDialog extends StatefulWidget {
-  FilterDialog(this.json);
+  const FilterDialog(this.json);
 
   final Map<String, String?> json;
 
@@ -50,7 +50,7 @@ class _FilterDialogState extends State<FilterDialog> {
     return AlertDialog(
       title: Text('Filter'),
       contentPadding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 0.0),
-      content: Container(
+      content: SizedBox(
         height: 150.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,7 +90,7 @@ class _FilterDialogState extends State<FilterDialog> {
                     onChanged: (value) {
                       setState(() {
                         _selectedOrder = value!;
-                        if (_selectedSort == null) _selectedSort = 'desc';
+                        _selectedSort ??= 'desc';
                       });
                     },
                   ),

@@ -5,7 +5,7 @@ import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class FavoriteList extends StatelessWidget {
-  FavoriteList(this.favorites);
+  const FavoriteList(this.favorites);
 
   final Favorites favorites;
 
@@ -30,7 +30,7 @@ class FavoriteList extends StatelessWidget {
 }
 
 class FavoriteSection extends StatelessWidget {
-  FavoriteSection(this.list, {required this.type});
+  const FavoriteSection(this.list, {required this.type});
 
   final BuiltList<Favorite> list;
   final TopType type;
@@ -41,16 +41,12 @@ class FavoriteSection extends StatelessWidget {
     switch (type) {
       case TopType.anime:
         return 'Anime';
-        break;
       case TopType.manga:
         return 'Manga';
-        break;
       case TopType.people:
         return 'People';
-        break;
       case TopType.characters:
         return 'Characters';
-        break;
       default:
         throw 'TopType Error';
     }
@@ -65,7 +61,7 @@ class FavoriteSection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(_favoriteTitle, style: Theme.of(context).textTheme.subtitle1),
         ),
-        Container(
+        SizedBox(
           height: height,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

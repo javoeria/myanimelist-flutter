@@ -6,7 +6,7 @@ import 'package:myanimelist/widgets/season/season_info.dart';
 import 'package:provider/provider.dart';
 
 class SeasonList extends StatefulWidget {
-  SeasonList(this.animeList);
+  const SeasonList(this.animeList);
 
   final BuiltList<AnimeItem> animeList;
 

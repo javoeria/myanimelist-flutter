@@ -4,7 +4,7 @@ import 'package:myanimelist/jikan_v4.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class RecommendationScreen extends StatelessWidget {
-  RecommendationScreen({this.anime = true});
+  const RecommendationScreen({this.anime = true});
 
   final bool anime;
 

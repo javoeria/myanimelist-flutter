@@ -7,7 +7,7 @@ import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 
 class TopList extends StatefulWidget {
-  TopList({required this.type, this.subtype});
+  const TopList({required this.type, this.subtype});
 
   final TopType type;
   final TopSubtype? subtype;

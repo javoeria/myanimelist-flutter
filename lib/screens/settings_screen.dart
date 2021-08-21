@@ -13,7 +13,7 @@ import 'package:myanimelist/models/user_data.dart';
 import 'package:slack_notifier/slack_notifier.dart';
 
 class SettingsScreen extends StatelessWidget {
-  SettingsScreen(this.prefs, this.packageInfo);
+  const SettingsScreen(this.prefs, this.packageInfo);
 
   final SharedPreferences prefs;
   final PackageInfo packageInfo;

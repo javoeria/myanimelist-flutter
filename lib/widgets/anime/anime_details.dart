@@ -12,7 +12,7 @@ import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 class AnimeDetails extends StatefulWidget {
-  AnimeDetails(this.id);
+  const AnimeDetails(this.id);
 
   final int id;
 
@@ -67,20 +67,15 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     switch (status!['text']) {
       case 'WATCHING':
         return kWatchingColor;
-        break;
       case 'COMPLETED':
         return kCompletedColor;
-        break;
       case 'ON HOLD':
         return kOnHoldColor;
-        break;
       case 'DROPPED':
         return kDroppedColor;
-        break;
       case 'PLAN TO WATCH':
       case 'ADD TO MY LIST':
         return kPlantoWatchColor;
-        break;
       default:
         throw 'AnimeStatus Error';
     }

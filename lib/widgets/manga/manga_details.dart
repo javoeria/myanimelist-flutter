@@ -12,7 +12,7 @@ import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 class MangaDetails extends StatefulWidget {
-  MangaDetails(this.id);
+  const MangaDetails(this.id);
 
   final int id;
 
@@ -63,20 +63,15 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
     switch (status!['text']) {
       case 'READING':
         return kWatchingColor;
-        break;
       case 'COMPLETED':
         return kCompletedColor;
-        break;
       case 'ON HOLD':
         return kOnHoldColor;
-        break;
       case 'DROPPED':
         return kDroppedColor;
-        break;
       case 'PLAN TO READ':
       case 'ADD TO MY LIST':
         return kPlantoWatchColor;
-        break;
       default:
         throw 'MangaStatus Error';
     }

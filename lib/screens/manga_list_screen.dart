@@ -8,7 +8,7 @@ import 'package:myanimelist/widgets/profile/custom_filter.dart';
 import 'package:provider/provider.dart';
 
 class MangaListScreen extends StatelessWidget {
-  MangaListScreen(this.username, {this.title, this.order, this.sort});
+  const MangaListScreen(this.username, {this.title, this.order, this.sort});
 
   final String username;
   final String? title;
@@ -28,7 +28,7 @@ class MangaListScreen extends StatelessWidget {
             title: Text('Manga List'),
             bottom: TabBar(
               isScrollable: true,
-              tabs: [
+              tabs: const [
                 Tab(text: 'All Manga'),
                 Tab(text: 'Currently Reading'),
                 Tab(text: 'Completed'),
@@ -40,7 +40,7 @@ class MangaListScreen extends StatelessWidget {
             actions: <Widget>[CustomFilter()],
           ),
           body: TabBarView(
-            children: [
+            children: const [
               UserMangaList(type: ListType.all),
               UserMangaList(type: ListType.reading),
               UserMangaList(type: ListType.completed),
@@ -56,7 +56,7 @@ class MangaListScreen extends StatelessWidget {
 }
 
 class UserMangaList extends StatefulWidget {
-  UserMangaList({required this.type});
+  const UserMangaList({required this.type});
 
   final ListType type;
 
@@ -69,19 +69,14 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
     switch (status) {
       case 1:
         return kWatchingColor;
-        break;
       case 2:
         return kCompletedColor;
-        break;
       case 3:
         return kOnHoldColor;
-        break;
       case 4:
         return kDroppedColor;
-        break;
       case 6:
         return kPlantoWatchColor;
-        break;
       default:
         throw 'MangaStatus Error';
     }
