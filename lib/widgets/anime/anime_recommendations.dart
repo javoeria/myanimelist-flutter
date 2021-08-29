@@ -4,7 +4,7 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class AnimeRecommendations extends StatefulWidget {
-  AnimeRecommendations(this.id, {this.anime = true});
+  const AnimeRecommendations(this.id, {this.anime = true});
 
   final int id;
   final bool anime;
@@ -15,7 +15,7 @@ class AnimeRecommendations extends StatefulWidget {
 
 class _AnimeRecommendationsState extends State<AnimeRecommendations>
     with AutomaticKeepAliveClientMixin<AnimeRecommendations> {
-  Future<BuiltList<Recommendation>> _future;
+  late Future<BuiltList<Recommendation>> _future;
 
   @override
   void initState() {
@@ -28,12 +28,12 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<BuiltList<Recommendation>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<Recommendation> recommendationList = snapshot.data;
+        BuiltList<Recommendation> recommendationList = snapshot.data!;
         if (recommendationList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }

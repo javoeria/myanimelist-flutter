@@ -7,7 +7,7 @@ import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/user_profile_screen.dart';
 
 class AnimeReviews extends StatefulWidget {
-  AnimeReviews(this.id, {this.anime = true});
+  const AnimeReviews(this.id, {this.anime = true});
 
   final int id;
   final bool anime;
@@ -30,8 +30,8 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
           return ListTile(title: Text('No items found.'));
         },
         pageFuture: (pageIndex) => widget.anime
-            ? Jikan().getAnimeReviews(widget.id, page: pageIndex + 1)
-            : Jikan().getMangaReviews(widget.id, page: pageIndex + 1),
+            ? Jikan().getAnimeReviews(widget.id, page: pageIndex! + 1)
+            : Jikan().getMangaReviews(widget.id, page: pageIndex! + 1),
       ),
     );
   }

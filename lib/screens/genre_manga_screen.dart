@@ -4,7 +4,7 @@ import 'package:myanimelist/jikan_v4.dart';
 import 'package:myanimelist/widgets/manga/manga_list.dart';
 
 class GenreMangaScreen extends StatefulWidget {
-  GenreMangaScreen({this.showCount});
+  const GenreMangaScreen({required this.showCount});
 
   final bool showCount;
 
@@ -65,7 +65,7 @@ class _GenreMangaScreenState extends State<GenreMangaScreen> {
 }
 
 class GenreMangaList extends StatelessWidget {
-  GenreMangaList(this.id, this.genre);
+  const GenreMangaList(this.id, this.genre);
 
   final int id;
   final String genre;
@@ -78,13 +78,12 @@ class GenreMangaList extends StatelessWidget {
       ),
       body: FutureBuilder(
         future: Jikan().getGenre(id, GenreType.manga),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot<Genre> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          Genre genre = snapshot.data;
-          return MangaList(genre.manga);
+          return MangaList(snapshot.data!.manga!);
         },
       ),
     );

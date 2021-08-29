@@ -62,7 +62,7 @@ class AnimeStatsSection extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         height: 32.0,
-                        width: stats.watching / stats.totalEntries * screenWidth,
+                        width: stats.watching! / stats.totalEntries * screenWidth,
                         color: kWatchingColor,
                       ),
                       Container(
@@ -82,7 +82,7 @@ class AnimeStatsSection extends StatelessWidget {
                       ),
                       Container(
                         height: 32.0,
-                        width: stats.planToWatch / stats.totalEntries * screenWidth,
+                        width: stats.planToWatch! / stats.totalEntries * screenWidth,
                         color: kPlantoWatchColor,
                       ),
                     ],

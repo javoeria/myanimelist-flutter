@@ -14,7 +14,7 @@ class ScheduleScreen extends StatelessWidget {
           title: Text('Schedule'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: [
+            tabs: const [
               Tab(text: 'Monday'),
               Tab(text: 'Tuesday'),
               Tab(text: 'Wednesday'),
@@ -30,23 +30,23 @@ class ScheduleScreen extends StatelessWidget {
         ),
         body: FutureBuilder(
           future: Jikan().getSchedule(),
-          builder: (context, snapshot) {
+          builder: (context, AsyncSnapshot<Schedule> snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return Center(child: CircularProgressIndicator());
             }
 
-            Schedule schedule = snapshot.data;
+            Schedule schedule = snapshot.data!;
             return TabBarView(
               children: [
-                SeasonList(schedule.monday),
-                SeasonList(schedule.tuesday),
-                SeasonList(schedule.wednesday),
-                SeasonList(schedule.thursday),
-                SeasonList(schedule.friday),
-                SeasonList(schedule.saturday),
-                SeasonList(schedule.sunday),
-                SeasonList(schedule.other),
-                SeasonList(schedule.unknown),
+                SeasonList(schedule.monday!),
+                SeasonList(schedule.tuesday!),
+                SeasonList(schedule.wednesday!),
+                SeasonList(schedule.thursday!),
+                SeasonList(schedule.friday!),
+                SeasonList(schedule.saturday!),
+                SeasonList(schedule.sunday!),
+                SeasonList(schedule.other!),
+                SeasonList(schedule.unknown!),
               ],
             );
           },

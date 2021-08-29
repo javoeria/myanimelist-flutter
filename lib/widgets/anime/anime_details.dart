@@ -12,7 +12,7 @@ import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 class AnimeDetails extends StatefulWidget {
-  AnimeDetails(this.id);
+  const AnimeDetails(this.id);
 
   final int id;
 
@@ -24,10 +24,10 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
   final Jikan jikan = Jikan();
   final NumberFormat f = NumberFormat.decimalPattern();
 
-  Anime anime;
-  BuiltList<Picture> pictures;
-  Map<String, dynamic> status;
-  List<dynamic> related;
+  late Anime anime;
+  late BuiltList<Picture> pictures;
+  Map<String, dynamic>? status;
+  List<dynamic>? related;
   bool loading = true;
 
   @override
@@ -64,23 +64,18 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
   }
 
   Color get _statusColor {
-    switch (status['text']) {
+    switch (status!['text']) {
       case 'WATCHING':
         return kWatchingColor;
-        break;
       case 'COMPLETED':
         return kCompletedColor;
-        break;
       case 'ON HOLD':
         return kOnHoldColor;
-        break;
       case 'DROPPED':
         return kDroppedColor;
-        break;
       case 'PLAN TO WATCH':
       case 'ADD TO MY LIST':
         return kPlantoWatchColor;
-        break;
       default:
         throw 'AnimeStatus Error';
     }
@@ -112,7 +107,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   RichText(
                     text: TextSpan(
                       text: score,
-                      style: Theme.of(context).textTheme.headline5.copyWith(fontSize: 34),
+                      style: Theme.of(context).textTheme.headline5!.copyWith(fontSize: 34),
                       children: <TextSpan>[
                         TextSpan(
                           text: anime.scoredBy == null ? '' : ' (${f.format(anime.scoredBy)} users)',
@@ -159,8 +154,8 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                     ),
                   ),
                   SizedBox(height: 8.0),
-                  Text(anime.type),
-                  anime.premiered != null ? Text(anime.premiered) : Container(),
+                  Text(anime.type ?? 'Unknown'),
+                  anime.premiered != null ? Text(anime.premiered!) : Container(),
                   anime.studios.isNotEmpty ? Text(anime.studios.first.name) : Container(),
                 ],
               ),
@@ -172,8 +167,8 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: OutlinedButton(
                   child: Text(
-                    status['text'],
-                    style: Theme.of(context).textTheme.button.copyWith(color: _statusColor),
+                    status!['text'],
+                    style: Theme.of(context).textTheme.button!.copyWith(color: _statusColor),
                   ),
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(width: 2, color: _statusColor),
@@ -181,14 +176,14 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   onPressed: () async {
                     final newStatus = await showDialog<dynamic>(
                       context: context,
-                      builder: (context) => AnimeDialog(status),
+                      builder: (context) => AnimeDialog(status!),
                     );
                     if (newStatus != null && newStatus['status'] != null) {
                       setState(() {
-                        status['status'] = newStatus['status'];
-                        status['score'] = newStatus['score'];
-                        status['num_episodes_watched'] = newStatus['num_episodes_watched'];
-                        status['text'] = newStatus['status'].replaceAll('_', ' ').toUpperCase();
+                        status!['status'] = newStatus['status'];
+                        status!['score'] = newStatus['score'];
+                        status!['num_episodes_watched'] = newStatus['num_episodes_watched'];
+                        status!['text'] = newStatus['status'].replaceAll('_', ' ').toUpperCase();
                       });
                       Fluttertoast.showToast(msg: 'Update Successful');
                     }
@@ -222,7 +217,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-                    child: Text(anime.background, softWrap: true),
+                    child: Text(anime.background!, softWrap: true),
                   ),
                 ],
               )
@@ -413,7 +408,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 ],
               )
             : Container(),
-        if (related != null && related.isNotEmpty) RelatedList(related),
+        if (related != null && related!.isNotEmpty) RelatedList(related!),
         PictureList(pictures),
       ],
     );

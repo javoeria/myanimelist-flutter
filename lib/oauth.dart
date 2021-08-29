@@ -17,7 +17,7 @@ const authorizeUri = 'https://myanimelist.net/v1/oauth2/authorize';
 const apiBaseUrl = 'https://api.myanimelist.net/v2';
 
 class MalClient {
-  Future<String> login() async {
+  Future<String?> login() async {
     final verifier = _generateCodeVerifier();
     final loginUrl = _generateLoginUrl(verifier);
 
@@ -28,7 +28,7 @@ class MalClient {
       if (queryParams['code'] == null) return null;
 
       Fluttertoast.showToast(msg: 'Login Successful');
-      final tokenJson = await _generateTokens(verifier, queryParams['code']);
+      final tokenJson = await _generateTokens(verifier, queryParams['code']!);
       final username = await _getUserName(tokenJson['access_token']);
       tokenJson['datetime'] = DateTime.now();
       FirebaseFirestore.instance.collection('users').doc(username).set(tokenJson);
@@ -42,27 +42,27 @@ class MalClient {
   }
 
   Future<List<dynamic>> getSuggestions() async {
-    String accessToken = await _getAcessToken();
+    String? accessToken = await _getAcessToken();
     if (accessToken == null) return [];
 
-    final url = '$apiBaseUrl/anime/suggestions?limit=20';
-    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    const url = '$apiBaseUrl/anime/suggestions?limit=20';
+    final response = await http.get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
     final suggestionsJson = jsonDecode(response.body);
     return suggestionsJson['data'];
   }
 
   Future<List<dynamic>> getRelated(int id, {bool anime = true}) async {
-    String accessToken = await _getAcessToken();
+    String? accessToken = await _getAcessToken();
     if (accessToken == null) return [];
 
     final url = anime ? '$apiBaseUrl/anime/$id?fields=related_anime' : '$apiBaseUrl/manga/$id?fields=related_manga';
-    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final response = await http.get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
     final relatedJson = jsonDecode(response.body);
     return anime ? relatedJson['related_anime'] : relatedJson['related_manga'];
   }
 
-  Future<Map<String, dynamic>> getStatus(int id, {bool anime = true}) async {
-    String accessToken = await _getAcessToken();
+  Future<Map<String, dynamic>?> getStatus(int id, {bool anime = true}) async {
+    String? accessToken = await _getAcessToken();
     if (accessToken == null) return null;
 
     final statusJson = anime ? await _getAnimeStatus(id, accessToken) : await _getMangaStatus(id, accessToken);
@@ -70,15 +70,20 @@ class MalClient {
   }
 
   Future<Map<String, dynamic>> setStatus(int id,
-      {bool anime = true, String status, String score, String episodes, String volumes, String chapters}) async {
+      {bool anime = true,
+      required String status,
+      required String score,
+      String? episodes,
+      String? volumes,
+      String? chapters}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String username = prefs.getString('username');
+    String username = prefs.getString('username')!;
     final doc = await FirebaseFirestore.instance.collection('users').doc(username).get();
 
-    String accessToken = doc.data()['access_token'];
+    String accessToken = doc.data()!['access_token'];
     final statusJson = anime
-        ? await _setAnimeStatus(id, accessToken, status: status, score: score, episodes: episodes)
-        : await _setMangaStatus(id, accessToken, status: status, score: score, volumes: volumes, chapters: chapters);
+        ? await _setAnimeStatus(id, accessToken, status: status, score: score, episodes: episodes!)
+        : await _setMangaStatus(id, accessToken, status: status, score: score, volumes: volumes!, chapters: chapters!);
     if (kReleaseMode) SlackNotifier(kSlackToken).send('Edit Status $username $id $statusJson}', channel: 'jikan');
     return statusJson;
   }
@@ -100,7 +105,7 @@ class MalClient {
       'code_verifier': verifier,
       'grant_type': 'authorization_code',
     };
-    final response = await http.post(tokenUri, body: params);
+    final response = await http.post(Uri.parse(tokenUri), body: params);
     return jsonDecode(response.body);
   }
 
@@ -110,19 +115,20 @@ class MalClient {
       'grant_type': 'refresh_token',
       'refresh_token': refreshToken,
     };
-    final response = await http.post(tokenUri, body: params);
+    final response = await http.post(Uri.parse(tokenUri), body: params);
     return jsonDecode(response.body);
   }
 
   Future<String> _getUserName(String accessToken) async {
-    final response = await http.get('$apiBaseUrl/users/@me', headers: {'Authorization': 'Bearer $accessToken'});
+    final response =
+        await http.get(Uri.parse('$apiBaseUrl/users/@me'), headers: {'Authorization': 'Bearer $accessToken'});
     final userJson = jsonDecode(response.body);
     return userJson['name'];
   }
 
   Future<Map<String, dynamic>> _getAnimeStatus(int id, String accessToken) async {
     final url = '$apiBaseUrl/anime/$id?fields=my_list_status,num_episodes';
-    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final response = await http.get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
     final animeJson = jsonDecode(response.body);
     if (animeJson['my_list_status'] == null) {
       animeJson['my_list_status'] = {'score': 0, 'num_episodes_watched': '', 'text': 'ADD TO MY LIST'};
@@ -136,7 +142,7 @@ class MalClient {
 
   Future<Map<String, dynamic>> _getMangaStatus(int id, String accessToken) async {
     final url = '$apiBaseUrl/manga/$id?fields=my_list_status,num_volumes,num_chapters';
-    final response = await http.get(url, headers: {'Authorization': 'Bearer $accessToken'});
+    final response = await http.get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
     final mangaJson = jsonDecode(response.body);
     if (mangaJson['my_list_status'] == null) {
       mangaJson['my_list_status'] = {
@@ -155,19 +161,19 @@ class MalClient {
   }
 
   Future<Map<String, dynamic>> _setAnimeStatus(int id, String accessToken,
-      {String status, String score, String episodes}) async {
+      {required String status, required String score, required String episodes}) async {
     final params = {
       'status': status,
       'score': score,
       'num_watched_episodes': episodes == '?' ? '0' : episodes,
     };
     final url = '$apiBaseUrl/anime/$id/my_list_status';
-    final response = await http.put(url, body: params, headers: {'Authorization': 'Bearer $accessToken'});
+    final response = await http.put(Uri.parse(url), body: params, headers: {'Authorization': 'Bearer $accessToken'});
     return jsonDecode(response.body);
   }
 
   Future<Map<String, dynamic>> _setMangaStatus(int id, String accessToken,
-      {String status, String score, String volumes, String chapters}) async {
+      {required String status, required String score, required String volumes, required String chapters}) async {
     final params = {
       'status': status,
       'score': score,
@@ -175,22 +181,22 @@ class MalClient {
       'num_chapters_read': chapters == '?' ? '0' : chapters,
     };
     final url = '$apiBaseUrl/manga/$id/my_list_status';
-    final response = await http.put(url, body: params, headers: {'Authorization': 'Bearer $accessToken'});
+    final response = await http.put(Uri.parse(url), body: params, headers: {'Authorization': 'Bearer $accessToken'});
     return jsonDecode(response.body);
   }
 
-  Future<String> _getAcessToken() async {
+  Future<String?> _getAcessToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String username = prefs.getString('username');
+    String? username = prefs.getString('username');
     if (username == null) return null;
 
     final doc = await FirebaseFirestore.instance.collection('users').doc(username).get();
     if (doc.data() == null) return null;
 
-    String accessToken = doc.data()['access_token'];
-    DateTime expiredAt = doc.data()['datetime'].toDate().add(Duration(seconds: doc.data()['expires_in']));
+    String accessToken = doc.data()!['access_token'];
+    DateTime expiredAt = doc.data()!['datetime'].toDate().add(Duration(seconds: doc.data()!['expires_in']));
     if (DateTime.now().isAfter(expiredAt)) {
-      final tokenJson = await _refreshTokens(doc.data()['refresh_token']);
+      final tokenJson = await _refreshTokens(doc.data()!['refresh_token']);
       tokenJson['datetime'] = DateTime.now();
       FirebaseFirestore.instance.collection('users').doc(username).set(tokenJson);
       if (kReleaseMode) SlackNotifier(kSlackToken).send('User Refresh $username', channel: 'jikan');

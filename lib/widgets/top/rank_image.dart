@@ -7,7 +7,7 @@ import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/person_screen.dart';
 
 class RankImage extends StatelessWidget {
-  RankImage(this.top, {this.type});
+  const RankImage(this.top, {required this.type});
 
   final Top top;
   final TopType type;
@@ -65,7 +65,7 @@ class RankImage extends StatelessWidget {
               throw 'TopType Error';
           }
         },
-        child: Container(
+        child: SizedBox(
           width: width,
           height: height,
           child: Column(

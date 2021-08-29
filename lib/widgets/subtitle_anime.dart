@@ -7,7 +7,7 @@ import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/person_screen.dart';
 
 class SubtitleAnime extends StatelessWidget {
-  SubtitleAnime(this.id, this.title, this.subtitle, this.image, {this.type});
+  const SubtitleAnime(this.id, this.title, this.subtitle, this.image, {this.type = TopType.anime});
 
   final int id;
   final String title;
@@ -72,7 +72,7 @@ class SubtitleAnime extends StatelessWidget {
                 alignment: AlignmentDirectional.bottomCenter,
                 children: <Widget>[
                   Image.asset('images/box_shadow.png', width: width, height: 40.0, fit: BoxFit.cover),
-                  Container(
+                  SizedBox(
                     width: width,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),

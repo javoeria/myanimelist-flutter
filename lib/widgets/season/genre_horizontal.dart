@@ -5,7 +5,7 @@ import 'package:myanimelist/screens/genre_anime_screen.dart';
 import 'package:myanimelist/screens/genre_manga_screen.dart';
 
 class GenreHorizontal extends StatelessWidget {
-  GenreHorizontal(this.genreList, {this.anime = true});
+  const GenreHorizontal(this.genreList, {this.anime = true});
 
   final BuiltList<GenericInfo> genreList;
   final bool anime;

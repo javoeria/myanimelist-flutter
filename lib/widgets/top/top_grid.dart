@@ -5,10 +5,10 @@ import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/top/rank_image.dart';
 
 class TopGrid extends StatefulWidget {
-  TopGrid({@required this.type, this.subtype});
+  const TopGrid({required this.type, this.subtype});
 
   final TopType type;
-  final TopSubtype subtype;
+  final TopSubtype? subtype;
 
   @override
   _TopGridState createState() => _TopGridState();
@@ -26,8 +26,8 @@ class _TopGridState extends State<TopGrid> with AutomaticKeepAliveClientMixin<To
         crossAxisSpacing: 16.0,
         childAspectRatio: kImageWidthM / kImageHeightM,
         padding: const EdgeInsets.all(16.0),
-        itemBuilder: (context, top, _) => RankImage(top, type: widget.type),
-        pageFuture: (pageIndex) => Jikan().getTop(widget.type, subtype: widget.subtype, page: pageIndex + 1),
+        itemBuilder: (context, Top top, _) => RankImage(top, type: widget.type),
+        pageFuture: (pageIndex) => Jikan().getTop(widget.type, subtype: widget.subtype, page: pageIndex! + 1),
       ),
     );
   }

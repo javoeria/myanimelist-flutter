@@ -6,7 +6,7 @@ import 'package:myanimelist/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AnimeNews extends StatefulWidget {
-  AnimeNews(this.id, {this.anime = true});
+  const AnimeNews(this.id, {this.anime = true});
 
   final int id;
   final bool anime;
@@ -17,7 +17,7 @@ class AnimeNews extends StatefulWidget {
 
 class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixin<AnimeNews> {
   final DateFormat f = DateFormat('MMM d, yyyy h:mm a');
-  Future<BuiltList<Article>> _future;
+  late Future<BuiltList<Article>> _future;
 
   @override
   void initState() {
@@ -30,12 +30,12 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<BuiltList<Article>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<Article> articleList = snapshot.data;
+        BuiltList<Article> articleList = snapshot.data!;
         if (articleList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
@@ -54,7 +54,7 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
                           ? Row(
                               children: <Widget>[
                                 Image.network(
-                                  article.imageUrl,
+                                  article.imageUrl!,
                                   width: kImageWidthS,
                                   height: kImageHeightS,
                                   fit: BoxFit.cover,

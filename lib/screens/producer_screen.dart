@@ -6,7 +6,7 @@ import 'package:myanimelist/widgets/manga/manga_list.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
 
 class ProducerScreen extends StatelessWidget {
-  ProducerScreen({this.anime = true});
+  const ProducerScreen({this.anime = true});
 
   final bool anime;
 
@@ -23,7 +23,7 @@ class ProducerScreen extends StatelessWidget {
           noItemsFoundBuilder: (context) {
             return ListTile(title: Text('No items found.'));
           },
-          pageFuture: (pageIndex) => JikanV4().getProducerList(anime: anime, page: pageIndex + 1),
+          pageFuture: (pageIndex) => JikanV4().getProducerList(anime: anime, page: pageIndex! + 1),
         ),
       ),
     );
@@ -54,7 +54,7 @@ class ProducerScreen extends StatelessWidget {
 }
 
 class ProducerList extends StatelessWidget {
-  ProducerList(this.id, this.name);
+  const ProducerList(this.id, this.name);
 
   final int id;
   final String name;
@@ -67,13 +67,12 @@ class ProducerList extends StatelessWidget {
       ),
       body: FutureBuilder(
         future: Jikan().getProducerInfo(id),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot<Producer> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          Producer producer = snapshot.data;
-          return SeasonList(producer.anime);
+          return SeasonList(snapshot.data!.anime);
         },
       ),
     );
@@ -81,7 +80,7 @@ class ProducerList extends StatelessWidget {
 }
 
 class MagazineList extends StatelessWidget {
-  MagazineList(this.id, this.name);
+  const MagazineList(this.id, this.name);
 
   final int id;
   final String name;
@@ -94,13 +93,12 @@ class MagazineList extends StatelessWidget {
       ),
       body: FutureBuilder(
         future: Jikan().getMagazineInfo(id),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot<Magazine> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          Magazine magazine = snapshot.data;
-          return MangaList(magazine.manga);
+          return MangaList(snapshot.data!.manga);
         },
       ),
     );

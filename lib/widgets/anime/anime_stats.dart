@@ -4,7 +4,7 @@ import 'package:intl/intl.dart' show NumberFormat;
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class AnimeStats extends StatefulWidget {
-  AnimeStats(this.id, {this.anime = true});
+  const AnimeStats(this.id, {this.anime = true});
 
   final int id;
   final bool anime;
@@ -15,7 +15,7 @@ class AnimeStats extends StatefulWidget {
 
 class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMixin<AnimeStats> {
   final NumberFormat f = NumberFormat.decimalPattern();
-  Future<Stats> _future;
+  late Future<Stats> _future;
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<Stats> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
@@ -37,7 +37,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
           return ListTile(title: Text('No items found.'));
         }
 
-        Stats stats = snapshot.data;
+        Stats stats = snapshot.data!;
         return ListView(
           children: <Widget>[
             Padding(
@@ -142,9 +142,9 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text('Score Stats', style: Theme.of(context).textTheme.headline6),
-                  Container(
-                    child: HorizontalBarChart(stats.scores),
+                  SizedBox(
                     height: 400.0,
+                    child: HorizontalBarChart(stats.scores),
                   ),
                 ],
               ),
@@ -160,7 +160,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
 }
 
 class HorizontalBarChart extends StatelessWidget {
-  HorizontalBarChart(this.scores);
+  const HorizontalBarChart(this.scores);
 
   final Scores scores;
 

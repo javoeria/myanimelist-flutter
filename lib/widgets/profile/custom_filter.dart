@@ -10,7 +10,7 @@ class CustomFilter extends StatelessWidget {
     return IconButton(
       icon: Icon(Icons.filter_list),
       onPressed: () {
-        var json = Provider.of<UserList>(context, listen: false).toJson();
+        final json = Provider.of<UserList>(context, listen: false).toJson();
         showDialog<void>(
           context: context,
           builder: (context) => FilterDialog(json),
@@ -21,9 +21,9 @@ class CustomFilter extends StatelessWidget {
 }
 
 class FilterDialog extends StatefulWidget {
-  FilterDialog(this.json);
+  const FilterDialog(this.json);
 
-  final Map<String, String> json;
+  final Map<String, String?> json;
 
   @override
   _FilterDialogState createState() => _FilterDialogState();
@@ -32,14 +32,14 @@ class FilterDialog extends StatefulWidget {
 class _FilterDialogState extends State<FilterDialog> {
   final List<String> _orders = ['title', 'score', 'type', 'progress'];
   final TextEditingController _textFieldController = TextEditingController();
-  String _selectedOrder;
-  String _selectedSort;
+  String? _selectedOrder;
+  String? _selectedSort;
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      _textFieldController.text = widget.json['query'];
+      _textFieldController.text = widget.json['query'] ?? '';
       _selectedOrder = widget.json['order'];
       _selectedSort = widget.json['sort'];
     });
@@ -50,7 +50,7 @@ class _FilterDialogState extends State<FilterDialog> {
     return AlertDialog(
       title: Text('Filter'),
       contentPadding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 0.0),
-      content: Container(
+      content: SizedBox(
         height: 150.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,8 +89,8 @@ class _FilterDialogState extends State<FilterDialog> {
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
-                        _selectedOrder = value;
-                        if (_selectedSort == null) _selectedSort = 'desc';
+                        _selectedOrder = value!;
+                        _selectedSort ??= 'desc';
                       });
                     },
                   ),
@@ -116,7 +116,7 @@ class _FilterDialogState extends State<FilterDialog> {
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
-                        _selectedSort = value;
+                        _selectedSort = value!;
                       });
                     },
                   ),
@@ -127,7 +127,7 @@ class _FilterDialogState extends State<FilterDialog> {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: Text('CLEAR'),
           onPressed: () {
             Navigator.pop(context);
@@ -135,7 +135,7 @@ class _FilterDialogState extends State<FilterDialog> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AnimeListScreen(widget.json['username']),
+                  builder: (context) => AnimeListScreen(widget.json['username']!),
                   settings: RouteSettings(name: 'AnimeListScreen'),
                 ),
               );
@@ -143,14 +143,14 @@ class _FilterDialogState extends State<FilterDialog> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MangaListScreen(widget.json['username']),
+                  builder: (context) => MangaListScreen(widget.json['username']!),
                   settings: RouteSettings(name: 'MangaListScreen'),
                 ),
               );
             }
           },
         ),
-        FlatButton(
+        TextButton(
           child: Text('APPLY'),
           onPressed: () {
             Navigator.pop(context);
@@ -159,7 +159,7 @@ class _FilterDialogState extends State<FilterDialog> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AnimeListScreen(
-                    widget.json['username'],
+                    widget.json['username']!,
                     title: _textFieldController.text,
                     order: _selectedOrder,
                     sort: _selectedSort,
@@ -172,7 +172,7 @@ class _FilterDialogState extends State<FilterDialog> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => MangaListScreen(
-                    widget.json['username'],
+                    widget.json['username']!,
                     title: _textFieldController.text,
                     order: _selectedOrder,
                     sort: _selectedSort,

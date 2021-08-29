@@ -7,7 +7,7 @@ import 'package:myanimelist/widgets/top/top_list.dart';
 import 'package:provider/provider.dart';
 
 class TopMangaScreen extends StatelessWidget {
-  TopMangaScreen({this.index});
+  const TopMangaScreen({this.index = 0});
 
   final int index;
   final TopType type = TopType.manga;
@@ -16,13 +16,13 @@ class TopMangaScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 9,
-      initialIndex: index ?? 0,
+      initialIndex: index,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Top Manga'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: [
+            tabs: const [
               Tab(text: 'All Manga'),
               Tab(text: 'Top Manga'),
               Tab(text: 'Top One-shots'),

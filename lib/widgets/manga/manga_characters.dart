@@ -5,7 +5,7 @@ import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class MangaCharacters extends StatefulWidget {
-  MangaCharacters(this.id);
+  const MangaCharacters(this.id);
 
   final int id;
 
@@ -14,7 +14,7 @@ class MangaCharacters extends StatefulWidget {
 }
 
 class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAliveClientMixin<MangaCharacters> {
-  Future<BuiltList<CharacterRole>> _future;
+  late Future<BuiltList<CharacterRole>> _future;
 
   @override
   void initState() {
@@ -27,12 +27,12 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<BuiltList<CharacterRole>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<CharacterRole> characterList = snapshot.data;
+        BuiltList<CharacterRole> characterList = snapshot.data!;
         if (characterList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }

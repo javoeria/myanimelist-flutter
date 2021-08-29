@@ -6,7 +6,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 class PictureList extends StatelessWidget {
-  PictureList(this.list);
+  const PictureList(this.list);
 
   final BuiltList<Picture> list;
 
@@ -21,7 +21,7 @@ class PictureList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Text('Pictures', style: Theme.of(context).textTheme.headline6),
         ),
-        Container(
+        SizedBox(
           height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -59,7 +59,7 @@ class PictureList extends StatelessWidget {
 }
 
 class ImageScreen extends StatefulWidget {
-  ImageScreen(this.imagePaths, this.currentIndex);
+  const ImageScreen(this.imagePaths, this.currentIndex);
 
   final List<String> imagePaths;
   final int currentIndex;
@@ -69,8 +69,8 @@ class ImageScreen extends StatefulWidget {
 }
 
 class _ImageScreenState extends State<ImageScreen> {
-  int _currentIndex;
-  PageController _pageController;
+  late int _currentIndex;
+  late PageController _pageController;
 
   @override
   void initState() {

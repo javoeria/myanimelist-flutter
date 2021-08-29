@@ -8,12 +8,12 @@ import 'package:myanimelist/widgets/profile/custom_filter.dart';
 import 'package:provider/provider.dart';
 
 class AnimeListScreen extends StatelessWidget {
-  AnimeListScreen(this.username, {this.title, this.order, this.sort});
+  const AnimeListScreen(this.username, {this.title, this.order, this.sort});
 
   final String username;
-  final String title;
-  final String order;
-  final String sort;
+  final String? title;
+  final String? order;
+  final String? sort;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class AnimeListScreen extends StatelessWidget {
             title: Text('Anime List'),
             bottom: TabBar(
               isScrollable: true,
-              tabs: [
+              tabs: const [
                 Tab(text: 'All Anime'),
                 Tab(text: 'Currently Watching'),
                 Tab(text: 'Completed'),
@@ -40,7 +40,7 @@ class AnimeListScreen extends StatelessWidget {
             actions: <Widget>[CustomFilter()],
           ),
           body: TabBarView(
-            children: [
+            children: const [
               UserAnimeList(type: ListType.all),
               UserAnimeList(type: ListType.watching),
               UserAnimeList(type: ListType.completed),
@@ -56,7 +56,7 @@ class AnimeListScreen extends StatelessWidget {
 }
 
 class UserAnimeList extends StatefulWidget {
-  UserAnimeList({this.type});
+  const UserAnimeList({required this.type});
 
   final ListType type;
 
@@ -69,19 +69,14 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
     switch (status) {
       case 1:
         return kWatchingColor;
-        break;
       case 2:
         return kCompletedColor;
-        break;
       case 3:
         return kOnHoldColor;
-        break;
       case 4:
         return kDroppedColor;
-        break;
       case 6:
         return kPlantoWatchColor;
-        break;
       default:
         throw 'AnimeStatus Error';
     }
@@ -104,8 +99,8 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
           type: widget.type,
           query: provider.title,
           order: provider.order,
-          sort: provider.sort,
-          page: pageIndex + 1,
+          sort: provider.sort ?? 'desc',
+          page: pageIndex! + 1,
         ),
       ),
     );
@@ -125,7 +120,7 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
             Expanded(
               child: Row(
                 children: <Widget>[
-                  Container(color: statusColor(item.watchingStatus), width: 5.0, height: kImageHeightS),
+                  Container(color: statusColor(item.watchingStatus!), width: 5.0, height: kImageHeightS),
                   Image.network(
                     item.imageUrl,
                     width: kImageWidthS,

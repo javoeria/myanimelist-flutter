@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
@@ -31,8 +32,11 @@ void main() async {
 }
 
 Future<RemoteConfig> setupRemoteConfig() async {
-  final RemoteConfig remoteConfig = await RemoteConfig.instance;
-  remoteConfig.setConfigSettings(RemoteConfigSettings(minimumFetchIntervalMillis: 3600000));
+  final RemoteConfig remoteConfig = RemoteConfig.instance;
+  remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(seconds: 10),
+    minimumFetchInterval: const Duration(hours: 1),
+  ));
   remoteConfig.setDefaults(<String, dynamic>{
     'v4_genres': false,
     'v4_magazines': false,
@@ -42,9 +46,8 @@ Future<RemoteConfig> setupRemoteConfig() async {
     'v4_watch': false,
   });
   try {
-    await remoteConfig.fetch(expiration: const Duration(seconds: 0));
-    await remoteConfig.activateFetched();
-  } on FetchThrottledException catch (e) {
+    await remoteConfig.fetchAndActivate();
+  } on PlatformException catch (e) {
     print(e);
   }
   return remoteConfig;
@@ -61,7 +64,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => UserData(prefs),
       child: DynamicTheme(
-        defaultBrightness: WidgetsBinding.instance.window.platformBrightness,
+        defaultBrightness: WidgetsBinding.instance!.window.platformBrightness,
         data: (brightness) => ThemeData(
           primarySwatch: Colors.indigo,
           accentColor: brightness == Brightness.light ? Colors.indigo : Colors.blue,
@@ -90,12 +93,12 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   final Jikan jikan = Jikan();
 
-  UserProfile profile;
-  Season season;
-  BuiltList<Top> topAiring;
-  BuiltList<Top> topUpcoming;
-  List<dynamic> suggestions;
-  RemoteConfig remoteConfig;
+  UserProfile? profile;
+  late Season season;
+  late BuiltList<Top> topAiring;
+  late BuiltList<Top> topUpcoming;
+  List<dynamic>? suggestions;
+  late RemoteConfig remoteConfig;
   bool loading = true;
 
   @override
@@ -108,7 +111,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     final Trace mainTrace = FirebasePerformance.instance.newTrace('main_trace');
     mainTrace.start();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String username = prefs.getString('username');
+    String? username = prefs.getString('username');
     if (username != null) {
       profile = await jikan.getUserProfile(username);
       suggestions = await MalClient().getSuggestions();
@@ -117,7 +120,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     season = await jikan.getSeason();
     topAiring = await jikan.getTop(TopType.anime, subtype: TopSubtype.airing);
     topUpcoming = await jikan.getTop(TopType.anime, subtype: TopSubtype.upcoming);
-    remoteConfig = await RemoteConfig.instance;
+    remoteConfig = RemoteConfig.instance;
     mainTrace.stop();
     setState(() => loading = false);
   }

@@ -5,7 +5,7 @@ import 'package:myanimelist/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AnimeVideos extends StatefulWidget {
-  AnimeVideos(this.id);
+  const AnimeVideos(this.id);
 
   final int id;
 
@@ -14,7 +14,7 @@ class AnimeVideos extends StatefulWidget {
 }
 
 class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClientMixin<AnimeVideos> {
-  Future<BuiltList<Promo>> _future;
+  late Future<BuiltList<Promo>> _future;
 
   @override
   void initState() {
@@ -27,12 +27,12 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<BuiltList<Promo>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<Promo> promoList = snapshot.data;
+        BuiltList<Promo> promoList = snapshot.data!;
         if (promoList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
@@ -59,7 +59,7 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
 }
 
 class VideoImage extends StatelessWidget {
-  VideoImage(this.promo);
+  const VideoImage(this.promo);
 
   final Promo promo;
   final double width = 300.0;
@@ -81,7 +81,7 @@ class VideoImage extends StatelessWidget {
             throw 'Could not launch $url';
           }
         },
-        child: Container(
+        child: SizedBox(
           width: width,
           height: height,
           child: Column(
@@ -95,7 +95,7 @@ class VideoImage extends StatelessWidget {
                   color: Colors.black54,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Icon(Icons.play_circle_outline, color: Colors.white),
                       Text(' Play', style: TextStyle(color: Colors.white)),
                     ],

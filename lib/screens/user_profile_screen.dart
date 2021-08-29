@@ -15,7 +15,7 @@ import 'package:page_indicator/page_indicator.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  UserProfileScreen(this.username);
+  const UserProfileScreen(this.username);
 
   final String username;
 
@@ -27,9 +27,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final Jikan jikan = Jikan();
   final DateFormat f = DateFormat('MMM d, yy');
 
-  ScrollController _scrollController;
-  UserProfile profile;
-  BuiltList<Friend> friends;
+  late ScrollController _scrollController;
+  late UserProfile profile;
+  late BuiltList<Friend> friends;
   bool loading = true;
 
   @override
@@ -83,7 +83,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       Expanded(
                         child: profile.imageUrl != null
                             ? Image.network(
-                                profile.imageUrl,
+                                profile.imageUrl!,
                                 width: kSliverAppBarWidth,
                                 height: kSliverAppBarHeight,
                                 fit: BoxFit.contain,
@@ -112,7 +112,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           children: <Widget>[
                             AutoSizeText(
                               profile.username,
-                              style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
+                              style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
                               maxLines: 1,
                             ),
                             SizedBox(height: 24.0),
@@ -121,8 +121,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 Icon(Icons.access_time, color: Colors.white, size: 20.0),
                                 SizedBox(width: 4.0),
                                 Text(
-                                  f.format(DateTime.parse(profile.lastOnline)),
-                                  style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                  f.format(DateTime.parse(profile.lastOnline!)),
+                                  style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                 ),
                               ],
                             ),
@@ -132,8 +132,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       Icon(Icons.person, color: Colors.white, size: 20.0),
                                       SizedBox(width: 4.0),
                                       Text(
-                                        profile.gender,
-                                        style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                        profile.gender!,
+                                        style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                       ),
                                     ],
                                   )
@@ -145,8 +145,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       SizedBox(width: 4.0),
                                       Expanded(
                                         child: Text(
-                                          profile.location,
-                                          style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                          profile.location!,
+                                          style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -160,8 +160,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       Icon(Icons.cake, color: Colors.white, size: 20.0),
                                       SizedBox(width: 4.0),
                                       Text(
-                                        f.format(DateTime.parse(profile.birthday)),
-                                        style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                        f.format(DateTime.parse(profile.birthday!)),
+                                        style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                       ),
                                     ],
                                   )
@@ -184,11 +184,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: RaisedButton(
-                      color: Colors.indigo,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: Colors.indigo),
                       child: Text(
                         'Anime List',
-                        style: Theme.of(context).textTheme.button.copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
                       ),
                       onPressed: () {
                         Navigator.push(
@@ -203,11 +203,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                   SizedBox(width: 16.0),
                   Expanded(
-                    child: RaisedButton(
-                      color: Colors.indigo,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: Colors.indigo),
                       child: Text(
                         'Manga List',
-                        style: Theme.of(context).textTheme.button.copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
                       ),
                       onPressed: () {
                         Navigator.push(
@@ -228,11 +228,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Text('Statistics', style: Theme.of(context).textTheme.headline6),
             ),
-            Container(
+            SizedBox(
               height: 263.0,
               child: PageIndicatorContainer(
                 length: 2,
-                indicatorColor: Colors.grey[300],
+                indicatorColor: Colors.grey.shade300,
                 indicatorSelectorColor: Colors.indigo,
                 shape: IndicatorShape.circle(size: 6.0),
                 child: PageView(

@@ -34,13 +34,13 @@ import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen(this.profile, this.season, this.topAiring, this.topUpcoming, this.suggestions, this.remoteConfig);
+  const HomeScreen(this.profile, this.season, this.topAiring, this.topUpcoming, this.suggestions, this.remoteConfig);
 
-  final UserProfile profile;
+  final UserProfile? profile;
   final Season season;
   final BuiltList<Top> topAiring;
   final BuiltList<Top> topUpcoming;
-  final List<dynamic> suggestions;
+  final List<dynamic>? suggestions;
   final RemoteConfig remoteConfig;
 
   @override
@@ -55,7 +55,7 @@ class HomeScreen extends StatelessWidget {
           SeasonHorizontal(season),
           TopHorizontal(topAiring, label: 'Airing'),
           TopHorizontal(topUpcoming, label: 'Upcoming'),
-          if (suggestions != null && suggestions.isNotEmpty) SuggestionHorizontal(suggestions),
+          if (suggestions != null && suggestions!.isNotEmpty) SuggestionHorizontal(suggestions!),
         ],
       ),
       drawer: Drawer(
@@ -66,11 +66,11 @@ class HomeScreen extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   UserAccountsDrawerHeader(
-                    accountName: Text(profile == null ? '' : profile.username),
+                    accountName: Text(profile == null ? '' : profile!.username),
                     accountEmail: null,
                     currentAccountPicture: profile == null
                         ? Container()
-                        : CircleAvatar(backgroundImage: NetworkImage(profile.imageUrl ?? kDefaultImage)),
+                        : CircleAvatar(backgroundImage: NetworkImage(profile!.imageUrl ?? kDefaultImage)),
                   ),
                   profile == null
                       ? ListTile(
@@ -78,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                           leading: Icon(FontAwesomeIcons.signInAlt, color: Theme.of(context).unselectedWidgetColor),
                           onTap: () async {
                             FirebaseAnalytics().logLogin();
-                            String username = await MalClient().login();
+                            String? username = await MalClient().login();
                             if (username != null) {
                               Navigator.pushAndRemoveUntil(
                                 context,
@@ -100,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => UserProfileScreen(profile.username),
+                                    builder: (context) => UserProfileScreen(profile!.username),
                                     settings: RouteSettings(name: 'UserProfileScreen'),
                                   ),
                                 );
@@ -114,7 +114,7 @@ class HomeScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => AnimeListScreen(profile.username),
+                                    builder: (context) => AnimeListScreen(profile!.username),
                                     settings: RouteSettings(name: 'AnimeListScreen'),
                                   ),
                                 );
@@ -128,7 +128,7 @@ class HomeScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MangaListScreen(profile.username),
+                                    builder: (context) => MangaListScreen(profile!.username),
                                     settings: RouteSettings(name: 'MangaListScreen'),
                                   ),
                                 );
@@ -145,7 +145,7 @@ class HomeScreen extends StatelessWidget {
                         onTap: () async {
                           FirebaseAnalytics().logSelectContent(contentType: 'anime', itemId: 'search');
                           Navigator.pop(context);
-                          final Search selected = await showSearch<Search>(
+                          final Search? selected = await showSearch<Search>(
                             context: context,
                             delegate: CustomSearchDelegate(type: SearchType.anime),
                           );
@@ -183,7 +183,7 @@ class HomeScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  SeasonalAnimeScreen(year: season.seasonYear, type: season.seasonName),
+                                  SeasonalAnimeScreen(year: season.seasonYear!, type: season.seasonName),
                               settings: RouteSettings(name: 'SeasonalAnimeScreen'),
                             ),
                           );
@@ -259,7 +259,7 @@ class HomeScreen extends StatelessWidget {
                         onTap: () async {
                           FirebaseAnalytics().logSelectContent(contentType: 'manga', itemId: 'search');
                           Navigator.pop(context);
-                          final Search selected = await showSearch<Search>(
+                          final Search? selected = await showSearch<Search>(
                             context: context,
                             delegate: CustomSearchDelegate(type: SearchType.manga),
                           );
@@ -478,8 +478,7 @@ class HomeScreen extends StatelessWidget {
                     onPressed: () {
                       FirebaseAnalytics().logEvent(name: 'theme');
                       Navigator.pop(context);
-                      DynamicTheme.of(context).setBrightness(
-                          Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark);
+                      DynamicTheme.of(context)!.toggleBrightness();
                     },
                   ),
                 ],

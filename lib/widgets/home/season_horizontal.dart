@@ -7,7 +7,7 @@ import 'package:myanimelist/screens/seasonal_anime_screen.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class SeasonHorizontal extends StatelessWidget {
-  SeasonHorizontal(this.season);
+  const SeasonHorizontal(this.season);
 
   final Season season;
 
@@ -29,7 +29,7 @@ class SeasonHorizontal extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SeasonalAnimeScreen(year: season.seasonYear, type: season.seasonName),
+                      builder: (context) => SeasonalAnimeScreen(year: season.seasonYear!, type: season.seasonName),
                       settings: RouteSettings(name: 'SeasonalAnimeScreen'),
                     ),
                   );
@@ -38,7 +38,7 @@ class SeasonHorizontal extends StatelessWidget {
             ],
           ),
         ),
-        Container(
+        SizedBox(
           height: kImageHeightL,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

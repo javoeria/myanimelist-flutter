@@ -11,7 +11,7 @@ import 'package:myanimelist/widgets/subtitle_anime.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
 class PersonScreen extends StatefulWidget {
-  PersonScreen(this.id);
+  const PersonScreen(this.id);
 
   final int id;
 
@@ -24,9 +24,9 @@ class _PersonScreenState extends State<PersonScreen> {
   final NumberFormat f = NumberFormat.decimalPattern();
   final DateFormat dateFormat = DateFormat('MMM d, yy');
 
-  ScrollController _scrollController;
-  Person person;
-  BuiltList<Picture> pictures;
+  late ScrollController _scrollController;
+  late Person person;
+  late BuiltList<Picture> pictures;
   bool loading = true;
 
   @override
@@ -86,13 +86,13 @@ class _PersonScreenState extends State<PersonScreen> {
                           children: <Widget>[
                             AutoSizeText(
                               person.name,
-                              style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
+                              style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
                               maxLines: 2,
                             ),
                             person.familyName != null && person.givenName != null
                                 ? AutoSizeText(
                                     '${person.familyName} ${person.givenName}',
-                                    style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                    style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                     maxLines: 1,
                                   )
                                 : Container(),
@@ -103,7 +103,7 @@ class _PersonScreenState extends State<PersonScreen> {
                                 SizedBox(width: 4.0),
                                 Text(
                                   f.format(person.memberFavorites),
-                                  style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                  style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                 ),
                               ],
                             ),
@@ -113,8 +113,8 @@ class _PersonScreenState extends State<PersonScreen> {
                                       Icon(Icons.cake, color: Colors.white, size: 20.0),
                                       SizedBox(width: 4.0),
                                       Text(
-                                        dateFormat.format(DateTime.parse(person.birthday)),
-                                        style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
+                                        dateFormat.format(DateTime.parse(person.birthday!)),
+                                        style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                       ),
                                     ],
                                   )
@@ -144,7 +144,7 @@ class _PersonScreenState extends State<PersonScreen> {
 }
 
 class StaffList extends StatelessWidget {
-  StaffList(this.list);
+  const StaffList(this.list);
 
   final BuiltList<AnimeStaff> list;
 
@@ -158,7 +158,7 @@ class StaffList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Text('Anime Staff Positions', style: Theme.of(context).textTheme.headline6),
         ),
-        Container(
+        SizedBox(
           height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -172,7 +172,7 @@ class StaffList extends StatelessWidget {
                   staff.anime.malId,
                   staff.anime.name,
                   staff.position,
-                  staff.anime.imageUrl,
+                  staff.anime.imageUrl!,
                   type: TopType.anime,
                 ),
               );
@@ -186,7 +186,7 @@ class StaffList extends StatelessWidget {
 }
 
 class PublishList extends StatelessWidget {
-  PublishList(this.list);
+  const PublishList(this.list);
 
   final BuiltList<PublishedManga> list;
 
@@ -200,7 +200,7 @@ class PublishList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Text('Published Manga', style: Theme.of(context).textTheme.headline6),
         ),
-        Container(
+        SizedBox(
           height: kImageHeightM,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -214,7 +214,7 @@ class PublishList extends StatelessWidget {
                   publish.manga.malId,
                   publish.manga.name,
                   publish.position,
-                  publish.manga.imageUrl,
+                  publish.manga.imageUrl!,
                   type: TopType.manga,
                 ),
               );

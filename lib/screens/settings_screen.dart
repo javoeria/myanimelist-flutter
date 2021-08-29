@@ -13,14 +13,14 @@ import 'package:myanimelist/models/user_data.dart';
 import 'package:slack_notifier/slack_notifier.dart';
 
 class SettingsScreen extends StatelessWidget {
-  SettingsScreen(this.prefs, this.packageInfo);
+  const SettingsScreen(this.prefs, this.packageInfo);
 
   final SharedPreferences prefs;
   final PackageInfo packageInfo;
 
   @override
   Widget build(BuildContext context) {
-    String username = prefs.getString('username');
+    String? username = prefs.getString('username');
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
@@ -30,14 +30,14 @@ class SettingsScreen extends StatelessWidget {
           ListTile(
             title: username == null ? Text('Login') : Text('Logout'),
             onTap: () async {
-              bool action = true;
+              bool? action = true;
               if (username == null) {
                 if (kReleaseMode) {
                   FirebaseAnalytics().logLogin();
                   username = await MalClient().login();
                 } else {
                   username = 'javoeria';
-                  await prefs.setString('username', username);
+                  await prefs.setString('username', username!);
                 }
               } else {
                 FirebaseAnalytics().logEvent(name: 'logout');
@@ -89,9 +89,7 @@ class SettingsScreen extends StatelessWidget {
               activeColor: Colors.indigo,
               onChanged: (value) {
                 FirebaseAnalytics().logEvent(name: 'theme');
-                DynamicTheme.of(context).setBrightness(
-                  Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark,
-                );
+                DynamicTheme.of(context)!.toggleBrightness();
               },
             ),
           ),
@@ -120,20 +118,20 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-Future<bool> _logoutDialog(BuildContext context) async {
+Future<bool?> _logoutDialog(BuildContext context) async {
   return showDialog<bool>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         content: Text('Are you sure you want to logout?'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text('NO'),
             onPressed: () {
               Navigator.of(context).pop(false);
             },
           ),
-          FlatButton(
+          TextButton(
             child: Text('YES'),
             onPressed: () {
               Navigator.of(context).pop(true);

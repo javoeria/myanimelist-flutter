@@ -4,7 +4,7 @@ import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
 
 class AnimePictures extends StatefulWidget {
-  AnimePictures(this.id, {this.anime = true});
+  const AnimePictures(this.id, {this.anime = true});
 
   final int id;
   final bool anime;
@@ -14,7 +14,7 @@ class AnimePictures extends StatefulWidget {
 }
 
 class _AnimePicturesState extends State<AnimePictures> with AutomaticKeepAliveClientMixin<AnimePictures> {
-  Future<BuiltList<Picture>> _future;
+  late Future<BuiltList<Picture>> _future;
 
   @override
   void initState() {
@@ -27,12 +27,12 @@ class _AnimePicturesState extends State<AnimePictures> with AutomaticKeepAliveCl
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<BuiltList<Picture>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<Picture> pictureList = snapshot.data;
+        BuiltList<Picture> pictureList = snapshot.data!;
         if (pictureList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
