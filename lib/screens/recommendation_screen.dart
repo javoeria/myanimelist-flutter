@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/jikan_v4.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class RecommendationScreen extends StatelessWidget {
-  const RecommendationScreen({this.anime = true});
+  RecommendationScreen({this.anime = true});
 
   final bool anime;
+  final DateFormat f = DateFormat('MMM d, yyyy');
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,9 @@ class RecommendationScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 8.0),
                       Text(item['content']),
+                      SizedBox(height: 8.0),
+                      Text((anime ? 'Anime' : 'Manga') +
+                          ' rec by ${item['user']['username']} - ${f.format(DateTime.parse(item['date']))}'),
                     ],
                   ),
                 );

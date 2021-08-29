@@ -83,8 +83,7 @@ class GenreMangaList extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
 
-          Genre genre = snapshot.data!;
-          return MangaList(genre.manga!);
+          return MangaList(snapshot.data!.manga!);
         },
       ),
     );

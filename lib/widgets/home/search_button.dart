@@ -70,12 +70,11 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
       );
     } else {
       return FutureBuilder(
-        future: jikan.search(query, type),
+        future: jikan.search(query, type, custom: '&limit=10'),
         builder: (context, AsyncSnapshot<BuiltList<Search>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             BuiltList<Search> searchList = snapshot.data!;
-            List<String> titleList = searchList.map((search) => search.title!).toList();
-            _suggestions = titleList;
+            _suggestions = searchList.map((search) => search.title!).toList();
           }
 
           return _SuggestionList(
@@ -99,7 +98,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
 
     FirebaseAnalytics().logSearch(searchTerm: query);
     Provider.of<UserData>(context, listen: false).addHistory(query);
-    String excludeHentai = '&genre=12&genre_exclude=0&order_by=members&sort=desc';
+    // String excludeHentai = '&genre=12&genre_exclude=0&order_by=members&sort=desc';
     return Scrollbar(
       child: PagewiseListView(
         pageSize: kSearchPageSize,
@@ -108,7 +107,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) => jikan.search(query, type, custom: excludeHentai, page: pageIndex! + 1),
+        pageFuture: (pageIndex) => jikan.search(query, type, page: pageIndex! + 1),
       ),
     );
   }
@@ -187,7 +186,7 @@ class _ResultList extends StatelessWidget {
                       children: <Widget>[
                         Text(search.title!, style: Theme.of(context).textTheme.subtitle2),
                         Text(
-                          '${search.synopsis!.split('.').first}.',
+                          search.synopsis ?? '',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.caption,

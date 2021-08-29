@@ -83,8 +83,7 @@ class GenreAnimeList extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
 
-          Genre genre = snapshot.data!;
-          return SeasonList(genre.anime!);
+          return SeasonList(snapshot.data!.anime!);
         },
       ),
     );

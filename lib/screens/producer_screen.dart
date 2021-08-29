@@ -72,8 +72,7 @@ class ProducerList extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
 
-          Producer producer = snapshot.data!;
-          return SeasonList(producer.anime);
+          return SeasonList(snapshot.data!.anime);
         },
       ),
     );
@@ -99,8 +98,7 @@ class MagazineList extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
 
-          Magazine magazine = snapshot.data!;
-          return MangaList(magazine.manga);
+          return MangaList(snapshot.data!.manga);
         },
       ),
     );

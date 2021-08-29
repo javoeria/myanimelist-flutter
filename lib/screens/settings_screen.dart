@@ -89,9 +89,7 @@ class SettingsScreen extends StatelessWidget {
               activeColor: Colors.indigo,
               onChanged: (value) {
                 FirebaseAnalytics().logEvent(name: 'theme');
-                DynamicTheme.of(context)!.setBrightness(
-                  Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark,
-                );
+                DynamicTheme.of(context)!.toggleBrightness();
               },
             ),
           ),

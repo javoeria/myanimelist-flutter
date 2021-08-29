@@ -478,8 +478,7 @@ class HomeScreen extends StatelessWidget {
                     onPressed: () {
                       FirebaseAnalytics().logEvent(name: 'theme');
                       Navigator.pop(context);
-                      DynamicTheme.of(context)!.setBrightness(
-                          Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark);
+                      DynamicTheme.of(context)!.toggleBrightness();
                     },
                   ),
                 ],
