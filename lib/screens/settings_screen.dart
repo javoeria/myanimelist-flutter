@@ -5,7 +5,7 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/main.dart';
 import 'package:myanimelist/oauth.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
@@ -33,14 +33,14 @@ class SettingsScreen extends StatelessWidget {
               bool? action = true;
               if (username == null) {
                 if (kReleaseMode) {
-                  FirebaseAnalytics().logLogin();
+                  FirebaseAnalytics.instance.logLogin();
                   username = await MalClient().login();
                 } else {
                   username = 'javoeria';
                   await prefs.setString('username', username!);
                 }
               } else {
-                FirebaseAnalytics().logEvent(name: 'logout');
+                FirebaseAnalytics.instance.logEvent(name: 'logout');
                 action = await _logoutDialog(context);
                 if (action == true) {
                   await prefs.remove('username');
@@ -64,7 +64,7 @@ class SettingsScreen extends StatelessWidget {
               value: Provider.of<UserData>(context).kidsGenre,
               activeColor: Colors.indigo,
               onChanged: (value) {
-                FirebaseAnalytics().logEvent(name: 'kids');
+                FirebaseAnalytics.instance.logEvent(name: 'kids');
                 Provider.of<UserData>(context, listen: false).toggleKids();
               },
             ),
@@ -76,7 +76,7 @@ class SettingsScreen extends StatelessWidget {
               value: Provider.of<UserData>(context).r18Genre,
               activeColor: Colors.indigo,
               onChanged: (value) {
-                FirebaseAnalytics().logEvent(name: 'r18+');
+                FirebaseAnalytics.instance.logEvent(name: 'r18+');
                 Provider.of<UserData>(context, listen: false).toggleR18();
               },
             ),
@@ -88,7 +88,7 @@ class SettingsScreen extends StatelessWidget {
               value: Theme.of(context).brightness == Brightness.dark,
               activeColor: Colors.indigo,
               onChanged: (value) {
-                FirebaseAnalytics().logEvent(name: 'theme');
+                FirebaseAnalytics.instance.logEvent(name: 'theme');
                 DynamicTheme.of(context)!.toggleBrightness();
               },
             ),
@@ -104,7 +104,7 @@ class SettingsScreen extends StatelessWidget {
             title: Text('Rate app'),
             subtitle: Text('Your feedback is very important to us'),
             onTap: () {
-              FirebaseAnalytics().logEvent(name: 'rate');
+              FirebaseAnalytics.instance.logEvent(name: 'rate');
               RateMyApp(googlePlayIdentifier: kGooglePlayId).launchStore();
             },
           ),

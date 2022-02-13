@@ -242,7 +242,7 @@ void main() {
 
       await driver.tap(menuIconFinder);
       await driver.tap(watchTextFinder);
-      await driver.tap(find.text('Promotional Videos'));
+      await driver.tap(find.text('Anime Trailers'));
       // await driver.tap(find.text('Just Added'));
       // await driver.tap(find.text('Most Popular'));
       await driver.tap(find.pageBack());

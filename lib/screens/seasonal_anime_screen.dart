@@ -28,7 +28,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: 6,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
@@ -36,6 +36,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
           bottom: TabBar(
             isScrollable: true,
             tabs: const [
+              Tab(text: 'All'),
               Tab(text: 'TV'),
               Tab(text: 'ONA'),
               Tab(text: 'OVA'),
@@ -60,6 +61,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
             BuiltList<AnimeItem> special = BuiltList.from(animeList.where((anime) => anime.type == 'Special'));
             return TabBarView(
               children: [
+                SeasonList(animeList),
                 SeasonList(tv),
                 SeasonList(ona),
                 SeasonList(ova),

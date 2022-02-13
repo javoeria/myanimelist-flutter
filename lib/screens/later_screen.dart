@@ -8,7 +8,7 @@ class LaterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 6,
+      length: 7,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
@@ -16,6 +16,7 @@ class LaterScreen extends StatelessWidget {
           bottom: TabBar(
             isScrollable: true,
             tabs: const [
+              Tab(text: 'All'),
               Tab(text: 'TV'),
               Tab(text: 'ONA'),
               Tab(text: 'OVA'),
@@ -42,6 +43,7 @@ class LaterScreen extends StatelessWidget {
             BuiltList<AnimeItem> unknown = BuiltList.from(animeList.where((anime) => anime.type == '-'));
             return TabBarView(
               children: [
+                SeasonList(animeList),
                 SeasonList(tv),
                 SeasonList(ona),
                 SeasonList(ova),

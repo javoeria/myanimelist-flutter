@@ -17,7 +17,7 @@ class WatchScreen extends StatelessWidget {
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(episodes ? 'Episode Videos' : 'Promotional Videos'),
+          title: Text(episodes ? 'Episode Videos' : 'Anime Trailers'),
           bottom: TabBar(
             isScrollable: false,
             tabs: const [
@@ -165,7 +165,7 @@ class VideoImage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      promo['title'] ?? promo['episodes'][0]['name'],
+                      promo['title'] ?? promo['episodes'][0]['title'],
                       maxLines: 3,
                       textAlign: TextAlign.center,
                       style: kTextStyleShadow,

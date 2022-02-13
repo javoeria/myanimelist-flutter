@@ -30,7 +30,7 @@ import 'package:myanimelist/screens/seasonal_anime_screen.dart';
 import 'package:myanimelist/screens/anime_list_screen.dart';
 import 'package:myanimelist/screens/manga_list_screen.dart';
 import 'package:myanimelist/screens/user_profile_screen.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -41,7 +41,7 @@ class HomeScreen extends StatelessWidget {
   final BuiltList<Top> topAiring;
   final BuiltList<Top> topUpcoming;
   final List<dynamic>? suggestions;
-  final RemoteConfig remoteConfig;
+  final FirebaseRemoteConfig remoteConfig;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class HomeScreen extends StatelessWidget {
                           title: Text('Login'),
                           leading: Icon(FontAwesomeIcons.signInAlt, color: Theme.of(context).unselectedWidgetColor),
                           onTap: () async {
-                            FirebaseAnalytics().logLogin();
+                            FirebaseAnalytics.instance.logLogin();
                             String? username = await MalClient().login();
                             if (username != null) {
                               Navigator.pushAndRemoveUntil(
@@ -95,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                             ListTile(
                               title: Text('Profile'),
                               onTap: () {
-                                FirebaseAnalytics().logSelectContent(contentType: 'user', itemId: 'profile');
+                                FirebaseAnalytics.instance.logSelectContent(contentType: 'user', itemId: 'profile');
                                 Navigator.pop(context);
                                 Navigator.push(
                                   context,
@@ -109,7 +109,7 @@ class HomeScreen extends StatelessWidget {
                             ListTile(
                               title: Text('Anime List'),
                               onTap: () {
-                                FirebaseAnalytics().logSelectContent(contentType: 'user', itemId: 'anime_list');
+                                FirebaseAnalytics.instance.logSelectContent(contentType: 'user', itemId: 'anime_list');
                                 Navigator.pop(context);
                                 Navigator.push(
                                   context,
@@ -123,7 +123,7 @@ class HomeScreen extends StatelessWidget {
                             ListTile(
                               title: Text('Manga List'),
                               onTap: () {
-                                FirebaseAnalytics().logSelectContent(contentType: 'user', itemId: 'manga_list');
+                                FirebaseAnalytics.instance.logSelectContent(contentType: 'user', itemId: 'manga_list');
                                 Navigator.pop(context);
                                 Navigator.push(
                                   context,
@@ -143,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                       ListTile(
                         title: Text('Anime Search'),
                         onTap: () async {
-                          FirebaseAnalytics().logSelectContent(contentType: 'anime', itemId: 'search');
+                          FirebaseAnalytics.instance.logSelectContent(contentType: 'anime', itemId: 'search');
                           Navigator.pop(context);
                           final Search? selected = await showSearch<Search>(
                             context: context,
@@ -163,7 +163,7 @@ class HomeScreen extends StatelessWidget {
                       ListTile(
                         title: Text('Top Anime'),
                         onTap: () {
-                          FirebaseAnalytics().logSelectContent(contentType: 'anime', itemId: 'top');
+                          FirebaseAnalytics.instance.logSelectContent(contentType: 'anime', itemId: 'top');
                           Navigator.pop(context);
                           Navigator.push(
                             context,
@@ -177,7 +177,7 @@ class HomeScreen extends StatelessWidget {
                       ListTile(
                         title: Text('Seasonal Anime'),
                         onTap: () {
-                          FirebaseAnalytics().logSelectContent(contentType: 'anime', itemId: 'seasonal');
+                          FirebaseAnalytics.instance.logSelectContent(contentType: 'anime', itemId: 'seasonal');
                           Navigator.pop(context);
                           Navigator.push(
                             context,
@@ -192,7 +192,7 @@ class HomeScreen extends StatelessWidget {
                       ListTile(
                         title: Text('Genres'),
                         onTap: () {
-                          FirebaseAnalytics().logSelectContent(contentType: 'anime', itemId: 'genres');
+                          FirebaseAnalytics.instance.logSelectContent(contentType: 'anime', itemId: 'genres');
                           Navigator.pop(context);
                           Navigator.push(
                             context,
@@ -207,7 +207,7 @@ class HomeScreen extends StatelessWidget {
                         ListTile(
                           title: Text('Studios'),
                           onTap: () {
-                            FirebaseAnalytics().logSelectContent(contentType: 'anime', itemId: 'studios');
+                            FirebaseAnalytics.instance.logSelectContent(contentType: 'anime', itemId: 'studios');
                             Navigator.pop(context);
                             Navigator.push(
                               context,
@@ -222,7 +222,7 @@ class HomeScreen extends StatelessWidget {
                         ListTile(
                           title: Text('Reviews'),
                           onTap: () {
-                            FirebaseAnalytics().logSelectContent(contentType: 'anime', itemId: 'reviews');
+                            FirebaseAnalytics.instance.logSelectContent(contentType: 'anime', itemId: 'reviews');
                             Navigator.pop(context);
                             Navigator.push(
                               context,
@@ -237,7 +237,8 @@ class HomeScreen extends StatelessWidget {
                         ListTile(
                           title: Text('Recommendations'),
                           onTap: () {
-                            FirebaseAnalytics().logSelectContent(contentType: 'anime', itemId: 'recommendations');
+                            FirebaseAnalytics.instance
+                                .logSelectContent(contentType: 'anime', itemId: 'recommendations');
                             Navigator.pop(context);
                             Navigator.push(
                               context,
@@ -257,7 +258,7 @@ class HomeScreen extends StatelessWidget {
                       ListTile(
                         title: Text('Manga Search'),
                         onTap: () async {
-                          FirebaseAnalytics().logSelectContent(contentType: 'manga', itemId: 'search');
+                          FirebaseAnalytics.instance.logSelectContent(contentType: 'manga', itemId: 'search');
                           Navigator.pop(context);
                           final Search? selected = await showSearch<Search>(
                             context: context,
@@ -277,7 +278,7 @@ class HomeScreen extends StatelessWidget {
                       ListTile(
                         title: Text('Top Manga'),
                         onTap: () {
-                          FirebaseAnalytics().logSelectContent(contentType: 'manga', itemId: 'top');
+                          FirebaseAnalytics.instance.logSelectContent(contentType: 'manga', itemId: 'top');
                           Navigator.pop(context);
                           Navigator.push(
                             context,
@@ -291,7 +292,7 @@ class HomeScreen extends StatelessWidget {
                       ListTile(
                         title: Text('Genres'),
                         onTap: () {
-                          FirebaseAnalytics().logSelectContent(contentType: 'manga', itemId: 'genres');
+                          FirebaseAnalytics.instance.logSelectContent(contentType: 'manga', itemId: 'genres');
                           Navigator.pop(context);
                           Navigator.push(
                             context,
@@ -306,7 +307,7 @@ class HomeScreen extends StatelessWidget {
                         ListTile(
                           title: Text('Magazines'),
                           onTap: () {
-                            FirebaseAnalytics().logSelectContent(contentType: 'manga', itemId: 'magazines');
+                            FirebaseAnalytics.instance.logSelectContent(contentType: 'manga', itemId: 'magazines');
                             Navigator.pop(context);
                             Navigator.push(
                               context,
@@ -321,7 +322,7 @@ class HomeScreen extends StatelessWidget {
                         ListTile(
                           title: Text('Reviews'),
                           onTap: () {
-                            FirebaseAnalytics().logSelectContent(contentType: 'manga', itemId: 'reviews');
+                            FirebaseAnalytics.instance.logSelectContent(contentType: 'manga', itemId: 'reviews');
                             Navigator.pop(context);
                             Navigator.push(
                               context,
@@ -336,7 +337,8 @@ class HomeScreen extends StatelessWidget {
                         ListTile(
                           title: Text('Recommendations'),
                           onTap: () {
-                            FirebaseAnalytics().logSelectContent(contentType: 'manga', itemId: 'recommendations');
+                            FirebaseAnalytics.instance
+                                .logSelectContent(contentType: 'manga', itemId: 'recommendations');
                             Navigator.pop(context);
                             Navigator.push(
                               context,
@@ -356,7 +358,7 @@ class HomeScreen extends StatelessWidget {
                       ListTile(
                         title: Text('News'),
                         onTap: () {
-                          FirebaseAnalytics().logSelectContent(contentType: 'industry', itemId: 'news');
+                          FirebaseAnalytics.instance.logSelectContent(contentType: 'industry', itemId: 'news');
                           Navigator.pop(context);
                           Navigator.push(
                             context,
@@ -370,7 +372,7 @@ class HomeScreen extends StatelessWidget {
                       ListTile(
                         title: Text('Featured Articles'),
                         onTap: () {
-                          FirebaseAnalytics().logSelectContent(contentType: 'industry', itemId: 'articles');
+                          FirebaseAnalytics.instance.logSelectContent(contentType: 'industry', itemId: 'articles');
                           Navigator.pop(context);
                           Navigator.push(
                             context,
@@ -384,7 +386,7 @@ class HomeScreen extends StatelessWidget {
                       ListTile(
                         title: Text('People'),
                         onTap: () {
-                          FirebaseAnalytics().logSelectContent(contentType: 'industry', itemId: 'people');
+                          FirebaseAnalytics.instance.logSelectContent(contentType: 'industry', itemId: 'people');
                           Navigator.pop(context);
                           Navigator.push(
                             context,
@@ -398,7 +400,7 @@ class HomeScreen extends StatelessWidget {
                       ListTile(
                         title: Text('Characters'),
                         onTap: () {
-                          FirebaseAnalytics().logSelectContent(contentType: 'industry', itemId: 'characters');
+                          FirebaseAnalytics.instance.logSelectContent(contentType: 'industry', itemId: 'characters');
                           Navigator.pop(context);
                           Navigator.push(
                             context,
@@ -419,7 +421,7 @@ class HomeScreen extends StatelessWidget {
                         ListTile(
                           title: Text('Episode Videos'),
                           onTap: () {
-                            FirebaseAnalytics().logSelectContent(contentType: 'watch', itemId: 'episode');
+                            FirebaseAnalytics.instance.logSelectContent(contentType: 'watch', itemId: 'episode');
                             Navigator.pop(context);
                             Navigator.push(
                               context,
@@ -431,9 +433,9 @@ class HomeScreen extends StatelessWidget {
                           },
                         ),
                         ListTile(
-                          title: Text('Promotional Videos'),
+                          title: Text('Anime Trailers'),
                           onTap: () {
-                            FirebaseAnalytics().logSelectContent(contentType: 'watch', itemId: 'promotional');
+                            FirebaseAnalytics.instance.logSelectContent(contentType: 'watch', itemId: 'promotional');
                             Navigator.pop(context);
                             Navigator.push(
                               context,
@@ -459,7 +461,7 @@ class HomeScreen extends StatelessWidget {
                     icon: Icon(FontAwesomeIcons.cog, color: Theme.of(context).unselectedWidgetColor),
                     tooltip: 'Settings',
                     onPressed: () async {
-                      FirebaseAnalytics().logEvent(name: 'settings');
+                      FirebaseAnalytics.instance.logEvent(name: 'settings');
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       PackageInfo packageInfo = await PackageInfo.fromPlatform();
                       Navigator.pop(context);
@@ -476,7 +478,7 @@ class HomeScreen extends StatelessWidget {
                     icon: Icon(FontAwesomeIcons.lightbulb, color: Theme.of(context).unselectedWidgetColor),
                     tooltip: 'Theme',
                     onPressed: () {
-                      FirebaseAnalytics().logEvent(name: 'theme');
+                      FirebaseAnalytics.instance.logEvent(name: 'theme');
                       Navigator.pop(context);
                       DynamicTheme.of(context)!.toggleBrightness();
                     },

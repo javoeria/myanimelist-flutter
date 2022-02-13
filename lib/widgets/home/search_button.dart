@@ -96,7 +96,7 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
       return Center(child: Text('Minimum 3 letters'));
     }
 
-    FirebaseAnalytics().logSearch(searchTerm: query);
+    FirebaseAnalytics.instance.logSearch(searchTerm: query);
     Provider.of<UserData>(context, listen: false).addHistory(query);
     // String excludeHentai = '&genre=12&genre_exclude=0&order_by=members&sort=desc';
     return Scrollbar(

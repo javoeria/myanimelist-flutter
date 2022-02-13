@@ -47,7 +47,7 @@ class MangaInfo extends StatelessWidget {
   MangaInfo(this.manga);
 
   final MangaItem manga;
-  final NumberFormat f = NumberFormat.decimalPattern();
+  final NumberFormat f = NumberFormat.compact();
   final DateFormat dateFormat = DateFormat('MMM d, yyyy');
 
   String get _authorsText {
@@ -67,6 +67,7 @@ class MangaInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     String volumes = manga.volumes == null ? '?' : manga.volumes.toString();
     String score = manga.score == null ? 'N/A' : manga.score.toString();
+    String type = manga.type == null ? '' : '${manga.type} | ';
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -83,7 +84,7 @@ class MangaInfo extends StatelessWidget {
           children: <Widget>[
             Text(manga.title, style: Theme.of(context).textTheme.headline6),
             SizedBox(height: 4.0),
-            Text('$_authorsText | $volumes vols | ${manga.type}'),
+            Text('$type$_authorsText | $volumes vols'),
             SizedBox(height: 4.0),
             GenreHorizontal(manga.genres, anime: false),
             SizedBox(height: 4.0),

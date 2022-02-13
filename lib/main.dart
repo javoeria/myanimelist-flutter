@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
@@ -21,7 +20,7 @@ import 'package:slack_notifier/slack_notifier.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseAnalytics().setAnalyticsCollectionEnabled(kReleaseMode);
+  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(kReleaseMode);
   FirebasePerformance.instance.setPerformanceCollectionEnabled(kReleaseMode);
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kReleaseMode);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
@@ -31,8 +30,8 @@ void main() async {
   runApp(MyApp(prefs));
 }
 
-Future<RemoteConfig> setupRemoteConfig() async {
-  final RemoteConfig remoteConfig = RemoteConfig.instance;
+Future<FirebaseRemoteConfig> setupRemoteConfig() async {
+  final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
   remoteConfig.setConfigSettings(RemoteConfigSettings(
     fetchTimeout: const Duration(seconds: 10),
     minimumFetchInterval: const Duration(hours: 1),
@@ -57,7 +56,7 @@ class MyApp extends StatelessWidget {
   MyApp(this.prefs);
 
   final SharedPreferences prefs;
-  final FirebaseAnalytics analytics = FirebaseAnalytics();
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +97,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   late BuiltList<Top> topAiring;
   late BuiltList<Top> topUpcoming;
   List<dynamic>? suggestions;
-  late RemoteConfig remoteConfig;
+  late FirebaseRemoteConfig remoteConfig;
   bool loading = true;
 
   @override
@@ -120,7 +119,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     season = await jikan.getSeason();
     topAiring = await jikan.getTop(TopType.anime, subtype: TopSubtype.airing);
     topUpcoming = await jikan.getTop(TopType.anime, subtype: TopSubtype.upcoming);
-    remoteConfig = RemoteConfig.instance;
+    remoteConfig = FirebaseRemoteConfig.instance;
     mainTrace.stop();
     setState(() => loading = false);
   }

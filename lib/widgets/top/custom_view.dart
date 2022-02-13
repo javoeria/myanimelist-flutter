@@ -11,7 +11,7 @@ class CustomView extends StatelessWidget {
       key: Key('top_view'),
       tooltip: 'Change view',
       onPressed: () {
-        FirebaseAnalytics().logEvent(name: 'top_view');
+        FirebaseAnalytics.instance.logEvent(name: 'top_view');
         Provider.of<UserData>(context, listen: false).toggleView();
       },
     );

@@ -9,7 +9,7 @@ class SeasonInfo extends StatelessWidget {
   SeasonInfo(this.anime);
 
   final AnimeItem anime;
-  final NumberFormat f = NumberFormat.decimalPattern();
+  final NumberFormat f = NumberFormat.compact();
   final DateFormat dateFormat = DateFormat('MMM d, yyyy, HH:mm');
   final DateFormat dateFormat2 = DateFormat('MMM d, yyyy');
 
@@ -30,6 +30,7 @@ class SeasonInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     String episodes = anime.episodes == null ? '?' : anime.episodes.toString();
     String score = anime.score == null ? 'N/A' : anime.score.toString();
+    String type = anime.type == null ? '' : '${anime.type} | ';
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -46,7 +47,7 @@ class SeasonInfo extends StatelessWidget {
           children: <Widget>[
             Text(anime.title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6),
             SizedBox(height: 4.0),
-            Text('$_producersText | $episodes eps | ${anime.source}'),
+            Text('$type$_producersText | $episodes eps'),
             SizedBox(height: 4.0),
             GenreHorizontal(anime.genres),
             SizedBox(height: 4.0),
@@ -74,7 +75,7 @@ class SeasonInfo extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('${anime.type} - $_airingText'),
+                Text(_airingText),
                 Row(
                   children: <Widget>[
                     Icon(Icons.star_border, color: Colors.grey, size: 20.0),
