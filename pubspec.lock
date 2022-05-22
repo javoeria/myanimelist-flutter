@@ -161,7 +161,7 @@ packages:
       path: "."
       ref: HEAD
       resolved-ref: a57c7bd3f386531f094121344f63852c441359aa
-      url: "git://github.com/Norbert515/dynamic_theme.git"
+      url: "https://github.com/Norbert515/dynamic_theme.git"
     source: git
     version: "2.0.0-nullsafety"
   expandable:
@@ -341,7 +341,7 @@ packages:
       path: "."
       ref: HEAD
       resolved-ref: b8772bec14422e39d2c61c15b1b932cbe263c765
-      url: "git://github.com/javoeria/flutter_pagewise.git"
+      url: "https://github.com/javoeria/flutter_pagewise.git"
     source: git
     version: "2.0.1"
   flutter_rating_bar:
@@ -449,7 +449,7 @@ packages:
       name: jikan_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.1"
+    version: "1.7.0"
   js:
     dependency: transitive
     description:
@@ -755,7 +755,7 @@ packages:
       name: slack_notifier
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.2.0"
   source_map_stack_trace:
     dependency: transitive
     description:

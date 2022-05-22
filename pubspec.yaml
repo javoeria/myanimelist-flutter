@@ -3,7 +3,7 @@ description: The best way to explore all anime and manga.
 
 publish_to: 'none'
 
-version: 1.2.3+14
+version: 1.2.4+15
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -16,7 +16,7 @@ dependencies:
   provider: ^6.0.2
   shared_preferences: ^2.0.13
   dynamic_theme:
-    git: git://github.com/Norbert515/dynamic_theme.git
+    git: https://github.com/Norbert515/dynamic_theme.git
   url_launcher: ^6.0.20
   charts_flutter: ^0.12.0
   expandable: ^5.0.1
@@ -30,15 +30,15 @@ dependencies:
   firebase_crashlytics: ^2.5.1
   firebase_performance: ^0.8.0
   firebase_remote_config: ^2.0.0
-  jikan_api: ^1.6.1
-  slack_notifier: ^1.1.0
+  jikan_api: ^1.7.0
+  slack_notifier: ^1.2.0
   rate_my_app: ^1.1.1
   photo_view: ^0.13.0
   xml: ^5.3.1
   fluttertoast: ^8.0.8
   flutter_web_auth: ^0.4.0
   flutter_pagewise:
-    git: git://github.com/javoeria/flutter_pagewise.git
+    git: https://github.com/javoeria/flutter_pagewise.git
 
 dev_dependencies:
   flutter_driver:

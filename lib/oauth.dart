@@ -52,13 +52,20 @@ class MalClient {
   }
 
   Future<List<dynamic>> getRelated(int id, {bool anime = true}) async {
-    String? accessToken = await _getAcessToken();
-    if (accessToken == null) return [];
-
     final url = anime ? '$apiBaseUrl/anime/$id?fields=related_anime' : '$apiBaseUrl/manga/$id?fields=related_manga';
-    final response = await http.get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
+    final response = await http.get(Uri.parse(url), headers: {'X-MAL-CLIENT-ID': clientId});
     final relatedJson = jsonDecode(response.body);
     return anime ? relatedJson['related_anime'] : relatedJson['related_manga'];
+  }
+
+  Future<List<dynamic>> getUserList(String username, {bool anime = true, String? sort}) async {
+    var url = anime
+        ? '$apiBaseUrl/users/$username/animelist?fields=list_status,media_type,num_episodes&limit=1000'
+        : '$apiBaseUrl/users/$username/mangalist?fields=list_status,media_type,num_volumes&limit=1000';
+    if (sort != null) url += '&sort=$sort';
+    final response = await http.get(Uri.parse(url), headers: {'X-MAL-CLIENT-ID': clientId});
+    final listJson = jsonDecode(response.body);
+    return listJson['data'];
   }
 
   Future<Map<String, dynamic>?> getStatus(int id, {bool anime = true}) async {

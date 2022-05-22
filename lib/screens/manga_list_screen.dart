@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
-import 'package:myanimelist/models/user_list.dart';
+import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
-import 'package:myanimelist/widgets/profile/custom_filter.dart';
-import 'package:provider/provider.dart';
+import 'package:myanimelist/widgets/profile/custom_filter_v2.dart';
 
 class MangaListScreen extends StatelessWidget {
   const MangaListScreen(this.username, {this.title, this.order, this.sort});
@@ -17,38 +14,50 @@ class MangaListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (context) => UserList(username, title, order, sort, 'manga'),
-      // dispose: (context, value) => value.dispose(),
-      child: DefaultTabController(
-        length: 6,
-        initialIndex: 0,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('Manga List'),
-            bottom: TabBar(
-              isScrollable: true,
-              tabs: const [
-                Tab(text: 'All Manga'),
-                Tab(text: 'Currently Reading'),
-                Tab(text: 'Completed'),
-                Tab(text: 'On Hold'),
-                Tab(text: 'Dropped'),
-                Tab(text: 'Plan to Read'),
-              ],
-            ),
-            actions: <Widget>[CustomFilter()],
-          ),
-          body: TabBarView(
-            children: const [
-              UserMangaList(type: ListType.all),
-              UserMangaList(type: ListType.reading),
-              UserMangaList(type: ListType.completed),
-              UserMangaList(type: ListType.onhold),
-              UserMangaList(type: ListType.dropped),
-              UserMangaList(type: ListType.plantoread),
+    return DefaultTabController(
+      length: 6,
+      initialIndex: 0,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Manga List'),
+          bottom: TabBar(
+            isScrollable: true,
+            tabs: const [
+              Tab(text: 'All Manga'),
+              Tab(text: 'Currently Reading'),
+              Tab(text: 'Completed'),
+              Tab(text: 'On Hold'),
+              Tab(text: 'Dropped'),
+              Tab(text: 'Plan to Read'),
             ],
           ),
+          actions: <Widget>[CustomFilterV2(username, anime: false)],
+        ),
+        body: FutureBuilder(
+          future: MalClient().getUserList(username, sort: sort, anime: false),
+          builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            List<dynamic> userList = snapshot.data!;
+            List<dynamic> reading = userList.where((manga) => manga['list_status']['status'] == 'reading').toList();
+            List<dynamic> completed = userList.where((manga) => manga['list_status']['status'] == 'completed').toList();
+            List<dynamic> onHold = userList.where((manga) => manga['list_status']['status'] == 'on_hold').toList();
+            List<dynamic> dropped = userList.where((manga) => manga['list_status']['status'] == 'dropped').toList();
+            List<dynamic> planToRead =
+                userList.where((manga) => manga['list_status']['status'] == 'plan_to_read').toList();
+            return TabBarView(
+              children: [
+                UserMangaList(userList),
+                UserMangaList(reading),
+                UserMangaList(completed),
+                UserMangaList(onHold),
+                UserMangaList(dropped),
+                UserMangaList(planToRead),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -56,26 +65,26 @@ class MangaListScreen extends StatelessWidget {
 }
 
 class UserMangaList extends StatefulWidget {
-  const UserMangaList({required this.type});
+  const UserMangaList(this.userList);
 
-  final ListType type;
+  final List<dynamic> userList;
 
   @override
   _UserMangaListState createState() => _UserMangaListState();
 }
 
 class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveClientMixin<UserMangaList> {
-  Color statusColor(int status) {
+  Color statusColor(String status) {
     switch (status) {
-      case 1:
+      case 'reading':
         return kWatchingColor;
-      case 2:
+      case 'completed':
         return kCompletedColor;
-      case 3:
+      case 'on_hold':
         return kOnHoldColor;
-      case 4:
+      case 'dropped':
         return kDroppedColor;
-      case 6:
+      case 'plan_to_read':
         return kPlantoWatchColor;
       default:
         throw 'MangaStatus Error';
@@ -85,77 +94,69 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final provider = Provider.of<UserList>(context);
+    if (widget.userList.isEmpty) {
+      return ListTile(title: Text('No items found.'));
+    }
     return Scrollbar(
-      child: PagewiseListView(
-        pageSize: kAnimePageSize,
-        itemBuilder: _itemBuilder,
+      child: ListView.builder(
         padding: const EdgeInsets.all(12.0),
-        noItemsFoundBuilder: (context) {
-          return ListTile(title: Text('No items found.'));
-        },
-        pageFuture: (pageIndex) => Jikan().getUserMangaList(
-          provider.username,
-          type: widget.type,
-          query: provider.title,
-          order: provider.order,
-          sort: provider.sort ?? 'desc',
-          page: pageIndex! + 1,
-        ),
-      ),
-    );
-  }
-
-  Widget _itemBuilder(BuildContext context, UserItem item, int index) {
-    String score = item.score == 0 ? '-' : item.score.toString();
-    String read = item.readVolumes == 0 ? '-' : item.readVolumes.toString();
-    String total = item.totalVolumes == 0 ? '-' : item.totalVolumes.toString();
-    String progress = item.readingStatus == 2 ? total : '$read / $total';
-    return InkWell(
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
+        itemCount: widget.userList.length,
+        itemBuilder: (context, index) {
+          Map<String, dynamic> item = widget.userList.elementAt(index);
+          String score = item['list_status']['score'] == 0 ? '-' : item['list_status']['score'].toString();
+          String read =
+              item['list_status']['num_volumes_read'] == 0 ? '-' : item['list_status']['num_volumes_read'].toString();
+          String total = item['node']['num_volumes'] == 0 ? '-' : item['node']['num_volumes'].toString();
+          String progress = item['list_status']['status'] == 'completed' ? total : '$read / $total';
+          String type = item['node']['media_type'][0].toUpperCase() + item['node']['media_type'].substring(1);
+          return InkWell(
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Container(color: statusColor(item.readingStatus!), width: 5.0, height: kImageHeightS),
-                  Image.network(
-                    item.imageUrl,
-                    width: kImageWidthS,
-                    height: kImageHeightS,
-                    fit: BoxFit.cover,
-                  ),
-                  SizedBox(width: 8.0),
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: <Widget>[
-                        Text(item.title, style: Theme.of(context).textTheme.subtitle2),
-                        Text(
-                          '${item.type} ($progress vols)',
-                          style: Theme.of(context).textTheme.caption,
+                        Container(color: statusColor(item['list_status']['status']), width: 5.0, height: kImageHeightS),
+                        Image.network(
+                          item['node']['main_picture']['large'],
+                          width: kImageWidthS,
+                          height: kImageHeightS,
+                          fit: BoxFit.cover,
                         ),
+                        SizedBox(width: 8.0),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(item['node']['title'], style: Theme.of(context).textTheme.subtitle2),
+                              Text(
+                                '$type ($progress vols)',
+                                style: Theme.of(context).textTheme.caption,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(score, style: Theme.of(context).textTheme.subtitle1),
                       ],
                     ),
                   ),
-                  Text(score, style: Theme.of(context).textTheme.subtitle1),
                 ],
               ),
             ),
-          ],
-        ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MangaScreen(item['node']['id'], item['node']['title']),
+                  settings: RouteSettings(name: 'MangaScreen'),
+                ),
+              );
+            },
+          );
+        },
       ),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MangaScreen(item.malId, item.title),
-            settings: RouteSettings(name: 'MangaScreen'),
-          ),
-        );
-      },
     );
   }
 
