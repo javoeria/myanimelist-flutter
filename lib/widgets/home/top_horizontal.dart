@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/top_anime_screen.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
@@ -10,7 +9,7 @@ import 'package:myanimelist/widgets/title_anime.dart';
 class TopHorizontal extends StatelessWidget {
   const TopHorizontal(this.top, {required this.label});
 
-  final BuiltList<Top> top;
+  final BuiltList<Anime> top;
   final String label;
 
   @override
@@ -48,14 +47,14 @@ class TopHorizontal extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             itemCount: min(top.length, 20),
             itemBuilder: (context, index) {
-              Top anime = top.elementAt(index);
+              Anime anime = top.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: TitleAnime(
                   anime.malId,
                   anime.title,
                   anime.imageUrl,
-                  type: TopType.anime,
+                  type: ItemType.anime,
                 ),
               );
             },

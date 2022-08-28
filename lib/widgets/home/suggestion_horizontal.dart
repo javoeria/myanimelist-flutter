@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
@@ -43,7 +42,7 @@ class SuggestionHorizontal extends StatelessWidget {
                   item['node']['id'],
                   item['node']['title'],
                   item['node']['main_picture']['large'],
-                  type: TopType.anime,
+                  type: ItemType.anime,
                 ),
               );
             },

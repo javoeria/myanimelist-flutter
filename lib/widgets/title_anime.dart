@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/character_screen.dart';
@@ -8,14 +7,14 @@ import 'package:myanimelist/screens/person_screen.dart';
 
 class TitleAnime extends StatelessWidget {
   const TitleAnime(this.id, this.title, this.image,
-      {this.width = kImageWidthL, this.height = kImageHeightL, this.type = TopType.anime, this.showTitle = true});
+      {this.width = kImageWidthL, this.height = kImageHeightL, this.type = ItemType.anime, this.showTitle = true});
 
   final int id;
   final String title;
   final String image;
   final double width;
   final double height;
-  final TopType type;
+  final ItemType type;
   final bool showTitle;
 
   @override
@@ -28,7 +27,7 @@ class TitleAnime extends StatelessWidget {
       child: InkWell(
         onTap: () {
           switch (type) {
-            case TopType.anime:
+            case ItemType.anime:
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -37,7 +36,7 @@ class TitleAnime extends StatelessWidget {
                 ),
               );
               break;
-            case TopType.manga:
+            case ItemType.manga:
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -46,7 +45,7 @@ class TitleAnime extends StatelessWidget {
                 ),
               );
               break;
-            case TopType.people:
+            case ItemType.people:
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -55,7 +54,7 @@ class TitleAnime extends StatelessWidget {
                 ),
               );
               break;
-            case TopType.characters:
+            case ItemType.characters:
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -65,7 +64,7 @@ class TitleAnime extends StatelessWidget {
               );
               break;
             default:
-              throw 'TopType Error';
+              throw 'ItemType Error';
           }
         },
         child: title != '' && showTitle

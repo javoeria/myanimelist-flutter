@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:myanimelist/jikan_v4.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/manga/manga_list.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
 
@@ -14,35 +14,36 @@ class ProducerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(anime ? 'Anime Studios / Producers' : 'Manga Magazines'),
+        title: Text(anime ? 'Anime Studios' : 'Manga Magazines'),
       ),
       body: Scrollbar(
         child: PagewiseListView(
-          pageSize: anime ? 100 : 25,
+          pageSize: kDefaultPageSize,
           itemBuilder: _itemBuilder,
           noItemsFoundBuilder: (context) {
             return ListTile(title: Text('No items found.'));
           },
-          pageFuture: (pageIndex) => JikanV4().getProducerList(anime: anime, page: pageIndex! + 1),
+          pageFuture: (pageIndex) => anime
+              ? Jikan().getProducers(orderBy: 'count', sort: 'desc', page: pageIndex! + 1)
+              : Jikan().getMagazines(orderBy: 'count', sort: 'desc', page: pageIndex! + 1),
         ),
       ),
     );
   }
 
-  Widget _itemBuilder(BuildContext context, Map<String, dynamic> producer, int index) {
+  Widget _itemBuilder(BuildContext context, dynamic producer, int index) {
     return Column(
       children: <Widget>[
         ListTile(
-          title: Text(producer['name']),
-          trailing: Chip(label: Text(producer['count'].toString())),
+          title: Text(producer.name),
+          trailing: Chip(label: Text(producer.count.toString())),
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => anime
-                    ? ProducerList(producer['mal_id'], producer['name'])
-                    : MagazineList(producer['mal_id'], producer['name']),
-                settings: RouteSettings(name: '${producer['name']}Screen'),
+                builder: (context) =>
+                    anime ? ProducerList(producer.malId, producer.name) : MagazineList(producer.malId, producer.name),
+                settings: RouteSettings(name: '${producer.name}Screen'),
               ),
             );
           },
@@ -66,13 +67,13 @@ class ProducerList extends StatelessWidget {
         title: Text(name),
       ),
       body: FutureBuilder(
-        future: Jikan().getProducerInfo(id),
-        builder: (context, AsyncSnapshot<Producer> snapshot) {
+        future: Jikan().searchAnime(producers: [id], orderBy: 'members', sort: 'desc'),
+        builder: (context, AsyncSnapshot<BuiltList<Anime>> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          return SeasonList(snapshot.data!.anime);
+          return SeasonList(snapshot.data!);
         },
       ),
     );
@@ -92,13 +93,13 @@ class MagazineList extends StatelessWidget {
         title: Text(name),
       ),
       body: FutureBuilder(
-        future: Jikan().getMagazineInfo(id),
-        builder: (context, AsyncSnapshot<Magazine> snapshot) {
+        future: Jikan().searchManga(magazines: [id], orderBy: 'members', sort: 'desc'),
+        builder: (context, AsyncSnapshot<BuiltList<Manga>> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          return MangaList(snapshot.data!.manga);
+          return MangaList(snapshot.data!);
         },
       ),
     );

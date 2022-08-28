@@ -3,9 +3,8 @@ import 'dart:math';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
@@ -20,7 +19,7 @@ class SearchButton extends StatelessWidget {
       icon: Icon(Icons.search),
       tooltip: 'Search anime',
       onPressed: () async {
-        final Search? selected = await showSearch<Search>(
+        final Anime? selected = await showSearch<dynamic>(
           context: context,
           delegate: _delegate,
         );
@@ -38,12 +37,12 @@ class SearchButton extends StatelessWidget {
   }
 }
 
-class CustomSearchDelegate extends SearchDelegate<Search> {
-  CustomSearchDelegate({this.type = SearchType.anime});
+class CustomSearchDelegate extends SearchDelegate {
+  CustomSearchDelegate({this.type = ItemType.anime});
 
-  SearchType type;
-  List<String> _suggestions = [];
+  final ItemType type;
   final Jikan jikan = Jikan();
+  List<String> _suggestions = [];
 
   @override
   Widget buildLeading(BuildContext context) {
@@ -70,11 +69,13 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
       );
     } else {
       return FutureBuilder(
-        future: jikan.search(query, type, custom: '&limit=10'),
-        builder: (context, AsyncSnapshot<BuiltList<Search>> snapshot) {
+        future: type == ItemType.anime
+            ? jikan.searchAnime(query: query, rawQuery: '&limit=10')
+            : jikan.searchManga(query: query, rawQuery: '&limit=10'),
+        builder: (context, AsyncSnapshot<BuiltList<dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            BuiltList<Search> searchList = snapshot.data!;
-            _suggestions = searchList.map((search) => search.title!).toList();
+            BuiltList<dynamic> searchList = snapshot.data!;
+            _suggestions = searchList.map((search) => search.title.toString()).toList();
           }
 
           return _SuggestionList(
@@ -98,16 +99,17 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
 
     FirebaseAnalytics.instance.logSearch(searchTerm: query);
     Provider.of<UserData>(context, listen: false).addHistory(query);
-    // String excludeHentai = '&genre=12&genre_exclude=0&order_by=members&sort=desc';
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: kSearchPageSize,
-        itemBuilder: (context, Search search, _) => _ResultList(search, type: type, searchDelegate: this),
+        pageSize: kDefaultPageSize,
+        itemBuilder: (context, search, _) => _ResultList(search, searchDelegate: this),
         padding: const EdgeInsets.all(12.0),
         noItemsFoundBuilder: (context) {
           return ListTile(title: Text('No items found.'));
         },
-        pageFuture: (pageIndex) => jikan.search(query, type, page: pageIndex! + 1),
+        pageFuture: (pageIndex) => type == ItemType.anime
+            ? jikan.searchAnime(query: query, page: pageIndex! + 1)
+            : jikan.searchManga(query: query, page: pageIndex! + 1),
       ),
     );
   }
@@ -139,28 +141,27 @@ class CustomSearchDelegate extends SearchDelegate<Search> {
 }
 
 class _ResultList extends StatelessWidget {
-  _ResultList(this.search, {required this.type, required this.searchDelegate});
+  _ResultList(this.search, {required this.searchDelegate});
 
-  final Search search;
-  final SearchType type;
-  final SearchDelegate<Search> searchDelegate;
+  final dynamic search;
+  final SearchDelegate searchDelegate;
   final NumberFormat f = NumberFormat.decimalPattern();
 
   String get _episodesText {
-    if (type == SearchType.anime) {
-      String episodes = search.episodes == 0 ? '?' : search.episodes.toString();
+    if (search is Anime) {
+      String episodes = search.episodes == null ? '?' : search.episodes.toString();
       return '($episodes eps)';
-    } else if (type == SearchType.manga) {
-      String volumes = search.volumes == 0 ? '?' : search.volumes.toString();
+    } else if (search is Manga) {
+      String volumes = search.volumes == null ? '?' : search.volumes.toString();
       return '($volumes vols)';
     } else {
-      throw 'SearchType Error';
+      throw 'ItemType Error';
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    String score = search.score == 0.0 ? 'N/A' : search.score.toString();
+    String score = search.score == null ? 'N/A' : search.score.toString();
     return InkWell(
       onTap: () {
         searchDelegate.close(context, search);
@@ -184,7 +185,7 @@ class _ResultList extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(search.title!, style: Theme.of(context).textTheme.subtitle2),
+                        Text(search.title, style: Theme.of(context).textTheme.subtitle2),
                         Text(
                           search.synopsis ?? '',
                           maxLines: 2,
@@ -224,7 +225,7 @@ class _SuggestionList extends StatelessWidget {
     return ListView.builder(
       itemCount: min(suggestions.length, 10),
       itemBuilder: (context, index) {
-        final String suggestion = suggestions[index];
+        String suggestion = suggestions.elementAt(index);
         if (history) {
           return ListTile(
             leading: Icon(Icons.history),

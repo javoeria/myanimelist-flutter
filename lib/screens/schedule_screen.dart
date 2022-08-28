@@ -14,7 +14,7 @@ class ScheduleScreen extends StatelessWidget {
           title: Text('Schedule'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: const [
+            tabs: const <Tab>[
               Tab(text: 'Monday'),
               Tab(text: 'Tuesday'),
               Tab(text: 'Wednesday'),
@@ -28,30 +28,57 @@ class ScheduleScreen extends StatelessWidget {
           ),
           actions: <Widget>[CustomMenu()],
         ),
-        body: FutureBuilder(
-          future: Jikan().getSchedule(),
-          builder: (context, AsyncSnapshot<Schedule> snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return Center(child: CircularProgressIndicator());
-            }
-
-            Schedule schedule = snapshot.data!;
-            return TabBarView(
-              children: [
-                SeasonList(schedule.monday!),
-                SeasonList(schedule.tuesday!),
-                SeasonList(schedule.wednesday!),
-                SeasonList(schedule.thursday!),
-                SeasonList(schedule.friday!),
-                SeasonList(schedule.saturday!),
-                SeasonList(schedule.sunday!),
-                SeasonList(schedule.other!),
-                SeasonList(schedule.unknown!),
-              ],
-            );
-          },
+        body: TabBarView(
+          children: const <Widget>[
+            ScheduleList(type: WeekDay.monday),
+            ScheduleList(type: WeekDay.tuesday),
+            ScheduleList(type: WeekDay.wednesday),
+            ScheduleList(type: WeekDay.thursday),
+            ScheduleList(type: WeekDay.friday),
+            ScheduleList(type: WeekDay.saturday),
+            ScheduleList(type: WeekDay.sunday),
+            ScheduleList(type: WeekDay.other),
+            ScheduleList(type: WeekDay.unknown),
+          ],
         ),
       ),
     );
   }
+}
+
+class ScheduleList extends StatefulWidget {
+  const ScheduleList({this.type});
+
+  final WeekDay? type;
+
+  @override
+  _ScheduleListState createState() => _ScheduleListState();
+}
+
+class _ScheduleListState extends State<ScheduleList> with AutomaticKeepAliveClientMixin<ScheduleList> {
+  late Future<BuiltList<Anime>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = Jikan().getSchedules(weekday: widget.type);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return FutureBuilder(
+      future: _future,
+      builder: (context, AsyncSnapshot<BuiltList<Anime>> snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        return SeasonList(BuiltList(snapshot.data!.reversed));
+      },
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }

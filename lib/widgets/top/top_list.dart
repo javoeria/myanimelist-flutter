@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat;
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 
 class TopList extends StatefulWidget {
-  const TopList({required this.type, this.subtype});
+  const TopList({this.type, this.subtype, this.anime = true});
 
-  final TopType type;
+  final TopType? type;
   final TopSubtype? subtype;
+  final bool anime;
 
   @override
   _TopListState createState() => _TopListState();
@@ -19,15 +20,15 @@ class TopList extends StatefulWidget {
 class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<TopList> {
   final NumberFormat f = NumberFormat.decimalPattern();
 
-  String episodesText(Top top) {
-    if (widget.type == TopType.anime) {
+  String episodesText(dynamic top) {
+    if (top is Anime) {
       String episodes = top.episodes == null ? '?' : top.episodes.toString();
       return '($episodes eps)';
-    } else if (widget.type == TopType.manga) {
+    } else if (top is Manga) {
       String volumes = top.volumes == null ? '?' : top.volumes.toString();
       return '($volumes vols)';
     } else {
-      throw 'TopType Error';
+      throw 'ItemType Error';
     }
   }
 
@@ -36,15 +37,17 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
     super.build(context);
     return Scrollbar(
       child: PagewiseListView(
-        pageSize: kTopPageSize,
+        pageSize: kDefaultPageSize,
         itemBuilder: _itemBuilder,
         padding: const EdgeInsets.all(12.0),
-        pageFuture: (pageIndex) => Jikan().getTop(widget.type, subtype: widget.subtype, page: pageIndex! + 1),
+        pageFuture: (pageIndex) => widget.anime
+            ? Jikan().getTopAnime(type: widget.type, subtype: widget.subtype, page: pageIndex! + 1)
+            : Jikan().getTopManga(type: widget.type, subtype: widget.subtype, page: pageIndex! + 1),
       ),
     );
   }
 
-  Widget _itemBuilder(BuildContext context, Top top, int index) {
+  Widget _itemBuilder(BuildContext context, dynamic top, int index) {
     return InkWell(
       child: Padding(
         padding: const EdgeInsets.all(4.0),
@@ -66,7 +69,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          '${top.rank}. ${top.title}',
+                          '${index + 1}. ${top.title}',
                           style: Theme.of(context).textTheme.subtitle2,
                         ),
                         Text(
@@ -74,7 +77,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
                           style: Theme.of(context).textTheme.caption,
                         ),
                         Text(
-                          top.startDate == null ? '-' : '${top.startDate} - ${top.endDate ?? ''}',
+                          top is Anime ? top.aired : top.published,
                           style: Theme.of(context).textTheme.caption,
                         ),
                         Text(
@@ -99,7 +102,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
         ),
       ),
       onTap: () {
-        if (widget.type == TopType.anime) {
+        if (widget.anime) {
           Navigator.push(
             context,
             MaterialPageRoute(

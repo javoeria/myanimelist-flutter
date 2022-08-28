@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/character_screen.dart';
@@ -7,13 +6,13 @@ import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/person_screen.dart';
 
 class SubtitleAnime extends StatelessWidget {
-  const SubtitleAnime(this.id, this.title, this.subtitle, this.image, {this.type = TopType.anime});
+  const SubtitleAnime(this.id, this.title, this.subtitle, this.image, {this.type = ItemType.anime});
 
   final int id;
   final String title;
   final String subtitle;
   final String image;
-  final TopType type;
+  final ItemType type;
   final double width = kImageWidthM;
   final double height = kImageHeightM;
 
@@ -27,7 +26,7 @@ class SubtitleAnime extends StatelessWidget {
       child: InkWell(
         onTap: () {
           switch (type) {
-            case TopType.anime:
+            case ItemType.anime:
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -36,7 +35,7 @@ class SubtitleAnime extends StatelessWidget {
                 ),
               );
               break;
-            case TopType.manga:
+            case ItemType.manga:
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -45,7 +44,7 @@ class SubtitleAnime extends StatelessWidget {
                 ),
               );
               break;
-            case TopType.people:
+            case ItemType.people:
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -54,7 +53,7 @@ class SubtitleAnime extends StatelessWidget {
                 ),
               );
               break;
-            case TopType.characters:
+            case ItemType.characters:
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -64,7 +63,7 @@ class SubtitleAnime extends StatelessWidget {
               );
               break;
             default:
-              throw 'TopType Error';
+              throw 'ItemType Error';
           }
         },
         child: title != ''

@@ -22,7 +22,7 @@ class MangaListScreen extends StatelessWidget {
           title: Text('Manga List'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: const [
+            tabs: const <Tab>[
               Tab(text: 'All Manga'),
               Tab(text: 'Currently Reading'),
               Tab(text: 'Completed'),
@@ -48,7 +48,7 @@ class MangaListScreen extends StatelessWidget {
             List<dynamic> planToRead =
                 userList.where((manga) => manga['list_status']['status'] == 'plan_to_read').toList();
             return TabBarView(
-              children: [
+              children: <Widget>[
                 UserMangaList(userList),
                 UserMangaList(reading),
                 UserMangaList(completed),

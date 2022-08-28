@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:jikan_api/jikan_api.dart';
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' show NumberFormat;
+import 'package:jikan_api/jikan_api.dart';
 
 class AnimeStats extends StatefulWidget {
   const AnimeStats(this.id, {this.anime = true});
@@ -20,7 +20,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
   @override
   void initState() {
     super.initState();
-    _future = widget.anime ? Jikan().getAnimeStats(widget.id) : Jikan().getMangaStats(widget.id);
+    _future = widget.anime ? Jikan().getAnimeStatistics(widget.id) : Jikan().getMangaStatistics(widget.id);
   }
 
   @override
@@ -162,7 +162,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
 class HorizontalBarChart extends StatelessWidget {
   const HorizontalBarChart(this.scores);
 
-  final Scores scores;
+  final BuiltList<Score> scores;
 
   @override
   Widget build(BuildContext context) {
@@ -198,17 +198,17 @@ class HorizontalBarChart extends StatelessWidget {
   }
 
   List<charts.Series<ScoreStats, String>> _scoreData() {
-    final data = [
-      ScoreStats('10', scores.score10),
-      ScoreStats('9', scores.score9),
-      ScoreStats('8', scores.score8),
-      ScoreStats('7', scores.score7),
-      ScoreStats('6', scores.score6),
-      ScoreStats('5', scores.score5),
-      ScoreStats('4', scores.score4),
-      ScoreStats('3', scores.score3),
-      ScoreStats('2', scores.score2),
-      ScoreStats('1', scores.score1),
+    final List<ScoreStats> data = [
+      ScoreStats('10', scores[9]),
+      ScoreStats('9', scores[8]),
+      ScoreStats('8', scores[7]),
+      ScoreStats('7', scores[6]),
+      ScoreStats('6', scores[5]),
+      ScoreStats('5', scores[4]),
+      ScoreStats('4', scores[3]),
+      ScoreStats('3', scores[2]),
+      ScoreStats('2', scores[1]),
+      ScoreStats('1', scores[0]),
     ];
 
     return [

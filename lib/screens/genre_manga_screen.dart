@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:myanimelist/jikan_v4.dart';
 import 'package:myanimelist/widgets/manga/manga_list.dart';
 
 class GenreMangaScreen extends StatefulWidget {
@@ -13,7 +12,7 @@ class GenreMangaScreen extends StatefulWidget {
 }
 
 class _GenreMangaScreenState extends State<GenreMangaScreen> {
-  List<dynamic> items = GenreList.manga.where((genre) => genre['name'] != 'Hentai').toList();
+  BuiltList<Genre> items = BuiltList(GenreList.manga.where((genre) => genre.name != 'Hentai'));
   bool loading = false;
 
   @override
@@ -24,7 +23,7 @@ class _GenreMangaScreenState extends State<GenreMangaScreen> {
   }
 
   void load() async {
-    items = await JikanV4().getGenreList(anime: false);
+    items = await Jikan().getMangaGenres();
     setState(() => loading = false);
   }
 
@@ -43,16 +42,16 @@ class _GenreMangaScreenState extends State<GenreMangaScreen> {
           separatorBuilder: (context, index) => Divider(height: 0.0),
           itemCount: items.length,
           itemBuilder: (context, index) {
-            Map<String, dynamic> item = items.elementAt(index);
+            Genre item = items.elementAt(index);
             return ListTile(
-              title: Text(item['name']),
-              trailing: item['count'] != null ? Chip(label: Text(item['count'].toString())) : null,
+              title: Text(item.name),
+              trailing: item.count != null ? Chip(label: Text(item.count.toString())) : null,
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => GenreMangaList(item['mal_id'], item['name']),
-                    settings: RouteSettings(name: '${item['name']}MangaScreen'),
+                    builder: (context) => GenreMangaList(item.malId, item.name),
+                    settings: RouteSettings(name: '${item.name}MangaScreen'),
                   ),
                 );
               },
@@ -77,13 +76,13 @@ class GenreMangaList extends StatelessWidget {
         title: Text('$genre Manga'),
       ),
       body: FutureBuilder(
-        future: Jikan().getGenre(id, GenreType.manga),
-        builder: (context, AsyncSnapshot<Genre> snapshot) {
+        future: Jikan().searchManga(genres: [id], orderBy: 'members', sort: 'desc'),
+        builder: (context, AsyncSnapshot<BuiltList<Manga>> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          return MangaList(snapshot.data!.manga!);
+          return MangaList(snapshot.data!);
         },
       ),
     );

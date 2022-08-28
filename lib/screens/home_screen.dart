@@ -1,35 +1,34 @@
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
-import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/main.dart';
 import 'package:myanimelist/oauth.dart';
+import 'package:myanimelist/screens/anime_list_screen.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/feed_screen.dart';
 import 'package:myanimelist/screens/genre_anime_screen.dart';
 import 'package:myanimelist/screens/genre_manga_screen.dart';
+import 'package:myanimelist/screens/manga_list_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/producer_screen.dart';
 import 'package:myanimelist/screens/recommendation_screen.dart';
 import 'package:myanimelist/screens/review_screen.dart';
+import 'package:myanimelist/screens/seasonal_anime_screen.dart';
 import 'package:myanimelist/screens/settings_screen.dart';
+import 'package:myanimelist/screens/top_anime_screen.dart';
+import 'package:myanimelist/screens/top_characters_screen.dart';
+import 'package:myanimelist/screens/top_manga_screen.dart';
+import 'package:myanimelist/screens/top_people_screen.dart';
+import 'package:myanimelist/screens/user_profile_screen.dart';
 import 'package:myanimelist/screens/watch_screen.dart';
 import 'package:myanimelist/widgets/home/search_button.dart';
 import 'package:myanimelist/widgets/home/season_horizontal.dart';
 import 'package:myanimelist/widgets/home/suggestion_horizontal.dart';
 import 'package:myanimelist/widgets/home/top_horizontal.dart';
-import 'package:myanimelist/screens/top_anime_screen.dart';
-import 'package:myanimelist/screens/top_manga_screen.dart';
-import 'package:myanimelist/screens/top_people_screen.dart';
-import 'package:myanimelist/screens/top_characters_screen.dart';
-import 'package:myanimelist/screens/seasonal_anime_screen.dart';
-import 'package:myanimelist/screens/anime_list_screen.dart';
-import 'package:myanimelist/screens/manga_list_screen.dart';
-import 'package:myanimelist/screens/user_profile_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,9 +36,9 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen(this.profile, this.season, this.topAiring, this.topUpcoming, this.suggestions, this.remoteConfig);
 
   final UserProfile? profile;
-  final Season season;
-  final BuiltList<Top> topAiring;
-  final BuiltList<Top> topUpcoming;
+  final BuiltList<Anime> season;
+  final BuiltList<Anime> topAiring;
+  final BuiltList<Anime> topUpcoming;
   final List<dynamic>? suggestions;
   final FirebaseRemoteConfig remoteConfig;
 
@@ -145,9 +144,9 @@ class HomeScreen extends StatelessWidget {
                         onTap: () async {
                           FirebaseAnalytics.instance.logSelectContent(contentType: 'anime', itemId: 'search');
                           Navigator.pop(context);
-                          final Search? selected = await showSearch<Search>(
+                          final Anime? selected = await showSearch<dynamic>(
                             context: context,
-                            delegate: CustomSearchDelegate(type: SearchType.anime),
+                            delegate: CustomSearchDelegate(type: ItemType.anime),
                           );
                           if (selected != null) {
                             Navigator.push(
@@ -177,13 +176,13 @@ class HomeScreen extends StatelessWidget {
                       ListTile(
                         title: Text('Seasonal Anime'),
                         onTap: () {
+                          String seasonName = season.first.season![0].toUpperCase() + season.first.season!.substring(1);
                           FirebaseAnalytics.instance.logSelectContent(contentType: 'anime', itemId: 'seasonal');
                           Navigator.pop(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  SeasonalAnimeScreen(year: season.seasonYear!, type: season.seasonName),
+                              builder: (context) => SeasonalAnimeScreen(year: season.first.year!, type: seasonName),
                               settings: RouteSettings(name: 'SeasonalAnimeScreen'),
                             ),
                           );
@@ -260,9 +259,9 @@ class HomeScreen extends StatelessWidget {
                         onTap: () async {
                           FirebaseAnalytics.instance.logSelectContent(contentType: 'manga', itemId: 'search');
                           Navigator.pop(context);
-                          final Search? selected = await showSearch<Search>(
+                          final Manga? selected = await showSearch<dynamic>(
                             context: context,
-                            delegate: CustomSearchDelegate(type: SearchType.manga),
+                            delegate: CustomSearchDelegate(type: ItemType.manga),
                           );
                           if (selected != null) {
                             Navigator.push(

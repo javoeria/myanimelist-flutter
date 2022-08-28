@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/user_profile_screen.dart';
 
@@ -50,7 +49,7 @@ class FriendCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Ink.image(
-      image: NetworkImage(item.imageUrl),
+      image: NetworkImage(item.user.imageUrl!),
       width: width,
       height: height,
       fit: BoxFit.cover,
@@ -59,7 +58,7 @@ class FriendCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => UserProfileScreen(item.username),
+              builder: (context) => UserProfileScreen(item.user.username),
               settings: RouteSettings(name: 'UserProfileScreen'),
             ),
           );
@@ -73,7 +72,7 @@ class FriendCard extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  item.username,
+                  item.user.username,
                   maxLines: 3,
                   textAlign: TextAlign.center,
                   style: kTextStyleShadow,

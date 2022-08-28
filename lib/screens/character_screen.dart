@@ -1,14 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
-import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat;
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/subtitle_anime.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
-import 'package:firebase_performance/firebase_performance.dart';
 
 class CharacterScreen extends StatefulWidget {
   const CharacterScreen(this.id);
@@ -38,7 +37,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
   void load() async {
     final Trace characterTrace = FirebasePerformance.instance.newTrace('character_trace');
     characterTrace.start();
-    character = await jikan.getCharacterInfo(widget.id);
+    character = await jikan.getCharacter(widget.id);
     pictures = await jikan.getCharacterPictures(widget.id);
     characterTrace.stop();
     setState(() => loading = false);
@@ -101,7 +100,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
                                 Icon(Icons.person, color: Colors.white, size: 20.0),
                                 SizedBox(width: 4.0),
                                 Text(
-                                  f.format(character.memberFavorites),
+                                  f.format(character.favorites),
                                   style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                 ),
                               ],
@@ -119,13 +118,9 @@ class _CharacterScreenState extends State<CharacterScreen> {
         SliverList(
           delegate: SliverChildListDelegate(<Widget>[
             AboutSection(character.about),
-            character.animeography.isNotEmpty
-                ? AnimeographyList(character.animeography, type: TopType.anime)
-                : Container(),
-            character.mangaography.isNotEmpty
-                ? AnimeographyList(character.mangaography, type: TopType.manga)
-                : Container(),
-            character.voiceActors.isNotEmpty ? VoiceList(character.voiceActors) : Container(),
+            character.anime!.isNotEmpty ? AnimeographyList(character.anime!, type: ItemType.anime) : Container(),
+            character.manga!.isNotEmpty ? AnimeographyList(character.manga!, type: ItemType.manga) : Container(),
+            character.voices!.isNotEmpty ? VoiceList(character.voices!) : Container(),
             pictures.isNotEmpty ? PictureList(pictures) : Container(),
           ]),
         ),
@@ -137,8 +132,8 @@ class _CharacterScreenState extends State<CharacterScreen> {
 class AnimeographyList extends StatelessWidget {
   const AnimeographyList(this.list, {required this.type});
 
-  final BuiltList<CharacterRole> list;
-  final TopType type;
+  final BuiltList<dynamic> list;
+  final ItemType type;
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +144,7 @@ class AnimeographyList extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Text(
-            type == TopType.anime ? 'Animeography' : 'Mangaography',
+            type == ItemType.anime ? 'Animeography' : 'Mangaography',
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
@@ -160,12 +155,12 @@ class AnimeographyList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             itemCount: list.length,
             itemBuilder: (context, index) {
-              CharacterRole anime = list.elementAt(index);
+              dynamic anime = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: TitleAnime(
                   anime.malId,
-                  anime.name,
+                  anime.title,
                   anime.imageUrl,
                   width: kImageWidthM,
                   height: kImageHeightM,
@@ -184,7 +179,7 @@ class AnimeographyList extends StatelessWidget {
 class VoiceList extends StatelessWidget {
   const VoiceList(this.list);
 
-  final BuiltList<VoiceActor> list;
+  final BuiltList<PersonMeta> list;
 
   @override
   Widget build(BuildContext context) {
@@ -203,15 +198,15 @@ class VoiceList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             itemCount: list.length,
             itemBuilder: (context, index) {
-              VoiceActor anime = list.elementAt(index);
+              PersonMeta person = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: SubtitleAnime(
-                  anime.malId,
-                  anime.name,
-                  anime.language,
-                  anime.imageUrl,
-                  type: TopType.people,
+                  person.malId,
+                  person.name,
+                  person.language!,
+                  person.imageUrl,
+                  type: ItemType.people,
                 ),
               );
             },

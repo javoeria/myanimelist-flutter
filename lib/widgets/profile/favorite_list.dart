@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
@@ -19,10 +18,12 @@ class FavoriteList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 8.0),
           child: Text('Favorites', style: Theme.of(context).textTheme.headline6),
         ),
-        favorites.anime.isNotEmpty ? FavoriteSection(favorites.anime, type: TopType.anime) : Container(),
-        favorites.manga.isNotEmpty ? FavoriteSection(favorites.manga, type: TopType.manga) : Container(),
-        favorites.characters.isNotEmpty ? FavoriteSection(favorites.characters, type: TopType.characters) : Container(),
-        favorites.people.isNotEmpty ? FavoriteSection(favorites.people, type: TopType.people) : Container(),
+        favorites.anime.isNotEmpty ? FavoriteSection(favorites.anime, type: ItemType.anime) : Container(),
+        favorites.manga.isNotEmpty ? FavoriteSection(favorites.manga, type: ItemType.manga) : Container(),
+        favorites.characters.isNotEmpty
+            ? FavoriteSection(favorites.characters, type: ItemType.characters)
+            : Container(),
+        favorites.people.isNotEmpty ? FavoriteSection(favorites.people, type: ItemType.people) : Container(),
         SizedBox(height: 12.0),
       ],
     );
@@ -33,22 +34,22 @@ class FavoriteSection extends StatelessWidget {
   const FavoriteSection(this.list, {required this.type});
 
   final BuiltList<Favorite> list;
-  final TopType type;
+  final ItemType type;
   final double width = kImageWidthM;
   final double height = kImageHeightM;
 
   String get _favoriteTitle {
     switch (type) {
-      case TopType.anime:
+      case ItemType.anime:
         return 'Anime';
-      case TopType.manga:
+      case ItemType.manga:
         return 'Manga';
-      case TopType.people:
+      case ItemType.people:
         return 'People';
-      case TopType.characters:
+      case ItemType.characters:
         return 'Characters';
       default:
-        throw 'TopType Error';
+        throw 'ItemType Error';
     }
   }
 

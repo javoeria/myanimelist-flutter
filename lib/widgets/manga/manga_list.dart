@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' show NumberFormat;
 import 'package:jikan_api/jikan_api.dart';
-import 'package:intl/intl.dart' show NumberFormat, DateFormat;
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
@@ -11,20 +10,19 @@ import 'package:provider/provider.dart';
 class MangaList extends StatelessWidget {
   const MangaList(this.mangaList);
 
-  final BuiltList<MangaItem> mangaList;
+  final BuiltList<Manga> mangaList;
 
   @override
   Widget build(BuildContext context) {
     bool kids = Provider.of<UserData>(context).kidsGenre;
     bool r18 = Provider.of<UserData>(context).r18Genre;
-    BuiltList<MangaItem> _mangaList =
-        BuiltList.from(mangaList.where((manga) => !manga.genres.map((i) => i.name).contains('Hentai')));
+    BuiltList<Manga> _mangaList =
+        BuiltList(mangaList.where((manga) => !manga.genres.map((i) => i.name).contains('Hentai')));
     if (!kids) {
-      _mangaList = BuiltList.from(_mangaList.where((manga) => !manga.genres.map((i) => i.name).contains('Kids')));
+      _mangaList = BuiltList(_mangaList.where((manga) => !manga.demographics.map((i) => i.name).contains('Kids')));
     }
     if (!r18) {
-      _mangaList = BuiltList.from(_mangaList.where((manga) =>
-          !manga.genres.map((i) => i.name).contains('Yaoi') && !manga.genres.map((i) => i.name).contains('Yuri')));
+      _mangaList = BuiltList(_mangaList.where((manga) => !manga.genres.map((i) => i.name).contains('Erotica')));
     }
 
     if (_mangaList.isEmpty) {
@@ -35,7 +33,7 @@ class MangaList extends StatelessWidget {
         separatorBuilder: (context, index) => Divider(height: 0.0),
         itemCount: _mangaList.length,
         itemBuilder: (context, index) {
-          MangaItem manga = _mangaList.elementAt(index);
+          Manga manga = _mangaList.elementAt(index);
           return MangaInfo(manga);
         },
       ),
@@ -46,28 +44,21 @@ class MangaList extends StatelessWidget {
 class MangaInfo extends StatelessWidget {
   MangaInfo(this.manga);
 
-  final MangaItem manga;
+  final Manga manga;
   final NumberFormat f = NumberFormat.compact();
-  final DateFormat dateFormat = DateFormat('MMM d, yyyy');
 
   String get _authorsText {
     return manga.authors.isEmpty ? '-' : manga.authors.first.name;
   }
 
   String get _publishingText {
-    if (manga.publishingStart == null) {
-      return '??';
-    } else {
-      DateTime japanTime = DateTime.parse(manga.publishingStart!).add(Duration(hours: 9));
-      return dateFormat.format(japanTime);
-    }
+    return manga.published == null ? '??' : manga.published!.split(' to ').first;
   }
 
   @override
   Widget build(BuildContext context) {
     String volumes = manga.volumes == null ? '?' : manga.volumes.toString();
     String score = manga.score == null ? 'N/A' : manga.score.toString();
-    String type = manga.type == null ? '' : '${manga.type} | ';
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -84,7 +75,7 @@ class MangaInfo extends StatelessWidget {
           children: <Widget>[
             Text(manga.title, style: Theme.of(context).textTheme.headline6),
             SizedBox(height: 4.0),
-            Text('$type$_authorsText | $volumes vols'),
+            Text('${manga.type} | $_authorsText | $volumes vols'),
             SizedBox(height: 4.0),
             GenreHorizontal(manga.genres, anime: false),
             SizedBox(height: 4.0),
@@ -99,7 +90,7 @@ class MangaInfo extends StatelessWidget {
                       alignment: Alignment.topLeft,
                       child: SingleChildScrollView(
                         child: Text(
-                          manga.synopsis ?? 'No synopsis information has been added to this title.',
+                          manga.synopsis ?? '(No synopsis yet.)',
                           style: Theme.of(context).textTheme.caption,
                         ),
                       ),

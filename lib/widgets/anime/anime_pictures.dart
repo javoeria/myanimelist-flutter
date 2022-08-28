@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
 
 class AnimePictures extends StatefulWidget {
@@ -43,7 +42,8 @@ class _AnimePicturesState extends State<AnimePictures> with AutomaticKeepAliveCl
               spacing: 16.0,
               runSpacing: 16.0,
               children: pictureList.map((Picture picture) {
-                return Image.network(picture.large, width: kImageWidthL, height: kImageHeightL, fit: BoxFit.cover);
+                return Image.network(picture.largeImageUrl!,
+                    width: kImageWidthL, height: kImageHeightL, fit: BoxFit.cover);
               }).toList(),
             ),
           ),

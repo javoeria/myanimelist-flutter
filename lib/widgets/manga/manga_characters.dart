@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
@@ -14,7 +13,7 @@ class MangaCharacters extends StatefulWidget {
 }
 
 class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAliveClientMixin<MangaCharacters> {
-  late Future<BuiltList<CharacterRole>> _future;
+  late Future<BuiltList<CharacterMeta>> _future;
 
   @override
   void initState() {
@@ -27,12 +26,12 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, AsyncSnapshot<BuiltList<CharacterRole>> snapshot) {
+      builder: (context, AsyncSnapshot<BuiltList<CharacterMeta>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<CharacterRole> characterList = snapshot.data!;
+        BuiltList<CharacterMeta> characterList = snapshot.data!;
         if (characterList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
@@ -41,7 +40,7 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
             itemCount: characterList.length,
             itemBuilder: (context, index) {
-              CharacterRole character = characterList.elementAt(index);
+              CharacterMeta character = characterList.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: Row(
@@ -56,7 +55,7 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
                             character.imageUrl,
                             width: kImageWidthS,
                             height: kImageHeightS,
-                            type: TopType.characters,
+                            type: ItemType.characters,
                           ),
                           SizedBox(width: 8.0),
                           Expanded(

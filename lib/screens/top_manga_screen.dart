@@ -10,23 +10,23 @@ class TopMangaScreen extends StatelessWidget {
   const TopMangaScreen({this.index = 0});
 
   final int index;
-  final TopType type = TopType.manga;
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 9,
+      length: 10,
       initialIndex: index,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Top Manga'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: const [
+            tabs: const <Tab>[
               Tab(text: 'All Manga'),
               Tab(text: 'Top Manga'),
               Tab(text: 'Top One-shots'),
               Tab(text: 'Top Doujinshi'),
+              Tab(text: 'Top Light Novels'),
               Tab(text: 'Top Novels'),
               Tab(text: 'Top Manhwa'),
               Tab(text: 'Top Manhua'),
@@ -38,29 +38,31 @@ class TopMangaScreen extends StatelessWidget {
         ),
         body: Provider.of<UserData>(context).gridView
             ? TabBarView(
-                children: [
-                  TopGrid(type: type),
-                  TopGrid(type: type, subtype: TopSubtype.manga),
-                  TopGrid(type: type, subtype: TopSubtype.oneshots),
-                  TopGrid(type: type, subtype: TopSubtype.doujin),
-                  TopGrid(type: type, subtype: TopSubtype.novels),
-                  TopGrid(type: type, subtype: TopSubtype.manhwa),
-                  TopGrid(type: type, subtype: TopSubtype.manhua),
-                  TopGrid(type: type, subtype: TopSubtype.bypopularity),
-                  TopGrid(type: type, subtype: TopSubtype.favorite),
+                children: const <Widget>[
+                  TopGrid(anime: false),
+                  TopGrid(type: TopType.manga, anime: false),
+                  TopGrid(type: TopType.oneshots, anime: false),
+                  TopGrid(type: TopType.doujin, anime: false),
+                  TopGrid(type: TopType.lightnovels, anime: false),
+                  TopGrid(type: TopType.novels, anime: false),
+                  TopGrid(type: TopType.manhwa, anime: false),
+                  TopGrid(type: TopType.manhua, anime: false),
+                  TopGrid(subtype: TopSubtype.bypopularity, anime: false),
+                  TopGrid(subtype: TopSubtype.favorite, anime: false),
                 ],
               )
             : TabBarView(
-                children: [
-                  TopList(type: type),
-                  TopList(type: type, subtype: TopSubtype.manga),
-                  TopList(type: type, subtype: TopSubtype.oneshots),
-                  TopList(type: type, subtype: TopSubtype.doujin),
-                  TopList(type: type, subtype: TopSubtype.novels),
-                  TopList(type: type, subtype: TopSubtype.manhwa),
-                  TopList(type: type, subtype: TopSubtype.manhua),
-                  TopList(type: type, subtype: TopSubtype.bypopularity),
-                  TopList(type: type, subtype: TopSubtype.favorite),
+                children: const <Widget>[
+                  TopList(anime: false),
+                  TopList(type: TopType.manga, anime: false),
+                  TopList(type: TopType.oneshots, anime: false),
+                  TopList(type: TopType.doujin, anime: false),
+                  TopList(type: TopType.lightnovels, anime: false),
+                  TopList(type: TopType.novels, anime: false),
+                  TopList(type: TopType.manhwa, anime: false),
+                  TopList(type: TopType.manhua, anime: false),
+                  TopList(subtype: TopSubtype.bypopularity, anime: false),
+                  TopList(subtype: TopSubtype.favorite, anime: false),
                 ],
               ),
       ),

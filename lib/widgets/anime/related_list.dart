@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/subtitle_anime.dart';
 
@@ -37,7 +36,7 @@ class RelatedList extends StatelessWidget {
                   item['node']['title'],
                   item['relation_type_formatted'],
                   item['node']['main_picture']['large'],
-                  type: anime ? TopType.anime : TopType.manga,
+                  type: anime ? ItemType.anime : ItemType.manga,
                 ),
               );
             },

@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class RoleList extends StatelessWidget {
   const RoleList(this.list);
 
-  final BuiltList<VoiceActing> list;
+  final BuiltList<VoiceActor> list;
 
   @override
   Widget build(BuildContext context) {
-    BuiltList<VoiceActing> _shortList =
-        list.length > 50 ? BuiltList.from(list.where((a) => a.role == 'Main').take(50)) : list;
+    BuiltList<VoiceActor> _shortList =
+        list.length > 50 ? BuiltList(list.where((a) => a.role == 'Main').take(50)) : list;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -21,7 +20,7 @@ class RoleList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               Text('Voice Acting Roles', style: Theme.of(context).textTheme.headline6),
               if (list.length > 50)
                 IconButton(
@@ -40,7 +39,7 @@ class RoleList extends StatelessWidget {
           ),
         ),
         Column(
-          children: _shortList.map((VoiceActing role) {
+          children: _shortList.map((VoiceActor role) {
             return RoleItem(role);
           }).toList(),
         ),
@@ -53,7 +52,7 @@ class RoleList extends StatelessWidget {
 class FullRoleList extends StatelessWidget {
   const FullRoleList(this.list);
 
-  final BuiltList<VoiceActing> list;
+  final BuiltList<VoiceActor> list;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +65,7 @@ class FullRoleList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12.0),
           itemCount: list.length,
           itemBuilder: (context, index) {
-            VoiceActing role = list.elementAt(index);
+            VoiceActor role = list.elementAt(index);
             return RoleItem(role);
           },
         ),
@@ -78,7 +77,7 @@ class FullRoleList extends StatelessWidget {
 class RoleItem extends StatelessWidget {
   const RoleItem(this.role);
 
-  final VoiceActing role;
+  final VoiceActor role;
 
   @override
   Widget build(BuildContext context) {
@@ -92,15 +91,15 @@ class RoleItem extends StatelessWidget {
               children: <Widget>[
                 TitleAnime(
                   role.anime.malId,
-                  role.anime.name,
-                  role.anime.imageUrl!,
+                  role.anime.title,
+                  role.anime.imageUrl,
                   width: kImageWidthS,
                   height: kImageHeightS,
-                  type: TopType.anime,
+                  type: ItemType.anime,
                   showTitle: false,
                 ),
                 SizedBox(width: 8.0),
-                Expanded(child: Text(role.anime.name)),
+                Expanded(child: Text(role.anime.title)),
               ],
             ),
           ),
@@ -121,10 +120,10 @@ class RoleItem extends StatelessWidget {
                 TitleAnime(
                   role.character.malId,
                   '',
-                  role.character.imageUrl!,
+                  role.character.imageUrl,
                   width: kImageWidthS,
                   height: kImageHeightS,
-                  type: TopType.characters,
+                  type: ItemType.characters,
                 ),
               ],
             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
-import 'package:myanimelist/jikan_v4.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,7 +20,7 @@ class WatchScreen extends StatelessWidget {
           title: Text(episodes ? 'Episode Videos' : 'Anime Trailers'),
           bottom: TabBar(
             isScrollable: false,
-            tabs: const [
+            tabs: const <Tab>[
               Tab(text: 'Just Added'),
               Tab(text: 'Most Popular'),
             ],
@@ -48,12 +48,14 @@ class AnimeVideos extends StatefulWidget {
 }
 
 class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClientMixin<AnimeVideos> {
-  late Future<List<dynamic>> _future;
+  late Future<BuiltList<dynamic>> _future;
 
   @override
   void initState() {
     super.initState();
-    _future = JikanV4().getVideos(widget.type, widget.subtype);
+    _future = widget.type == 'episodes'
+        ? Jikan().getWatchEpisodes(popular: widget.subtype == 'popular')
+        : Jikan().getWatchPromos(popular: widget.subtype == 'popular');
   }
 
   @override
@@ -61,12 +63,12 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+      builder: (context, AsyncSnapshot<BuiltList<dynamic>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        List<dynamic> promoList = snapshot.data!;
+        BuiltList<dynamic> promoList = snapshot.data!;
         if (promoList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
@@ -79,20 +81,20 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
                 runSpacing: 16.0,
                 children: promoList.map((promo) {
                   return Column(
-                    children: [
+                    children: <Widget>[
                       VideoImage(promo),
                       SizedBox(
                         width: kImageWidthL,
                         child: InkWell(
                           child: Padding(
                             padding: const EdgeInsets.only(top: 4.0),
-                            child: Text(promo['entry']['title']),
+                            child: Text(promo.entry.title),
                           ),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AnimeScreen(promo['entry']['mal_id'], promo['entry']['title']),
+                                builder: (context) => AnimeScreen(promo.entry.malId, promo.entry.title),
                                 settings: RouteSettings(name: 'AnimeScreen'),
                               ),
                             );
@@ -117,20 +119,20 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
 class VideoImage extends StatelessWidget {
   const VideoImage(this.promo);
 
-  final Map<String, dynamic> promo;
+  final dynamic promo;
   final double width = 160.0;
   final double height = 240.0;
 
   @override
   Widget build(BuildContext context) {
     return Ink.image(
-      image: NetworkImage(promo['entry']['images']['jpg']['large_image_url']),
+      image: NetworkImage(promo.entry.imageUrl),
       width: width,
       height: height,
       fit: BoxFit.cover,
       child: InkWell(
         onTap: () async {
-          String url = (promo['trailer'] ?? promo['episodes'][0])['url'];
+          String url = promo is WatchPromo ? promo.videoUrl : promo.episodes[0].url;
           if (await canLaunch(url)) {
             await launch(url);
           } else {
@@ -165,7 +167,7 @@ class VideoImage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      promo['title'] ?? promo['episodes'][0]['title'],
+                      promo is WatchPromo ? promo.title : promo.episodes[0].title,
                       maxLines: 3,
                       textAlign: TextAlign.center,
                       style: kTextStyleShadow,

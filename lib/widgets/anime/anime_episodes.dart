@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 
 class AnimeEpisodes extends StatefulWidget {
@@ -18,7 +18,7 @@ class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveCl
 
   Widget? subtitleText(String? titleRomanji, String? titleJapanese) {
     if (titleRomanji != null && titleJapanese != null) {
-      return Text('$titleRomanji - $titleJapanese');
+      return Text('$titleRomanji ($titleJapanese)');
     } else if (titleRomanji != null) {
       return Text(titleRomanji);
     } else if (titleJapanese != null) {
@@ -52,7 +52,7 @@ class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveCl
           subtitle: subtitleText(episode.titleRomanji, episode.titleJapanese),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(episode.episodeId.toString(), style: Theme.of(context).textTheme.headline6),
+            child: Text(episode.malId.toString(), style: Theme.of(context).textTheme.headline6),
           ),
           trailing: Text(dateAired),
         ),

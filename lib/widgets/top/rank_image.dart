@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/character_screen.dart';
@@ -7,10 +6,11 @@ import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/person_screen.dart';
 
 class RankImage extends StatelessWidget {
-  const RankImage(this.top, {required this.type});
+  const RankImage(this.top, this.index, {required this.type});
 
-  final Top top;
-  final TopType type;
+  final dynamic top;
+  final int index;
+  final ItemType type;
   final double width = kImageWidthM;
   final double height = kImageHeightM;
 
@@ -25,7 +25,7 @@ class RankImage extends StatelessWidget {
         onTap: () {
           int id = top.malId;
           switch (type) {
-            case TopType.anime:
+            case ItemType.anime:
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -34,7 +34,7 @@ class RankImage extends StatelessWidget {
                 ),
               );
               break;
-            case TopType.manga:
+            case ItemType.manga:
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -43,7 +43,7 @@ class RankImage extends StatelessWidget {
                 ),
               );
               break;
-            case TopType.people:
+            case ItemType.people:
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -52,7 +52,7 @@ class RankImage extends StatelessWidget {
                 ),
               );
               break;
-            case TopType.characters:
+            case ItemType.characters:
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -62,7 +62,7 @@ class RankImage extends StatelessWidget {
               );
               break;
             default:
-              throw 'TopType Error';
+              throw 'ItemType Error';
           }
         },
         child: SizedBox(
@@ -76,7 +76,7 @@ class RankImage extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(2.0),
                   color: Colors.black54,
-                  child: Text('${top.rank}', style: TextStyle(color: Colors.white)),
+                  child: Text('${index + 1}', style: TextStyle(color: Colors.white)),
                 ),
               ),
               Stack(
@@ -86,7 +86,7 @@ class RankImage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      top.title,
+                      type == ItemType.anime || type == ItemType.manga ? top.title : top.name,
                       maxLines: 3,
                       textAlign: TextAlign.center,
                       style: kTextStyleShadow,

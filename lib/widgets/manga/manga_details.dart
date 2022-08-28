@@ -1,15 +1,14 @@
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat;
-import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/widgets/anime/related_list.dart';
 import 'package:myanimelist/widgets/manga/manga_dialog.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
-import 'package:firebase_performance/firebase_performance.dart';
 
 class MangaDetails extends StatefulWidget {
   const MangaDetails(this.id);
@@ -39,7 +38,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
   void load() async {
     final Trace mangaTrace = FirebasePerformance.instance.newTrace('manga_trace');
     mangaTrace.start();
-    manga = await jikan.getMangaInfo(widget.id);
+    manga = await jikan.getManga(widget.id);
     pictures = await jikan.getMangaPictures(widget.id);
     status = await MalClient().getStatus(widget.id, anime: false);
     related = await MalClient().getRelated(widget.id, anime: false);
@@ -196,7 +195,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
             children: <Widget>[
               Text('Synopsis', style: Theme.of(context).textTheme.headline6),
               SizedBox(height: 16.0),
-              Text(manga.synopsis ?? '(No synopsis yet.)', softWrap: true),
+              Text(manga.synopsis ?? 'No synopsis information has been added to this title.', softWrap: true),
             ],
           ),
         ),
@@ -273,7 +272,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   text: 'Published: ',
                   style: Theme.of(context).textTheme.bodyText1,
                   children: <TextSpan>[
-                    TextSpan(text: manga.published.string, style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: manga.published, style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),
@@ -290,20 +289,20 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
               SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
-                  text: 'Authors: ',
+                  text: 'Serialization: ',
                   style: Theme.of(context).textTheme.bodyText1,
                   children: <TextSpan>[
-                    TextSpan(text: _authorsText, style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: _serializationText, style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),
               SizedBox(height: 4.0),
               RichText(
                 text: TextSpan(
-                  text: 'Serialization: ',
+                  text: 'Authors: ',
                   style: Theme.of(context).textTheme.bodyText1,
                   children: <TextSpan>[
-                    TextSpan(text: _serializationText, style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: _authorsText, style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),

@@ -1,14 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
-import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show NumberFormat, DateFormat;
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/profile/about_section.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/profile/role_list.dart';
 import 'package:myanimelist/widgets/subtitle_anime.dart';
-import 'package:firebase_performance/firebase_performance.dart';
 
 class PersonScreen extends StatefulWidget {
   const PersonScreen(this.id);
@@ -39,7 +38,7 @@ class _PersonScreenState extends State<PersonScreen> {
   void load() async {
     final Trace personTrace = FirebasePerformance.instance.newTrace('person_trace');
     personTrace.start();
-    person = await jikan.getPersonInfo(widget.id);
+    person = await jikan.getPerson(widget.id);
     pictures = await jikan.getPersonPictures(widget.id);
     personTrace.stop();
     setState(() => loading = false);
@@ -102,7 +101,7 @@ class _PersonScreenState extends State<PersonScreen> {
                                 Icon(Icons.person, color: Colors.white, size: 20.0),
                                 SizedBox(width: 4.0),
                                 Text(
-                                  f.format(person.memberFavorites),
+                                  f.format(person.favorites),
                                   style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
                                 ),
                               ],
@@ -132,9 +131,9 @@ class _PersonScreenState extends State<PersonScreen> {
         SliverList(
           delegate: SliverChildListDelegate(<Widget>[
             AboutSection(person.about),
-            person.voiceActingRoles.isNotEmpty ? RoleList(person.voiceActingRoles) : Container(),
-            person.animeStaffPositions.isNotEmpty ? StaffList(person.animeStaffPositions) : Container(),
-            person.publishedManga.isNotEmpty ? PublishList(person.publishedManga) : Container(),
+            person.voices!.isNotEmpty ? RoleList(person.voices!) : Container(),
+            person.anime!.isNotEmpty ? StaffList(person.anime!) : Container(),
+            person.manga!.isNotEmpty ? PublishList(person.manga!) : Container(),
             pictures.isNotEmpty ? PictureList(pictures) : Container(),
           ]),
         ),
@@ -146,7 +145,7 @@ class _PersonScreenState extends State<PersonScreen> {
 class StaffList extends StatelessWidget {
   const StaffList(this.list);
 
-  final BuiltList<AnimeStaff> list;
+  final BuiltList<AnimeMeta> list;
 
   @override
   Widget build(BuildContext context) {
@@ -165,15 +164,15 @@ class StaffList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             itemCount: list.length,
             itemBuilder: (context, index) {
-              AnimeStaff staff = list.elementAt(index);
+              AnimeMeta anime = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: SubtitleAnime(
-                  staff.anime.malId,
-                  staff.anime.name,
-                  staff.position,
-                  staff.anime.imageUrl!,
-                  type: TopType.anime,
+                  anime.malId,
+                  anime.title,
+                  anime.position!.replaceFirst('add ', ''),
+                  anime.imageUrl,
+                  type: ItemType.anime,
                 ),
               );
             },
@@ -188,7 +187,7 @@ class StaffList extends StatelessWidget {
 class PublishList extends StatelessWidget {
   const PublishList(this.list);
 
-  final BuiltList<PublishedManga> list;
+  final BuiltList<MangaMeta> list;
 
   @override
   Widget build(BuildContext context) {
@@ -207,15 +206,15 @@ class PublishList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             itemCount: list.length,
             itemBuilder: (context, index) {
-              PublishedManga publish = list.elementAt(index);
+              MangaMeta manga = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: SubtitleAnime(
-                  publish.manga.malId,
-                  publish.manga.name,
-                  publish.position,
-                  publish.manga.imageUrl!,
-                  type: TopType.manga,
+                  manga.malId,
+                  manga.title,
+                  manga.position!,
+                  manga.imageUrl,
+                  type: ItemType.manga,
                 ),
               );
             },

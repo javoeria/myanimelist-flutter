@@ -1,15 +1,14 @@
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show NumberFormat;
-import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/widgets/anime/anime_dialog.dart';
 import 'package:myanimelist/widgets/anime/related_list.dart';
 import 'package:myanimelist/widgets/profile/picture_list.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
-import 'package:firebase_performance/firebase_performance.dart';
 
 class AnimeDetails extends StatefulWidget {
   const AnimeDetails(this.id);
@@ -39,7 +38,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
   void load() async {
     final Trace animeTrace = FirebasePerformance.instance.newTrace('anime_trace');
     animeTrace.start();
-    anime = await jikan.getAnimeInfo(widget.id);
+    anime = await jikan.getAnime(widget.id);
     pictures = await jikan.getAnimePictures(widget.id);
     status = await MalClient().getStatus(widget.id);
     related = await MalClient().getRelated(widget.id);
@@ -91,6 +90,9 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     String score = anime.score == null ? 'N/A' : anime.score.toString();
     String rank = anime.rank == null ? 'N/A' : '#${anime.rank}';
     String episodes = anime.episodes == null ? 'Unknown' : anime.episodes.toString();
+    String? premiered = anime.season == null || anime.year == null
+        ? null
+        : anime.season![0].toUpperCase() + anime.season!.substring(1) + ' ' + anime.year.toString();
     return ListView(
       children: <Widget>[
         Padding(
@@ -155,7 +157,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ),
                   SizedBox(height: 8.0),
                   Text(anime.type ?? 'Unknown'),
-                  anime.premiered != null ? Text(anime.premiered!) : Container(),
+                  premiered != null ? Text(premiered) : Container(),
                   anime.studios.isNotEmpty ? Text(anime.studios.first.name) : Container(),
                 ],
               ),
@@ -198,7 +200,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
             children: <Widget>[
               Text('Synopsis', style: Theme.of(context).textTheme.headline6),
               SizedBox(height: 16.0),
-              Text(anime.synopsis ?? '(No synopsis yet.)', softWrap: true),
+              Text(anime.synopsis ?? 'No synopsis information has been added to this title.', softWrap: true),
             ],
           ),
         ),
@@ -265,12 +267,12 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   text: 'Aired: ',
                   style: Theme.of(context).textTheme.bodyText1,
                   children: <TextSpan>[
-                    TextSpan(text: anime.aired.string, style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: anime.aired, style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),
               SizedBox(height: 4.0),
-              anime.premiered != null
+              premiered != null
                   ? Padding(
                       padding: const EdgeInsets.only(bottom: 4.0),
                       child: RichText(
@@ -278,7 +280,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                           text: 'Premiered: ',
                           style: Theme.of(context).textTheme.bodyText1,
                           children: <TextSpan>[
-                            TextSpan(text: anime.premiered, style: DefaultTextStyle.of(context).style),
+                            TextSpan(text: premiered, style: DefaultTextStyle.of(context).style),
                           ],
                         ),
                       ),
@@ -363,14 +365,14 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   text: 'Rating: ',
                   style: Theme.of(context).textTheme.bodyText1,
                   children: <TextSpan>[
-                    TextSpan(text: anime.rating, style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: anime.rating ?? 'None', style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),
             ],
           ),
         ),
-        anime.openingThemes.isNotEmpty
+        anime.openingThemes!.isNotEmpty
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -383,13 +385,13 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: anime.openingThemes.map((op) => Text(op)).toList(),
+                      children: anime.openingThemes!.map((op) => Text(op)).toList(),
                     ),
                   ),
                 ],
               )
             : Container(),
-        anime.endingThemes.isNotEmpty
+        anime.endingThemes!.isNotEmpty
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -402,7 +404,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: anime.endingThemes.map((ed) => Text(ed)).toList(),
+                      children: anime.endingThemes!.map((ed) => Text(ed)).toList(),
                     ),
                   ),
                 ],

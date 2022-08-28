@@ -25,7 +25,7 @@ class AnimeScreen extends StatelessWidget {
           title: Text(title ?? 'Anime'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: const [
+            tabs: const <Tab>[
               Tab(text: 'Details'),
               Tab(text: 'Characters & Staff'),
               Tab(text: 'Episodes'),
@@ -39,7 +39,7 @@ class AnimeScreen extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: [
+          children: <Widget>[
             AnimeDetails(id),
             AnimeCharactersStaff(id),
             AnimeEpisodes(id),

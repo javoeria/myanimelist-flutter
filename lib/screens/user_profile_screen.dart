@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show DateFormat;
-import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_list_screen.dart';
 import 'package:myanimelist/screens/manga_list_screen.dart';
@@ -12,7 +12,6 @@ import 'package:myanimelist/widgets/profile/favorite_list.dart';
 import 'package:myanimelist/widgets/profile/friend_list.dart';
 import 'package:myanimelist/widgets/profile/manga_stats_section.dart';
 import 'package:page_indicator/page_indicator.dart';
-import 'package:firebase_performance/firebase_performance.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen(this.username);

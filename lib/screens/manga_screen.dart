@@ -23,7 +23,7 @@ class MangaScreen extends StatelessWidget {
           title: Text(title ?? 'Manga'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: const [
+            tabs: const <Tab>[
               Tab(text: 'Details'),
               Tab(text: 'Characters'),
               Tab(text: 'Stats'),
@@ -35,7 +35,7 @@ class MangaScreen extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: [
+          children: <Widget>[
             MangaDetails(id),
             MangaCharacters(id),
             AnimeStats(id, anime: false),

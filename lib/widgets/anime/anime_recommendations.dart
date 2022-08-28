@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class AnimeRecommendations extends StatefulWidget {
@@ -46,10 +46,10 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
                 runSpacing: 16.0,
                 children: recommendationList.map((Recommendation recommendation) {
                   return TitleAnime(
-                    recommendation.malId,
-                    recommendation.title,
-                    recommendation.imageUrl,
-                    type: widget.anime ? TopType.anime : TopType.manga,
+                    recommendation.entry.malId,
+                    recommendation.entry.title,
+                    recommendation.entry.imageUrl,
+                    type: widget.anime ? ItemType.anime : ItemType.manga,
                   );
                 }).toList(),
               ),

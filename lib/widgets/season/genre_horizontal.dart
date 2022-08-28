@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/screens/genre_anime_screen.dart';
 import 'package:myanimelist/screens/genre_manga_screen.dart';
 
 class GenreHorizontal extends StatelessWidget {
   const GenreHorizontal(this.genreList, {this.anime = true});
 
-  final BuiltList<GenericInfo> genreList;
+  final BuiltList<Meta> genreList;
   final bool anime;
 
   @override
@@ -20,7 +19,7 @@ class GenreHorizontal extends StatelessWidget {
         shrinkWrap: true,
         itemCount: genreList.length,
         itemBuilder: (context, index) {
-          GenericInfo genre = genreList[index];
+          Meta genre = genreList.elementAt(index);
           return Padding(
             padding: const EdgeInsets.all(4.0),
             child: ActionChip(

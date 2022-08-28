@@ -1,8 +1,8 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/user_profile_screen.dart';
 
@@ -45,11 +45,11 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   Row(
                     children: <Widget>[
                       Ink.image(
-                        image: NetworkImage(review.reviewer.imageUrl),
+                        image: NetworkImage(review.user.imageUrl!),
                         width: kImageWidthS,
                         height: kImageHeightS,
                         fit: BoxFit.cover,
@@ -58,7 +58,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => UserProfileScreen(review.reviewer.username),
+                                builder: (context) => UserProfileScreen(review.user.username),
                                 settings: RouteSettings(name: 'UserProfileScreen'),
                               ),
                             );
@@ -69,9 +69,9 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(review.reviewer.username),
+                          Text(review.user.username),
                           SizedBox(height: 4.0),
-                          Text('${review.helpfulCount} helpful review', style: Theme.of(context).textTheme.caption),
+                          Text('${review.votes} helpful review', style: Theme.of(context).textTheme.caption),
                         ],
                       ),
                     ],
@@ -83,8 +83,8 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                       SizedBox(height: 4.0),
                       Text(
                         widget.anime
-                            ? '${review.reviewer.episodesSeen} episodes seen'
-                            : '${review.reviewer.chaptersRead} chapters read',
+                            ? '${review.episodesWatched} episodes seen'
+                            : '${review.chaptersRead} chapters read',
                         style: Theme.of(context).textTheme.caption,
                       ),
                     ],
@@ -94,10 +94,10 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
               ExpandablePanel(
                 header: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  child: Text('Overall Rating: ${review.reviewer.scores.overall}'),
+                  child: Text('Overall Rating: ${review.scores.overall}'),
                 ),
-                collapsed: Text(review.content, softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),
-                expanded: Text(review.content.replaceAll('\\n', ''), softWrap: true),
+                collapsed: Text(review.review, softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),
+                expanded: Text(review.review.replaceAll('\\n', ''), softWrap: true),
                 theme: ExpandableThemeData(iconColor: Colors.grey, tapHeaderToExpand: true, hasIcon: true),
               ),
             ],

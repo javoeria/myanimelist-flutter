@@ -22,7 +22,7 @@ class AnimeListScreen extends StatelessWidget {
           title: Text('Anime List'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: const [
+            tabs: const <Tab>[
               Tab(text: 'All Anime'),
               Tab(text: 'Currently Watching'),
               Tab(text: 'Completed'),
@@ -48,7 +48,7 @@ class AnimeListScreen extends StatelessWidget {
             List<dynamic> planToWatch =
                 userList.where((anime) => anime['list_status']['status'] == 'plan_to_watch').toList();
             return TabBarView(
-              children: [
+              children: <Widget>[
                 UserAnimeList(userList),
                 UserAnimeList(watching),
                 UserAnimeList(completed),

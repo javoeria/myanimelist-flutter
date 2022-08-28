@@ -56,24 +56,20 @@ class CustomMenu extends StatelessWidget {
           );
           if (newValue != null) {
             List<String> values = newValue.split(' ');
-            int year = int.parse(values.elementAt(1));
-            String type = values.elementAt(0);
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => SeasonalAnimeScreen(year: year, type: type),
+                builder: (context) => SeasonalAnimeScreen(year: int.parse(values[1]), type: values[0]),
                 settings: RouteSettings(name: 'SeasonalAnimeScreen'),
               ),
             );
           }
         } else {
           List<String> values = value.split(' ');
-          int year = int.parse(values.elementAt(1));
-          String type = values.elementAt(0);
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => SeasonalAnimeScreen(year: year, type: type),
+              builder: (context) => SeasonalAnimeScreen(year: int.parse(values[1]), type: values[0]),
               settings: RouteSettings(name: 'SeasonalAnimeScreen'),
             ),
           );

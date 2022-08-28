@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:jikan_api/jikan_api.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AnimeForum extends StatefulWidget {
@@ -58,11 +57,11 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
                             SizedBox(height: 4.0),
                             RichText(
                               text: TextSpan(
-                                text: '${forum.authorName} - ',
+                                text: '${forum.authorUsername} - ',
                                 style: DefaultTextStyle.of(context).style,
                                 children: <TextSpan>[
                                   TextSpan(
-                                    text: f.format(DateTime.parse(forum.datePosted)),
+                                    text: f.format(DateTime.parse(forum.date)),
                                     style: Theme.of(context).textTheme.caption,
                                   ),
                                 ],
@@ -71,7 +70,7 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
                           ],
                         ),
                       ),
-                      Chip(label: Text(forum.replies.toString()), padding: EdgeInsets.zero),
+                      Chip(label: Text(forum.comments.toString()), padding: EdgeInsets.zero),
                     ],
                   ),
                 ),

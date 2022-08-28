@@ -1,15 +1,15 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
+import 'package:flutter/material.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/main.dart';
+import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/oauth.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:provider/provider.dart';
-import 'package:myanimelist/models/user_data.dart';
 import 'package:slack_notifier/slack_notifier.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -71,7 +71,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           ListTile(
             title: Text('R18+'),
-            subtitle: Text('Show entries with Hentai/Yaoi/Yuri genres'),
+            subtitle: Text('Show entries with Hentai/Erotica genres'),
             trailing: Switch(
               value: Provider.of<UserData>(context).r18Genre,
               activeColor: Colors.indigo,

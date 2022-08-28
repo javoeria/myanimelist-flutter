@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' show NumberFormat;
 import 'package:jikan_api/jikan_api.dart';
-import 'package:intl/intl.dart' show NumberFormat, DateFormat;
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
@@ -8,29 +8,21 @@ import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 class SeasonInfo extends StatelessWidget {
   SeasonInfo(this.anime);
 
-  final AnimeItem anime;
+  final Anime anime;
   final NumberFormat f = NumberFormat.compact();
-  final DateFormat dateFormat = DateFormat('MMM d, yyyy, HH:mm');
-  final DateFormat dateFormat2 = DateFormat('MMM d, yyyy');
 
-  String get _producersText {
-    return anime.producers.isEmpty ? '-' : anime.producers.first.name;
+  String get _studiosText {
+    return anime.studios.isEmpty ? '-' : anime.studios.first.name;
   }
 
   String get _airingText {
-    if (anime.airingStart == null) {
-      return '??';
-    } else {
-      DateTime japanTime = DateTime.parse(anime.airingStart!).add(Duration(hours: 9));
-      return anime.type == 'TV' ? '${dateFormat.format(japanTime)} (JST)' : dateFormat2.format(japanTime);
-    }
+    return anime.aired == null ? '??' : anime.aired!.split(' to ').first;
   }
 
   @override
   Widget build(BuildContext context) {
     String episodes = anime.episodes == null ? '?' : anime.episodes.toString();
     String score = anime.score == null ? 'N/A' : anime.score.toString();
-    String type = anime.type == null ? '' : '${anime.type} | ';
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -47,7 +39,7 @@ class SeasonInfo extends StatelessWidget {
           children: <Widget>[
             Text(anime.title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6),
             SizedBox(height: 4.0),
-            Text('$type$_producersText | $episodes eps'),
+            Text('${anime.type} | $_studiosText | $episodes eps'),
             SizedBox(height: 4.0),
             GenreHorizontal(anime.genres),
             SizedBox(height: 4.0),
@@ -62,7 +54,7 @@ class SeasonInfo extends StatelessWidget {
                       alignment: Alignment.topLeft,
                       child: SingleChildScrollView(
                         child: Text(
-                          anime.synopsis ?? 'No synopsis information has been added to this title.',
+                          anime.synopsis ?? '(No synopsis yet.)',
                           style: Theme.of(context).textTheme.caption,
                         ),
                       ),

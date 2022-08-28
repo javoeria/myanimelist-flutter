@@ -9,10 +9,11 @@ import 'package:myanimelist/widgets/title_anime.dart';
 class SeasonHorizontal extends StatelessWidget {
   const SeasonHorizontal(this.season);
 
-  final Season season;
+  final BuiltList<Anime> season;
 
   @override
   Widget build(BuildContext context) {
+    String seasonName = season.first.season![0].toUpperCase() + season.first.season!.substring(1);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -21,7 +22,7 @@ class SeasonHorizontal extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('${season.seasonName} ${season.seasonYear} Anime', style: Theme.of(context).textTheme.headline6),
+              Text('$seasonName ${season.first.year} Anime', style: Theme.of(context).textTheme.headline6),
               IconButton(
                 icon: Icon(Icons.chevron_right),
                 key: Key('season_icon'),
@@ -29,7 +30,7 @@ class SeasonHorizontal extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SeasonalAnimeScreen(year: season.seasonYear!, type: season.seasonName),
+                      builder: (context) => SeasonalAnimeScreen(year: season.first.year!, type: seasonName),
                       settings: RouteSettings(name: 'SeasonalAnimeScreen'),
                     ),
                   );
@@ -43,9 +44,9 @@ class SeasonHorizontal extends StatelessWidget {
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            itemCount: min(season.anime.length, 20),
+            itemCount: min(season.length, 20),
             itemBuilder: (context, index) {
-              AnimeItem anime = season.anime.elementAt(index);
+              Anime anime = season.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 key: Key('anime_$index'),
@@ -53,7 +54,7 @@ class SeasonHorizontal extends StatelessWidget {
                   anime.malId,
                   anime.title,
                   anime.imageUrl,
-                  type: TopType.anime,
+                  type: ItemType.anime,
                 ),
               );
             },

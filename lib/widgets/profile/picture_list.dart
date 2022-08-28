@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/constants.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -12,7 +11,6 @@ class PictureList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BuiltList<Picture> _uniqList = BuiltList.from(list.toSet());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -26,13 +24,13 @@ class PictureList extends StatelessWidget {
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            itemCount: _uniqList.length,
+            itemCount: list.length,
             itemBuilder: (context, index) {
-              Picture picture = _uniqList.elementAt(index);
+              Picture picture = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Ink.image(
-                  image: NetworkImage(picture.large),
+                  image: NetworkImage(picture.largeImageUrl ?? picture.imageUrl),
                   width: kImageWidthM,
                   height: kImageHeightM,
                   fit: BoxFit.cover,
@@ -41,7 +39,8 @@ class PictureList extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ImageScreen(_uniqList.map((i) => i.large).toList(), index),
+                          builder: (context) =>
+                              ImageScreen(list.map((i) => i.largeImageUrl ?? i.imageUrl).toList(), index),
                           settings: RouteSettings(name: 'ImageScreen'),
                         ),
                       );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/widgets/season/season_info.dart';
 import 'package:provider/provider.dart';
@@ -8,14 +7,14 @@ import 'package:provider/provider.dart';
 class SeasonList extends StatefulWidget {
   const SeasonList(this.animeList);
 
-  final BuiltList<AnimeItem> animeList;
+  final BuiltList<Anime> animeList;
 
   @override
   _SeasonListState createState() => _SeasonListState();
 }
 
 class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMixin<SeasonList> {
-  late BuiltList<AnimeItem> _animeList;
+  late BuiltList<Anime> _animeList;
 
   @override
   void initState() {
@@ -28,9 +27,13 @@ class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMi
     super.build(context);
     bool kids = Provider.of<UserData>(context).kidsGenre;
     bool r18 = Provider.of<UserData>(context).r18Genre;
-    _animeList = BuiltList.from(_animeList.where((anime) => !anime.genres.map((i) => i.name).contains('Hentai')));
-    if (!kids) _animeList = BuiltList.from(_animeList.where((anime) => anime.kids == false));
-    if (!r18) _animeList = BuiltList.from(_animeList.where((anime) => anime.r18 == false));
+    _animeList = BuiltList(_animeList.where((anime) => !anime.genres.map((i) => i.name).contains('Hentai')));
+    if (!kids) {
+      _animeList = BuiltList(_animeList.where((anime) => !anime.demographics.map((i) => i.name).contains('Kids')));
+    }
+    if (!r18) {
+      _animeList = BuiltList(_animeList.where((anime) => !anime.genres.map((i) => i.name).contains('Erotica')));
+    }
 
     if (_animeList.isEmpty) {
       return ListTile(title: Text('No items found.'));
@@ -40,7 +43,7 @@ class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMi
         separatorBuilder: (context, index) => Divider(height: 0.0),
         itemCount: _animeList.length,
         itemBuilder: (context, index) {
-          AnimeItem anime = _animeList.elementAt(index);
+          Anime anime = _animeList.elementAt(index);
           return SeasonInfo(anime);
         },
       ),

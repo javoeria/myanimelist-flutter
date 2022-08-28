@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:jikan_api/jikan_api.dart';
-import 'package:myanimelist/jikan_v4.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class RecommendationScreen extends StatelessWidget {
@@ -12,53 +12,53 @@ class RecommendationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TopType type = anime ? TopType.anime : TopType.manga;
+    ItemType type = anime ? ItemType.anime : ItemType.manga;
     return Scaffold(
       appBar: AppBar(
         title: Text(anime ? 'Anime Recommendations' : 'Manga Recommendations'),
       ),
       body: FutureBuilder(
-        future: JikanV4().getRecommendations(anime: anime),
-        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+        future: anime ? Jikan().getRecentAnimeRecommendations() : Jikan().getRecentMangaRecommendations(),
+        builder: (context, AsyncSnapshot<BuiltList<UserRecommendation>> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          List<dynamic> items = snapshot.data!;
+          BuiltList<UserRecommendation> items = snapshot.data!;
           return Scrollbar(
             child: ListView.separated(
               separatorBuilder: (context, index) => Divider(height: 0.0),
               itemCount: items.length,
               itemBuilder: (context, index) {
-                Map<String, dynamic> item = items.elementAt(index);
+                UserRecommendation item = items.elementAt(index);
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: <Widget>[
                           TitleAnime(
-                            item['entry'][0]['mal_id'],
-                            item['entry'][0]['title'],
-                            item['entry'][0]['images']['jpg']['large_image_url'],
+                            item.entry[0].malId,
+                            item.entry[0].title,
+                            item.entry[0].imageUrl,
                             type: type,
                           ),
                           Icon(Icons.swap_horiz),
                           TitleAnime(
-                            item['entry'][1]['mal_id'],
-                            item['entry'][1]['title'],
-                            item['entry'][1]['images']['jpg']['large_image_url'],
+                            item.entry[1].malId,
+                            item.entry[1].title,
+                            item.entry[1].imageUrl,
                             type: type,
                           ),
                         ],
                       ),
                       SizedBox(height: 8.0),
-                      Text(item['content']),
+                      Text(item.content),
                       SizedBox(height: 8.0),
                       Text((anime ? 'Anime' : 'Manga') +
-                          ' rec by ${item['user']['username']} - ${f.format(DateTime.parse(item['date']))}'),
+                          ' rec by ${item.user.username} - ${f.format(DateTime.parse(item.date))}'),
                     ],
                   ),
                 );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
-import 'package:myanimelist/jikan_v4.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
 
 class GenreAnimeScreen extends StatefulWidget {
@@ -13,7 +12,7 @@ class GenreAnimeScreen extends StatefulWidget {
 }
 
 class _GenreAnimeScreenState extends State<GenreAnimeScreen> {
-  List<dynamic> items = GenreList.anime.where((genre) => genre['name'] != 'Hentai').toList();
+  BuiltList<Genre> items = BuiltList(GenreList.anime.where((genre) => genre.name != 'Hentai'));
   bool loading = false;
 
   @override
@@ -24,7 +23,7 @@ class _GenreAnimeScreenState extends State<GenreAnimeScreen> {
   }
 
   void load() async {
-    items = await JikanV4().getGenreList();
+    items = await Jikan().getAnimeGenres();
     setState(() => loading = false);
   }
 
@@ -43,16 +42,16 @@ class _GenreAnimeScreenState extends State<GenreAnimeScreen> {
           separatorBuilder: (context, index) => Divider(height: 0.0),
           itemCount: items.length,
           itemBuilder: (context, index) {
-            Map<String, dynamic> item = items.elementAt(index);
+            Genre item = items.elementAt(index);
             return ListTile(
-              title: Text(item['name']),
-              trailing: item['count'] != null ? Chip(label: Text(item['count'].toString())) : null,
+              title: Text(item.name),
+              trailing: item.count != null ? Chip(label: Text(item.count.toString())) : null,
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => GenreAnimeList(item['mal_id'], item['name']),
-                    settings: RouteSettings(name: '${item['name']}AnimeScreen'),
+                    builder: (context) => GenreAnimeList(item.malId, item.name),
+                    settings: RouteSettings(name: '${item.name}AnimeScreen'),
                   ),
                 );
               },
@@ -77,13 +76,13 @@ class GenreAnimeList extends StatelessWidget {
         title: Text('$genre Anime'),
       ),
       body: FutureBuilder(
-        future: Jikan().getGenre(id, GenreType.anime),
-        builder: (context, AsyncSnapshot<Genre> snapshot) {
+        future: Jikan().searchAnime(genres: [id], orderBy: 'members', sort: 'desc'),
+        builder: (context, AsyncSnapshot<BuiltList<Anime>> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          return SeasonList(snapshot.data!.anime!);
+          return SeasonList(snapshot.data!);
         },
       ),
     );

@@ -10,25 +10,25 @@ class TopAnimeScreen extends StatelessWidget {
   const TopAnimeScreen({this.index = 0});
 
   final int index;
-  final TopType type = TopType.anime;
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 9,
+      length: 10,
       initialIndex: index,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Top Anime'),
           bottom: TabBar(
             isScrollable: true,
-            tabs: const [
+            tabs: const <Tab>[
               Tab(text: 'All Anime'),
               Tab(text: 'Top Airing'),
               Tab(text: 'Top Upcoming'),
               Tab(text: 'Top TV Series'),
               Tab(text: 'Top Movies'),
               Tab(text: 'Top OVAs'),
+              Tab(text: 'Top ONAs'),
               Tab(text: 'Top Specials'),
               Tab(text: 'Most Popular'),
               Tab(text: 'Most Favorited'),
@@ -38,29 +38,31 @@ class TopAnimeScreen extends StatelessWidget {
         ),
         body: Provider.of<UserData>(context).gridView
             ? TabBarView(
-                children: <Widget>[
-                  TopGrid(type: type),
-                  TopGrid(type: type, subtype: TopSubtype.airing),
-                  TopGrid(type: type, subtype: TopSubtype.upcoming),
-                  TopGrid(type: type, subtype: TopSubtype.tv),
-                  TopGrid(type: type, subtype: TopSubtype.movie),
-                  TopGrid(type: type, subtype: TopSubtype.ova),
-                  TopGrid(type: type, subtype: TopSubtype.special),
-                  TopGrid(type: type, subtype: TopSubtype.bypopularity),
-                  TopGrid(type: type, subtype: TopSubtype.favorite),
+                children: const <Widget>[
+                  TopGrid(),
+                  TopGrid(subtype: TopSubtype.airing),
+                  TopGrid(subtype: TopSubtype.upcoming),
+                  TopGrid(type: TopType.tv),
+                  TopGrid(type: TopType.movie),
+                  TopGrid(type: TopType.ova),
+                  TopGrid(type: TopType.ona),
+                  TopGrid(type: TopType.special),
+                  TopGrid(subtype: TopSubtype.bypopularity),
+                  TopGrid(subtype: TopSubtype.favorite),
                 ],
               )
             : TabBarView(
-                children: <Widget>[
-                  TopList(type: type),
-                  TopList(type: type, subtype: TopSubtype.airing),
-                  TopList(type: type, subtype: TopSubtype.upcoming),
-                  TopList(type: type, subtype: TopSubtype.tv),
-                  TopList(type: type, subtype: TopSubtype.movie),
-                  TopList(type: type, subtype: TopSubtype.ova),
-                  TopList(type: type, subtype: TopSubtype.special),
-                  TopList(type: type, subtype: TopSubtype.bypopularity),
-                  TopList(type: type, subtype: TopSubtype.favorite),
+                children: const <Widget>[
+                  TopList(),
+                  TopList(subtype: TopSubtype.airing),
+                  TopList(subtype: TopSubtype.upcoming),
+                  TopList(type: TopType.tv),
+                  TopList(type: TopType.movie),
+                  TopList(type: TopType.ova),
+                  TopList(type: TopType.ona),
+                  TopList(type: TopType.special),
+                  TopList(subtype: TopSubtype.bypopularity),
+                  TopList(subtype: TopSubtype.favorite),
                 ],
               ),
       ),

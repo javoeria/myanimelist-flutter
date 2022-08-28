@@ -5,10 +5,11 @@ import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/top/rank_image.dart';
 
 class TopGrid extends StatefulWidget {
-  const TopGrid({required this.type, this.subtype});
+  const TopGrid({this.type, this.subtype, this.anime = true});
 
-  final TopType type;
+  final TopType? type;
   final TopSubtype? subtype;
+  final bool anime;
 
   @override
   _TopGridState createState() => _TopGridState();
@@ -20,14 +21,17 @@ class _TopGridState extends State<TopGrid> with AutomaticKeepAliveClientMixin<To
     super.build(context);
     return Scrollbar(
       child: PagewiseGridView.extent(
-        pageSize: kTopPageSize,
+        pageSize: kDefaultPageSize,
         maxCrossAxisExtent: kImageWidthM,
         mainAxisSpacing: 16.0,
         crossAxisSpacing: 16.0,
         childAspectRatio: kImageWidthM / kImageHeightM,
         padding: const EdgeInsets.all(16.0),
-        itemBuilder: (context, Top top, _) => RankImage(top, type: widget.type),
-        pageFuture: (pageIndex) => Jikan().getTop(widget.type, subtype: widget.subtype, page: pageIndex! + 1),
+        itemBuilder: (context, top, index) =>
+            RankImage(top, index, type: widget.anime ? ItemType.anime : ItemType.manga),
+        pageFuture: (pageIndex) => widget.anime
+            ? Jikan().getTopAnime(type: widget.type, subtype: widget.subtype, page: pageIndex! + 1)
+            : Jikan().getTopManga(type: widget.type, subtype: widget.subtype, page: pageIndex! + 1),
       ),
     );
   }
