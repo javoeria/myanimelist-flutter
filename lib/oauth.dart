@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
+import 'package:flutter/services.dart' show PlatformException;
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:slack_notifier/slack_notifier.dart';
 
 const clientId = '030823330de353c3bb50727a8c2f864f';
@@ -24,7 +24,7 @@ class MalClient {
     try {
       final uri = await FlutterWebAuth.authenticate(url: loginUrl, callbackUrlScheme: 'javoeria.animedb');
       final queryParams = Uri.parse(uri).queryParameters;
-      print(queryParams);
+      // print(queryParams);
       if (queryParams['code'] == null) return null;
 
       Fluttertoast.showToast(msg: 'Login Successful');
@@ -48,7 +48,15 @@ class MalClient {
     const url = '$apiBaseUrl/anime/suggestions?limit=20';
     final response = await http.get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
     final suggestionsJson = jsonDecode(response.body);
-    return suggestionsJson['data'];
+    return suggestionsJson['data'] ?? [];
+  }
+
+  Future<List<dynamic>> getSeason(int year, String season) async {
+    final url =
+        '$apiBaseUrl/anime/season/$year/$season?fields=media_type,num_episodes,status,start_season,start_date,mean,num_list_users,synopsis,studios,genres&limit=500&sort=anime_num_list_users';
+    final response = await http.get(Uri.parse(url), headers: {'X-MAL-CLIENT-ID': clientId});
+    final seasonJson = jsonDecode(response.body);
+    return seasonJson['data'] ?? [];
   }
 
   Future<List<dynamic>> getRelated(int id, {bool anime = true}) async {
@@ -65,7 +73,7 @@ class MalClient {
     if (sort != null) url += '&sort=$sort';
     final response = await http.get(Uri.parse(url), headers: {'X-MAL-CLIENT-ID': clientId});
     final listJson = jsonDecode(response.body);
-    return listJson['data'];
+    return listJson['data'] ?? [];
   }
 
   Future<Map<String, dynamic>?> getStatus(int id, {bool anime = true}) async {

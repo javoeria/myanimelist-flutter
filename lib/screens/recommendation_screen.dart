@@ -57,8 +57,8 @@ class RecommendationScreen extends StatelessWidget {
                       SizedBox(height: 8.0),
                       Text(item.content),
                       SizedBox(height: 8.0),
-                      Text((anime ? 'Anime' : 'Manga') +
-                          ' rec by ${item.user.username} - ${f.format(DateTime.parse(item.date))}'),
+                      Text(
+                          '${anime ? 'Anime' : 'Manga'} rec by ${item.user.username} - ${f.format(DateTime.parse(item.date))}'),
                     ],
                   ),
                 );

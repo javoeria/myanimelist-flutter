@@ -32,7 +32,7 @@ void main() {
       final File file = File('screenshots/${timestamp}_$name.png');
       final List<int> pixels = await driver.screenshot();
       await file.writeAsBytes(pixels);
-      print(file.path);
+      // print(file.path);
     }
 
     test('home screen', () async {
@@ -49,12 +49,12 @@ void main() {
       await driver.tap(find.byValueKey('anime_0'));
       await takeScreenshot('anime');
       // await driver.tap(find.text('Details'));
-      // await driver.tap(find.text('Videos'));
+      // await driver.tap(find.text('Characters & Staff'));
       // await driver.tap(find.text('Episodes'));
+      // await driver.tap(find.text('Videos'));
+      // await driver.tap(find.text('Stats'));
       // await driver.tap(find.text('Reviews'));
       // await driver.tap(find.text('Recommendations'));
-      // await driver.tap(find.text('Stats'));
-      // await driver.tap(find.text('Characters & Staff'));
       // await driver.tap(find.text('News'));
       // await driver.tap(find.text('Forum'));
       await driver.tap(find.pageBack());
@@ -117,6 +117,7 @@ void main() {
       // await driver.tap(find.text('Top TV Series'));
       // await driver.tap(find.text('Top Movies'));
       // await driver.tap(find.text('Top OVAs'));
+      // await driver.tap(find.text('Top ONAs'));
       // await driver.tap(find.text('Top Specials'));
       // await driver.tap(find.text('Most Popular'));
       // await driver.tap(find.text('Most Favorited'));
@@ -143,7 +144,7 @@ void main() {
       await driver.tap(menuIconFinder);
       await driver.tap(animeTextFinder);
       await driver.tap(find.text('Studios'));
-      await driver.tap(find.text('Funimation'));
+      await driver.tap(find.text('Toei Animation'));
       await driver.tap(find.pageBack());
       await driver.tap(find.pageBack());
 
@@ -175,6 +176,7 @@ void main() {
       // await driver.tap(find.text('Top Manga'));
       // await driver.tap(find.text('Top One-shots'));
       // await driver.tap(find.text('Top Doujinshi'));
+      // await driver.tap(find.text('Top Light Novels'));
       // await driver.tap(find.text('Top Novels'));
       // await driver.tap(find.text('Top Manhwa'));
       // await driver.tap(find.text('Top Manhua'));

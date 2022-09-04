@@ -10,8 +10,7 @@ class RoleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BuiltList<VoiceActor> _shortList =
-        list.length > 50 ? BuiltList(list.where((a) => a.role == 'Main').take(50)) : list;
+    BuiltList<VoiceActor> shortList = list.length > 50 ? BuiltList(list.where((a) => a.role == 'Main').take(50)) : list;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -39,7 +38,7 @@ class RoleList extends StatelessWidget {
           ),
         ),
         Column(
-          children: _shortList.map((VoiceActor role) {
+          children: shortList.map((VoiceActor role) {
             return RoleItem(role);
           }).toList(),
         ),

@@ -74,7 +74,8 @@ class HomeScreen extends StatelessWidget {
                   profile == null
                       ? ListTile(
                           title: Text('Login'),
-                          leading: Icon(FontAwesomeIcons.signInAlt, color: Theme.of(context).unselectedWidgetColor),
+                          leading:
+                              Icon(FontAwesomeIcons.rightToBracket, color: Theme.of(context).unselectedWidgetColor),
                           onTap: () async {
                             FirebaseAnalytics.instance.logLogin();
                             String? username = await MalClient().login();
@@ -89,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                         )
                       : ExpansionTile(
                           title: Text('User'),
-                          leading: Icon(FontAwesomeIcons.userAlt),
+                          leading: Icon(FontAwesomeIcons.userLarge),
                           children: <Widget>[
                             ListTile(
                               title: Text('Profile'),
@@ -457,7 +458,7 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(FontAwesomeIcons.cog, color: Theme.of(context).unselectedWidgetColor),
+                    icon: Icon(FontAwesomeIcons.gear, color: Theme.of(context).unselectedWidgetColor),
                     tooltip: 'Settings',
                     onPressed: () async {
                       FirebaseAnalytics.instance.logEvent(name: 'settings');

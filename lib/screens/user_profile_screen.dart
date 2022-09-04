@@ -91,6 +91,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             : Align(
                                 alignment: Alignment.centerRight,
                                 child: Container(
+                                  width: 200.0,
+                                  height: 200.0,
+                                  color: Colors.grey,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
@@ -98,9 +101,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       Text('No Picture', style: TextStyle(color: Colors.grey[700])),
                                     ],
                                   ),
-                                  width: 200.0,
-                                  height: 200.0,
-                                  color: Colors.grey,
                                 ),
                               ),
                       ),

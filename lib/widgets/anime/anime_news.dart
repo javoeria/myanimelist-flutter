@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AnimeNews extends StatefulWidget {
   const AnimeNews(this.id, {this.anime = true});
@@ -82,8 +82,8 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
                 ),
                 onTap: () async {
                   String url = article.url;
-                  if (await canLaunch(url)) {
-                    await launch(url);
+                  if (await canLaunchUrlString(url)) {
+                    await launchUrlString(url);
                   } else {
                     throw 'Could not launch $url';
                   }

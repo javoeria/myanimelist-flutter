@@ -115,7 +115,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   SizedBox(height: 8.0),
                   RichText(
                     text: TextSpan(
-                      text: 'Ranked: ',
+                      text: 'Ranked ',
                       style: Theme.of(context).textTheme.subtitle1,
                       children: <TextSpan>[
                         TextSpan(text: rank, style: kTextStyleBold),
@@ -124,7 +124,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ),
                   RichText(
                     text: TextSpan(
-                      text: 'Popularity: ',
+                      text: 'Popularity ',
                       style: Theme.of(context).textTheme.subtitle1,
                       children: <TextSpan>[
                         TextSpan(text: '#${manga.popularity}', style: kTextStyleBold),
@@ -133,7 +133,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ),
                   RichText(
                     text: TextSpan(
-                      text: 'Members: ',
+                      text: 'Members ',
                       style: Theme.of(context).textTheme.subtitle1,
                       children: <TextSpan>[
                         TextSpan(text: f.format(manga.members), style: kTextStyleBold),
@@ -142,7 +142,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   ),
                   RichText(
                     text: TextSpan(
-                      text: 'Favorites: ',
+                      text: 'Favorites ',
                       style: Theme.of(context).textTheme.subtitle1,
                       children: <TextSpan>[
                         TextSpan(text: f.format(manga.favorites), style: kTextStyleBold),
@@ -162,13 +162,6 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: OutlinedButton(
-                  child: Text(
-                    status!['text'],
-                    style: Theme.of(context).textTheme.button!.copyWith(color: _statusColor),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(width: 2, color: _statusColor),
-                  ),
                   onPressed: () async {
                     final newStatus = await showDialog<dynamic>(
                       context: context,
@@ -185,6 +178,13 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                       Fluttertoast.showToast(msg: 'Update Successful');
                     }
                   },
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(width: 2, color: _statusColor),
+                  ),
+                  child: Text(
+                    status!['text'],
+                    style: Theme.of(context).textTheme.button!.copyWith(color: _statusColor),
+                  ),
                 ),
               )
             : Container(),

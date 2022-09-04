@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:jikan_api/jikan_api.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AnimeForum extends StatefulWidget {
   const AnimeForum(this.id, {this.anime = true});
@@ -76,8 +76,8 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
                 ),
                 onTap: () async {
                   String url = forum.url;
-                  if (await canLaunch(url)) {
-                    await launch(url);
+                  if (await canLaunchUrlString(url)) {
+                    await launchUrlString(url);
                   } else {
                     throw 'Could not launch $url';
                   }

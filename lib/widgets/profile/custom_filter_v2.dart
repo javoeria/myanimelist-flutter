@@ -14,10 +14,10 @@ class CustomFilterV2 extends StatelessWidget {
       icon: Icon(Icons.filter_list),
       itemBuilder: (context) {
         return [
-          PopupMenuItem(child: Text('Title'), value: anime ? 'anime_title' : 'manga_title'),
-          PopupMenuItem(child: Text('Score'), value: 'list_score'),
-          PopupMenuItem(child: Text('Start Date'), value: anime ? 'anime_start_date' : 'manga_start_date'),
-          PopupMenuItem(child: Text('Last Updated'), value: 'list_updated_at'),
+          PopupMenuItem(value: anime ? 'anime_title' : 'manga_title', child: Text('Title')),
+          PopupMenuItem(value: 'list_score', child: Text('Score')),
+          PopupMenuItem(value: anime ? 'anime_start_date' : 'manga_start_date', child: Text('Start Date')),
+          PopupMenuItem(value: 'list_updated_at', child: Text('Last Updated')),
         ];
       },
       onSelected: (String value) {

@@ -3,6 +3,7 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AnimeEpisodes extends StatefulWidget {
   const AnimeEpisodes(this.id);
@@ -55,6 +56,14 @@ class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveCl
             child: Text(episode.malId.toString(), style: Theme.of(context).textTheme.headline6),
           ),
           trailing: Text(dateAired),
+          onTap: () async {
+            String url = episode.url;
+            if (await canLaunchUrlString(url)) {
+              await launchUrlString(url);
+            } else {
+              throw 'Could not launch $url';
+            }
+          },
         ),
         Divider(height: 0.0),
       ],

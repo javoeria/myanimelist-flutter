@@ -26,7 +26,7 @@ class LaterScreen extends StatelessWidget {
           actions: <Widget>[CustomMenu()],
         ),
         body: FutureBuilder(
-          future: Jikan().getSeasonUpcoming(),
+          future: getSeasonComplete(),
           builder: (context, AsyncSnapshot<BuiltList<Anime>> snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return Center(child: CircularProgressIndicator());
@@ -53,5 +53,15 @@ class LaterScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<BuiltList<Anime>> getSeasonComplete() async {
+    BuiltList<Anime> response = BuiltList();
+    int page = 0;
+    while (page < 4 && response.length == page * 25) {
+      response += await Jikan().getSeasonUpcoming(page: page + 1);
+      page += 1;
+    }
+    return response;
   }
 }

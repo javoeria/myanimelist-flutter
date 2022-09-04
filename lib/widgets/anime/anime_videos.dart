@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AnimeVideos extends StatefulWidget {
   const AnimeVideos(this.id);
@@ -74,8 +74,8 @@ class VideoImage extends StatelessWidget {
       child: InkWell(
         onTap: () async {
           String url = promo.videoUrl;
-          if (await canLaunch(url)) {
-            await launch(url);
+          if (await canLaunchUrlString(url)) {
+            await launchUrlString(url);
           } else {
             throw 'Could not launch $url';
           }

@@ -92,7 +92,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     String episodes = anime.episodes == null ? 'Unknown' : anime.episodes.toString();
     String? premiered = anime.season == null || anime.year == null
         ? null
-        : anime.season![0].toUpperCase() + anime.season!.substring(1) + ' ' + anime.year.toString();
+        : '${anime.season![0].toUpperCase() + anime.season!.substring(1)} ${anime.year}';
     return ListView(
       children: <Widget>[
         Padding(
@@ -121,7 +121,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   SizedBox(height: 8.0),
                   RichText(
                     text: TextSpan(
-                      text: 'Ranked: ',
+                      text: 'Ranked ',
                       style: Theme.of(context).textTheme.subtitle1,
                       children: <TextSpan>[
                         TextSpan(text: rank, style: kTextStyleBold),
@@ -130,7 +130,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ),
                   RichText(
                     text: TextSpan(
-                      text: 'Popularity: ',
+                      text: 'Popularity ',
                       style: Theme.of(context).textTheme.subtitle1,
                       children: <TextSpan>[
                         TextSpan(text: '#${anime.popularity}', style: kTextStyleBold),
@@ -139,7 +139,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ),
                   RichText(
                     text: TextSpan(
-                      text: 'Members: ',
+                      text: 'Members ',
                       style: Theme.of(context).textTheme.subtitle1,
                       children: <TextSpan>[
                         TextSpan(text: f.format(anime.members), style: kTextStyleBold),
@@ -148,7 +148,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   ),
                   RichText(
                     text: TextSpan(
-                      text: 'Favorites: ',
+                      text: 'Favorites ',
                       style: Theme.of(context).textTheme.subtitle1,
                       children: <TextSpan>[
                         TextSpan(text: f.format(anime.favorites), style: kTextStyleBold),
@@ -168,13 +168,6 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: OutlinedButton(
-                  child: Text(
-                    status!['text'],
-                    style: Theme.of(context).textTheme.button!.copyWith(color: _statusColor),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(width: 2, color: _statusColor),
-                  ),
                   onPressed: () async {
                     final newStatus = await showDialog<dynamic>(
                       context: context,
@@ -190,6 +183,13 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       Fluttertoast.showToast(msg: 'Update Successful');
                     }
                   },
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(width: 2, color: _statusColor),
+                  ),
+                  child: Text(
+                    status!['text'],
+                    style: Theme.of(context).textTheme.button!.copyWith(color: _statusColor),
+                  ),
                 ),
               )
             : Container(),
@@ -372,44 +372,44 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
             ],
           ),
         ),
-        anime.openingThemes!.isNotEmpty
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Divider(height: 0.0),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text('Opening Theme', style: Theme.of(context).textTheme.headline6),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: anime.openingThemes!.map((op) => Text(op)).toList(),
-                    ),
-                  ),
-                ],
-              )
-            : Container(),
-        anime.endingThemes!.isNotEmpty
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Divider(height: 0.0),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text('Ending Theme', style: Theme.of(context).textTheme.headline6),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: anime.endingThemes!.map((ed) => Text(ed)).toList(),
-                    ),
-                  ),
-                ],
-              )
-            : Container(),
+        // anime.openingThemes!.isNotEmpty
+        //     ? Column(
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         children: <Widget>[
+        //           Divider(height: 0.0),
+        //           Padding(
+        //             padding: const EdgeInsets.all(16.0),
+        //             child: Text('Opening Theme', style: Theme.of(context).textTheme.headline6),
+        //           ),
+        //           Padding(
+        //             padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+        //             child: Column(
+        //               crossAxisAlignment: CrossAxisAlignment.start,
+        //               children: anime.openingThemes!.map((op) => Text(op)).toList(),
+        //             ),
+        //           ),
+        //         ],
+        //       )
+        //     : Container(),
+        // anime.endingThemes!.isNotEmpty
+        //     ? Column(
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         children: <Widget>[
+        //           Divider(height: 0.0),
+        //           Padding(
+        //             padding: const EdgeInsets.all(16.0),
+        //             child: Text('Ending Theme', style: Theme.of(context).textTheme.headline6),
+        //           ),
+        //           Padding(
+        //             padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+        //             child: Column(
+        //               crossAxisAlignment: CrossAxisAlignment.start,
+        //               children: anime.endingThemes!.map((ed) => Text(ed)).toList(),
+        //             ),
+        //           ),
+        //         ],
+        //       )
+        //     : Container(),
         if (related != null && related!.isNotEmpty) RelatedList(related!),
         PictureList(pictures),
       ],

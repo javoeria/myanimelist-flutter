@@ -26,7 +26,7 @@ class CustomMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       itemBuilder: (context) {
-        return lastSeasons().map((season) => PopupMenuItem(child: Text(season), value: season)).toList();
+        return lastSeasons().map((season) => PopupMenuItem(value: season, child: Text(season))).toList();
       },
       onSelected: (String value) async {
         if (value == 'Later') {

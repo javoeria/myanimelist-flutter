@@ -33,7 +33,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
           return Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasError) {
-          print(snapshot.error);
+          // print(snapshot.error);
           return ListTile(title: Text('No items found.'));
         }
 

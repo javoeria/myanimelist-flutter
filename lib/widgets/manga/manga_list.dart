@@ -7,17 +7,30 @@ import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 import 'package:provider/provider.dart';
 
-class MangaList extends StatelessWidget {
+class MangaList extends StatefulWidget {
   const MangaList(this.mangaList);
 
   final BuiltList<Manga> mangaList;
 
   @override
+  _MangaListState createState() => _MangaListState();
+}
+
+class _MangaListState extends State<MangaList> with AutomaticKeepAliveClientMixin<MangaList> {
+  late BuiltList<Manga> _mangaList;
+
+  @override
+  void initState() {
+    super.initState();
+    _mangaList = widget.mangaList;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     bool kids = Provider.of<UserData>(context).kidsGenre;
     bool r18 = Provider.of<UserData>(context).r18Genre;
-    BuiltList<Manga> _mangaList =
-        BuiltList(mangaList.where((manga) => !manga.genres.map((i) => i.name).contains('Hentai')));
+    _mangaList = BuiltList(_mangaList.where((manga) => !manga.genres.map((i) => i.name).contains('Hentai')));
     if (!kids) {
       _mangaList = BuiltList(_mangaList.where((manga) => !manga.demographics.map((i) => i.name).contains('Kids')));
     }
@@ -39,6 +52,9 @@ class MangaList extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class MangaInfo extends StatelessWidget {

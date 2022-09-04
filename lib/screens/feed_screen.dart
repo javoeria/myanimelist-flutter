@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:xml/xml.dart';
 
 class FeedScreen extends StatelessWidget {
@@ -78,8 +78,8 @@ class FeedScreen extends StatelessWidget {
                   ),
                   onTap: () async {
                     String url = article.getElement('link')!.text.trim();
-                    if (await canLaunch(url)) {
-                      await launch(url);
+                    if (await canLaunchUrlString(url)) {
+                      await launchUrlString(url);
                     } else {
                       throw 'Could not launch $url';
                     }
