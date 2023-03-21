@@ -114,8 +114,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
       if (kReleaseMode) SlackNotifier(kSlackToken).send('Main $username', channel: 'jikan');
     }
     season = await jikan.getSeason();
-    topAiring = await jikan.getTopAnime(subtype: TopSubtype.airing);
-    topUpcoming = await jikan.getTopAnime(subtype: TopSubtype.upcoming);
+    topAiring = await jikan.getTopAnime(filter: TopFilter.airing);
+    topUpcoming = await jikan.getTopAnime(filter: TopFilter.upcoming);
     remoteConfig = FirebaseRemoteConfig.instance;
     mainTrace.stop();
     setState(() => loading = false);

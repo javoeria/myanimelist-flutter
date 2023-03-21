@@ -47,8 +47,8 @@ class TopMangaScreen extends StatelessWidget {
                   TopGrid(type: TopType.novels, anime: false),
                   TopGrid(type: TopType.manhwa, anime: false),
                   TopGrid(type: TopType.manhua, anime: false),
-                  TopGrid(subtype: TopSubtype.bypopularity, anime: false),
-                  TopGrid(subtype: TopSubtype.favorite, anime: false),
+                  TopGrid(filter: TopFilter.bypopularity, anime: false),
+                  TopGrid(filter: TopFilter.favorite, anime: false),
                 ],
               )
             : TabBarView(
@@ -61,8 +61,8 @@ class TopMangaScreen extends StatelessWidget {
                   TopList(type: TopType.novels, anime: false),
                   TopList(type: TopType.manhwa, anime: false),
                   TopList(type: TopType.manhua, anime: false),
-                  TopList(subtype: TopSubtype.bypopularity, anime: false),
-                  TopList(subtype: TopSubtype.favorite, anime: false),
+                  TopList(filter: TopFilter.bypopularity, anime: false),
+                  TopList(filter: TopFilter.favorite, anime: false),
                 ],
               ),
       ),

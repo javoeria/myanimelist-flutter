@@ -7,10 +7,10 @@ import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 
 class TopList extends StatefulWidget {
-  const TopList({this.type, this.subtype, this.anime = true});
+  const TopList({this.type, this.filter, this.anime = true});
 
   final TopType? type;
-  final TopSubtype? subtype;
+  final TopFilter? filter;
   final bool anime;
 
   @override
@@ -41,8 +41,8 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
         itemBuilder: _itemBuilder,
         padding: const EdgeInsets.all(12.0),
         pageFuture: (pageIndex) => widget.anime
-            ? Jikan().getTopAnime(type: widget.type, subtype: widget.subtype, page: pageIndex! + 1)
-            : Jikan().getTopManga(type: widget.type, subtype: widget.subtype, page: pageIndex! + 1),
+            ? Jikan().getTopAnime(type: widget.type, filter: widget.filter, page: pageIndex! + 1)
+            : Jikan().getTopManga(type: widget.type, filter: widget.filter, page: pageIndex! + 1),
       ),
     );
   }
@@ -90,7 +90,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
                 ],
               ),
             ),
-            widget.subtype != TopSubtype.upcoming
+            widget.filter != TopFilter.upcoming
                 ? Row(
                     children: <Widget>[
                       Text(top.score.toString(), style: Theme.of(context).textTheme.subtitle1),

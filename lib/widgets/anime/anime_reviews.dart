@@ -71,7 +71,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                         children: <Widget>[
                           Text(review.user.username),
                           SizedBox(height: 4.0),
-                          Text('${review.votes} helpful review', style: Theme.of(context).textTheme.caption),
+                          Text(review.tags[0], style: Theme.of(context).textTheme.caption),
                         ],
                       ),
                     ],
@@ -82,10 +82,8 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                       Text(f.format(DateTime.parse(review.date))),
                       SizedBox(height: 4.0),
                       Text(
-                        widget.anime
-                            ? '${review.episodesWatched} episodes seen'
-                            : '${review.chaptersRead} chapters read',
-                        style: Theme.of(context).textTheme.caption,
+                        review.isSpoiler ? 'Spoiler' : '',
+                        style: Theme.of(context).textTheme.caption!.copyWith(color: Colors.red),
                       ),
                     ],
                   ),
@@ -94,7 +92,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
               ExpandablePanel(
                 header: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  child: Text('Overall Rating: ${review.scores.overall}'),
+                  child: Text("Reviewer's Rating: ${review.score}"),
                 ),
                 collapsed: Text(review.review, softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),
                 expanded: Text(review.review.replaceAll('\\n', ''), softWrap: true),

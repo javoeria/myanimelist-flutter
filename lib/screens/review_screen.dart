@@ -89,7 +89,7 @@ class ReviewScreen extends StatelessWidget {
                                 children: <Widget>[
                                   Text(item.user.username),
                                   SizedBox(height: 4.0),
-                                  Text('${item.votes} helpful review', style: Theme.of(context).textTheme.caption),
+                                  Text(item.tags[0], style: Theme.of(context).textTheme.caption),
                                 ],
                               ),
                             ],
@@ -102,10 +102,8 @@ class ReviewScreen extends StatelessWidget {
                                   Text(f.format(DateTime.parse(item.date))),
                                   SizedBox(height: 4.0),
                                   Text(
-                                    anime
-                                        ? '${item.episodesWatched} episodes seen'
-                                        : '${item.chaptersRead} chapters read',
-                                    style: Theme.of(context).textTheme.caption,
+                                    item.isSpoiler ? 'Spoiler' : '',
+                                    style: Theme.of(context).textTheme.caption!.copyWith(color: Colors.red),
                                   ),
                                 ],
                               ),
@@ -144,7 +142,7 @@ class ReviewScreen extends StatelessWidget {
                       ExpandablePanel(
                         header: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: Text('Overall Rating: ${item.scores.overall}'),
+                          child: Text("Reviewer's Rating: ${item.score}"),
                         ),
                         collapsed: Text(item.review, softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),
                         expanded: Text(item.review.replaceAll('\\n', ''), softWrap: true),

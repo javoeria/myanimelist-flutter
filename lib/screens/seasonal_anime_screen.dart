@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/widgets/season/custom_menu.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
@@ -82,6 +83,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
           ? item['node']['media_type'].toUpperCase()
           : item['node']['media_type'][0].toUpperCase() + item['node']['media_type'].substring(1);
       if (item['node']['start_date'].toString().split('-').length == 2) item['node']['start_date'] += '-01';
+      if (item['node']['main_picture'] == null) item['node']['main_picture'] = {'medium': kDefaultPicture};
       Map<String, dynamic> jsonMap = {
         'mal_id': item['node']['id'],
         'url': 'https://myanimelist.net/anime/${item['node']['id']}',

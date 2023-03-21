@@ -4,6 +4,7 @@ enum ItemType { anime, manga, people, characters }
 
 const kGooglePlayId = 'com.javier.myanimelist';
 const kDefaultImage = 'https://cdn.myanimelist.net/images/questionmark_50.gif';
+const kDefaultPicture = 'https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png';
 const kSlackToken = 'T014XKJ2C31/B014XKLF2S3/jtDgfbsVzEUusc2i2mUk3o2b';
 
 const kDefaultPageSize = 25;
