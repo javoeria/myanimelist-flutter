@@ -70,19 +70,19 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
                       children: <Widget>[
                         Text(
                           '${index + 1}. ${top.title}',
-                          style: Theme.of(context).textTheme.subtitle2,
+                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                         Text(
                           '${top.type} ${episodesText(top)}',
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
                           top is Anime ? top.aired : top.published,
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
                           '${f.format(top.members)} members',
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
                     ),
@@ -93,7 +93,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
             widget.filter != TopFilter.upcoming
                 ? Row(
                     children: <Widget>[
-                      Text(top.score.toString(), style: Theme.of(context).textTheme.subtitle1),
+                      Text(top.score.toString(), style: Theme.of(context).textTheme.bodyLarge),
                       Icon(Icons.star, color: Colors.amber),
                     ],
                   )

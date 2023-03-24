@@ -1,4 +1,3 @@
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
@@ -62,7 +61,7 @@ class SettingsScreen extends StatelessWidget {
             subtitle: Text('Show entries with Kids genres'),
             trailing: Switch(
               value: Provider.of<UserData>(context).kidsGenre,
-              activeColor: Colors.indigo,
+              // activeColor: Colors.indigo,
               onChanged: (value) {
                 FirebaseAnalytics.instance.logEvent(name: 'kids');
                 Provider.of<UserData>(context, listen: false).toggleKids();
@@ -74,7 +73,7 @@ class SettingsScreen extends StatelessWidget {
             subtitle: Text('Show entries with Hentai/Erotica genres'),
             trailing: Switch(
               value: Provider.of<UserData>(context).r18Genre,
-              activeColor: Colors.indigo,
+              // activeColor: Colors.indigo,
               onChanged: (value) {
                 FirebaseAnalytics.instance.logEvent(name: 'r18+');
                 Provider.of<UserData>(context, listen: false).toggleR18();
@@ -86,10 +85,10 @@ class SettingsScreen extends StatelessWidget {
             subtitle: Text('Choose between light and dark color palettes'),
             trailing: Switch(
               value: Theme.of(context).brightness == Brightness.dark,
-              activeColor: Colors.indigo,
+              // activeColor: Colors.indigo,
               onChanged: (value) {
                 FirebaseAnalytics.instance.logEvent(name: 'theme');
-                DynamicTheme.of(context)!.toggleBrightness();
+                Provider.of<UserData>(context, listen: false).toggleBrightness();
               },
             ),
           ),
@@ -123,6 +122,7 @@ Future<bool?> _logoutDialog(BuildContext context) async {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
+        title: Text('Logout'),
         content: Text('Are you sure you want to logout?'),
         actions: <Widget>[
           TextButton(

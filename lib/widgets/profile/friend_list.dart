@@ -16,7 +16,7 @@ class FriendList extends StatelessWidget {
         Divider(height: 0.0),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
-          child: Text('Friends', style: Theme.of(context).textTheme.headline6),
+          child: Text('Friends', style: Theme.of(context).textTheme.titleMedium),
         ),
         SizedBox(
           height: kImageHeightM,

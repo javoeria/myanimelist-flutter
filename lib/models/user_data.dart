@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserData extends ChangeNotifier {
@@ -7,6 +7,7 @@ class UserData extends ChangeNotifier {
     _kidsGenre = prefs.getBool('kidsGenre') ?? false;
     _r18Genre = prefs.getBool('r18Genre') ?? false;
     _history = prefs.getStringList('history') ?? [];
+    _themeMode = prefs.getString('themeMode') ?? 'system';
   }
 
   final SharedPreferences prefs;
@@ -22,6 +23,18 @@ class UserData extends ChangeNotifier {
 
   late List<String> _history;
   List<String> get history => _history;
+
+  late String _themeMode;
+  ThemeMode get themeMode {
+    switch (_themeMode) {
+      case 'light':
+        return ThemeMode.light;
+      case 'dark':
+        return ThemeMode.dark;
+      default:
+        return ThemeMode.system;
+    }
+  }
 
   void toggleView() {
     _gridView = !_gridView;
@@ -59,6 +72,16 @@ class UserData extends ChangeNotifier {
   void removeHistoryAll() {
     _history.clear();
     prefs.setStringList('history', _history);
+    notifyListeners();
+  }
+
+  void toggleBrightness() {
+    if (_themeMode == 'system') {
+      _themeMode = WidgetsBinding.instance.window.platformBrightness == Brightness.light ? 'dark' : 'light';
+    } else {
+      _themeMode = _themeMode == 'light' ? 'dark' : 'light';
+    }
+    prefs.setString('themeMode', _themeMode);
     notifyListeners();
   }
 }

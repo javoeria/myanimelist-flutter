@@ -85,35 +85,35 @@ class _PersonScreenState extends State<PersonScreen> {
                           children: <Widget>[
                             AutoSizeText(
                               person.name,
-                              style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
+                              style: Theme.of(context).textTheme.titleLarge,
                               maxLines: 2,
                             ),
                             person.familyName != null && person.givenName != null
                                 ? AutoSizeText(
                                     '${person.familyName} ${person.givenName}',
-                                    style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
+                                    style: Theme.of(context).textTheme.titleSmall,
                                     maxLines: 1,
                                   )
                                 : Container(),
                             SizedBox(height: 24.0),
                             Row(
                               children: <Widget>[
-                                Icon(Icons.person, color: Colors.white, size: 20.0),
+                                Icon(Icons.person, size: 20.0),
                                 SizedBox(width: 4.0),
                                 Text(
                                   f.format(person.favorites),
-                                  style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ],
                             ),
                             person.birthday != null
                                 ? Row(
                                     children: <Widget>[
-                                      Icon(Icons.cake, color: Colors.white, size: 20.0),
+                                      Icon(Icons.cake, size: 20.0),
                                       SizedBox(width: 4.0),
                                       Text(
                                         dateFormat.format(DateTime.parse(person.birthday!)),
-                                        style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
+                                        style: Theme.of(context).textTheme.bodyLarge,
                                       ),
                                     ],
                                   )
@@ -155,7 +155,7 @@ class StaffList extends StatelessWidget {
         Divider(height: 0.0),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
-          child: Text('Anime Staff Positions', style: Theme.of(context).textTheme.headline6),
+          child: Text('Anime Staff Positions', style: Theme.of(context).textTheme.titleMedium),
         ),
         SizedBox(
           height: kImageHeightM,
@@ -197,7 +197,7 @@ class PublishList extends StatelessWidget {
         Divider(height: 0.0),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
-          child: Text('Published Manga', style: Theme.of(context).textTheme.headline6),
+          child: Text('Published Manga', style: Theme.of(context).textTheme.titleMedium),
         ),
         SizedBox(
           height: kImageHeightM,

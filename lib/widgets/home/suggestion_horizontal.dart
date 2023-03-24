@@ -19,7 +19,7 @@ class SuggestionHorizontal extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('My Anime Suggestions', style: Theme.of(context).textTheme.headline6),
+              Text('My Anime Suggestions', style: Theme.of(context).textTheme.titleMedium),
               IconButton(
                 icon: Icon(Icons.help_outline),
                 onPressed: (() => Fluttertoast.showToast(

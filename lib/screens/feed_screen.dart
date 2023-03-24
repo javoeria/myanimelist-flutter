@@ -57,7 +57,7 @@ class FeedScreen extends StatelessWidget {
                             children: <Widget>[
                               Text(
                                 article.getElement('title')!.text.trim(),
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.titleSmall,
                               ),
                               SizedBox(height: 4.0),
                               Text(
@@ -68,7 +68,7 @@ class FeedScreen extends StatelessWidget {
                               SizedBox(height: 4.0),
                               Text(
                                 article.getElement('pubDate')!.text.trim(),
-                                style: Theme.of(context).textTheme.caption,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           ),

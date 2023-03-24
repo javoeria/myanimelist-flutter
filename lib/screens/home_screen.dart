@@ -1,4 +1,3 @@
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/main.dart';
+import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/screens/anime_list_screen.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
@@ -30,6 +30,7 @@ import 'package:myanimelist/widgets/home/season_horizontal.dart';
 import 'package:myanimelist/widgets/home/suggestion_horizontal.dart';
 import 'package:myanimelist/widgets/home/top_horizontal.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -69,7 +70,8 @@ class HomeScreen extends StatelessWidget {
                     accountEmail: null,
                     currentAccountPicture: profile == null
                         ? Container()
-                        : CircleAvatar(backgroundImage: NetworkImage(profile!.imageUrl ?? kDefaultImage)),
+                        : CircleAvatar(foregroundImage: NetworkImage(profile!.imageUrl ?? kDefaultImage)),
+                    decoration: BoxDecoration(color: Colors.indigo),
                   ),
                   profile == null
                       ? ListTile(
@@ -480,7 +482,7 @@ class HomeScreen extends StatelessWidget {
                     onPressed: () {
                       FirebaseAnalytics.instance.logEvent(name: 'theme');
                       Navigator.pop(context);
-                      DynamicTheme.of(context)!.toggleBrightness();
+                      Provider.of<UserData>(context, listen: false).toggleBrightness();
                     },
                   ),
                 ],

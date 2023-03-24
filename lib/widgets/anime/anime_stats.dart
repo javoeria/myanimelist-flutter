@@ -45,7 +45,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Summary Stats', style: Theme.of(context).textTheme.headline6),
+                  Text('Summary Stats', style: Theme.of(context).textTheme.titleMedium),
                   SizedBox(height: 16.0),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +54,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                           ? RichText(
                               text: TextSpan(
                                 text: 'Watching: ',
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.titleSmall,
                                 children: <TextSpan>[
                                   TextSpan(text: f.format(stats.watching), style: DefaultTextStyle.of(context).style),
                                 ],
@@ -63,7 +63,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                           : RichText(
                               text: TextSpan(
                                 text: 'Reading: ',
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.titleSmall,
                                 children: <TextSpan>[
                                   TextSpan(text: f.format(stats.reading), style: DefaultTextStyle.of(context).style),
                                 ],
@@ -73,7 +73,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                       RichText(
                         text: TextSpan(
                           text: 'Completed: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.titleSmall,
                           children: <TextSpan>[
                             TextSpan(text: f.format(stats.completed), style: DefaultTextStyle.of(context).style),
                           ],
@@ -83,7 +83,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                       RichText(
                         text: TextSpan(
                           text: 'On-Hold: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.titleSmall,
                           children: <TextSpan>[
                             TextSpan(text: f.format(stats.onHold), style: DefaultTextStyle.of(context).style),
                           ],
@@ -93,7 +93,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                       RichText(
                         text: TextSpan(
                           text: 'Dropped: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.titleSmall,
                           children: <TextSpan>[
                             TextSpan(text: f.format(stats.dropped), style: DefaultTextStyle.of(context).style),
                           ],
@@ -104,7 +104,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                           ? RichText(
                               text: TextSpan(
                                 text: 'Plan to Watch: ',
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.titleSmall,
                                 children: <TextSpan>[
                                   TextSpan(
                                       text: f.format(stats.planToWatch), style: DefaultTextStyle.of(context).style),
@@ -114,7 +114,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                           : RichText(
                               text: TextSpan(
                                 text: 'Plan to Read: ',
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.titleSmall,
                                 children: <TextSpan>[
                                   TextSpan(text: f.format(stats.planToRead), style: DefaultTextStyle.of(context).style),
                                 ],
@@ -124,7 +124,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                       RichText(
                         text: TextSpan(
                           text: 'Total: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.titleSmall,
                           children: <TextSpan>[
                             TextSpan(text: f.format(stats.total), style: DefaultTextStyle.of(context).style),
                           ],
@@ -141,7 +141,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Score Stats', style: Theme.of(context).textTheme.headline6),
+                  Text('Score Stats', style: Theme.of(context).textTheme.titleMedium),
                   SizedBox(
                     height: 400.0,
                     child: HorizontalBarChart(stats.scores),

@@ -84,24 +84,24 @@ class _CharacterScreenState extends State<CharacterScreen> {
                           children: <Widget>[
                             AutoSizeText(
                               character.name,
-                              style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
+                              style: Theme.of(context).textTheme.titleLarge,
                               maxLines: 2,
                             ),
                             character.nameKanji != null
                                 ? AutoSizeText(
                                     character.nameKanji!,
-                                    style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
+                                    style: Theme.of(context).textTheme.titleSmall,
                                     maxLines: 1,
                                   )
                                 : Container(),
                             SizedBox(height: 24.0),
                             Row(
                               children: <Widget>[
-                                Icon(Icons.person, color: Colors.white, size: 20.0),
+                                Icon(Icons.person, size: 20.0),
                                 SizedBox(width: 4.0),
                                 Text(
                                   f.format(character.favorites),
-                                  style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ],
                             ),
@@ -145,7 +145,7 @@ class AnimeographyList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Text(
             type == ItemType.anime ? 'Animeography' : 'Mangaography',
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
         SizedBox(
@@ -189,7 +189,7 @@ class VoiceList extends StatelessWidget {
         Divider(height: 0.0),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
-          child: Text('Voice Actors', style: Theme.of(context).textTheme.headline6),
+          child: Text('Voice Actors', style: Theme.of(context).textTheme.titleMedium),
         ),
         SizedBox(
           height: kImageHeightM,

@@ -74,9 +74,9 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                             children: <Widget>[
                               Text(item.name),
                               SizedBox(height: 4.0),
-                              Text(item.role, style: Theme.of(context).textTheme.caption),
+                              Text(item.role, style: Theme.of(context).textTheme.bodySmall),
                               SizedBox(height: 4.0),
-                              Text('${item.favorites ?? 0} Favorites', style: Theme.of(context).textTheme.caption),
+                              Text('${item.favorites ?? 0} Favorites', style: Theme.of(context).textTheme.bodySmall),
                             ],
                           ),
                         ),
@@ -94,7 +94,7 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                                   children: <Widget>[
                                     Text(actors.first.name, textAlign: TextAlign.end),
                                     SizedBox(height: 4.0),
-                                    Text(actors.first.language!, style: Theme.of(context).textTheme.caption),
+                                    Text(actors.first.language!, style: Theme.of(context).textTheme.bodySmall),
                                   ],
                                 ),
                               ),
@@ -134,7 +134,7 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                       children: <Widget>[
                         Text(item.name),
                         SizedBox(height: 4.0),
-                        Text(item.positions!.join(', '), style: Theme.of(context).textTheme.caption),
+                        Text(item.positions!.join(', '), style: Theme.of(context).textTheme.bodySmall),
                       ],
                     ),
                   ),

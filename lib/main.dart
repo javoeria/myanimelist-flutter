@@ -1,4 +1,3 @@
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -60,23 +59,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => UserData(prefs),
-      child: DynamicTheme(
-        defaultBrightness: WidgetsBinding.instance.window.platformBrightness,
-        data: (brightness) => ThemeData(
-          primarySwatch: Colors.indigo,
-          accentColor: brightness == Brightness.light ? Colors.indigo : Colors.blue,
-          brightness: brightness,
-        ),
-        themedWidgetBuilder: (context, theme) {
-          return MaterialApp(
-            title: 'AnimeDB',
-            theme: theme,
-            home: LoadingScreen(),
-            navigatorObservers: <NavigatorObserver>[FirebaseAnalyticsObserver(analytics: analytics)],
-          );
-        },
-      ),
+      create: (_) => UserData(prefs),
+      builder: (context, child) {
+        return MaterialApp(
+          title: 'AnimeDB',
+          themeMode: Provider.of<UserData>(context).themeMode,
+          theme: ThemeData(
+            useMaterial3: true,
+            colorSchemeSeed: Colors.indigo,
+            brightness: Brightness.light,
+          ),
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            colorSchemeSeed: Colors.indigo,
+            brightness: Brightness.dark,
+          ),
+          home: LoadingScreen(),
+          navigatorObservers: <NavigatorObserver>[FirebaseAnalyticsObserver(analytics: analytics)],
+        );
+      },
     );
   }
 }

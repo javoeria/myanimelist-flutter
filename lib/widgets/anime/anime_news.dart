@@ -66,13 +66,13 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(article.title, style: Theme.of(context).textTheme.bodyText1),
+                            Text(article.title, style: Theme.of(context).textTheme.titleSmall),
                             SizedBox(height: 4.0),
                             Text(article.excerpt, maxLines: 2, overflow: TextOverflow.ellipsis),
                             SizedBox(height: 4.0),
                             Text(
                               '${f.format(DateTime.parse(article.date))} by ${article.authorUsername}',
-                              style: Theme.of(context).textTheme.caption,
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],
                         ),

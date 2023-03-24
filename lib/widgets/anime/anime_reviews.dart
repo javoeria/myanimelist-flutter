@@ -71,7 +71,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                         children: <Widget>[
                           Text(review.user.username),
                           SizedBox(height: 4.0),
-                          Text(review.tags[0], style: Theme.of(context).textTheme.caption),
+                          Text(review.tags[0], style: Theme.of(context).textTheme.bodySmall),
                         ],
                       ),
                     ],
@@ -83,7 +83,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                       SizedBox(height: 4.0),
                       Text(
                         review.isSpoiler ? 'Spoiler' : '',
-                        style: Theme.of(context).textTheme.caption!.copyWith(color: Colors.red),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.red),
                       ),
                     ],
                   ),

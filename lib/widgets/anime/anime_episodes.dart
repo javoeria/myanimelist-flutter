@@ -53,9 +53,10 @@ class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveCl
           subtitle: subtitleText(episode.titleRomanji, episode.titleJapanese),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(episode.malId.toString(), style: Theme.of(context).textTheme.headline6),
+            child: Text(episode.malId.toString(), style: Theme.of(context).textTheme.titleLarge),
           ),
           trailing: Text(dateAired),
+          minLeadingWidth: 20,
           onTap: () async {
             String? url = episode.url;
             if (url != null && await canLaunchUrlString(url)) {

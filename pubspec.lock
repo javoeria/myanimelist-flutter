@@ -193,15 +193,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.17.2"
-  dynamic_theme:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: a57c7bd3f386531f094121344f63852c441359aa
-      url: "https://github.com/Norbert515/dynamic_theme.git"
-    source: git
-    version: "2.0.0-nullsafety"
   expandable:
     dependency: "direct main"
     description:

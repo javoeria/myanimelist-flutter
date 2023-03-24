@@ -133,15 +133,15 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(item['node']['title'], style: Theme.of(context).textTheme.subtitle2),
+                              Text(item['node']['title'], style: Theme.of(context).textTheme.titleSmall),
                               Text(
                                 '$type ($progress eps)',
-                                style: Theme.of(context).textTheme.caption,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           ),
                         ),
-                        Text(score, style: Theme.of(context).textTheme.subtitle1),
+                        Text(score, style: Theme.of(context).textTheme.bodyLarge),
                       ],
                     ),
                   ),

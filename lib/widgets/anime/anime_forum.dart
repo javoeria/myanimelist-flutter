@@ -53,7 +53,7 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(forum.title, style: Theme.of(context).textTheme.bodyText1),
+                            Text(forum.title, style: Theme.of(context).textTheme.titleSmall),
                             SizedBox(height: 4.0),
                             RichText(
                               text: TextSpan(
@@ -62,7 +62,7 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
                                 children: <TextSpan>[
                                   TextSpan(
                                     text: f.format(DateTime.parse(forum.date)),
-                                    style: Theme.of(context).textTheme.caption,
+                                    style: Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ],
                               ),

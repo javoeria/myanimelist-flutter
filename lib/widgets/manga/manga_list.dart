@@ -89,7 +89,7 @@ class MangaInfo extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Column(
           children: <Widget>[
-            Text(manga.title, style: Theme.of(context).textTheme.headline6),
+            Text(manga.title, style: Theme.of(context).textTheme.titleMedium),
             SizedBox(height: 4.0),
             Text('${manga.type} | $_authorsText | $volumes vols'),
             SizedBox(height: 4.0),
@@ -107,7 +107,7 @@ class MangaInfo extends StatelessWidget {
                       child: SingleChildScrollView(
                         child: Text(
                           manga.synopsis ?? '(No synopsis yet.)',
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     ),

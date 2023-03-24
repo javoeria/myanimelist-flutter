@@ -39,7 +39,7 @@ class ReviewScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       InkWell(
-                        child: Text(item.entry.title, style: Theme.of(context).textTheme.bodyText1),
+                        child: Text(item.entry.title, style: Theme.of(context).textTheme.titleSmall),
                         onTap: () {
                           if (anime) {
                             Navigator.push(
@@ -89,7 +89,7 @@ class ReviewScreen extends StatelessWidget {
                                 children: <Widget>[
                                   Text(item.user.username),
                                   SizedBox(height: 4.0),
-                                  Text(item.tags[0], style: Theme.of(context).textTheme.caption),
+                                  Text(item.tags[0], style: Theme.of(context).textTheme.bodySmall),
                                 ],
                               ),
                             ],
@@ -103,7 +103,7 @@ class ReviewScreen extends StatelessWidget {
                                   SizedBox(height: 4.0),
                                   Text(
                                     item.isSpoiler ? 'Spoiler' : '',
-                                    style: Theme.of(context).textTheme.caption!.copyWith(color: Colors.red),
+                                    style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.red),
                                   ),
                                 ],
                               ),

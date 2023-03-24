@@ -20,7 +20,7 @@ class RoleList extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Voice Acting Roles', style: Theme.of(context).textTheme.headline6),
+              Text('Voice Acting Roles', style: Theme.of(context).textTheme.titleMedium),
               if (list.length > 50)
                 IconButton(
                   icon: Icon(Icons.chevron_right),
@@ -111,7 +111,7 @@ class RoleItem extends StatelessWidget {
                     children: <Widget>[
                       Text(role.character.name, textAlign: TextAlign.end),
                       SizedBox(height: 4.0),
-                      Text(role.role, style: Theme.of(context).textTheme.caption),
+                      Text(role.role, style: Theme.of(context).textTheme.bodySmall),
                     ],
                   ),
                 ),

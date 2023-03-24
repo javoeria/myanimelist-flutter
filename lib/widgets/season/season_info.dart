@@ -37,7 +37,7 @@ class SeasonInfo extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Column(
           children: <Widget>[
-            Text(anime.title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6),
+            Text(anime.title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium),
             SizedBox(height: 4.0),
             Text('${anime.type} | $_studiosText | $episodes eps'),
             SizedBox(height: 4.0),
@@ -55,7 +55,7 @@ class SeasonInfo extends StatelessWidget {
                       child: SingleChildScrollView(
                         child: Text(
                           anime.synopsis ?? '(No synopsis yet.)',
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     ),

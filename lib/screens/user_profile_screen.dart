@@ -111,28 +111,28 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           children: <Widget>[
                             AutoSizeText(
                               profile.username,
-                              style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
+                              style: Theme.of(context).textTheme.titleLarge,
                               maxLines: 1,
                             ),
                             SizedBox(height: 24.0),
                             Row(
                               children: <Widget>[
-                                Icon(Icons.access_time, color: Colors.white, size: 20.0),
+                                Icon(Icons.access_time, size: 20.0),
                                 SizedBox(width: 4.0),
                                 Text(
                                   f.format(DateTime.parse(profile.lastOnline!)),
-                                  style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ],
                             ),
                             profile.gender != null
                                 ? Row(
                                     children: <Widget>[
-                                      Icon(Icons.person, color: Colors.white, size: 20.0),
+                                      Icon(Icons.person, size: 20.0),
                                       SizedBox(width: 4.0),
                                       Text(
                                         profile.gender!,
-                                        style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
+                                        style: Theme.of(context).textTheme.bodyLarge,
                                       ),
                                     ],
                                   )
@@ -140,12 +140,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             profile.location != null
                                 ? Row(
                                     children: <Widget>[
-                                      Icon(Icons.place, color: Colors.white, size: 20.0),
+                                      Icon(Icons.place, size: 20.0),
                                       SizedBox(width: 4.0),
                                       Expanded(
                                         child: Text(
                                           profile.location!,
-                                          style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
+                                          style: Theme.of(context).textTheme.bodyLarge,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -156,11 +156,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             profile.birthday != null
                                 ? Row(
                                     children: <Widget>[
-                                      Icon(Icons.cake, color: Colors.white, size: 20.0),
+                                      Icon(Icons.cake, size: 20.0),
                                       SizedBox(width: 4.0),
                                       Text(
                                         f.format(DateTime.parse(profile.birthday!)),
-                                        style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
+                                        style: Theme.of(context).textTheme.bodyLarge,
                                       ),
                                     ],
                                   )
@@ -184,10 +184,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 children: <Widget>[
                   Expanded(
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.indigo),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
                       child: Text(
                         'Anime List',
-                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.white),
                       ),
                       onPressed: () {
                         Navigator.push(
@@ -203,10 +203,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   SizedBox(width: 16.0),
                   Expanded(
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.indigo),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
                       child: Text(
                         'Manga List',
-                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.white),
                       ),
                       onPressed: () {
                         Navigator.push(
@@ -225,10 +225,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             Divider(height: 0.0),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text('Statistics', style: Theme.of(context).textTheme.headline6),
+              child: Text('Statistics', style: Theme.of(context).textTheme.titleMedium),
             ),
             SizedBox(
-              height: 263.0,
+              height: 264.0,
               child: PageIndicatorContainer(
                 length: 2,
                 indicatorColor: Colors.grey.shade300,

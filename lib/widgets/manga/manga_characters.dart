@@ -64,7 +64,7 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
                               children: <Widget>[
                                 Text(character.name),
                                 SizedBox(height: 4.0),
-                                Text(character.role, style: Theme.of(context).textTheme.caption),
+                                Text(character.role, style: Theme.of(context).textTheme.bodySmall),
                               ],
                             ),
                           ),

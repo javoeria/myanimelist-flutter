@@ -20,7 +20,7 @@ class MangaStatsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Manga Stats', style: Theme.of(context).textTheme.subtitle1),
+              Text('Manga Stats', style: Theme.of(context).textTheme.bodyLarge),
               SizedBox(height: 8.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -30,7 +30,7 @@ class MangaStatsSection extends StatelessWidget {
                       text: 'Days: ',
                       style: DefaultTextStyle.of(context).style,
                       children: <TextSpan>[
-                        TextSpan(text: stats.daysRead.toString(), style: Theme.of(context).textTheme.bodyText1),
+                        TextSpan(text: stats.daysRead.toString(), style: Theme.of(context).textTheme.titleSmall),
                       ],
                     ),
                   ),
@@ -39,7 +39,7 @@ class MangaStatsSection extends StatelessWidget {
                       text: 'Mean Score: ',
                       style: DefaultTextStyle.of(context).style,
                       children: <TextSpan>[
-                        TextSpan(text: stats.meanScore.toString(), style: Theme.of(context).textTheme.bodyText1),
+                        TextSpan(text: stats.meanScore.toString(), style: Theme.of(context).textTheme.titleSmall),
                       ],
                     ),
                   ),

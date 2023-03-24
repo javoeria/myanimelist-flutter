@@ -22,7 +22,7 @@ class SeasonHorizontal extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('$seasonName ${season.first.year} Anime', style: Theme.of(context).textTheme.headline6),
+              Text('$seasonName ${season.first.year} Anime', style: Theme.of(context).textTheme.titleMedium),
               IconButton(
                 icon: Icon(Icons.chevron_right),
                 key: Key('season_icon'),

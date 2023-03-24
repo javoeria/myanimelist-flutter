@@ -130,14 +130,14 @@ class CustomSearchDelegate extends SearchDelegate {
     return [];
   }
 
-  @override
-  ThemeData appBarTheme(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    return theme.copyWith(
-      inputDecorationTheme: InputDecorationTheme(hintStyle: TextStyle(color: Colors.white54)),
-      textTheme: theme.textTheme.copyWith(headline6: theme.textTheme.headline6!.copyWith(color: Colors.white)),
-    );
-  }
+  // @override
+  // ThemeData appBarTheme(BuildContext context) {
+  //   final ThemeData theme = Theme.of(context);
+  //   return theme.copyWith(
+  //     inputDecorationTheme: InputDecorationTheme(hintStyle: TextStyle(color: Colors.white54)),
+  //     textTheme: theme.textTheme.copyWith(titleLarge: theme.textTheme.titleLarge!.copyWith(color: Colors.white)),
+  //   );
+  // }
 }
 
 class _ResultList extends StatelessWidget {
@@ -185,20 +185,20 @@ class _ResultList extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(search.title, style: Theme.of(context).textTheme.subtitle2),
+                        Text(search.title, style: Theme.of(context).textTheme.titleSmall),
                         Text(
                           search.synopsis ?? '',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
                           '${search.type} $_episodesText - $score',
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
                           '${f.format(search.members)} members',
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
                     ),
@@ -229,7 +229,7 @@ class _SuggestionList extends StatelessWidget {
         if (history) {
           return ListTile(
             leading: Icon(Icons.history),
-            title: Text(suggestion, style: Theme.of(context).textTheme.subtitle1),
+            title: Text(suggestion, style: Theme.of(context).textTheme.bodyLarge),
             onTap: () {
               onSelected(suggestion);
             },
@@ -244,7 +244,7 @@ class _SuggestionList extends StatelessWidget {
           return ListTile(
             key: Key('suggestion_$index'),
             leading: Icon(Icons.search),
-            title: Text(suggestion, style: Theme.of(context).textTheme.subtitle1),
+            title: Text(suggestion, style: Theme.of(context).textTheme.bodyLarge),
             onTap: () {
               onSelected(suggestion);
             },
@@ -260,7 +260,8 @@ Future<bool?> _historyDialog(BuildContext context, String suggestion) async {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        content: Text('Clear $suggestion from your history?'),
+        title: Text(suggestion),
+        content: Text('Remove from search history?'),
         actions: <Widget>[
           TextButton(
             child: Text('NO'),
