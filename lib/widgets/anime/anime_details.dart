@@ -1,7 +1,6 @@
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/oauth.dart';
@@ -20,9 +19,6 @@ class AnimeDetails extends StatefulWidget {
 }
 
 class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClientMixin<AnimeDetails> {
-  final Jikan jikan = Jikan();
-  final NumberFormat f = NumberFormat.decimalPattern();
-
   late Anime anime;
   late BuiltList<Picture> pictures;
   Map<String, dynamic>? status;
@@ -62,24 +58,6 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     return anime.genres.isEmpty ? 'None found' : anime.genres.map((i) => i.name).join(', ');
   }
 
-  Color get _statusColor {
-    switch (status!['text']) {
-      case 'WATCHING':
-        return kWatchingColor;
-      case 'COMPLETED':
-        return kCompletedColor;
-      case 'ON HOLD':
-        return kOnHoldColor;
-      case 'DROPPED':
-        return kDroppedColor;
-      case 'PLAN TO WATCH':
-      case 'ADD TO MY LIST':
-        return kPlantoWatchColor;
-      default:
-        throw 'AnimeStatus Error';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -90,9 +68,8 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     String score = anime.score == null ? 'N/A' : anime.score.toString();
     String rank = anime.rank == null ? 'N/A' : '#${anime.rank}';
     String episodes = anime.episodes == null ? 'Unknown' : anime.episodes.toString();
-    String? premiered = anime.season == null || anime.year == null
-        ? null
-        : '${anime.season![0].toUpperCase() + anime.season!.substring(1)} ${anime.year}';
+    String? premiered =
+        anime.season == null || anime.year == null ? null : '${anime.season!.toTitleCase()} ${anime.year}';
     return ListView(
       children: <Widget>[
         Padding(
@@ -112,7 +89,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       style: Theme.of(context).textTheme.headlineLarge,
                       children: <TextSpan>[
                         TextSpan(
-                          text: anime.scoredBy == null ? '' : ' (${f.format(anime.scoredBy)} users)',
+                          text: anime.scoredBy == null ? '' : ' (${anime.scoredBy!.decimal()} users)',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -142,7 +119,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       text: 'Members ',
                       style: Theme.of(context).textTheme.bodyLarge,
                       children: <TextSpan>[
-                        TextSpan(text: f.format(anime.members), style: kTextStyleBold),
+                        TextSpan(text: anime.members!.decimal(), style: kTextStyleBold),
                       ],
                     ),
                   ),
@@ -151,7 +128,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       text: 'Favorites ',
                       style: Theme.of(context).textTheme.bodyLarge,
                       children: <TextSpan>[
-                        TextSpan(text: f.format(anime.favorites), style: kTextStyleBold),
+                        TextSpan(text: anime.favorites!.decimal(), style: kTextStyleBold),
                       ],
                     ),
                   ),
@@ -168,6 +145,11 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(side: BorderSide(width: 2.0, color: statusColor(status!['text']))),
+                  child: Text(
+                    status!['text'],
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(color: statusColor(status!['text'])),
+                  ),
                   onPressed: () async {
                     final newStatus = await showDialog<dynamic>(
                       context: context,
@@ -183,13 +165,6 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       Fluttertoast.showToast(msg: 'Update Successful');
                     }
                   },
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(width: 2, color: _statusColor),
-                  ),
-                  child: Text(
-                    status!['text'],
-                    style: Theme.of(context).textTheme.labelLarge!.copyWith(color: _statusColor),
-                  ),
                 ),
               )
             : Container(),
@@ -237,7 +212,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   text: 'Type: ',
                   style: Theme.of(context).textTheme.titleSmall,
                   children: <TextSpan>[
-                    TextSpan(text: anime.type, style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: anime.type ?? 'Unknown', style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),

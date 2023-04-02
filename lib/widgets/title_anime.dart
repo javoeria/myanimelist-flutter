@@ -25,6 +25,23 @@ class TitleAnime extends StatelessWidget {
       height: height,
       fit: BoxFit.cover,
       child: InkWell(
+        child: title != '' && showTitle
+            ? Stack(
+                alignment: AlignmentDirectional.bottomCenter,
+                children: <Widget>[
+                  Image.asset('images/box_shadow.png', width: width, height: 40.0, fit: BoxFit.cover),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      title,
+                      maxLines: 3,
+                      textAlign: TextAlign.center,
+                      style: kTextStyleShadow,
+                    ),
+                  ),
+                ],
+              )
+            : Container(),
         onTap: () {
           switch (type) {
             case ItemType.anime:
@@ -32,7 +49,7 @@ class TitleAnime extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AnimeScreen(id, title),
-                  settings: RouteSettings(name: 'AnimeScreen'),
+                  settings: const RouteSettings(name: 'AnimeScreen'),
                 ),
               );
               break;
@@ -41,7 +58,7 @@ class TitleAnime extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => MangaScreen(id, title),
-                  settings: RouteSettings(name: 'MangaScreen'),
+                  settings: const RouteSettings(name: 'MangaScreen'),
                 ),
               );
               break;
@@ -50,7 +67,7 @@ class TitleAnime extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => PersonScreen(id),
-                  settings: RouteSettings(name: 'PersonScreen'),
+                  settings: const RouteSettings(name: 'PersonScreen'),
                 ),
               );
               break;
@@ -59,7 +76,7 @@ class TitleAnime extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => CharacterScreen(id),
-                  settings: RouteSettings(name: 'CharacterScreen'),
+                  settings: const RouteSettings(name: 'CharacterScreen'),
                 ),
               );
               break;
@@ -67,26 +84,6 @@ class TitleAnime extends StatelessWidget {
               throw 'ItemType Error';
           }
         },
-        child: title != '' && showTitle
-            ? Stack(
-                alignment: AlignmentDirectional.bottomCenter,
-                children: <Widget>[
-                  Image.asset('images/box_shadow.png', width: width, height: 40.0, fit: BoxFit.cover),
-                  SizedBox(
-                    width: width,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        title,
-                        maxLines: 3,
-                        textAlign: TextAlign.center,
-                        style: kTextStyleShadow,
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            : Container(),
       ),
     );
   }

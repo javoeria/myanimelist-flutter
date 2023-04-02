@@ -18,7 +18,7 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
   @override
   void initState() {
     super.initState();
-    _future = Jikan().getMangaCharacters(widget.id);
+    _future = jikan.getMangaCharacters(widget.id);
   }
 
   @override
@@ -44,30 +44,23 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
+                    TitleAnime(
+                      character.malId,
+                      '',
+                      character.imageUrl,
+                      width: kImageWidthS,
+                      height: kImageHeightS,
+                      type: ItemType.characters,
+                    ),
+                    SizedBox(width: 8.0),
                     Expanded(
-                      child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          TitleAnime(
-                            character.malId,
-                            '',
-                            character.imageUrl,
-                            width: kImageWidthS,
-                            height: kImageHeightS,
-                            type: ItemType.characters,
-                          ),
-                          SizedBox(width: 8.0),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(character.name),
-                                SizedBox(height: 4.0),
-                                Text(character.role, style: Theme.of(context).textTheme.bodySmall),
-                              ],
-                            ),
-                          ),
+                          Text(character.name),
+                          SizedBox(height: 4.0),
+                          Text(character.role, style: Theme.of(context).textTheme.bodySmall),
                         ],
                       ),
                     ),

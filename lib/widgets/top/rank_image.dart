@@ -22,6 +22,34 @@ class RankImage extends StatelessWidget {
       height: height,
       fit: BoxFit.cover,
       child: InkWell(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                padding: const EdgeInsets.all(2.0),
+                color: Colors.black54,
+                child: Text('${index + 1}', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+            Stack(
+              alignment: AlignmentDirectional.bottomCenter,
+              children: <Widget>[
+                Image.asset('images/box_shadow.png', width: width, height: 40.0, fit: BoxFit.cover),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    type == ItemType.anime || type == ItemType.manga ? top.title : top.name,
+                    maxLines: 3,
+                    textAlign: TextAlign.center,
+                    style: kTextStyleShadow,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
         onTap: () {
           int id = top.malId;
           switch (type) {
@@ -29,8 +57,8 @@ class RankImage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AnimeScreen(id, top.title),
-                  settings: RouteSettings(name: 'AnimeScreen'),
+                  builder: (context) => AnimeScreen(id, top.title, episodes: top.episodes),
+                  settings: const RouteSettings(name: 'AnimeScreen'),
                 ),
               );
               break;
@@ -39,7 +67,7 @@ class RankImage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => MangaScreen(id, top.title),
-                  settings: RouteSettings(name: 'MangaScreen'),
+                  settings: const RouteSettings(name: 'MangaScreen'),
                 ),
               );
               break;
@@ -48,7 +76,7 @@ class RankImage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => PersonScreen(id),
-                  settings: RouteSettings(name: 'PersonScreen'),
+                  settings: const RouteSettings(name: 'PersonScreen'),
                 ),
               );
               break;
@@ -57,7 +85,7 @@ class RankImage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => CharacterScreen(id),
-                  settings: RouteSettings(name: 'CharacterScreen'),
+                  settings: const RouteSettings(name: 'CharacterScreen'),
                 ),
               );
               break;
@@ -65,38 +93,6 @@ class RankImage extends StatelessWidget {
               throw 'ItemType Error';
           }
         },
-        child: SizedBox(
-          width: width,
-          height: height,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topLeft,
-                child: Container(
-                  padding: const EdgeInsets.all(2.0),
-                  color: Colors.black54,
-                  child: Text('${index + 1}', style: TextStyle(color: Colors.white)),
-                ),
-              ),
-              Stack(
-                alignment: AlignmentDirectional.bottomCenter,
-                children: <Widget>[
-                  Image.asset('images/box_shadow.png', width: width, height: 40.0, fit: BoxFit.cover),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      type == ItemType.anime || type == ItemType.manga ? top.title : top.name,
-                      maxLines: 3,
-                      textAlign: TextAlign.center,
-                      style: kTextStyleShadow,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

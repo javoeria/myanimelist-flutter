@@ -13,7 +13,7 @@ class SeasonHorizontal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String seasonName = season.first.season![0].toUpperCase() + season.first.season!.substring(1);
+    String seasonName = season.first.season!.toTitleCase();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -30,8 +30,8 @@ class SeasonHorizontal extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SeasonalAnimeScreen(year: season.first.year!, type: seasonName),
-                      settings: RouteSettings(name: 'SeasonalAnimeScreen'),
+                      builder: (context) => SeasonalAnimeScreen(year: season.first.year!, season: seasonName),
+                      settings: const RouteSettings(name: 'SeasonalAnimeScreen'),
                     ),
                   );
                 },

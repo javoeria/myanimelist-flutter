@@ -32,7 +32,7 @@ class TopHorizontal extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => TopAnimeScreen(index: label == 'Airing' ? 1 : 2),
-                      settings: RouteSettings(name: 'TopAnimeScreen'),
+                      settings: const RouteSettings(name: 'TopAnimeScreen'),
                     ),
                   );
                 },

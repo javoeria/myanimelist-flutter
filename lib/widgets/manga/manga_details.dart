@@ -1,7 +1,6 @@
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/oauth.dart';
@@ -20,9 +19,6 @@ class MangaDetails extends StatefulWidget {
 }
 
 class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClientMixin<MangaDetails> {
-  final Jikan jikan = Jikan();
-  final NumberFormat f = NumberFormat.decimalPattern();
-
   late Manga manga;
   late BuiltList<Picture> pictures;
   Map<String, dynamic>? status;
@@ -58,24 +54,6 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
     return manga.serializations.isEmpty ? 'None found' : manga.serializations.map((i) => i.name).join(', ');
   }
 
-  Color get _statusColor {
-    switch (status!['text']) {
-      case 'READING':
-        return kWatchingColor;
-      case 'COMPLETED':
-        return kCompletedColor;
-      case 'ON HOLD':
-        return kOnHoldColor;
-      case 'DROPPED':
-        return kDroppedColor;
-      case 'PLAN TO READ':
-      case 'ADD TO MY LIST':
-        return kPlantoWatchColor;
-      default:
-        throw 'MangaStatus Error';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -106,7 +84,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                       style: Theme.of(context).textTheme.headlineLarge,
                       children: <TextSpan>[
                         TextSpan(
-                          text: manga.scoredBy == null ? '' : ' (${f.format(manga.scoredBy)} users)',
+                          text: manga.scoredBy == null ? '' : ' (${manga.scoredBy!.decimal()} users)',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -136,7 +114,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                       text: 'Members ',
                       style: Theme.of(context).textTheme.bodyLarge,
                       children: <TextSpan>[
-                        TextSpan(text: f.format(manga.members), style: kTextStyleBold),
+                        TextSpan(text: manga.members!.decimal(), style: kTextStyleBold),
                       ],
                     ),
                   ),
@@ -145,7 +123,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                       text: 'Favorites ',
                       style: Theme.of(context).textTheme.bodyLarge,
                       children: <TextSpan>[
-                        TextSpan(text: f.format(manga.favorites), style: kTextStyleBold),
+                        TextSpan(text: manga.favorites!.decimal(), style: kTextStyleBold),
                       ],
                     ),
                   ),
@@ -162,6 +140,11 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(side: BorderSide(width: 2.0, color: statusColor(status!['text']))),
+                  child: Text(
+                    status!['text'],
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(color: statusColor(status!['text'])),
+                  ),
                   onPressed: () async {
                     final newStatus = await showDialog<dynamic>(
                       context: context,
@@ -178,13 +161,6 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                       Fluttertoast.showToast(msg: 'Update Successful');
                     }
                   },
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(width: 2, color: _statusColor),
-                  ),
-                  child: Text(
-                    status!['text'],
-                    style: Theme.of(context).textTheme.labelLarge!.copyWith(color: _statusColor),
-                  ),
                 ),
               )
             : Container(),
@@ -232,7 +208,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   text: 'Type: ',
                   style: Theme.of(context).textTheme.titleSmall,
                   children: <TextSpan>[
-                    TextSpan(text: manga.type, style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: manga.type ?? 'Unknown', style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),

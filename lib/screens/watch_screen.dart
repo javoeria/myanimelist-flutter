@@ -11,7 +11,7 @@ class WatchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String type = episodes ? 'episodes' : 'promos';
+    final String type = episodes ? 'episodes' : 'promos';
     return DefaultTabController(
       length: 2,
       initialIndex: 0,
@@ -27,7 +27,7 @@ class WatchScreen extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: <Widget>[
+          children: <AnimeVideos>[
             AnimeVideos(type: type),
             AnimeVideos(type: type, subtype: 'popular'),
           ],
@@ -54,8 +54,8 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
   void initState() {
     super.initState();
     _future = widget.type == 'episodes'
-        ? Jikan().getWatchEpisodes(popular: widget.subtype == 'popular')
-        : Jikan().getWatchPromos(popular: widget.subtype == 'popular');
+        ? jikan.getWatchEpisodes(popular: widget.subtype == 'popular')
+        : jikan.getWatchPromos(popular: widget.subtype == 'popular');
   }
 
   @override
@@ -69,9 +69,6 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
         }
 
         BuiltList<dynamic> promoList = snapshot.data!;
-        if (promoList.isEmpty) {
-          return ListTile(title: Text('No items found.'));
-        }
         return Scrollbar(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -86,16 +83,13 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
                       SizedBox(
                         width: kImageWidthL,
                         child: InkWell(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: Text(promo.entry.title),
-                          ),
+                          child: Text(promo.entry.title),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => AnimeScreen(promo.entry.malId, promo.entry.title),
-                                settings: RouteSettings(name: 'AnimeScreen'),
+                                settings: const RouteSettings(name: 'AnimeScreen'),
                               ),
                             );
                           },
@@ -131,6 +125,38 @@ class VideoImage extends StatelessWidget {
       height: height,
       fit: BoxFit.cover,
       child: InkWell(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            SizedBox(height: 30.0),
+            Container(
+              padding: const EdgeInsets.all(4.0),
+              decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(4.0)),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const <Widget>[
+                  Icon(Icons.play_circle_outline, color: Colors.white),
+                  Text(' Play', style: TextStyle(color: Colors.white)),
+                ],
+              ),
+            ),
+            Stack(
+              alignment: AlignmentDirectional.bottomStart,
+              children: <Widget>[
+                Image.asset('images/box_shadow.png', width: width, height: 30.0, fit: BoxFit.cover),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    promo is WatchPromo ? promo.title : promo.episodes[0].title,
+                    maxLines: 3,
+                    textAlign: TextAlign.center,
+                    style: kTextStyleShadow,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
         onTap: () async {
           String url = promo is WatchPromo ? promo.videoUrl : promo.episodes[0].url;
           if (await canLaunchUrlString(url)) {
@@ -139,45 +165,6 @@ class VideoImage extends StatelessWidget {
             throw 'Could not launch $url';
           }
         },
-        child: SizedBox(
-          width: width,
-          height: height,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(),
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  padding: const EdgeInsets.all(4.0),
-                  color: Colors.black54,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const <Widget>[
-                      Icon(Icons.play_circle_outline, color: Colors.white),
-                      Text(' Play', style: TextStyle(color: Colors.white)),
-                    ],
-                  ),
-                ),
-              ),
-              Stack(
-                alignment: AlignmentDirectional.bottomStart,
-                children: <Widget>[
-                  Image.asset('images/box_shadow.png', width: width, height: 30.0, fit: BoxFit.cover),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      promo is WatchPromo ? promo.title : promo.episodes[0].title,
-                      maxLines: 3,
-                      textAlign: TextAlign.center,
-                      style: kTextStyleShadow,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

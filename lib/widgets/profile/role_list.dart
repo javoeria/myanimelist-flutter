@@ -10,7 +10,7 @@ class RoleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BuiltList<VoiceActor> shortList = list.length > 50 ? BuiltList(list.where((a) => a.role == 'Main').take(50)) : list;
+    BuiltList<VoiceActor> shortList = list.length > 50 ? BuiltList(list.where((i) => i.role == 'Main').take(50)) : list;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -29,7 +29,7 @@ class RoleList extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => FullRoleList(list),
-                        settings: RouteSettings(name: 'VoiceActingRolesScreen'),
+                        settings: const RouteSettings(name: 'VoiceActingRolesScreen'),
                       ),
                     );
                   },
@@ -37,11 +37,7 @@ class RoleList extends StatelessWidget {
             ],
           ),
         ),
-        Column(
-          children: shortList.map((VoiceActor role) {
-            return RoleItem(role);
-          }).toList(),
-        ),
+        Column(children: shortList.map((actor) => RoleItem(actor)).toList()),
         SizedBox(height: 12.0),
       ],
     );
@@ -56,17 +52,12 @@ class FullRoleList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Voice Acting Roles'),
-      ),
+      appBar: AppBar(title: Text('Voice Acting Roles')),
       body: Scrollbar(
         child: ListView.builder(
           padding: const EdgeInsets.symmetric(vertical: 12.0),
           itemCount: list.length,
-          itemBuilder: (context, index) {
-            VoiceActor role = list.elementAt(index);
-            return RoleItem(role);
-          },
+          itemBuilder: (context, index) => RoleItem(list.elementAt(index)),
         ),
       ),
     );
@@ -74,58 +65,45 @@ class FullRoleList extends StatelessWidget {
 }
 
 class RoleItem extends StatelessWidget {
-  const RoleItem(this.role);
+  const RoleItem(this.actor);
 
-  final VoiceActor role;
+  final VoiceActor actor;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          TitleAnime(
+            actor.anime.malId,
+            actor.anime.title,
+            actor.anime.imageUrl,
+            width: kImageWidthS,
+            height: kImageHeightS,
+            type: ItemType.anime,
+            showTitle: false,
+          ),
+          SizedBox(width: 8.0),
+          Expanded(child: Text(actor.anime.title)),
           Expanded(
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                TitleAnime(
-                  role.anime.malId,
-                  role.anime.title,
-                  role.anime.imageUrl,
-                  width: kImageWidthS,
-                  height: kImageHeightS,
-                  type: ItemType.anime,
-                  showTitle: false,
-                ),
-                SizedBox(width: 8.0),
-                Expanded(child: Text(role.anime.title)),
+                Text(actor.character.name, textAlign: TextAlign.end),
+                SizedBox(height: 4.0),
+                Text(actor.role, style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
           ),
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Text(role.character.name, textAlign: TextAlign.end),
-                      SizedBox(height: 4.0),
-                      Text(role.role, style: Theme.of(context).textTheme.bodySmall),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 8.0),
-                TitleAnime(
-                  role.character.malId,
-                  '',
-                  role.character.imageUrl,
-                  width: kImageWidthS,
-                  height: kImageHeightS,
-                  type: ItemType.characters,
-                ),
-              ],
-            ),
+          SizedBox(width: 8.0),
+          TitleAnime(
+            actor.character.malId,
+            '',
+            actor.character.imageUrl,
+            width: kImageWidthS,
+            height: kImageHeightS,
+            type: ItemType.characters,
           ),
         ],
       ),

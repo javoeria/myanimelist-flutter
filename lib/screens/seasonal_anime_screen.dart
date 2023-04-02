@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/oauth.dart';
@@ -7,25 +6,10 @@ import 'package:myanimelist/widgets/season/custom_menu.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
 
 class SeasonalAnimeScreen extends StatelessWidget {
-  const SeasonalAnimeScreen({required this.year, required this.type});
+  const SeasonalAnimeScreen({required this.year, required this.season});
 
   final int year;
-  final String type;
-
-  SeasonType seasonClass(String season) {
-    switch (season.toLowerCase()) {
-      case 'spring':
-        return SeasonType.spring;
-      case 'summer':
-        return SeasonType.summer;
-      case 'fall':
-        return SeasonType.fall;
-      case 'winter':
-        return SeasonType.winter;
-      default:
-        throw 'SeasonType Error';
-    }
-  }
+  final String season;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +18,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('$type $year'),
+          title: Text('$season $year'),
           bottom: TabBar(
             isScrollable: true,
             tabs: const <Tab>[
@@ -45,7 +29,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
               Tab(text: 'Special'),
             ],
           ),
-          actions: <Widget>[CustomMenu()],
+          actions: [CustomMenu()],
         ),
         body: FutureBuilder(
           future: getSeasonComplete(),
@@ -55,18 +39,13 @@ class SeasonalAnimeScreen extends StatelessWidget {
             }
 
             BuiltList<Anime> animeList = snapshot.data!;
-            BuiltList<Anime> tv = BuiltList(animeList.where((anime) => anime.type == 'TV'));
-            BuiltList<Anime> ona = BuiltList(animeList.where((anime) => anime.type == 'ONA'));
-            BuiltList<Anime> ova = BuiltList(animeList.where((anime) => anime.type == 'OVA'));
-            BuiltList<Anime> movie = BuiltList(animeList.where((anime) => anime.type == 'Movie'));
-            BuiltList<Anime> special = BuiltList(animeList.where((anime) => anime.type == 'Special'));
             return TabBarView(
-              children: <Widget>[
-                SeasonList(tv),
-                SeasonList(ona),
-                SeasonList(ova),
-                SeasonList(movie),
-                SeasonList(special),
+              children: <SeasonList>[
+                SeasonList(animeList.where((anime) => anime.type == 'TV').toBuiltList()),
+                SeasonList(animeList.where((anime) => anime.type == 'ONA').toBuiltList()),
+                SeasonList(animeList.where((anime) => anime.type == 'OVA').toBuiltList()),
+                SeasonList(animeList.where((anime) => anime.type == 'Movie').toBuiltList()),
+                SeasonList(animeList.where((anime) => anime.type == 'Special').toBuiltList()),
               ],
             );
           },
@@ -76,14 +55,13 @@ class SeasonalAnimeScreen extends StatelessWidget {
   }
 
   Future<BuiltList<Anime>> getSeasonComplete() async {
-    final DateFormat f = DateFormat('MMM d, yyyy');
-    List<dynamic> response = await MalClient().getSeason(year, type.toLowerCase());
-    List<Anime> season = response.map((item) {
+    List<dynamic> response = await MalClient().getSeason(year, season.toLowerCase());
+    List<Anime> items = response.map((item) {
       String type = ['tv', 'ova', 'ona'].contains(item['node']['media_type'])
-          ? item['node']['media_type'].toUpperCase()
-          : item['node']['media_type'][0].toUpperCase() + item['node']['media_type'].substring(1);
-      if (item['node']['start_date'].toString().split('-').length == 2) item['node']['start_date'] += '-01';
+          ? item['node']['media_type'].toString().toUpperCase()
+          : item['node']['media_type'].toString().toTitleCase();
       if (item['node']['main_picture'] == null) item['node']['main_picture'] = {'medium': kDefaultPicture};
+      if (item['node']['start_date'].toString().split('-').length == 2) item['node']['start_date'] += '-01';
       Map<String, dynamic> jsonMap = {
         'mal_id': item['node']['id'],
         'url': 'https://myanimelist.net/anime/${item['node']['id']}',
@@ -95,7 +73,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
         'type': type,
         'episodes': item['node']['num_episodes'] == 0 ? null : item['node']['num_episodes'],
         'airing': item['node']['status'] == 'currently_airing',
-        'aired': {'string': f.format(DateTime.parse(item['node']['start_date']))},
+        'aired': {'string': item['node']['start_date'].toString().formatDate()},
         'score': item['node']['mean'],
         'members': item['node']['num_list_users'],
         'synopsis': item['node']['synopsis'] == '' ? null : item['node']['synopsis'],
@@ -119,6 +97,6 @@ class SeasonalAnimeScreen extends StatelessWidget {
       return Anime.fromJson(jsonMap);
     }).toList();
 
-    return BuiltList(season.where((a) => a.year == year && a.season == type.toLowerCase()));
+    return BuiltList(items.where((anime) => anime.year == year && anime.season == season.toLowerCase()));
   }
 }

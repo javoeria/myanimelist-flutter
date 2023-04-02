@@ -1,36 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/title_anime.dart';
 
 class RecommendationScreen extends StatelessWidget {
-  RecommendationScreen({this.anime = true});
+  const RecommendationScreen({this.anime = true});
 
   final bool anime;
-  final DateFormat f = DateFormat('MMM d, yyyy');
 
   @override
   Widget build(BuildContext context) {
-    ItemType type = anime ? ItemType.anime : ItemType.manga;
+    final ItemType type = anime ? ItemType.anime : ItemType.manga;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(anime ? 'Anime Recommendations' : 'Manga Recommendations'),
-      ),
+      appBar: AppBar(title: Text(anime ? 'Anime Recommendations' : 'Manga Recommendations')),
       body: FutureBuilder(
-        future: anime ? Jikan().getRecentAnimeRecommendations() : Jikan().getRecentMangaRecommendations(),
+        future: anime ? jikan.getRecentAnimeRecommendations() : jikan.getRecentMangaRecommendations(),
         builder: (context, AsyncSnapshot<BuiltList<UserRecommendation>> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          BuiltList<UserRecommendation> items = snapshot.data!;
+          BuiltList<UserRecommendation> recommendationList = snapshot.data!;
           return Scrollbar(
             child: ListView.separated(
-              separatorBuilder: (context, index) => Divider(height: 0.0),
-              itemCount: items.length,
+              separatorBuilder: (context, index) => const Divider(height: 0.0),
+              itemCount: recommendationList.length,
               itemBuilder: (context, index) {
-                UserRecommendation item = items.elementAt(index);
+                UserRecommendation rec = recommendationList.elementAt(index);
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -40,25 +36,24 @@ class RecommendationScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           TitleAnime(
-                            item.entry[0].malId,
-                            item.entry[0].title,
-                            item.entry[0].imageUrl,
+                            rec.entry[0].malId,
+                            rec.entry[0].title,
+                            rec.entry[0].imageUrl,
                             type: type,
                           ),
                           Icon(Icons.swap_horiz),
                           TitleAnime(
-                            item.entry[1].malId,
-                            item.entry[1].title,
-                            item.entry[1].imageUrl,
+                            rec.entry[1].malId,
+                            rec.entry[1].title,
+                            rec.entry[1].imageUrl,
                             type: type,
                           ),
                         ],
                       ),
                       SizedBox(height: 8.0),
-                      Text(item.content),
+                      Text(rec.content),
                       SizedBox(height: 8.0),
-                      Text(
-                          '${anime ? 'Anime' : 'Manga'} rec by ${item.user.username} - ${f.format(DateTime.parse(item.date))}'),
+                      Text('${anime ? 'Anime' : 'Manga'} rec by ${rec.user.username} - ${rec.date.formatDate()}'),
                     ],
                   ),
                 );

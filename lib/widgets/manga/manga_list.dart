@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/models/user_data.dart';
@@ -20,21 +19,13 @@ class _MangaListState extends State<MangaList> with AutomaticKeepAliveClientMixi
   late BuiltList<Manga> _mangaList;
 
   @override
-  void initState() {
-    super.initState();
-    _mangaList = widget.mangaList;
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
-    bool kids = Provider.of<UserData>(context).kidsGenre;
-    bool r18 = Provider.of<UserData>(context).r18Genre;
-    _mangaList = BuiltList(_mangaList.where((manga) => !manga.genres.map((i) => i.name).contains('Hentai')));
-    if (!kids) {
+    _mangaList = BuiltList(widget.mangaList.where((manga) => !manga.genres.map((i) => i.name).contains('Hentai')));
+    if (!Provider.of<UserData>(context).kidsGenre) {
       _mangaList = BuiltList(_mangaList.where((manga) => !manga.demographics.map((i) => i.name).contains('Kids')));
     }
-    if (!r18) {
+    if (!Provider.of<UserData>(context).r18Genre) {
       _mangaList = BuiltList(_mangaList.where((manga) => !manga.genres.map((i) => i.name).contains('Erotica')));
     }
 
@@ -43,12 +34,9 @@ class _MangaListState extends State<MangaList> with AutomaticKeepAliveClientMixi
     }
     return Scrollbar(
       child: ListView.separated(
-        separatorBuilder: (context, index) => Divider(height: 0.0),
+        separatorBuilder: (context, index) => const Divider(height: 0.0),
         itemCount: _mangaList.length,
-        itemBuilder: (context, index) {
-          Manga manga = _mangaList.elementAt(index);
-          return MangaInfo(manga);
-        },
+        itemBuilder: (context, index) => MangaInfo(_mangaList.elementAt(index)),
       ),
     );
   }
@@ -58,10 +46,9 @@ class _MangaListState extends State<MangaList> with AutomaticKeepAliveClientMixi
 }
 
 class MangaInfo extends StatelessWidget {
-  MangaInfo(this.manga);
+  const MangaInfo(this.manga);
 
   final Manga manga;
-  final NumberFormat f = NumberFormat.compact();
 
   String get _authorsText {
     return manga.authors.isEmpty ? '-' : manga.authors.first.name;
@@ -76,22 +63,13 @@ class MangaInfo extends StatelessWidget {
     String volumes = manga.volumes == null ? '?' : manga.volumes.toString();
     String score = manga.score == null ? 'N/A' : manga.score.toString();
     return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MangaScreen(manga.malId, manga.title),
-            settings: RouteSettings(name: 'MangaScreen'),
-          ),
-        );
-      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Column(
           children: <Widget>[
-            Text(manga.title, style: Theme.of(context).textTheme.titleMedium),
+            Text(manga.title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium),
             SizedBox(height: 4.0),
-            Text('${manga.type} | $_authorsText | $volumes vols'),
+            Text('${manga.type ?? 'Unknown'} | $_authorsText | $volumes vols'),
             SizedBox(height: 4.0),
             GenreHorizontal(manga.genres, anime: false),
             SizedBox(height: 4.0),
@@ -129,7 +107,7 @@ class MangaInfo extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Icon(Icons.person_outline, color: Colors.grey, size: 20.0),
-                    Text(f.format(manga.members)),
+                    Text(manga.members!.compact()),
                   ],
                 ),
               ],
@@ -137,6 +115,15 @@ class MangaInfo extends StatelessWidget {
           ],
         ),
       ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MangaScreen(manga.malId, manga.title),
+            settings: const RouteSettings(name: 'MangaScreen'),
+          ),
+        );
+      },
     );
   }
 }

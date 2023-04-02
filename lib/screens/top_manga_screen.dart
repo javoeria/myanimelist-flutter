@@ -34,11 +34,11 @@ class TopMangaScreen extends StatelessWidget {
               Tab(text: 'Most Favorited'),
             ],
           ),
-          actions: <Widget>[CustomView()],
+          actions: [CustomView()],
         ),
         body: Provider.of<UserData>(context).gridView
             ? TabBarView(
-                children: const <Widget>[
+                children: const <TopGrid>[
                   TopGrid(anime: false),
                   TopGrid(type: TopType.manga, anime: false),
                   TopGrid(type: TopType.oneshots, anime: false),
@@ -52,7 +52,7 @@ class TopMangaScreen extends StatelessWidget {
                 ],
               )
             : TabBarView(
-                children: const <Widget>[
+                children: const <TopList>[
                   TopList(anime: false),
                   TopList(type: TopType.manga, anime: false),
                   TopList(type: TopType.oneshots, anime: false),

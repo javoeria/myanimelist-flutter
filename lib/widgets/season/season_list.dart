@@ -17,21 +17,13 @@ class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMi
   late BuiltList<Anime> _animeList;
 
   @override
-  void initState() {
-    super.initState();
-    _animeList = widget.animeList;
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
-    bool kids = Provider.of<UserData>(context).kidsGenre;
-    bool r18 = Provider.of<UserData>(context).r18Genre;
-    _animeList = BuiltList(_animeList.where((anime) => !anime.genres.map((i) => i.name).contains('Hentai')));
-    if (!kids) {
+    _animeList = BuiltList(widget.animeList.where((anime) => !anime.genres.map((i) => i.name).contains('Hentai')));
+    if (!Provider.of<UserData>(context).kidsGenre) {
       _animeList = BuiltList(_animeList.where((anime) => !anime.demographics.map((i) => i.name).contains('Kids')));
     }
-    if (!r18) {
+    if (!Provider.of<UserData>(context).r18Genre) {
       _animeList = BuiltList(_animeList.where((anime) => !anime.genres.map((i) => i.name).contains('Erotica')));
     }
 
@@ -40,12 +32,9 @@ class _SeasonListState extends State<SeasonList> with AutomaticKeepAliveClientMi
     }
     return Scrollbar(
       child: ListView.separated(
-        separatorBuilder: (context, index) => Divider(height: 0.0),
+        separatorBuilder: (context, index) => const Divider(height: 0.0),
         itemCount: _animeList.length,
-        itemBuilder: (context, index) {
-          Anime anime = _animeList.elementAt(index);
-          return SeasonInfo(anime);
-        },
+        itemBuilder: (context, index) => SeasonInfo(_animeList.elementAt(index)),
       ),
     );
   }

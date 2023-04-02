@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class AnimeForum extends StatefulWidget {
@@ -14,13 +14,12 @@ class AnimeForum extends StatefulWidget {
 }
 
 class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMixin<AnimeForum> {
-  final DateFormat f = DateFormat('MMM d, yyyy');
   late Future<BuiltList<Forum>> _future;
 
   @override
   void initState() {
     super.initState();
-    _future = widget.anime ? Jikan().getAnimeForum(widget.id) : Jikan().getMangaForum(widget.id);
+    _future = widget.anime ? jikan.getAnimeForum(widget.id) : jikan.getMangaForum(widget.id);
   }
 
   @override
@@ -39,7 +38,7 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
         }
         return Scrollbar(
           child: ListView.separated(
-            separatorBuilder: (context, index) => Divider(height: 0.0),
+            separatorBuilder: (context, index) => const Divider(height: 0.0),
             itemCount: forumList.length,
             itemBuilder: (context, index) {
               Forum forum = forumList.elementAt(index);
@@ -60,10 +59,7 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
                                 text: '${forum.authorUsername} - ',
                                 style: DefaultTextStyle.of(context).style,
                                 children: <TextSpan>[
-                                  TextSpan(
-                                    text: f.format(DateTime.parse(forum.date)),
-                                    style: Theme.of(context).textTheme.bodySmall,
-                                  ),
+                                  TextSpan(text: forum.date.formatDate(), style: Theme.of(context).textTheme.bodySmall),
                                 ],
                               ),
                             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/oauth.dart';
 
 class AnimeDialog extends StatefulWidget {
@@ -28,78 +29,27 @@ class _AnimeDialogState extends State<AnimeDialog> {
     });
   }
 
-  String statusText(String status) {
-    switch (status) {
-      case 'watching':
-        return 'Watching';
-      case 'completed':
-        return 'Completed';
-      case 'on_hold':
-        return 'On-Hold';
-      case 'dropped':
-        return 'Dropped';
-      case 'plan_to_watch':
-        return 'Plan to Watch';
-      default:
-        throw 'AnimeStatus Error';
-    }
-  }
-
-  String scoreText(String score) {
-    switch (score) {
-      case '10':
-        return '(10) Masterpiece';
-      case '9':
-        return '(9) Great';
-      case '8':
-        return '(8) Very Good';
-      case '7':
-        return '(7) Good';
-      case '6':
-        return '(6) Fine';
-      case '5':
-        return '(5) Average';
-      case '4':
-        return '(4) Bad';
-      case '3':
-        return '(3) Very Bad';
-      case '2':
-        return '(2) Horrible';
-      case '1':
-        return '(1) Appalling';
-      case '0':
-        return 'Select';
-      default:
-        throw 'Score Error';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     String total = widget.json['total_episodes'] == 0 ? '?' : widget.json['total_episodes'].toString();
     return AlertDialog(
       title: Text('Edit Status'),
-      contentPadding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 0.0),
-      content: SizedBox(
-        height: 150.0,
+      contentPadding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 8.0),
+      content: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
+          children: <Row>[
             Row(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(right: 48.0),
+                  padding: const EdgeInsets.only(right: 44.0),
                   child: Text('Status:'),
                 ),
                 Expanded(
                   child: DropdownButton<String>(
                     isExpanded: true,
                     value: _selectedStatus,
-                    items: _status.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(statusText(value)),
-                      );
+                    items: _status.map((value) {
+                      return DropdownMenuItem(value: value, child: Text(statusText(value)));
                     }).toList(),
                     onChanged: (value) {
                       if (value == 'completed') _textFieldController.text = total;
@@ -112,22 +62,19 @@ class _AnimeDialogState extends State<AnimeDialog> {
             Row(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(right: 28.0),
+                  padding: const EdgeInsets.only(right: 26.0),
                   child: Text('Eps Seen:'),
                 ),
                 Expanded(
                   child: TextField(
                     controller: _textFieldController,
                     keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
                 ),
                 Text(' / $total'),
                 IconButton(
-                  icon: Icon(
-                    Icons.add_circle_rounded,
-                    color: Theme.of(context).brightness == Brightness.light ? Colors.indigo : Colors.white,
-                  ),
+                  icon: Icon(Icons.add_circle_rounded),
                   onPressed: () {
                     if (_textFieldController.text.isEmpty) {
                       _textFieldController.text = '0';
@@ -149,15 +96,10 @@ class _AnimeDialogState extends State<AnimeDialog> {
                     isExpanded: true,
                     hint: Text('Select'),
                     value: _selectedScore,
-                    items: _scores.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(scoreText(value)),
-                      );
+                    items: _scores.map((value) {
+                      return DropdownMenuItem(value: value, child: Text(scoreText(value)));
                     }).toList(),
-                    onChanged: (value) {
-                      setState(() => _selectedScore = value!);
-                    },
+                    onChanged: (value) => setState(() => _selectedScore = value!),
                   ),
                 ),
               ],
@@ -165,12 +107,10 @@ class _AnimeDialogState extends State<AnimeDialog> {
           ],
         ),
       ),
-      actions: <Widget>[
+      actions: <TextButton>[
         TextButton(
           child: Text('CANCEL'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         TextButton(
           child: Text('OK'),
@@ -181,7 +121,7 @@ class _AnimeDialogState extends State<AnimeDialog> {
               score: _selectedScore,
               episodes: _textFieldController.text,
             );
-            Navigator.of(context).pop(result);
+            Navigator.pop(context, result);
           },
         ),
       ],

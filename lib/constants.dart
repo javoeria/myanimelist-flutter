@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' show DateFormat, NumberFormat;
+import 'package:jikan_api/jikan_api.dart';
 
 enum ItemType { anime, manga, people, characters }
 
@@ -7,6 +10,7 @@ const kDefaultImage = 'https://cdn.myanimelist.net/images/questionmark_50.gif';
 const kDefaultPicture = 'https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png';
 const kSlackToken = 'T014XKJ2C31/B014XKLF2S3/jtDgfbsVzEUusc2i2mUk3o2b';
 
+final jikan = Jikan(debug: kDebugMode);
 const kDefaultPageSize = 25;
 const kEpisodePageSize = 100;
 const kReviewPageSize = 20;
@@ -26,14 +30,93 @@ const kImageHeightL = 220.0;
 const kImageWidthXL = 167.0;
 const kImageHeightXL = 242.0;
 
-const kExpandedHeight = 280.0;
+const kExpandedHeight = 268.0;
 const kSliverAppBarWidth = 135.0;
 const kSliverAppBarHeight = 210.0;
-const kSliverAppBarPadding = EdgeInsets.all(24.0);
+const kSliverAppBarPadding = EdgeInsets.symmetric(horizontal: 24.0);
 
 const kTextStyleBold = TextStyle(fontWeight: FontWeight.bold);
-const kTextStyleShadow = TextStyle(
-  color: Colors.white,
-  fontSize: 12.0,
-  shadows: <Shadow>[Shadow(offset: Offset(0.0, 0.0), blurRadius: 3.0)],
-);
+const kTextStyleShadow = TextStyle(color: Colors.white, fontSize: 12.0, shadows: [Shadow(blurRadius: 3.0)]);
+
+Color statusColor(String status) {
+  switch (status.toLowerCase()) {
+    case 'watching':
+    case 'reading':
+      return kWatchingColor;
+    case 'completed':
+      return kCompletedColor;
+    case 'on_hold':
+    case 'on hold':
+      return kOnHoldColor;
+    case 'dropped':
+      return kDroppedColor;
+    default:
+      return kPlantoWatchColor;
+  }
+}
+
+String statusText(String status) {
+  switch (status) {
+    case 'on_hold':
+      return 'On-Hold';
+    case 'plan_to_watch':
+      return 'Plan to Watch';
+    case 'plan_to_read':
+      return 'Plan to Read';
+    default:
+      return status.toTitleCase();
+  }
+}
+
+String scoreText(String score) {
+  switch (score) {
+    case '10':
+      return '(10) Masterpiece';
+    case '9':
+      return '(9) Great';
+    case '8':
+      return '(8) Very Good';
+    case '7':
+      return '(7) Good';
+    case '6':
+      return '(6) Fine';
+    case '5':
+      return '(5) Average';
+    case '4':
+      return '(4) Bad';
+    case '3':
+      return '(3) Very Bad';
+    case '2':
+      return '(2) Horrible';
+    case '1':
+      return '(1) Appalling';
+    default:
+      return 'Select';
+  }
+}
+
+String episodesText(dynamic top) {
+  if (top is Anime) {
+    String episodes = top.episodes == null ? '?' : top.episodes.toString();
+    return '($episodes eps)';
+  } else if (top is Manga) {
+    String volumes = top.volumes == null ? '?' : top.volumes.toString();
+    return '($volumes vols)';
+  } else {
+    throw 'ItemType Error';
+  }
+}
+
+extension TextParsing on String {
+  String toTitleCase() => this[0].toUpperCase() + substring(1).toLowerCase();
+  String formatDate({pattern = 'MMM d, yyyy'}) => DateFormat(pattern).format(DateTime.parse(this));
+}
+
+extension NumberParsing on int {
+  String decimal() => NumberFormat.decimalPattern().format(this);
+  String compact() => NumberFormat.compact().format(this);
+}
+
+extension ListParsing on Iterable<Anime> {
+  BuiltList<Anime> toBuiltList() => BuiltList(this);
+}

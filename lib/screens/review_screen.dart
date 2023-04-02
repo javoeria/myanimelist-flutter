@@ -1,6 +1,5 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
@@ -8,53 +7,50 @@ import 'package:myanimelist/screens/manga_screen.dart';
 import 'package:myanimelist/screens/user_profile_screen.dart';
 
 class ReviewScreen extends StatelessWidget {
-  ReviewScreen({this.anime = true});
+  const ReviewScreen({this.anime = true});
 
   final bool anime;
-  final DateFormat f = DateFormat('MMM d, yyyy');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(anime ? 'Anime Reviews' : 'Manga Reviews'),
-      ),
+      appBar: AppBar(title: Text(anime ? 'Anime Reviews' : 'Manga Reviews')),
       body: FutureBuilder(
-        future: anime ? Jikan().getRecentAnimeReviews() : Jikan().getRecentMangaReviews(),
+        future: anime ? jikan.getRecentAnimeReviews() : jikan.getRecentMangaReviews(),
         builder: (context, AsyncSnapshot<BuiltList<UserReview>> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
 
-          BuiltList<UserReview> items = snapshot.data!;
+          BuiltList<UserReview> reviewList = snapshot.data!;
           return Scrollbar(
             child: ListView.separated(
-              separatorBuilder: (context, index) => Divider(height: 0.0),
-              itemCount: items.length,
+              separatorBuilder: (context, index) => const Divider(height: 0.0),
+              itemCount: reviewList.length,
               itemBuilder: (context, index) {
-                UserReview item = items.elementAt(index);
+                UserReview review = reviewList.elementAt(index);
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       InkWell(
-                        child: Text(item.entry.title, style: Theme.of(context).textTheme.titleSmall),
+                        child: Text(review.entry.title, style: Theme.of(context).textTheme.titleSmall),
                         onTap: () {
                           if (anime) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AnimeScreen(item.entry.malId, item.entry.title),
-                                settings: RouteSettings(name: 'AnimeScreen'),
+                                builder: (context) => AnimeScreen(review.entry.malId, review.entry.title),
+                                settings: const RouteSettings(name: 'AnimeScreen'),
                               ),
                             );
                           } else {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MangaScreen(item.entry.malId, item.entry.title),
-                                settings: RouteSettings(name: 'MangaScreen'),
+                                builder: (context) => MangaScreen(review.entry.malId, review.entry.title),
+                                settings: const RouteSettings(name: 'MangaScreen'),
                               ),
                             );
                           }
@@ -63,11 +59,11 @@ class ReviewScreen extends StatelessWidget {
                       SizedBox(height: 12.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
+                        children: <Row>[
                           Row(
                             children: <Widget>[
                               Ink.image(
-                                image: NetworkImage(item.user.imageUrl!),
+                                image: NetworkImage(review.user.imageUrl!),
                                 width: kImageWidthS,
                                 height: kImageHeightS,
                                 fit: BoxFit.cover,
@@ -76,8 +72,8 @@ class ReviewScreen extends StatelessWidget {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => UserProfileScreen(item.user.username),
-                                        settings: RouteSettings(name: 'UserProfileScreen'),
+                                        builder: (context) => UserProfileScreen(review.user.username),
+                                        settings: const RouteSettings(name: 'UserProfileScreen'),
                                       ),
                                     );
                                   },
@@ -87,9 +83,9 @@ class ReviewScreen extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(item.user.username),
+                                  Text(review.user.username),
                                   SizedBox(height: 4.0),
-                                  Text(item.tags[0], style: Theme.of(context).textTheme.bodySmall),
+                                  Text(review.tags[0], style: Theme.of(context).textTheme.bodySmall),
                                 ],
                               ),
                             ],
@@ -99,17 +95,17 @@ class ReviewScreen extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: <Widget>[
-                                  Text(f.format(DateTime.parse(item.date))),
+                                  Text(review.date.formatDate()),
                                   SizedBox(height: 4.0),
                                   Text(
-                                    item.isSpoiler ? 'Spoiler' : '',
+                                    review.isSpoiler ? 'Spoiler' : '',
                                     style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.red),
                                   ),
                                 ],
                               ),
                               SizedBox(width: 8.0),
                               Ink.image(
-                                image: NetworkImage(item.entry.imageUrl),
+                                image: NetworkImage(review.entry.imageUrl),
                                 width: kImageWidthS,
                                 height: kImageHeightS,
                                 fit: BoxFit.cover,
@@ -119,16 +115,16 @@ class ReviewScreen extends StatelessWidget {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => AnimeScreen(item.entry.malId, item.entry.title),
-                                          settings: RouteSettings(name: 'AnimeScreen'),
+                                          builder: (context) => AnimeScreen(review.entry.malId, review.entry.title),
+                                          settings: const RouteSettings(name: 'AnimeScreen'),
                                         ),
                                       );
                                     } else {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => MangaScreen(item.entry.malId, item.entry.title),
-                                          settings: RouteSettings(name: 'MangaScreen'),
+                                          builder: (context) => MangaScreen(review.entry.malId, review.entry.title),
+                                          settings: const RouteSettings(name: 'MangaScreen'),
                                         ),
                                       );
                                     }
@@ -142,10 +138,10 @@ class ReviewScreen extends StatelessWidget {
                       ExpandablePanel(
                         header: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: Text("Reviewer's Rating: ${item.score}"),
+                          child: Text("Reviewer's Rating: ${review.score}"),
                         ),
-                        collapsed: Text(item.review, softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),
-                        expanded: Text(item.review.replaceAll('\\n', ''), softWrap: true),
+                        collapsed: Text(review.review, softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),
+                        expanded: Text(review.review.replaceAll('\\n', ''), softWrap: true),
                         theme: ExpandableThemeData(iconColor: Colors.grey, tapHeaderToExpand: true, hasIcon: true),
                       ),
                     ],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -15,8 +14,6 @@ class AnimeEpisodes extends StatefulWidget {
 }
 
 class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveClientMixin<AnimeEpisodes> {
-  final DateFormat f = DateFormat('MMM d, yyyy');
-
   Widget? subtitleText(String? titleRomanji, String? titleJapanese) {
     if (titleRomanji != null && titleJapanese != null) {
       return Text('$titleRomanji ($titleJapanese)');
@@ -36,16 +33,14 @@ class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveCl
       child: PagewiseListView(
         pageSize: kEpisodePageSize,
         itemBuilder: _itemBuilder,
-        noItemsFoundBuilder: (context) {
-          return ListTile(title: Text('No items found.'));
-        },
-        pageFuture: (pageIndex) => Jikan().getAnimeEpisodes(widget.id, page: pageIndex! + 1),
+        noItemsFoundBuilder: (context) => ListTile(title: Text('No items found.')),
+        pageFuture: (pageIndex) => jikan.getAnimeEpisodes(widget.id, page: pageIndex! + 1),
       ),
     );
   }
 
   Widget _itemBuilder(BuildContext context, Episode episode, int index) {
-    String dateAired = episode.aired == null ? 'N/A' : f.format(DateTime.parse(episode.aired!));
+    String dateAired = episode.aired == null ? 'N/A' : episode.aired!.formatDate();
     return Column(
       children: <Widget>[
         ListTile(
@@ -53,10 +48,10 @@ class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveCl
           subtitle: subtitleText(episode.titleRomanji, episode.titleJapanese),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(episode.malId.toString(), style: Theme.of(context).textTheme.titleLarge),
+            child: Text(episode.malId.toString(), style: Theme.of(context).textTheme.titleMedium),
           ),
           trailing: Text(dateAired),
-          minLeadingWidth: 20,
+          dense: true,
           onTap: () async {
             String? url = episode.url;
             if (url != null && await canLaunchUrlString(url)) {

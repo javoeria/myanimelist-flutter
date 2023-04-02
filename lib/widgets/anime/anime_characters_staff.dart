@@ -14,8 +14,6 @@ class AnimeCharactersStaff extends StatefulWidget {
 
 class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
     with AutomaticKeepAliveClientMixin<AnimeCharactersStaff> {
-  final Jikan jikan = Jikan();
-
   late BuiltList<CharacterMeta> characters;
   late BuiltList<PersonMeta> staff;
   bool loading = true;
@@ -41,8 +39,11 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
 
     final List<dynamic> items = [];
     items.addAll(characters.toList());
-    items.add(Divider(height: 8.0));
+    if (characters.isNotEmpty && staff.isNotEmpty) items.add(Divider(height: 8.0));
     items.addAll(staff.toList());
+    if (items.isEmpty) {
+      return ListTile(title: Text('No items found.'));
+    }
     return Scrollbar(
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -76,7 +77,10 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                               SizedBox(height: 4.0),
                               Text(item.role, style: Theme.of(context).textTheme.bodySmall),
                               SizedBox(height: 4.0),
-                              Text('${item.favorites ?? 0} Favorites', style: Theme.of(context).textTheme.bodySmall),
+                              Text(
+                                '${(item.favorites ?? 0).decimal()} Favorites',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
                             ],
                           ),
                         ),
@@ -86,7 +90,6 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                   actors.isNotEmpty
                       ? Expanded(
                           child: Row(
-                            mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
                               Expanded(
                                 child: Column(

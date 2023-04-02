@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -15,13 +14,12 @@ class AnimeNews extends StatefulWidget {
 }
 
 class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixin<AnimeNews> {
-  final DateFormat f = DateFormat('MMM d, yyyy h:mm a');
   late Future<BuiltList<Article>> _future;
 
   @override
   void initState() {
     super.initState();
-    _future = widget.anime ? Jikan().getAnimeNews(widget.id) : Jikan().getMangaNews(widget.id);
+    _future = widget.anime ? jikan.getAnimeNews(widget.id) : jikan.getMangaNews(widget.id);
   }
 
   @override
@@ -40,7 +38,7 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
         }
         return Scrollbar(
           child: ListView.separated(
-            separatorBuilder: (context, index) => Divider(height: 0.0),
+            separatorBuilder: (context, index) => const Divider(height: 0.0),
             itemCount: articleList.length,
             itemBuilder: (context, index) {
               Article article = articleList.elementAt(index);
@@ -71,7 +69,7 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
                             Text(article.excerpt, maxLines: 2, overflow: TextOverflow.ellipsis),
                             SizedBox(height: 4.0),
                             Text(
-                              '${f.format(DateTime.parse(article.date))} by ${article.authorUsername}',
+                              '${article.date.formatDate(pattern: 'MMM d, yyyy h:mm a')} by ${article.authorUsername}',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],

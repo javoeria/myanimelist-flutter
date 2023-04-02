@@ -18,7 +18,7 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
   @override
   void initState() {
     super.initState();
-    _future = Jikan().getAnimeVideos(widget.id);
+    _future = jikan.getAnimeVideos(widget.id);
   }
 
   @override
@@ -42,9 +42,7 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
               child: Wrap(
                 spacing: 16.0,
                 runSpacing: 16.0,
-                children: promoList.map((Promo promo) {
-                  return VideoImage(promo);
-                }).toList(),
+                children: promoList.map((promo) => VideoImage(promo)).toList(),
               ),
             ),
           ),
@@ -72,6 +70,38 @@ class VideoImage extends StatelessWidget {
       height: height,
       fit: BoxFit.cover,
       child: InkWell(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            SizedBox(height: 30.0),
+            Container(
+              padding: const EdgeInsets.all(4.0),
+              decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(4.0)),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const <Widget>[
+                  Icon(Icons.play_circle_outline, color: Colors.white),
+                  Text(' Play', style: TextStyle(color: Colors.white)),
+                ],
+              ),
+            ),
+            Stack(
+              alignment: AlignmentDirectional.bottomStart,
+              children: <Widget>[
+                Image.asset('images/box_shadow.png', width: width, height: 30.0, fit: BoxFit.cover),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    promo.title,
+                    maxLines: 3,
+                    textAlign: TextAlign.center,
+                    style: kTextStyleShadow,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
         onTap: () async {
           String url = promo.videoUrl;
           if (await canLaunchUrlString(url)) {
@@ -80,45 +110,6 @@ class VideoImage extends StatelessWidget {
             throw 'Could not launch $url';
           }
         },
-        child: SizedBox(
-          width: width,
-          height: height,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(),
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  padding: const EdgeInsets.all(4.0),
-                  color: Colors.black54,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const <Widget>[
-                      Icon(Icons.play_circle_outline, color: Colors.white),
-                      Text(' Play', style: TextStyle(color: Colors.white)),
-                    ],
-                  ),
-                ),
-              ),
-              Stack(
-                alignment: AlignmentDirectional.bottomStart,
-                children: <Widget>[
-                  Image.asset('images/box_shadow.png', width: width, height: 30.0, fit: BoxFit.cover),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      promo.title,
-                      maxLines: 3,
-                      textAlign: TextAlign.center,
-                      style: kTextStyleShadow,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

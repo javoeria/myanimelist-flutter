@@ -41,7 +41,7 @@ class PictureList extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) =>
                               ImageScreen(list.map((i) => i.largeImageUrl ?? i.imageUrl).toList(), index),
-                          settings: RouteSettings(name: 'ImageScreen'),
+                          settings: const RouteSettings(name: 'ImageScreen'),
                         ),
                       );
                     },
@@ -82,9 +82,7 @@ class _ImageScreenState extends State<ImageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-      ),
+      appBar: AppBar(backgroundColor: Colors.black),
       body: Stack(
         alignment: AlignmentDirectional.bottomCenter,
         children: <Widget>[
@@ -107,26 +105,22 @@ class _ImageScreenState extends State<ImageScreen> {
       },
       scrollPhysics: const BouncingScrollPhysics(),
       pageController: _pageController,
-      loadingBuilder: (context, event) {
-        return Center(child: CircularProgressIndicator());
-      },
-      onPageChanged: (index) {
-        setState(() => _currentIndex = index);
-      },
+      loadingBuilder: (context, event) => const Center(child: CircularProgressIndicator()),
+      onPageChanged: (index) => setState(() => _currentIndex = index),
     );
   }
 
   Widget _buildDotIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: widget.imagePaths.map((String image) {
+      children: widget.imagePaths.map((image) {
         return Container(
-          width: 8.0,
-          height: 8.0,
-          margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+          width: 6.0,
+          height: 6.0,
+          margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: _currentIndex == widget.imagePaths.indexOf(image) ? Colors.white : Colors.grey[700],
+            color: _currentIndex == widget.imagePaths.indexOf(image) ? Colors.indigo : Colors.grey.shade300,
           ),
         );
       }).toList(),

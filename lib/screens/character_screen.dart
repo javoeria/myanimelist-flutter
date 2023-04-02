@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/profile/about_section.dart';
@@ -19,9 +18,6 @@ class CharacterScreen extends StatefulWidget {
 }
 
 class _CharacterScreenState extends State<CharacterScreen> {
-  final Jikan jikan = Jikan();
-  final NumberFormat f = NumberFormat.decimalPattern();
-
   late ScrollController _scrollController;
   late Character character;
   late BuiltList<Picture> pictures;
@@ -54,32 +50,35 @@ class _CharacterScreenState extends State<CharacterScreen> {
     }
 
     return Scaffold(
-      body: CustomScrollView(controller: _scrollController, slivers: <Widget>[
-        SliverAppBar(
-          pinned: true,
-          expandedHeight: kExpandedHeight,
-          title: _showTitle ? Text(character.name) : null,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Padding(
-              padding: kSliverAppBarPadding,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        child: Image.network(
-                          character.imageUrl,
-                          width: kSliverAppBarWidth,
-                          height: kSliverAppBarHeight,
-                          fit: BoxFit.contain,
-                          alignment: Alignment.centerRight,
-                        ),
+      body: CustomScrollView(
+        controller: _scrollController,
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: true,
+            expandedHeight: kExpandedHeight,
+            title: _showTitle ? Text(character.name) : null,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Padding(
+                padding: kSliverAppBarPadding,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Expanded(
+                      child: Image.network(
+                        character.imageUrl,
+                        width: kSliverAppBarWidth,
+                        height: kSliverAppBarHeight,
+                        fit: BoxFit.contain,
+                        alignment: Alignment.centerRight,
                       ),
-                      SizedBox(width: 16.0),
-                      Expanded(
+                    ),
+                    SizedBox(width: 24.0),
+                    Expanded(
+                      child: SizedBox(
+                        height: kSliverAppBarHeight,
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             AutoSizeText(
@@ -100,7 +99,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
                                 Icon(Icons.person, size: 20.0),
                                 SizedBox(width: 4.0),
                                 Text(
-                                  f.format(character.favorites),
+                                  character.favorites.decimal(),
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ],
@@ -108,23 +107,23 @@ class _CharacterScreenState extends State<CharacterScreen> {
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        SliverList(
-          delegate: SliverChildListDelegate(<Widget>[
-            AboutSection(character.about),
-            character.anime!.isNotEmpty ? AnimeographyList(character.anime!, type: ItemType.anime) : Container(),
-            character.manga!.isNotEmpty ? AnimeographyList(character.manga!, type: ItemType.manga) : Container(),
-            character.voices!.isNotEmpty ? VoiceList(character.voices!) : Container(),
-            pictures.isNotEmpty ? PictureList(pictures) : Container(),
-          ]),
-        ),
-      ]),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              AboutSection(character.about),
+              character.anime!.isNotEmpty ? AnimeographyList(character.anime!, type: ItemType.anime) : Container(),
+              character.manga!.isNotEmpty ? AnimeographyList(character.manga!, type: ItemType.manga) : Container(),
+              character.voices!.isNotEmpty ? VoiceList(character.voices!) : Container(),
+              pictures.isNotEmpty ? PictureList(pictures) : Container(),
+            ]),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -10,7 +10,7 @@ class CustomFilterV2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
+    return PopupMenuButton<String>(
       icon: Icon(Icons.filter_list),
       itemBuilder: (context) {
         return [
@@ -20,13 +20,13 @@ class CustomFilterV2 extends StatelessWidget {
           PopupMenuItem(value: 'list_updated_at', child: Text('Last Updated')),
         ];
       },
-      onSelected: (String value) {
+      onSelected: (value) {
         if (anime) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => AnimeListScreen(username, sort: value),
-              settings: RouteSettings(name: 'AnimeListScreen'),
+              settings: const RouteSettings(name: 'AnimeListScreen'),
             ),
           );
         } else {
@@ -34,7 +34,7 @@ class CustomFilterV2 extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => MangaListScreen(username, sort: value),
-              settings: RouteSettings(name: 'MangaListScreen'),
+              settings: const RouteSettings(name: 'MangaListScreen'),
             ),
           );
         }

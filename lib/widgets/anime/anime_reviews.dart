@@ -1,7 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/user_profile_screen.dart';
@@ -17,8 +16,6 @@ class AnimeReviews extends StatefulWidget {
 }
 
 class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClientMixin<AnimeReviews> {
-  final DateFormat f = DateFormat('MMM d, yyyy');
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -26,12 +23,10 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
       child: PagewiseListView(
         pageSize: kReviewPageSize,
         itemBuilder: _itemBuilder,
-        noItemsFoundBuilder: (context) {
-          return ListTile(title: Text('No items found.'));
-        },
+        noItemsFoundBuilder: (context) => ListTile(title: Text('No items found.')),
         pageFuture: (pageIndex) => widget.anime
-            ? Jikan().getAnimeReviews(widget.id, page: pageIndex! + 1)
-            : Jikan().getMangaReviews(widget.id, page: pageIndex! + 1),
+            ? jikan.getAnimeReviews(widget.id, page: pageIndex! + 1)
+            : jikan.getMangaReviews(widget.id, page: pageIndex! + 1),
       ),
     );
   }
@@ -59,7 +54,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                               context,
                               MaterialPageRoute(
                                 builder: (context) => UserProfileScreen(review.user.username),
-                                settings: RouteSettings(name: 'UserProfileScreen'),
+                                settings: const RouteSettings(name: 'UserProfileScreen'),
                               ),
                             );
                           },
@@ -79,7 +74,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Text(f.format(DateTime.parse(review.date))),
+                      Text(review.date.formatDate()),
                       SizedBox(height: 4.0),
                       Text(
                         review.isSpoiler ? 'Spoiler' : '',

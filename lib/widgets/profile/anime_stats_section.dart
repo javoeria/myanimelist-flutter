@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 
 class AnimeStatsSection extends StatelessWidget {
-  AnimeStatsSection(this.stats);
+  const AnimeStatsSection(this.stats);
 
   final UserStats stats;
-  final NumberFormat f = NumberFormat.decimalPattern();
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width - 32.0;
+    final double screenWidth = MediaQuery.of(context).size.width - 32.0;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -24,7 +22,7 @@ class AnimeStatsSection extends StatelessWidget {
               SizedBox(height: 8.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
+                children: <RichText>[
                   RichText(
                     text: TextSpan(
                       text: 'Days: ',
@@ -53,13 +51,9 @@ class AnimeStatsSection extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(4.0),
             child: stats.totalEntries == 0
-                ? Container(
-                    height: 32.0,
-                    width: screenWidth,
-                    color: Colors.grey[300],
-                  )
+                ? Container(height: 32.0, width: screenWidth, color: Colors.grey[300])
                 : Row(
-                    children: <Widget>[
+                    children: <Container>[
                       Container(
                         height: 32.0,
                         width: stats.watching! / stats.totalEntries * screenWidth,
@@ -94,7 +88,7 @@ class AnimeStatsSection extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: <Column>[
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -102,7 +96,7 @@ class AnimeStatsSection extends StatelessWidget {
                     children: <Widget>[
                       CircleAvatar(backgroundColor: kWatchingColor, radius: 10.0),
                       SizedBox(width: 8.0),
-                      Text('Watching: ${f.format(stats.watching)}'),
+                      Text('Watching: ${stats.watching!.decimal()}'),
                     ],
                   ),
                   SizedBox(height: 8.0),
@@ -110,7 +104,7 @@ class AnimeStatsSection extends StatelessWidget {
                     children: <Widget>[
                       CircleAvatar(backgroundColor: kCompletedColor, radius: 10.0),
                       SizedBox(width: 8.0),
-                      Text('Completed: ${f.format(stats.completed)}'),
+                      Text('Completed: ${stats.completed.decimal()}'),
                     ],
                   ),
                   SizedBox(height: 8.0),
@@ -118,7 +112,7 @@ class AnimeStatsSection extends StatelessWidget {
                     children: <Widget>[
                       CircleAvatar(backgroundColor: kOnHoldColor, radius: 10.0),
                       SizedBox(width: 8.0),
-                      Text('On-Hold: ${f.format(stats.onHold)}'),
+                      Text('On-Hold: ${stats.onHold.decimal()}'),
                     ],
                   ),
                   SizedBox(height: 8.0),
@@ -126,7 +120,7 @@ class AnimeStatsSection extends StatelessWidget {
                     children: <Widget>[
                       CircleAvatar(backgroundColor: kDroppedColor, radius: 10.0),
                       SizedBox(width: 8.0),
-                      Text('Dropped: ${f.format(stats.dropped)}'),
+                      Text('Dropped: ${stats.dropped.decimal()}'),
                     ],
                   ),
                   SizedBox(height: 8.0),
@@ -134,7 +128,7 @@ class AnimeStatsSection extends StatelessWidget {
                     children: <Widget>[
                       CircleAvatar(backgroundColor: kPlantoWatchColor, radius: 10.0),
                       SizedBox(width: 8.0),
-                      Text('Plan to Watch: ${f.format(stats.planToWatch)}'),
+                      Text('Plan to Watch: ${stats.planToWatch!.decimal()}'),
                     ],
                   ),
                 ],
@@ -142,11 +136,11 @@ class AnimeStatsSection extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Total Entries: ${f.format(stats.totalEntries)}'),
+                  Text('Total Entries: ${stats.totalEntries.decimal()}'),
                   SizedBox(height: 16.0),
-                  Text('Rewatched: ${f.format(stats.rewatched)}'),
+                  Text('Rewatched: ${stats.rewatched!.decimal()}'),
                   SizedBox(height: 16.0),
-                  Text('Episodes: ${f.format(stats.episodesWatched)}'),
+                  Text('Episodes: ${stats.episodesWatched!.decimal()}'),
                 ],
               ),
             ],
