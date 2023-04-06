@@ -34,11 +34,11 @@ class TopMangaScreen extends StatelessWidget {
               Tab(text: 'Most Favorited'),
             ],
           ),
-          actions: <Widget>[CustomView()],
+          actions: [CustomView()],
         ),
         body: Provider.of<UserData>(context).gridView
             ? TabBarView(
-                children: const <Widget>[
+                children: const <TopGrid>[
                   TopGrid(anime: false),
                   TopGrid(type: TopType.manga, anime: false),
                   TopGrid(type: TopType.oneshots, anime: false),
@@ -47,12 +47,12 @@ class TopMangaScreen extends StatelessWidget {
                   TopGrid(type: TopType.novels, anime: false),
                   TopGrid(type: TopType.manhwa, anime: false),
                   TopGrid(type: TopType.manhua, anime: false),
-                  TopGrid(subtype: TopSubtype.bypopularity, anime: false),
-                  TopGrid(subtype: TopSubtype.favorite, anime: false),
+                  TopGrid(filter: TopFilter.bypopularity, anime: false),
+                  TopGrid(filter: TopFilter.favorite, anime: false),
                 ],
               )
             : TabBarView(
-                children: const <Widget>[
+                children: const <TopList>[
                   TopList(anime: false),
                   TopList(type: TopType.manga, anime: false),
                   TopList(type: TopType.oneshots, anime: false),
@@ -61,8 +61,8 @@ class TopMangaScreen extends StatelessWidget {
                   TopList(type: TopType.novels, anime: false),
                   TopList(type: TopType.manhwa, anime: false),
                   TopList(type: TopType.manhua, anime: false),
-                  TopList(subtype: TopSubtype.bypopularity, anime: false),
-                  TopList(subtype: TopSubtype.favorite, anime: false),
+                  TopList(filter: TopFilter.bypopularity, anime: false),
+                  TopList(filter: TopFilter.favorite, anime: false),
                 ],
               ),
       ),

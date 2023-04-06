@@ -1,4 +1,3 @@
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/main.dart';
+import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/screens/anime_list_screen.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
@@ -30,24 +30,25 @@ import 'package:myanimelist/widgets/home/season_horizontal.dart';
 import 'package:myanimelist/widgets/home/suggestion_horizontal.dart';
 import 'package:myanimelist/widgets/home/top_horizontal.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen(this.profile, this.season, this.topAiring, this.topUpcoming, this.suggestions, this.remoteConfig);
+  const HomeScreen(this.profile, this.season, this.topAiring, this.topUpcoming, this.suggestions);
 
   final UserProfile? profile;
   final BuiltList<Anime> season;
   final BuiltList<Anime> topAiring;
   final BuiltList<Anime> topUpcoming;
   final List<dynamic>? suggestions;
-  final FirebaseRemoteConfig remoteConfig;
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
     return Scaffold(
       appBar: AppBar(
         title: Text('AnimeDB'),
-        actions: <Widget>[SearchButton()],
+        actions: [SearchButton()],
       ),
       body: ListView(
         children: <Widget>[
@@ -69,7 +70,8 @@ class HomeScreen extends StatelessWidget {
                     accountEmail: null,
                     currentAccountPicture: profile == null
                         ? Container()
-                        : CircleAvatar(backgroundImage: NetworkImage(profile!.imageUrl ?? kDefaultImage)),
+                        : CircleAvatar(foregroundImage: NetworkImage(profile!.imageUrl ?? kDefaultImage)),
+                    decoration: BoxDecoration(color: Colors.indigo),
                   ),
                   profile == null
                       ? ListTile(
@@ -91,7 +93,7 @@ class HomeScreen extends StatelessWidget {
                       : ExpansionTile(
                           title: Text('User'),
                           leading: Icon(FontAwesomeIcons.userLarge),
-                          children: <Widget>[
+                          children: <ListTile>[
                             ListTile(
                               title: Text('Profile'),
                               onTap: () {
@@ -101,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => UserProfileScreen(profile!.username),
-                                    settings: RouteSettings(name: 'UserProfileScreen'),
+                                    settings: const RouteSettings(name: 'UserProfileScreen'),
                                   ),
                                 );
                               },
@@ -115,7 +117,7 @@ class HomeScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => AnimeListScreen(profile!.username),
-                                    settings: RouteSettings(name: 'AnimeListScreen'),
+                                    settings: const RouteSettings(name: 'AnimeListScreen'),
                                   ),
                                 );
                               },
@@ -129,7 +131,7 @@ class HomeScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => MangaListScreen(profile!.username),
-                                    settings: RouteSettings(name: 'MangaListScreen'),
+                                    settings: const RouteSettings(name: 'MangaListScreen'),
                                   ),
                                 );
                               },
@@ -139,7 +141,7 @@ class HomeScreen extends StatelessWidget {
                   ExpansionTile(
                     title: Text('Anime'),
                     leading: Icon(FontAwesomeIcons.tv),
-                    children: <Widget>[
+                    children: <ListTile>[
                       ListTile(
                         title: Text('Anime Search'),
                         onTap: () async {
@@ -153,8 +155,9 @@ class HomeScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AnimeScreen(selected.malId, selected.title),
-                                settings: RouteSettings(name: 'AnimeScreen'),
+                                builder: (context) =>
+                                    AnimeScreen(selected.malId, selected.title, episodes: selected.episodes),
+                                settings: const RouteSettings(name: 'AnimeScreen'),
                               ),
                             );
                           }
@@ -169,7 +172,7 @@ class HomeScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => TopAnimeScreen(),
-                              settings: RouteSettings(name: 'TopAnimeScreen'),
+                              settings: const RouteSettings(name: 'TopAnimeScreen'),
                             ),
                           );
                         },
@@ -177,14 +180,14 @@ class HomeScreen extends StatelessWidget {
                       ListTile(
                         title: Text('Seasonal Anime'),
                         onTap: () {
-                          String seasonName = season.first.season![0].toUpperCase() + season.first.season!.substring(1);
+                          String seasonName = season.first.season!.toTitleCase();
                           FirebaseAnalytics.instance.logSelectContent(contentType: 'anime', itemId: 'seasonal');
                           Navigator.pop(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SeasonalAnimeScreen(year: season.first.year!, type: seasonName),
-                              settings: RouteSettings(name: 'SeasonalAnimeScreen'),
+                              builder: (context) => SeasonalAnimeScreen(year: season.first.year!, season: seasonName),
+                              settings: const RouteSettings(name: 'SeasonalAnimeScreen'),
                             ),
                           );
                         },
@@ -198,7 +201,7 @@ class HomeScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => GenreAnimeScreen(showCount: remoteConfig.getBool('v4_genres')),
-                              settings: RouteSettings(name: 'GenreAnimeScreen'),
+                              settings: const RouteSettings(name: 'GenreAnimeScreen'),
                             ),
                           );
                         },
@@ -213,7 +216,7 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ProducerScreen(),
-                                settings: RouteSettings(name: 'StudioScreen'),
+                                settings: const RouteSettings(name: 'StudioScreen'),
                               ),
                             );
                           },
@@ -228,7 +231,7 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ReviewScreen(),
-                                settings: RouteSettings(name: 'ReviewAnimeScreen'),
+                                settings: const RouteSettings(name: 'ReviewAnimeScreen'),
                               ),
                             );
                           },
@@ -244,7 +247,7 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => RecommendationScreen(),
-                                settings: RouteSettings(name: 'RecommendationAnimeScreen'),
+                                settings: const RouteSettings(name: 'RecommendationAnimeScreen'),
                               ),
                             );
                           },
@@ -254,7 +257,7 @@ class HomeScreen extends StatelessWidget {
                   ExpansionTile(
                     title: Text('Manga'),
                     leading: Icon(FontAwesomeIcons.book),
-                    children: <Widget>[
+                    children: <ListTile>[
                       ListTile(
                         title: Text('Manga Search'),
                         onTap: () async {
@@ -269,7 +272,7 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => MangaScreen(selected.malId, selected.title),
-                                settings: RouteSettings(name: 'MangaScreen'),
+                                settings: const RouteSettings(name: 'MangaScreen'),
                               ),
                             );
                           }
@@ -284,7 +287,7 @@ class HomeScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => TopMangaScreen(),
-                              settings: RouteSettings(name: 'TopMangaScreen'),
+                              settings: const RouteSettings(name: 'TopMangaScreen'),
                             ),
                           );
                         },
@@ -298,7 +301,7 @@ class HomeScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => GenreMangaScreen(showCount: remoteConfig.getBool('v4_genres')),
-                              settings: RouteSettings(name: 'GenreMangaScreen'),
+                              settings: const RouteSettings(name: 'GenreMangaScreen'),
                             ),
                           );
                         },
@@ -313,7 +316,7 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ProducerScreen(anime: false),
-                                settings: RouteSettings(name: 'MagazineScreen'),
+                                settings: const RouteSettings(name: 'MagazineScreen'),
                               ),
                             );
                           },
@@ -328,7 +331,7 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ReviewScreen(anime: false),
-                                settings: RouteSettings(name: 'ReviewMangaScreen'),
+                                settings: const RouteSettings(name: 'ReviewMangaScreen'),
                               ),
                             );
                           },
@@ -344,7 +347,7 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => RecommendationScreen(anime: false),
-                                settings: RouteSettings(name: 'RecommendationMangaScreen'),
+                                settings: const RouteSettings(name: 'RecommendationMangaScreen'),
                               ),
                             );
                           },
@@ -354,7 +357,7 @@ class HomeScreen extends StatelessWidget {
                   ExpansionTile(
                     title: Text('Industry'),
                     leading: Icon(FontAwesomeIcons.briefcase),
-                    children: <Widget>[
+                    children: <ListTile>[
                       ListTile(
                         title: Text('News'),
                         onTap: () {
@@ -364,7 +367,7 @@ class HomeScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => FeedScreen(),
-                              settings: RouteSettings(name: 'NewsScreen'),
+                              settings: const RouteSettings(name: 'NewsScreen'),
                             ),
                           );
                         },
@@ -378,7 +381,7 @@ class HomeScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => FeedScreen(news: false),
-                              settings: RouteSettings(name: 'FeaturedArticlesScreen'),
+                              settings: const RouteSettings(name: 'FeaturedArticlesScreen'),
                             ),
                           );
                         },
@@ -392,7 +395,7 @@ class HomeScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => TopPeopleScreen(),
-                              settings: RouteSettings(name: 'TopPeopleScreen'),
+                              settings: const RouteSettings(name: 'TopPeopleScreen'),
                             ),
                           );
                         },
@@ -406,7 +409,7 @@ class HomeScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => TopCharactersScreen(),
-                              settings: RouteSettings(name: 'TopCharactersScreen'),
+                              settings: const RouteSettings(name: 'TopCharactersScreen'),
                             ),
                           );
                         },
@@ -417,7 +420,7 @@ class HomeScreen extends StatelessWidget {
                     ExpansionTile(
                       title: Text('Watch'),
                       leading: Icon(FontAwesomeIcons.youtube),
-                      children: <Widget>[
+                      children: <ListTile>[
                         ListTile(
                           title: Text('Episode Videos'),
                           onTap: () {
@@ -427,7 +430,7 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => WatchScreen(),
-                                settings: RouteSettings(name: 'EpisodeVideosScreen'),
+                                settings: const RouteSettings(name: 'EpisodeVideosScreen'),
                               ),
                             );
                           },
@@ -441,7 +444,7 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => WatchScreen(episodes: false),
-                                settings: RouteSettings(name: 'PromotionalVideosScreen'),
+                                settings: const RouteSettings(name: 'PromotionalVideosScreen'),
                               ),
                             );
                           },
@@ -456,7 +459,7 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
+                children: <IconButton>[
                   IconButton(
                     icon: Icon(FontAwesomeIcons.gear, color: Theme.of(context).unselectedWidgetColor),
                     tooltip: 'Settings',
@@ -469,7 +472,7 @@ class HomeScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => SettingsScreen(prefs, packageInfo),
-                          settings: RouteSettings(name: 'SettingsScreen'),
+                          settings: const RouteSettings(name: 'SettingsScreen'),
                         ),
                       );
                     },
@@ -480,7 +483,7 @@ class HomeScreen extends StatelessWidget {
                     onPressed: () {
                       FirebaseAnalytics.instance.logEvent(name: 'theme');
                       Navigator.pop(context);
-                      DynamicTheme.of(context)!.toggleBrightness();
+                      Provider.of<UserData>(context, listen: false).toggleBrightness();
                     },
                   ),
                 ],

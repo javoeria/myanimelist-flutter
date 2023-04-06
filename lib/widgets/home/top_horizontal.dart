@@ -23,7 +23,7 @@ class TopHorizontal extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Top $label Anime', style: Theme.of(context).textTheme.headline6),
+              Text('Top $label Anime', style: Theme.of(context).textTheme.titleMedium),
               IconButton(
                 icon: Icon(Icons.chevron_right),
                 key: Key('${label.toLowerCase()}_icon'),
@@ -32,7 +32,7 @@ class TopHorizontal extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => TopAnimeScreen(index: label == 'Airing' ? 1 : 2),
-                      settings: RouteSettings(name: 'TopAnimeScreen'),
+                      settings: const RouteSettings(name: 'TopAnimeScreen'),
                     ),
                   );
                 },

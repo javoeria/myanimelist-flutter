@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 
 class MangaStatsSection extends StatelessWidget {
-  MangaStatsSection(this.stats);
+  const MangaStatsSection(this.stats);
 
   final UserStats stats;
-  final NumberFormat f = NumberFormat.decimalPattern();
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width - 32.0;
+    final double screenWidth = MediaQuery.of(context).size.width - 32.0;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -20,17 +18,17 @@ class MangaStatsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Manga Stats', style: Theme.of(context).textTheme.subtitle1),
+              Text('Manga Stats', style: Theme.of(context).textTheme.bodyLarge),
               SizedBox(height: 8.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
+                children: <RichText>[
                   RichText(
                     text: TextSpan(
                       text: 'Days: ',
                       style: DefaultTextStyle.of(context).style,
                       children: <TextSpan>[
-                        TextSpan(text: stats.daysRead.toString(), style: Theme.of(context).textTheme.bodyText1),
+                        TextSpan(text: stats.daysRead.toString(), style: Theme.of(context).textTheme.titleSmall),
                       ],
                     ),
                   ),
@@ -39,7 +37,7 @@ class MangaStatsSection extends StatelessWidget {
                       text: 'Mean Score: ',
                       style: DefaultTextStyle.of(context).style,
                       children: <TextSpan>[
-                        TextSpan(text: stats.meanScore.toString(), style: Theme.of(context).textTheme.bodyText1),
+                        TextSpan(text: stats.meanScore.toString(), style: Theme.of(context).textTheme.titleSmall),
                       ],
                     ),
                   ),
@@ -53,13 +51,9 @@ class MangaStatsSection extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(4.0),
             child: stats.totalEntries == 0
-                ? Container(
-                    height: 32.0,
-                    width: screenWidth,
-                    color: Colors.grey[300],
-                  )
+                ? Container(height: 32.0, width: screenWidth, color: Colors.grey[300])
                 : Row(
-                    children: <Widget>[
+                    children: <Container>[
                       Container(
                         height: 32.0,
                         width: stats.reading! / stats.totalEntries * screenWidth,
@@ -94,7 +88,7 @@ class MangaStatsSection extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: <Column>[
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -102,7 +96,7 @@ class MangaStatsSection extends StatelessWidget {
                     children: <Widget>[
                       CircleAvatar(backgroundColor: kWatchingColor, radius: 10.0),
                       SizedBox(width: 8.0),
-                      Text('Reading: ${f.format(stats.reading)}'),
+                      Text('Reading: ${stats.reading!.decimal()}'),
                     ],
                   ),
                   SizedBox(height: 8.0),
@@ -110,7 +104,7 @@ class MangaStatsSection extends StatelessWidget {
                     children: <Widget>[
                       CircleAvatar(backgroundColor: kCompletedColor, radius: 10.0),
                       SizedBox(width: 8.0),
-                      Text('Completed: ${f.format(stats.completed)}'),
+                      Text('Completed: ${stats.completed.decimal()}'),
                     ],
                   ),
                   SizedBox(height: 8.0),
@@ -118,7 +112,7 @@ class MangaStatsSection extends StatelessWidget {
                     children: <Widget>[
                       CircleAvatar(backgroundColor: kOnHoldColor, radius: 10.0),
                       SizedBox(width: 8.0),
-                      Text('On-Hold: ${f.format(stats.onHold)}'),
+                      Text('On-Hold: ${stats.onHold.decimal()}'),
                     ],
                   ),
                   SizedBox(height: 8.0),
@@ -126,7 +120,7 @@ class MangaStatsSection extends StatelessWidget {
                     children: <Widget>[
                       CircleAvatar(backgroundColor: kDroppedColor, radius: 10.0),
                       SizedBox(width: 8.0),
-                      Text('Dropped: ${f.format(stats.dropped)}'),
+                      Text('Dropped: ${stats.dropped.decimal()}'),
                     ],
                   ),
                   SizedBox(height: 8.0),
@@ -134,7 +128,7 @@ class MangaStatsSection extends StatelessWidget {
                     children: <Widget>[
                       CircleAvatar(backgroundColor: kPlantoWatchColor, radius: 10.0),
                       SizedBox(width: 8.0),
-                      Text('Plan to Read: ${f.format(stats.planToRead)}'),
+                      Text('Plan to Read: ${stats.planToRead!.decimal()}'),
                     ],
                   ),
                 ],
@@ -142,13 +136,13 @@ class MangaStatsSection extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Total Entries: ${f.format(stats.totalEntries)}'),
+                  Text('Total Entries: ${stats.totalEntries.decimal()}'),
                   SizedBox(height: 16.0),
-                  Text('Reread: ${f.format(stats.reread)}'),
+                  Text('Reread: ${stats.reread!.decimal()}'),
                   SizedBox(height: 16.0),
-                  Text('Chapters: ${f.format(stats.chaptersRead)}'),
+                  Text('Chapters: ${stats.chaptersRead!.decimal()}'),
                   SizedBox(height: 16.0),
-                  Text('Volumes: ${f.format(stats.volumesRead)}'),
+                  Text('Volumes: ${stats.volumesRead!.decimal()}'),
                 ],
               ),
             ],

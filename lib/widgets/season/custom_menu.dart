@@ -9,13 +9,11 @@ class CustomMenu extends StatelessWidget {
     int year = DateTime.now().year;
     int month = DateTime.now().month;
     List<String> common = ['Later', 'Schedule', 'Archive'];
-    if (month == 1) {
-      return ['Summer ${year - 1}', 'Fall ${year - 1}', 'Winter $year', 'Spring $year'] + common;
-    } else if (month >= 2 && month < 5) {
+    if (month < 4) {
       return ['Fall ${year - 1}', 'Winter $year', 'Spring $year', 'Summer $year'] + common;
-    } else if (month >= 5 && month < 8) {
+    } else if (month >= 4 && month < 7) {
       return ['Winter $year', 'Spring $year', 'Summer $year', 'Fall $year'] + common;
-    } else if (month >= 8 && month < 11) {
+    } else if (month >= 7 && month < 10) {
       return ['Spring $year', 'Summer $year', 'Fall $year', 'Winter ${year + 1}'] + common;
     } else {
       return ['Summer $year', 'Fall $year', 'Winter ${year + 1}', 'Spring ${year + 1}'] + common;
@@ -24,17 +22,17 @@ class CustomMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
+    return PopupMenuButton<String>(
       itemBuilder: (context) {
         return lastSeasons().map((season) => PopupMenuItem(value: season, child: Text(season))).toList();
       },
-      onSelected: (String value) async {
+      onSelected: (value) async {
         if (value == 'Later') {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => LaterScreen(),
-              settings: RouteSettings(name: 'LaterScreen'),
+              settings: const RouteSettings(name: 'LaterScreen'),
             ),
           );
         } else if (value == 'Schedule') {
@@ -42,7 +40,7 @@ class CustomMenu extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => ScheduleScreen(),
-              settings: RouteSettings(name: 'ScheduleScreen'),
+              settings: const RouteSettings(name: 'ScheduleScreen'),
             ),
           );
         } else if (value == 'Archive') {
@@ -50,7 +48,7 @@ class CustomMenu extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => ArchiveScreen(),
-              settings: RouteSettings(name: 'ArchiveScreen'),
+              settings: const RouteSettings(name: 'ArchiveScreen'),
               fullscreenDialog: true,
             ),
           );
@@ -59,8 +57,8 @@ class CustomMenu extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => SeasonalAnimeScreen(year: int.parse(values[1]), type: values[0]),
-                settings: RouteSettings(name: 'SeasonalAnimeScreen'),
+                builder: (context) => SeasonalAnimeScreen(year: int.parse(values[1]), season: values[0]),
+                settings: const RouteSettings(name: 'SeasonalAnimeScreen'),
               ),
             );
           }
@@ -69,8 +67,8 @@ class CustomMenu extends StatelessWidget {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => SeasonalAnimeScreen(year: int.parse(values[1]), type: values[0]),
-              settings: RouteSettings(name: 'SeasonalAnimeScreen'),
+              builder: (context) => SeasonalAnimeScreen(year: int.parse(values[1]), season: values[0]),
+              settings: const RouteSettings(name: 'SeasonalAnimeScreen'),
             ),
           );
         }

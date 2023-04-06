@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show NumberFormat, DateFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/profile/about_section.dart';
@@ -19,10 +18,6 @@ class PersonScreen extends StatefulWidget {
 }
 
 class _PersonScreenState extends State<PersonScreen> {
-  final Jikan jikan = Jikan();
-  final NumberFormat f = NumberFormat.decimalPattern();
-  final DateFormat dateFormat = DateFormat('MMM d, yy');
-
   late ScrollController _scrollController;
   late Person person;
   late BuiltList<Picture> pictures;
@@ -55,65 +50,68 @@ class _PersonScreenState extends State<PersonScreen> {
     }
 
     return Scaffold(
-      body: CustomScrollView(controller: _scrollController, slivers: <Widget>[
-        SliverAppBar(
-          pinned: true,
-          expandedHeight: kExpandedHeight,
-          title: _showTitle ? Text(person.name) : null,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Padding(
-              padding: kSliverAppBarPadding,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        child: Image.network(
-                          person.imageUrl,
-                          width: kSliverAppBarWidth,
-                          height: kSliverAppBarHeight,
-                          fit: BoxFit.contain,
-                          alignment: Alignment.centerRight,
-                        ),
+      body: CustomScrollView(
+        controller: _scrollController,
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: true,
+            expandedHeight: kExpandedHeight,
+            title: _showTitle ? Text(person.name) : null,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Padding(
+                padding: kSliverAppBarPadding,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Expanded(
+                      child: Image.network(
+                        person.imageUrl,
+                        width: kSliverAppBarWidth,
+                        height: kSliverAppBarHeight,
+                        fit: BoxFit.contain,
+                        alignment: Alignment.centerRight,
                       ),
-                      SizedBox(width: 16.0),
-                      Expanded(
+                    ),
+                    SizedBox(width: 24.0),
+                    Expanded(
+                      child: SizedBox(
+                        height: kSliverAppBarHeight,
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             AutoSizeText(
                               person.name,
-                              style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
+                              style: Theme.of(context).textTheme.titleLarge,
                               maxLines: 2,
                             ),
                             person.familyName != null && person.givenName != null
                                 ? AutoSizeText(
                                     '${person.familyName} ${person.givenName}',
-                                    style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
+                                    style: Theme.of(context).textTheme.titleSmall,
                                     maxLines: 1,
                                   )
                                 : Container(),
                             SizedBox(height: 24.0),
                             Row(
                               children: <Widget>[
-                                Icon(Icons.person, color: Colors.white, size: 20.0),
+                                Icon(Icons.person, size: 20.0),
                                 SizedBox(width: 4.0),
                                 Text(
-                                  f.format(person.favorites),
-                                  style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
+                                  person.favorites.decimal(),
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ],
                             ),
                             person.birthday != null
                                 ? Row(
                                     children: <Widget>[
-                                      Icon(Icons.cake, color: Colors.white, size: 20.0),
+                                      Icon(Icons.cake, size: 20.0),
                                       SizedBox(width: 4.0),
                                       Text(
-                                        dateFormat.format(DateTime.parse(person.birthday!)),
-                                        style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
+                                        person.birthday!.formatDate(pattern: 'MMM d, yy'),
+                                        style: Theme.of(context).textTheme.bodyLarge,
                                       ),
                                     ],
                                   )
@@ -121,23 +119,23 @@ class _PersonScreenState extends State<PersonScreen> {
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        SliverList(
-          delegate: SliverChildListDelegate(<Widget>[
-            AboutSection(person.about),
-            person.voices!.isNotEmpty ? RoleList(person.voices!) : Container(),
-            person.anime!.isNotEmpty ? StaffList(person.anime!) : Container(),
-            person.manga!.isNotEmpty ? PublishList(person.manga!) : Container(),
-            pictures.isNotEmpty ? PictureList(pictures) : Container(),
-          ]),
-        ),
-      ]),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              AboutSection(person.about),
+              person.voices!.isNotEmpty ? RoleList(person.voices!) : Container(),
+              person.anime!.isNotEmpty ? StaffList(person.anime!) : Container(),
+              person.manga!.isNotEmpty ? PublishList(person.manga!) : Container(),
+              pictures.isNotEmpty ? PictureList(pictures) : Container(),
+            ]),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -155,7 +153,7 @@ class StaffList extends StatelessWidget {
         Divider(height: 0.0),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
-          child: Text('Anime Staff Positions', style: Theme.of(context).textTheme.headline6),
+          child: Text('Anime Staff Positions', style: Theme.of(context).textTheme.titleMedium),
         ),
         SizedBox(
           height: kImageHeightM,
@@ -197,7 +195,7 @@ class PublishList extends StatelessWidget {
         Divider(height: 0.0),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
-          child: Text('Published Manga', style: Theme.of(context).textTheme.headline6),
+          child: Text('Published Manga', style: Theme.of(context).textTheme.titleMedium),
         ),
         SizedBox(
           height: kImageHeightM,

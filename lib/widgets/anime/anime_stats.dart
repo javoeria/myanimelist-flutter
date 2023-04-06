@@ -1,7 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/constants.dart';
 
 class AnimeStats extends StatefulWidget {
   const AnimeStats(this.id, {this.anime = true});
@@ -14,13 +14,12 @@ class AnimeStats extends StatefulWidget {
 }
 
 class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMixin<AnimeStats> {
-  final NumberFormat f = NumberFormat.decimalPattern();
   late Future<Stats> _future;
 
   @override
   void initState() {
     super.initState();
-    _future = widget.anime ? Jikan().getAnimeStatistics(widget.id) : Jikan().getMangaStatistics(widget.id);
+    _future = widget.anime ? jikan.getAnimeStatistics(widget.id) : jikan.getMangaStatistics(widget.id);
   }
 
   @override
@@ -45,7 +44,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Summary Stats', style: Theme.of(context).textTheme.headline6),
+                  Text('Summary Stats', style: Theme.of(context).textTheme.titleMedium),
                   SizedBox(height: 16.0),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,18 +53,18 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                           ? RichText(
                               text: TextSpan(
                                 text: 'Watching: ',
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.titleSmall,
                                 children: <TextSpan>[
-                                  TextSpan(text: f.format(stats.watching), style: DefaultTextStyle.of(context).style),
+                                  TextSpan(text: stats.watching!.decimal(), style: DefaultTextStyle.of(context).style),
                                 ],
                               ),
                             )
                           : RichText(
                               text: TextSpan(
                                 text: 'Reading: ',
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.titleSmall,
                                 children: <TextSpan>[
-                                  TextSpan(text: f.format(stats.reading), style: DefaultTextStyle.of(context).style),
+                                  TextSpan(text: stats.reading!.decimal(), style: DefaultTextStyle.of(context).style),
                                 ],
                               ),
                             ),
@@ -73,9 +72,9 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                       RichText(
                         text: TextSpan(
                           text: 'Completed: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.titleSmall,
                           children: <TextSpan>[
-                            TextSpan(text: f.format(stats.completed), style: DefaultTextStyle.of(context).style),
+                            TextSpan(text: stats.completed.decimal(), style: DefaultTextStyle.of(context).style),
                           ],
                         ),
                       ),
@@ -83,9 +82,9 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                       RichText(
                         text: TextSpan(
                           text: 'On-Hold: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.titleSmall,
                           children: <TextSpan>[
-                            TextSpan(text: f.format(stats.onHold), style: DefaultTextStyle.of(context).style),
+                            TextSpan(text: stats.onHold.decimal(), style: DefaultTextStyle.of(context).style),
                           ],
                         ),
                       ),
@@ -93,9 +92,9 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                       RichText(
                         text: TextSpan(
                           text: 'Dropped: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.titleSmall,
                           children: <TextSpan>[
-                            TextSpan(text: f.format(stats.dropped), style: DefaultTextStyle.of(context).style),
+                            TextSpan(text: stats.dropped.decimal(), style: DefaultTextStyle.of(context).style),
                           ],
                         ),
                       ),
@@ -104,19 +103,20 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                           ? RichText(
                               text: TextSpan(
                                 text: 'Plan to Watch: ',
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.titleSmall,
                                 children: <TextSpan>[
                                   TextSpan(
-                                      text: f.format(stats.planToWatch), style: DefaultTextStyle.of(context).style),
+                                      text: stats.planToWatch!.decimal(), style: DefaultTextStyle.of(context).style),
                                 ],
                               ),
                             )
                           : RichText(
                               text: TextSpan(
                                 text: 'Plan to Read: ',
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.titleSmall,
                                 children: <TextSpan>[
-                                  TextSpan(text: f.format(stats.planToRead), style: DefaultTextStyle.of(context).style),
+                                  TextSpan(
+                                      text: stats.planToRead!.decimal(), style: DefaultTextStyle.of(context).style),
                                 ],
                               ),
                             ),
@@ -124,9 +124,9 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
                       RichText(
                         text: TextSpan(
                           text: 'Total: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.titleSmall,
                           children: <TextSpan>[
-                            TextSpan(text: f.format(stats.total), style: DefaultTextStyle.of(context).style),
+                            TextSpan(text: stats.total.decimal(), style: DefaultTextStyle.of(context).style),
                           ],
                         ),
                       ),
@@ -141,11 +141,13 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Score Stats', style: Theme.of(context).textTheme.headline6),
-                  SizedBox(
-                    height: 400.0,
-                    child: HorizontalBarChart(stats.scores),
-                  ),
+                  Text('Score Stats', style: Theme.of(context).textTheme.titleMedium),
+                  stats.scores.isEmpty
+                      ? Text('No scores have been recorded to this title.')
+                      : SizedBox(
+                          height: 400.0,
+                          child: HorizontalBarChart(stats.scores),
+                        ),
                 ],
               ),
             ),
@@ -166,19 +168,19 @@ class HorizontalBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool light = Theme.of(context).brightness == Brightness.light;
+    final bool isLight = Theme.of(context).brightness == Brightness.light;
     return charts.BarChart(
       _scoreData(),
       animate: false,
       vertical: false,
       defaultInteractions: false,
-      barRendererDecorator: light
+      barRendererDecorator: isLight
           ? charts.BarLabelDecorator<String>()
           : charts.BarLabelDecorator<String>(
               insideLabelStyleSpec: charts.TextStyleSpec(color: charts.MaterialPalette.white),
               outsideLabelStyleSpec: charts.TextStyleSpec(color: charts.MaterialPalette.white),
             ),
-      primaryMeasureAxis: light
+      primaryMeasureAxis: isLight
           ? charts.NumericAxisSpec()
           : charts.NumericAxisSpec(
               renderSpec: charts.GridlineRendererSpec(
@@ -186,7 +188,7 @@ class HorizontalBarChart extends StatelessWidget {
                 lineStyle: charts.LineStyleSpec(color: charts.MaterialPalette.gray.shade700),
               ),
             ),
-      domainAxis: light
+      domainAxis: isLight
           ? charts.OrdinalAxisSpec()
           : charts.OrdinalAxisSpec(
               renderSpec: charts.GridlineRendererSpec(
@@ -197,35 +199,16 @@ class HorizontalBarChart extends StatelessWidget {
     );
   }
 
-  List<charts.Series<ScoreStats, String>> _scoreData() {
-    final List<ScoreStats> data = [
-      ScoreStats('10', scores[9]),
-      ScoreStats('9', scores[8]),
-      ScoreStats('8', scores[7]),
-      ScoreStats('7', scores[6]),
-      ScoreStats('6', scores[5]),
-      ScoreStats('5', scores[4]),
-      ScoreStats('4', scores[3]),
-      ScoreStats('3', scores[2]),
-      ScoreStats('2', scores[1]),
-      ScoreStats('1', scores[0]),
-    ];
-
+  List<charts.Series<Score, String>> _scoreData() {
     return [
-      charts.Series<ScoreStats, String>(
+      charts.Series<Score, String>(
         id: 'Score Stats',
-        domainFn: (ScoreStats stats, _) => stats.label,
-        measureFn: (ScoreStats stats, _) => stats.score.votes,
-        data: data,
-        labelAccessorFn: (ScoreStats stats, _) => '${stats.score.percentage}% (${stats.score.votes} votes)',
+        data: scores.reversed.toList(),
+        domainFn: (score, _) => score.score.toString(),
+        measureFn: (score, _) => score.votes,
+        labelAccessorFn: (score, _) => '${score.percentage}% (${score.votes} votes)',
+        seriesColor: charts.Color(r: 63, g: 81, b: 181),
       ),
     ];
   }
-}
-
-class ScoreStats {
-  final String label;
-  final Score score;
-
-  ScoreStats(this.label, this.score);
 }

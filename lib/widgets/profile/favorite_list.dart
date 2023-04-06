@@ -16,7 +16,7 @@ class FavoriteList extends StatelessWidget {
         Divider(height: 0.0),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 8.0),
-          child: Text('Favorites', style: Theme.of(context).textTheme.headline6),
+          child: Text('Favorites', style: Theme.of(context).textTheme.titleMedium),
         ),
         favorites.anime.isNotEmpty ? FavoriteSection(favorites.anime, type: ItemType.anime) : Container(),
         favorites.manga.isNotEmpty ? FavoriteSection(favorites.manga, type: ItemType.manga) : Container(),
@@ -38,21 +38,6 @@ class FavoriteSection extends StatelessWidget {
   final double width = kImageWidthM;
   final double height = kImageHeightM;
 
-  String get _favoriteTitle {
-    switch (type) {
-      case ItemType.anime:
-        return 'Anime';
-      case ItemType.manga:
-        return 'Manga';
-      case ItemType.people:
-        return 'People';
-      case ItemType.characters:
-        return 'Characters';
-      default:
-        throw 'ItemType Error';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -60,7 +45,7 @@ class FavoriteSection extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text(_favoriteTitle, style: Theme.of(context).textTheme.subtitle1),
+          child: Text(type.name.toTitleCase(), style: Theme.of(context).textTheme.bodyLarge),
         ),
         SizedBox(
           height: height,

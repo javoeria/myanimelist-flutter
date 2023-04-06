@@ -20,7 +20,7 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
   @override
   void initState() {
     super.initState();
-    _future = widget.anime ? Jikan().getAnimeRecommendations(widget.id) : Jikan().getMangaRecommendations(widget.id);
+    _future = widget.anime ? jikan.getAnimeRecommendations(widget.id) : jikan.getMangaRecommendations(widget.id);
   }
 
   @override
@@ -44,11 +44,11 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
               child: Wrap(
                 spacing: 16.0,
                 runSpacing: 16.0,
-                children: recommendationList.map((Recommendation recommendation) {
+                children: recommendationList.map((rec) {
                   return TitleAnime(
-                    recommendation.entry.malId,
-                    recommendation.entry.title,
-                    recommendation.entry.imageUrl,
+                    rec.entry.malId,
+                    rec.entry.title,
+                    rec.entry.imageUrl,
                     type: widget.anime ? ItemType.anime : ItemType.manga,
                   );
                 }).toList(),

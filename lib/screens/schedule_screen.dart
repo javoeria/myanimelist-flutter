@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/season/custom_menu.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
 
@@ -26,19 +27,19 @@ class ScheduleScreen extends StatelessWidget {
               Tab(text: 'Unknown'),
             ],
           ),
-          actions: <Widget>[CustomMenu()],
+          actions: [CustomMenu()],
         ),
         body: TabBarView(
-          children: const <Widget>[
-            ScheduleList(type: WeekDay.monday),
-            ScheduleList(type: WeekDay.tuesday),
-            ScheduleList(type: WeekDay.wednesday),
-            ScheduleList(type: WeekDay.thursday),
-            ScheduleList(type: WeekDay.friday),
-            ScheduleList(type: WeekDay.saturday),
-            ScheduleList(type: WeekDay.sunday),
-            ScheduleList(type: WeekDay.other),
-            ScheduleList(type: WeekDay.unknown),
+          children: const <ScheduleList>[
+            ScheduleList(day: WeekDay.monday),
+            ScheduleList(day: WeekDay.tuesday),
+            ScheduleList(day: WeekDay.wednesday),
+            ScheduleList(day: WeekDay.thursday),
+            ScheduleList(day: WeekDay.friday),
+            ScheduleList(day: WeekDay.saturday),
+            ScheduleList(day: WeekDay.sunday),
+            ScheduleList(day: WeekDay.other),
+            ScheduleList(day: WeekDay.unknown),
           ],
         ),
       ),
@@ -47,9 +48,9 @@ class ScheduleScreen extends StatelessWidget {
 }
 
 class ScheduleList extends StatefulWidget {
-  const ScheduleList({this.type});
+  const ScheduleList({this.day});
 
-  final WeekDay? type;
+  final WeekDay? day;
 
   @override
   _ScheduleListState createState() => _ScheduleListState();
@@ -61,7 +62,7 @@ class _ScheduleListState extends State<ScheduleList> with AutomaticKeepAliveClie
   @override
   void initState() {
     super.initState();
-    _future = Jikan().getSchedules(weekday: widget.type);
+    _future = jikan.getSchedules(weekday: widget.day);
   }
 
   @override
@@ -74,7 +75,7 @@ class _ScheduleListState extends State<ScheduleList> with AutomaticKeepAliveClie
           return Center(child: CircularProgressIndicator());
         }
 
-        return SeasonList(BuiltList(snapshot.data!.reversed));
+        return SeasonList(snapshot.data!.reversed.toBuiltList());
       },
     );
   }

@@ -24,6 +24,7 @@ class GenreHorizontal extends StatelessWidget {
             padding: const EdgeInsets.all(4.0),
             child: ActionChip(
               label: Text(genre.name),
+              padding: EdgeInsets.zero,
               onPressed: () {
                 if (anime) {
                   Navigator.push(

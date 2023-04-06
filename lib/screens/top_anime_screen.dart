@@ -34,35 +34,35 @@ class TopAnimeScreen extends StatelessWidget {
               Tab(text: 'Most Favorited'),
             ],
           ),
-          actions: <Widget>[CustomView()],
+          actions: [CustomView()],
         ),
         body: Provider.of<UserData>(context).gridView
             ? TabBarView(
-                children: const <Widget>[
+                children: const <TopGrid>[
                   TopGrid(),
-                  TopGrid(subtype: TopSubtype.airing),
-                  TopGrid(subtype: TopSubtype.upcoming),
+                  TopGrid(filter: TopFilter.airing),
+                  TopGrid(filter: TopFilter.upcoming),
                   TopGrid(type: TopType.tv),
                   TopGrid(type: TopType.movie),
                   TopGrid(type: TopType.ova),
                   TopGrid(type: TopType.ona),
                   TopGrid(type: TopType.special),
-                  TopGrid(subtype: TopSubtype.bypopularity),
-                  TopGrid(subtype: TopSubtype.favorite),
+                  TopGrid(filter: TopFilter.bypopularity),
+                  TopGrid(filter: TopFilter.favorite),
                 ],
               )
             : TabBarView(
-                children: const <Widget>[
+                children: const <TopList>[
                   TopList(),
-                  TopList(subtype: TopSubtype.airing),
-                  TopList(subtype: TopSubtype.upcoming),
+                  TopList(filter: TopFilter.airing),
+                  TopList(filter: TopFilter.upcoming),
                   TopList(type: TopType.tv),
                   TopList(type: TopType.movie),
                   TopList(type: TopType.ova),
                   TopList(type: TopType.ona),
                   TopList(type: TopType.special),
-                  TopList(subtype: TopSubtype.bypopularity),
-                  TopList(subtype: TopSubtype.favorite),
+                  TopList(filter: TopFilter.bypopularity),
+                  TopList(filter: TopFilter.favorite),
                 ],
               ),
       ),

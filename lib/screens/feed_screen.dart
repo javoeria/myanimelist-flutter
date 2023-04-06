@@ -18,9 +18,7 @@ class FeedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(news ? 'Anime & Manga News' : 'Featured Articles'),
-      ),
+      appBar: AppBar(title: Text(news ? 'Anime & Manga News' : 'Featured Articles')),
       body: FutureBuilder(
         future: getXmlData(),
         builder: (context, AsyncSnapshot<List<XmlElement>> snapshot) {
@@ -31,44 +29,40 @@ class FeedScreen extends StatelessWidget {
           List<XmlElement> items = snapshot.data!;
           return Scrollbar(
             child: ListView.separated(
-              separatorBuilder: (context, index) => Divider(height: 0.0),
+              separatorBuilder: (context, index) => const Divider(height: 0.0),
               itemCount: items.length,
               itemBuilder: (context, index) {
-                XmlElement article = items.elementAt(index);
+                XmlElement item = items.elementAt(index);
                 return InkWell(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
                       children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Image.network(
-                              article.getElement('media:thumbnail')!.text.trim(),
-                              width: 100.0,
-                              height: news ? 156.0 : 100.0,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(width: 8.0),
-                          ],
+                        Image.network(
+                          item.getElement('media:thumbnail')!.text.trim(),
+                          width: 100.0,
+                          height: news ? 156.0 : 100.0,
+                          fit: BoxFit.cover,
                         ),
+                        SizedBox(width: 8.0),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                article.getElement('title')!.text.trim(),
-                                style: Theme.of(context).textTheme.bodyText1,
+                                item.getElement('title')!.text.trim(),
+                                style: Theme.of(context).textTheme.titleSmall,
                               ),
                               SizedBox(height: 4.0),
                               Text(
-                                article.getElement('description')!.text.trim(),
-                                maxLines: 6,
+                                item.getElement('description')!.text.trim(),
+                                maxLines: 4,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               SizedBox(height: 4.0),
                               Text(
-                                article.getElement('pubDate')!.text.trim(),
-                                style: Theme.of(context).textTheme.caption,
+                                item.getElement('pubDate')!.text.trim(),
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           ),
@@ -77,7 +71,7 @@ class FeedScreen extends StatelessWidget {
                     ),
                   ),
                   onTap: () async {
-                    String url = article.getElement('link')!.text.trim();
+                    String url = item.getElement('link')!.text.trim();
                     if (await canLaunchUrlString(url)) {
                       await launchUrlString(url);
                     } else {

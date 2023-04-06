@@ -18,7 +18,7 @@ class RelatedList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
           child: Text(
             anime ? 'Related Anime' : 'Related Manga',
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
         SizedBox(

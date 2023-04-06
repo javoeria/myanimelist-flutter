@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jikan_api/jikan_api.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/season/custom_menu.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
 
@@ -23,7 +24,7 @@ class LaterScreen extends StatelessWidget {
               Tab(text: 'Unknown'),
             ],
           ),
-          actions: <Widget>[CustomMenu()],
+          actions: [CustomMenu()],
         ),
         body: FutureBuilder(
           future: getSeasonComplete(),
@@ -33,20 +34,14 @@ class LaterScreen extends StatelessWidget {
             }
 
             BuiltList<Anime> animeList = snapshot.data!;
-            BuiltList<Anime> tv = BuiltList(animeList.where((anime) => anime.type == 'TV'));
-            BuiltList<Anime> ona = BuiltList(animeList.where((anime) => anime.type == 'ONA'));
-            BuiltList<Anime> ova = BuiltList(animeList.where((anime) => anime.type == 'OVA'));
-            BuiltList<Anime> movie = BuiltList(animeList.where((anime) => anime.type == 'Movie'));
-            BuiltList<Anime> special = BuiltList(animeList.where((anime) => anime.type == 'Special'));
-            BuiltList<Anime> unknown = BuiltList(animeList.where((anime) => anime.type == null));
             return TabBarView(
-              children: <Widget>[
-                SeasonList(tv),
-                SeasonList(ona),
-                SeasonList(ova),
-                SeasonList(movie),
-                SeasonList(special),
-                SeasonList(unknown),
+              children: <SeasonList>[
+                SeasonList(animeList.where((anime) => anime.type == 'TV').toBuiltList()),
+                SeasonList(animeList.where((anime) => anime.type == 'ONA').toBuiltList()),
+                SeasonList(animeList.where((anime) => anime.type == 'OVA').toBuiltList()),
+                SeasonList(animeList.where((anime) => anime.type == 'Movie').toBuiltList()),
+                SeasonList(animeList.where((anime) => anime.type == 'Special').toBuiltList()),
+                SeasonList(animeList.where((anime) => anime.type == null).toBuiltList()),
               ],
             );
           },
@@ -59,7 +54,7 @@ class LaterScreen extends StatelessWidget {
     BuiltList<Anime> response = BuiltList();
     int page = 0;
     while (page < 4 && response.length == page * 25) {
-      response += await Jikan().getSeasonUpcoming(page: page + 1);
+      response += await jikan.getSeasonUpcoming(page: page + 1);
       page += 1;
     }
     return response;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/oauth.dart';
 
 class MangaDialog extends StatefulWidget {
@@ -30,79 +31,28 @@ class _MangaDialogState extends State<MangaDialog> {
     });
   }
 
-  String statusText(String status) {
-    switch (status) {
-      case 'reading':
-        return 'Reading';
-      case 'completed':
-        return 'Completed';
-      case 'on_hold':
-        return 'On-Hold';
-      case 'dropped':
-        return 'Dropped';
-      case 'plan_to_read':
-        return 'Plan to Read';
-      default:
-        throw 'MangaStatus Error';
-    }
-  }
-
-  String scoreText(String score) {
-    switch (score) {
-      case '10':
-        return '(10) Masterpiece';
-      case '9':
-        return '(9) Great';
-      case '8':
-        return '(8) Very Good';
-      case '7':
-        return '(7) Good';
-      case '6':
-        return '(6) Fine';
-      case '5':
-        return '(5) Average';
-      case '4':
-        return '(4) Bad';
-      case '3':
-        return '(3) Very Bad';
-      case '2':
-        return '(2) Horrible';
-      case '1':
-        return '(1) Appalling';
-      case '0':
-        return 'Select';
-      default:
-        throw 'Score Error';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     String total = widget.json['total_chapters'] == 0 ? '?' : widget.json['total_chapters'].toString();
     String total2 = widget.json['total_volumes'] == 0 ? '?' : widget.json['total_volumes'].toString();
     return AlertDialog(
       title: Text('Edit Status'),
-      contentPadding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 0.0),
-      content: SizedBox(
-        height: 200.0,
+      contentPadding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 8.0),
+      content: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
+          children: <Row>[
             Row(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(right: 48.0),
+                  padding: const EdgeInsets.only(right: 44.0),
                   child: Text('Status:'),
                 ),
                 Expanded(
                   child: DropdownButton<String>(
                     isExpanded: true,
                     value: _selectedStatus,
-                    items: _status.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(statusText(value)),
-                      );
+                    items: _status.map((value) {
+                      return DropdownMenuItem(value: value, child: Text(statusText(value)));
                     }).toList(),
                     onChanged: (value) {
                       if (value == 'completed') {
@@ -125,15 +75,12 @@ class _MangaDialogState extends State<MangaDialog> {
                   child: TextField(
                     controller: _textFieldController,
                     keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
                 ),
                 Text(' / $total'),
                 IconButton(
-                  icon: Icon(
-                    Icons.add_circle_rounded,
-                    color: Theme.of(context).brightness == Brightness.light ? Colors.indigo : Colors.white,
-                  ),
+                  icon: Icon(Icons.add_circle_rounded),
                   onPressed: () {
                     if (_textFieldController.text.isEmpty) {
                       _textFieldController.text = '0';
@@ -147,22 +94,19 @@ class _MangaDialogState extends State<MangaDialog> {
             Row(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(right: 28.0),
+                  padding: const EdgeInsets.only(right: 25.0),
                   child: Text('Vol. Read:'),
                 ),
                 Expanded(
                   child: TextField(
                     controller: _textFieldController2,
                     keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
                 ),
                 Text(' / $total2'),
                 IconButton(
-                  icon: Icon(
-                    Icons.add_circle_rounded,
-                    color: Theme.of(context).brightness == Brightness.light ? Colors.indigo : Colors.white,
-                  ),
+                  icon: Icon(Icons.add_circle_rounded),
                   onPressed: () {
                     if (_textFieldController2.text.isEmpty) {
                       _textFieldController2.text = '0';
@@ -184,15 +128,10 @@ class _MangaDialogState extends State<MangaDialog> {
                     isExpanded: true,
                     hint: Text('Select'),
                     value: _selectedScore,
-                    items: _scores.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(scoreText(value)),
-                      );
+                    items: _scores.map((value) {
+                      return DropdownMenuItem(value: value, child: Text(scoreText(value)));
                     }).toList(),
-                    onChanged: (value) {
-                      setState(() => _selectedScore = value!);
-                    },
+                    onChanged: (value) => setState(() => _selectedScore = value!),
                   ),
                 ),
               ],
@@ -200,12 +139,10 @@ class _MangaDialogState extends State<MangaDialog> {
           ],
         ),
       ),
-      actions: <Widget>[
+      actions: <TextButton>[
         TextButton(
           child: Text('CANCEL'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         TextButton(
           child: Text('OK'),
@@ -218,7 +155,7 @@ class _MangaDialogState extends State<MangaDialog> {
               chapters: _textFieldController.text,
               volumes: _textFieldController2.text,
             );
-            Navigator.of(context).pop(result);
+            Navigator.pop(context, result);
           },
         ),
       ],

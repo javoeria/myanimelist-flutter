@@ -1,4 +1,3 @@
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
@@ -22,11 +21,9 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String? username = prefs.getString('username');
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
-      ),
+      appBar: AppBar(title: Text('Settings')),
       body: ListView(
-        children: <Widget>[
+        children: <ListTile>[
           ListTile(
             title: username == null ? Text('Login') : Text('Logout'),
             onTap: () async {
@@ -62,7 +59,6 @@ class SettingsScreen extends StatelessWidget {
             subtitle: Text('Show entries with Kids genres'),
             trailing: Switch(
               value: Provider.of<UserData>(context).kidsGenre,
-              activeColor: Colors.indigo,
               onChanged: (value) {
                 FirebaseAnalytics.instance.logEvent(name: 'kids');
                 Provider.of<UserData>(context, listen: false).toggleKids();
@@ -74,7 +70,6 @@ class SettingsScreen extends StatelessWidget {
             subtitle: Text('Show entries with Hentai/Erotica genres'),
             trailing: Switch(
               value: Provider.of<UserData>(context).r18Genre,
-              activeColor: Colors.indigo,
               onChanged: (value) {
                 FirebaseAnalytics.instance.logEvent(name: 'r18+');
                 Provider.of<UserData>(context, listen: false).toggleR18();
@@ -86,10 +81,9 @@ class SettingsScreen extends StatelessWidget {
             subtitle: Text('Choose between light and dark color palettes'),
             trailing: Switch(
               value: Theme.of(context).brightness == Brightness.dark,
-              activeColor: Colors.indigo,
               onChanged: (value) {
                 FirebaseAnalytics.instance.logEvent(name: 'theme');
-                DynamicTheme.of(context)!.toggleBrightness();
+                Provider.of<UserData>(context, listen: false).toggleBrightness();
               },
             ),
           ),
@@ -121,21 +115,18 @@ class SettingsScreen extends StatelessWidget {
 Future<bool?> _logoutDialog(BuildContext context) async {
   return showDialog<bool>(
     context: context,
-    builder: (BuildContext context) {
+    builder: (context) {
       return AlertDialog(
+        title: Text('Logout'),
         content: Text('Are you sure you want to logout?'),
-        actions: <Widget>[
+        actions: <TextButton>[
           TextButton(
             child: Text('NO'),
-            onPressed: () {
-              Navigator.of(context).pop(false);
-            },
+            onPressed: () => Navigator.pop(context, false),
           ),
           TextButton(
             child: Text('YES'),
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
+            onPressed: () => Navigator.pop(context, true),
           ),
         ],
       );

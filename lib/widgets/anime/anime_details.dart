@@ -1,7 +1,6 @@
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/oauth.dart';
@@ -20,9 +19,6 @@ class AnimeDetails extends StatefulWidget {
 }
 
 class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClientMixin<AnimeDetails> {
-  final Jikan jikan = Jikan();
-  final NumberFormat f = NumberFormat.decimalPattern();
-
   late Anime anime;
   late BuiltList<Picture> pictures;
   Map<String, dynamic>? status;
@@ -62,24 +58,6 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     return anime.genres.isEmpty ? 'None found' : anime.genres.map((i) => i.name).join(', ');
   }
 
-  Color get _statusColor {
-    switch (status!['text']) {
-      case 'WATCHING':
-        return kWatchingColor;
-      case 'COMPLETED':
-        return kCompletedColor;
-      case 'ON HOLD':
-        return kOnHoldColor;
-      case 'DROPPED':
-        return kDroppedColor;
-      case 'PLAN TO WATCH':
-      case 'ADD TO MY LIST':
-        return kPlantoWatchColor;
-      default:
-        throw 'AnimeStatus Error';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -90,9 +68,8 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     String score = anime.score == null ? 'N/A' : anime.score.toString();
     String rank = anime.rank == null ? 'N/A' : '#${anime.rank}';
     String episodes = anime.episodes == null ? 'Unknown' : anime.episodes.toString();
-    String? premiered = anime.season == null || anime.year == null
-        ? null
-        : '${anime.season![0].toUpperCase() + anime.season!.substring(1)} ${anime.year}';
+    String? premiered =
+        anime.season == null || anime.year == null ? null : '${anime.season!.toTitleCase()} ${anime.year}';
     return ListView(
       children: <Widget>[
         Padding(
@@ -109,11 +86,11 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   RichText(
                     text: TextSpan(
                       text: score,
-                      style: Theme.of(context).textTheme.headline5!.copyWith(fontSize: 34),
+                      style: Theme.of(context).textTheme.headlineLarge,
                       children: <TextSpan>[
                         TextSpan(
-                          text: anime.scoredBy == null ? '' : ' (${f.format(anime.scoredBy)} users)',
-                          style: Theme.of(context).textTheme.caption,
+                          text: anime.scoredBy == null ? '' : ' (${anime.scoredBy!.decimal()} users)',
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
                     ),
@@ -122,7 +99,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   RichText(
                     text: TextSpan(
                       text: 'Ranked ',
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                       children: <TextSpan>[
                         TextSpan(text: rank, style: kTextStyleBold),
                       ],
@@ -131,7 +108,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   RichText(
                     text: TextSpan(
                       text: 'Popularity ',
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                       children: <TextSpan>[
                         TextSpan(text: '#${anime.popularity}', style: kTextStyleBold),
                       ],
@@ -140,18 +117,18 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   RichText(
                     text: TextSpan(
                       text: 'Members ',
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                       children: <TextSpan>[
-                        TextSpan(text: f.format(anime.members), style: kTextStyleBold),
+                        TextSpan(text: anime.members!.decimal(), style: kTextStyleBold),
                       ],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: 'Favorites ',
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                       children: <TextSpan>[
-                        TextSpan(text: f.format(anime.favorites), style: kTextStyleBold),
+                        TextSpan(text: anime.favorites!.decimal(), style: kTextStyleBold),
                       ],
                     ),
                   ),
@@ -168,6 +145,11 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(side: BorderSide(width: 2.0, color: statusColor(status!['text']))),
+                  child: Text(
+                    status!['text'],
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(color: statusColor(status!['text'])),
+                  ),
                   onPressed: () async {
                     final newStatus = await showDialog<dynamic>(
                       context: context,
@@ -183,13 +165,6 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       Fluttertoast.showToast(msg: 'Update Successful');
                     }
                   },
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(width: 2, color: _statusColor),
-                  ),
-                  child: Text(
-                    status!['text'],
-                    style: Theme.of(context).textTheme.button!.copyWith(color: _statusColor),
-                  ),
                 ),
               )
             : Container(),
@@ -198,7 +173,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Synopsis', style: Theme.of(context).textTheme.headline6),
+              Text('Synopsis', style: Theme.of(context).textTheme.titleMedium),
               SizedBox(height: 16.0),
               Text(anime.synopsis ?? 'No synopsis information has been added to this title.', softWrap: true),
             ],
@@ -215,7 +190,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   Divider(height: 0.0),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Text('Background', style: Theme.of(context).textTheme.headline6),
+                    child: Text('Background', style: Theme.of(context).textTheme.titleMedium),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
@@ -230,14 +205,14 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Information', style: Theme.of(context).textTheme.headline6),
+              Text('Information', style: Theme.of(context).textTheme.titleMedium),
               SizedBox(height: 16.0),
               RichText(
                 text: TextSpan(
                   text: 'Type: ',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.titleSmall,
                   children: <TextSpan>[
-                    TextSpan(text: anime.type, style: DefaultTextStyle.of(context).style),
+                    TextSpan(text: anime.type ?? 'Unknown', style: DefaultTextStyle.of(context).style),
                   ],
                 ),
               ),
@@ -245,7 +220,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Episodes: ',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.titleSmall,
                   children: <TextSpan>[
                     TextSpan(text: episodes, style: DefaultTextStyle.of(context).style),
                   ],
@@ -255,7 +230,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Status: ',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.titleSmall,
                   children: <TextSpan>[
                     TextSpan(text: anime.status, style: DefaultTextStyle.of(context).style),
                   ],
@@ -265,7 +240,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Aired: ',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.titleSmall,
                   children: <TextSpan>[
                     TextSpan(text: anime.aired, style: DefaultTextStyle.of(context).style),
                   ],
@@ -278,7 +253,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       child: RichText(
                         text: TextSpan(
                           text: 'Premiered: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.titleSmall,
                           children: <TextSpan>[
                             TextSpan(text: premiered, style: DefaultTextStyle.of(context).style),
                           ],
@@ -292,7 +267,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                       child: RichText(
                         text: TextSpan(
                           text: 'Broadcast: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.titleSmall,
                           children: <TextSpan>[
                             TextSpan(text: anime.broadcast, style: DefaultTextStyle.of(context).style),
                           ],
@@ -303,7 +278,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Producers: ',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.titleSmall,
                   children: <TextSpan>[
                     TextSpan(text: _producersText, style: DefaultTextStyle.of(context).style),
                   ],
@@ -313,7 +288,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Licensors: ',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.titleSmall,
                   children: <TextSpan>[
                     TextSpan(text: _licensorsText, style: DefaultTextStyle.of(context).style),
                   ],
@@ -323,7 +298,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Studios: ',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.titleSmall,
                   children: <TextSpan>[
                     TextSpan(text: _studiosText, style: DefaultTextStyle.of(context).style),
                   ],
@@ -333,7 +308,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Source: ',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.titleSmall,
                   children: <TextSpan>[
                     TextSpan(text: anime.source, style: DefaultTextStyle.of(context).style),
                   ],
@@ -343,7 +318,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Genres: ',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.titleSmall,
                   children: <TextSpan>[
                     TextSpan(text: _genresText, style: DefaultTextStyle.of(context).style),
                   ],
@@ -353,7 +328,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Duration: ',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.titleSmall,
                   children: <TextSpan>[
                     TextSpan(text: anime.duration, style: DefaultTextStyle.of(context).style),
                   ],
@@ -363,7 +338,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
               RichText(
                 text: TextSpan(
                   text: 'Rating: ',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.titleSmall,
                   children: <TextSpan>[
                     TextSpan(text: anime.rating ?? 'None', style: DefaultTextStyle.of(context).style),
                   ],
@@ -379,7 +354,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
         //           Divider(height: 0.0),
         //           Padding(
         //             padding: const EdgeInsets.all(16.0),
-        //             child: Text('Opening Theme', style: Theme.of(context).textTheme.headline6),
+        //             child: Text('Opening Theme', style: Theme.of(context).textTheme.titleMedium),
         //           ),
         //           Padding(
         //             padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
@@ -398,7 +373,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
         //           Divider(height: 0.0),
         //           Padding(
         //             padding: const EdgeInsets.all(16.0),
-        //             child: Text('Ending Theme', style: Theme.of(context).textTheme.headline6),
+        //             child: Text('Ending Theme', style: Theme.of(context).textTheme.titleMedium),
         //           ),
         //           Padding(
         //             padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),

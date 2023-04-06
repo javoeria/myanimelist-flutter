@@ -13,19 +13,15 @@ class ProducerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(anime ? 'Anime Studios' : 'Manga Magazines'),
-      ),
+      appBar: AppBar(title: Text(anime ? 'Anime Studios' : 'Manga Magazines')),
       body: Scrollbar(
         child: PagewiseListView(
           pageSize: kDefaultPageSize,
           itemBuilder: _itemBuilder,
-          noItemsFoundBuilder: (context) {
-            return ListTile(title: Text('No items found.'));
-          },
+          noItemsFoundBuilder: (context) => ListTile(title: Text('No items found.')),
           pageFuture: (pageIndex) => anime
-              ? Jikan().getProducers(orderBy: 'count', sort: 'desc', page: pageIndex! + 1)
-              : Jikan().getMagazines(orderBy: 'count', sort: 'desc', page: pageIndex! + 1),
+              ? jikan.getProducers(orderBy: 'count', sort: 'desc', page: pageIndex! + 1)
+              : jikan.getMagazines(orderBy: 'count', sort: 'desc', page: pageIndex! + 1),
         ),
       ),
     );
@@ -63,11 +59,9 @@ class ProducerList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(name),
-      ),
+      appBar: AppBar(title: Text(name)),
       body: FutureBuilder(
-        future: Jikan().searchAnime(producers: [id], orderBy: 'members', sort: 'desc'),
+        future: jikan.searchAnime(producers: [id], orderBy: 'members', sort: 'desc'),
         builder: (context, AsyncSnapshot<BuiltList<Anime>> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
@@ -89,11 +83,9 @@ class MagazineList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(name),
-      ),
+      appBar: AppBar(title: Text(name)),
       body: FutureBuilder(
-        future: Jikan().searchManga(magazines: [id], orderBy: 'members', sort: 'desc'),
+        future: jikan.searchManga(magazines: [id], orderBy: 'members', sort: 'desc'),
         builder: (context, AsyncSnapshot<BuiltList<Manga>> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(child: CircularProgressIndicator());

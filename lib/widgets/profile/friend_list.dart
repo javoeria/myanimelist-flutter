@@ -16,7 +16,7 @@ class FriendList extends StatelessWidget {
         Divider(height: 0.0),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
-          child: Text('Friends', style: Theme.of(context).textTheme.headline6),
+          child: Text('Friends', style: Theme.of(context).textTheme.titleMedium),
         ),
         SizedBox(
           height: kImageHeightM,
@@ -25,10 +25,9 @@ class FriendList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             itemCount: list.length,
             itemBuilder: (context, index) {
-              Friend friend = list.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: FriendCard(friend),
+                child: FriendCard(list.elementAt(index)),
               );
             },
           ),
@@ -40,47 +39,44 @@ class FriendList extends StatelessWidget {
 }
 
 class FriendCard extends StatelessWidget {
-  const FriendCard(this.item);
+  const FriendCard(this.friend);
 
-  final Friend item;
+  final Friend friend;
   final double width = kImageWidthM;
   final double height = kImageHeightM;
 
   @override
   Widget build(BuildContext context) {
     return Ink.image(
-      image: NetworkImage(item.user.imageUrl!),
+      image: NetworkImage(friend.user.imageUrl!),
       width: width,
       height: height,
       fit: BoxFit.cover,
       child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UserProfileScreen(item.user.username),
-              settings: RouteSettings(name: 'UserProfileScreen'),
-            ),
-          );
-        },
         child: Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: <Widget>[
             Image.asset('images/box_shadow.png', width: width, height: 40.0, fit: BoxFit.cover),
-            SizedBox(
-              width: width,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  item.user.username,
-                  maxLines: 3,
-                  textAlign: TextAlign.center,
-                  style: kTextStyleShadow,
-                ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                friend.user.username,
+                maxLines: 3,
+                textAlign: TextAlign.center,
+                style: kTextStyleShadow,
               ),
             ),
           ],
         ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UserProfileScreen(friend.user.username),
+              settings: const RouteSettings(name: 'UserProfileScreen'),
+            ),
+          );
+        },
       ),
     );
   }

@@ -5,10 +5,10 @@ import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/top/rank_image.dart';
 
 class TopGrid extends StatefulWidget {
-  const TopGrid({this.type, this.subtype, this.anime = true});
+  const TopGrid({this.type, this.filter, this.anime = true});
 
   final TopType? type;
-  final TopSubtype? subtype;
+  final TopFilter? filter;
   final bool anime;
 
   @override
@@ -30,8 +30,8 @@ class _TopGridState extends State<TopGrid> with AutomaticKeepAliveClientMixin<To
         itemBuilder: (context, top, index) =>
             RankImage(top, index, type: widget.anime ? ItemType.anime : ItemType.manga),
         pageFuture: (pageIndex) => widget.anime
-            ? Jikan().getTopAnime(type: widget.type, subtype: widget.subtype, page: pageIndex! + 1)
-            : Jikan().getTopManga(type: widget.type, subtype: widget.subtype, page: pageIndex! + 1),
+            ? jikan.getTopAnime(type: widget.type, filter: widget.filter, page: pageIndex! + 1)
+            : jikan.getTopManga(type: widget.type, filter: widget.filter, page: pageIndex! + 1),
       ),
     );
   }

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/widgets/season/genre_horizontal.dart';
 
 class SeasonInfo extends StatelessWidget {
-  SeasonInfo(this.anime);
+  const SeasonInfo(this.anime);
 
   final Anime anime;
-  final NumberFormat f = NumberFormat.compact();
 
   String get _studiosText {
     return anime.studios.isEmpty ? '-' : anime.studios.first.name;
@@ -24,22 +22,13 @@ class SeasonInfo extends StatelessWidget {
     String episodes = anime.episodes == null ? '?' : anime.episodes.toString();
     String score = anime.score == null ? 'N/A' : anime.score.toString();
     return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AnimeScreen(anime.malId, anime.title),
-            settings: RouteSettings(name: 'AnimeScreen'),
-          ),
-        );
-      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Column(
           children: <Widget>[
-            Text(anime.title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6),
+            Text(anime.title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium),
             SizedBox(height: 4.0),
-            Text('${anime.type} | $_studiosText | $episodes eps'),
+            Text('${anime.type ?? 'Unknown'} | $_studiosText | $episodes eps'),
             SizedBox(height: 4.0),
             GenreHorizontal(anime.genres),
             SizedBox(height: 4.0),
@@ -55,7 +44,7 @@ class SeasonInfo extends StatelessWidget {
                       child: SingleChildScrollView(
                         child: Text(
                           anime.synopsis ?? '(No synopsis yet.)',
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     ),
@@ -77,7 +66,7 @@ class SeasonInfo extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Icon(Icons.person_outline, color: Colors.grey, size: 20.0),
-                    Text(f.format(anime.members)),
+                    Text(anime.members!.compact()),
                   ],
                 ),
               ],
@@ -85,6 +74,15 @@ class SeasonInfo extends StatelessWidget {
           ],
         ),
       ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AnimeScreen(anime.malId, anime.title, episodes: anime.episodes),
+            settings: const RouteSettings(name: 'AnimeScreen'),
+          ),
+        );
+      },
     );
   }
 }

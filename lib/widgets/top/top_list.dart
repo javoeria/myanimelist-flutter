@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/screens/anime_screen.dart';
 import 'package:myanimelist/screens/manga_screen.dart';
 
 class TopList extends StatefulWidget {
-  const TopList({this.type, this.subtype, this.anime = true});
+  const TopList({this.type, this.filter, this.anime = true});
 
   final TopType? type;
-  final TopSubtype? subtype;
+  final TopFilter? filter;
   final bool anime;
 
   @override
@@ -18,20 +17,6 @@ class TopList extends StatefulWidget {
 }
 
 class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<TopList> {
-  final NumberFormat f = NumberFormat.decimalPattern();
-
-  String episodesText(dynamic top) {
-    if (top is Anime) {
-      String episodes = top.episodes == null ? '?' : top.episodes.toString();
-      return '($episodes eps)';
-    } else if (top is Manga) {
-      String volumes = top.volumes == null ? '?' : top.volumes.toString();
-      return '($volumes vols)';
-    } else {
-      throw 'ItemType Error';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -41,8 +26,8 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
         itemBuilder: _itemBuilder,
         padding: const EdgeInsets.all(12.0),
         pageFuture: (pageIndex) => widget.anime
-            ? Jikan().getTopAnime(type: widget.type, subtype: widget.subtype, page: pageIndex! + 1)
-            : Jikan().getTopManga(type: widget.type, subtype: widget.subtype, page: pageIndex! + 1),
+            ? jikan.getTopAnime(type: widget.type, filter: widget.filter, page: pageIndex! + 1)
+            : jikan.getTopManga(type: widget.type, filter: widget.filter, page: pageIndex! + 1),
       ),
     );
   }
@@ -52,48 +37,33 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+            Image.network(top.imageUrl, width: kImageWidthS, height: kImageHeightS, fit: BoxFit.cover),
+            SizedBox(width: 8.0),
             Expanded(
-              child: Row(
-                children: <Widget>[
-                  Image.network(
-                    top.imageUrl,
-                    width: kImageWidthS,
-                    height: kImageHeightS,
-                    fit: BoxFit.cover,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Text>[
+                  Text('${index + 1}. ${top.title}', style: Theme.of(context).textTheme.titleSmall),
+                  Text(
+                    '${top.type ?? 'Unknown'} ${episodesText(top)}',
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
-                  SizedBox(width: 8.0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          '${index + 1}. ${top.title}',
-                          style: Theme.of(context).textTheme.subtitle2,
-                        ),
-                        Text(
-                          '${top.type} ${episodesText(top)}',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                        Text(
-                          top is Anime ? top.aired : top.published,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                        Text(
-                          '${f.format(top.members)} members',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      ],
-                    ),
+                  Text(
+                    top is Anime ? top.aired : top.published,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  Text(
+                    '${(top.members as int).decimal()} members',
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),
             ),
-            widget.subtype != TopSubtype.upcoming
+            widget.filter != TopFilter.upcoming
                 ? Row(
                     children: <Widget>[
-                      Text(top.score.toString(), style: Theme.of(context).textTheme.subtitle1),
+                      Text(top.score.toString(), style: Theme.of(context).textTheme.bodyLarge),
                       Icon(Icons.star, color: Colors.amber),
                     ],
                   )
@@ -106,8 +76,8 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AnimeScreen(top.malId, top.title),
-              settings: RouteSettings(name: 'AnimeScreen'),
+              builder: (context) => AnimeScreen(top.malId, top.title, episodes: top.episodes),
+              settings: const RouteSettings(name: 'AnimeScreen'),
             ),
           );
         } else {
@@ -115,7 +85,7 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
             context,
             MaterialPageRoute(
               builder: (context) => MangaScreen(top.malId, top.title),
-              settings: RouteSettings(name: 'MangaScreen'),
+              settings: const RouteSettings(name: 'MangaScreen'),
             ),
           );
         }
