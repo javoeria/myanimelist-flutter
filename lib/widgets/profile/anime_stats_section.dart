@@ -14,12 +14,12 @@ class AnimeStatsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text('Anime Stats', style: Theme.of(context).textTheme.bodyLarge),
-              SizedBox(height: 8.0),
+              SizedBox(height: 4.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <RichText>[
@@ -28,7 +28,7 @@ class AnimeStatsSection extends StatelessWidget {
                       text: 'Days: ',
                       style: DefaultTextStyle.of(context).style,
                       children: <TextSpan>[
-                        TextSpan(text: stats.daysWatched.toString(), style: Theme.of(context).textTheme.titleSmall),
+                        TextSpan(text: stats.daysWatched.toString(), style: Theme.of(context).textTheme.titleMedium),
                       ],
                     ),
                   ),
@@ -37,7 +37,7 @@ class AnimeStatsSection extends StatelessWidget {
                       text: 'Mean Score: ',
                       style: DefaultTextStyle.of(context).style,
                       children: <TextSpan>[
-                        TextSpan(text: stats.meanScore.toString(), style: Theme.of(context).textTheme.titleSmall),
+                        TextSpan(text: stats.meanScore.toString(), style: Theme.of(context).textTheme.titleMedium),
                       ],
                     ),
                   ),

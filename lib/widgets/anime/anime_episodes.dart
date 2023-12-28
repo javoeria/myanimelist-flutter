@@ -10,17 +10,17 @@ class AnimeEpisodes extends StatefulWidget {
   final int id;
 
   @override
-  _AnimeEpisodesState createState() => _AnimeEpisodesState();
+  State<AnimeEpisodes> createState() => _AnimeEpisodesState();
 }
 
 class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveClientMixin<AnimeEpisodes> {
-  Widget? subtitleText(String? titleRomanji, String? titleJapanese) {
-    if (titleRomanji != null && titleJapanese != null) {
-      return Text('$titleRomanji ($titleJapanese)');
+  Widget? subtitleText(String? titleRomanji, String? dateAired) {
+    if (titleRomanji != null && dateAired != null) {
+      return Text('${titleRomanji.trim()} - ${dateAired.formatDate()}');
     } else if (titleRomanji != null) {
       return Text(titleRomanji);
-    } else if (titleJapanese != null) {
-      return Text(titleJapanese);
+    } else if (dateAired != null) {
+      return Text(dateAired.formatDate());
     } else {
       return null;
     }
@@ -40,17 +40,21 @@ class _AnimeEpisodesState extends State<AnimeEpisodes> with AutomaticKeepAliveCl
   }
 
   Widget _itemBuilder(BuildContext context, Episode episode, int index) {
-    String dateAired = episode.aired == null ? 'N/A' : episode.aired!.formatDate();
     return Column(
       children: <Widget>[
         ListTile(
           title: Text(episode.title),
-          subtitle: subtitleText(episode.titleRomanji, episode.titleJapanese),
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(episode.malId.toString(), style: Theme.of(context).textTheme.titleMedium),
-          ),
-          trailing: Text(dateAired),
+          subtitle: subtitleText(episode.titleRomanji, episode.aired),
+          leading: Text(episode.malId.toString(), style: Theme.of(context).textTheme.titleSmall),
+          trailing: episode.score != null
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text((episode.score! * 2).toString(), style: Theme.of(context).textTheme.bodyLarge),
+                    Icon(Icons.star, color: Colors.amber),
+                  ],
+                )
+              : null,
           dense: true,
           onTap: () async {
             String? url = episode.url;

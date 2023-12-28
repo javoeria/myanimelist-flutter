@@ -18,9 +18,9 @@ class WatchScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(episodes ? 'Episode Videos' : 'Anime Trailers'),
-          bottom: TabBar(
+          bottom: const TabBar(
             isScrollable: false,
-            tabs: const <Tab>[
+            tabs: <Tab>[
               Tab(text: 'Just Added'),
               Tab(text: 'Most Popular'),
             ],
@@ -44,7 +44,7 @@ class AnimeVideos extends StatefulWidget {
   final String subtype;
 
   @override
-  _AnimeVideosState createState() => _AnimeVideosState();
+  State<AnimeVideos> createState() => _AnimeVideosState();
 }
 
 class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClientMixin<AnimeVideos> {
@@ -63,12 +63,12 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, AsyncSnapshot<BuiltList<dynamic>> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<dynamic> promoList = snapshot.data!;
+        final BuiltList<dynamic> promoList = snapshot.data!;
         return Scrollbar(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -79,7 +79,7 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
                 children: promoList.map((promo) {
                   return Column(
                     children: <Widget>[
-                      VideoImage(promo),
+                      PortraitVideo(promo),
                       SizedBox(
                         width: kImageWidthL,
                         child: InkWell(
@@ -110,12 +110,12 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
   bool get wantKeepAlive => true;
 }
 
-class VideoImage extends StatelessWidget {
-  const VideoImage(this.promo);
+class PortraitVideo extends StatelessWidget {
+  const PortraitVideo(this.promo);
 
   final dynamic promo;
-  final double width = 160.0;
-  final double height = 240.0;
+  final double width = kImageWidthL;
+  final double height = kImageHeightXL;
 
   @override
   Widget build(BuildContext context) {
@@ -128,18 +128,8 @@ class VideoImage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            SizedBox(height: 30.0),
-            Container(
-              padding: const EdgeInsets.all(4.0),
-              decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(4.0)),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const <Widget>[
-                  Icon(Icons.play_circle_outline, color: Colors.white),
-                  Text(' Play', style: TextStyle(color: Colors.white)),
-                ],
-              ),
-            ),
+            const SizedBox(height: 30.0),
+            promo is WatchPromo ? playButton() : Container(),
             Stack(
               alignment: AlignmentDirectional.bottomStart,
               children: <Widget>[

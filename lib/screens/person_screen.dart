@@ -14,7 +14,7 @@ class PersonScreen extends StatefulWidget {
   final int id;
 
   @override
-  _PersonScreenState createState() => _PersonScreenState();
+  State<PersonScreen> createState() => _PersonScreenState();
 }
 
 class _PersonScreenState extends State<PersonScreen> {
@@ -46,7 +46,7 @@ class _PersonScreenState extends State<PersonScreen> {
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return Scaffold(appBar: AppBar(), body: Center(child: CircularProgressIndicator()));
+      return Scaffold(appBar: AppBar(), body: const Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
@@ -73,7 +73,7 @@ class _PersonScreenState extends State<PersonScreen> {
                         alignment: Alignment.centerRight,
                       ),
                     ),
-                    SizedBox(width: 24.0),
+                    const SizedBox(width: 24.0),
                     Expanded(
                       child: SizedBox(
                         height: kSliverAppBarHeight,
@@ -93,11 +93,11 @@ class _PersonScreenState extends State<PersonScreen> {
                                     maxLines: 1,
                                   )
                                 : Container(),
-                            SizedBox(height: 24.0),
+                            const SizedBox(height: 24.0),
                             Row(
                               children: <Widget>[
-                                Icon(Icons.person, size: 20.0),
-                                SizedBox(width: 4.0),
+                                const Icon(Icons.person, size: 20.0),
+                                const SizedBox(width: 4.0),
                                 Text(
                                   person.favorites.decimal(),
                                   style: Theme.of(context).textTheme.bodyLarge,
@@ -107,8 +107,8 @@ class _PersonScreenState extends State<PersonScreen> {
                             person.birthday != null
                                 ? Row(
                                     children: <Widget>[
-                                      Icon(Icons.cake, size: 20.0),
-                                      SizedBox(width: 4.0),
+                                      const Icon(Icons.cake, size: 20.0),
+                                      const SizedBox(width: 4.0),
                                       Text(
                                         person.birthday!.formatDate(pattern: 'MMM d, yy'),
                                         style: Theme.of(context).textTheme.bodyLarge,
@@ -150,9 +150,9 @@ class StaffList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Divider(height: 0.0),
+        const Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
+          padding: kTitlePadding,
           child: Text('Anime Staff Positions', style: Theme.of(context).textTheme.titleMedium),
         ),
         SizedBox(
@@ -176,7 +176,7 @@ class StaffList extends StatelessWidget {
             },
           ),
         ),
-        SizedBox(height: 12.0),
+        const SizedBox(height: 12.0),
       ],
     );
   }
@@ -192,9 +192,9 @@ class PublishList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Divider(height: 0.0),
+        const Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
+          padding: kTitlePadding,
           child: Text('Published Manga', style: Theme.of(context).textTheme.titleMedium),
         ),
         SizedBox(
@@ -218,7 +218,7 @@ class PublishList extends StatelessWidget {
             },
           ),
         ),
-        SizedBox(height: 12.0),
+        const SizedBox(height: 12.0),
       ],
     );
   }

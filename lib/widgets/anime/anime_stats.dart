@@ -10,7 +10,7 @@ class AnimeStats extends StatefulWidget {
   final bool anime;
 
   @override
-  _AnimeStatsState createState() => _AnimeStatsState();
+  State<AnimeStats> createState() => _AnimeStatsState();
 }
 
 class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMixin<AnimeStats> {
@@ -27,7 +27,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, AsyncSnapshot<Stats> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
@@ -36,7 +36,7 @@ class _AnimeStatsState extends State<AnimeStats> with AutomaticKeepAliveClientMi
           return ListTile(title: Text('No items found.'));
         }
 
-        Stats stats = snapshot.data!;
+        final Stats stats = snapshot.data!;
         return ListView(
           children: <Widget>[
             Padding(

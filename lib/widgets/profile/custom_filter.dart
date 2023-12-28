@@ -26,7 +26,7 @@ class FilterDialog extends StatefulWidget {
   final Map<String, String?> json;
 
   @override
-  _FilterDialogState createState() => _FilterDialogState();
+  State<FilterDialog> createState() => _FilterDialogState();
 }
 
 class _FilterDialogState extends State<FilterDialog> {

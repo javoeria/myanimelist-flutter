@@ -19,10 +19,11 @@ class AnimeListScreen extends StatelessWidget {
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Anime List'),
-          bottom: TabBar(
+          title: const Text('Anime List'),
+          bottom: const TabBar(
             isScrollable: true,
-            tabs: const <Tab>[
+            tabAlignment: TabAlignment.center,
+            tabs: <Tab>[
               Tab(text: 'All Anime'),
               Tab(text: 'Currently Watching'),
               Tab(text: 'Completed'),
@@ -35,12 +36,12 @@ class AnimeListScreen extends StatelessWidget {
         ),
         body: FutureBuilder(
           future: MalClient().getUserList(username, sort: sort),
-          builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+          builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
-            List<dynamic> userList = snapshot.data!;
+            final List<dynamic> userList = snapshot.data!;
             return TabBarView(
               children: <UserAnimeList>[
                 UserAnimeList(userList),
@@ -58,28 +59,23 @@ class AnimeListScreen extends StatelessWidget {
   }
 }
 
-class UserAnimeList extends StatefulWidget {
+class UserAnimeList extends StatelessWidget {
   const UserAnimeList(this.userList);
 
   final List<dynamic> userList;
 
   @override
-  _UserAnimeListState createState() => _UserAnimeListState();
-}
-
-class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveClientMixin<UserAnimeList> {
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
-    if (widget.userList.isEmpty) {
-      return ListTile(title: Text('No items found.'));
+    if (userList.isEmpty) {
+      return const ListTile(title: Text('No items found.'));
     }
+
     return Scrollbar(
       child: ListView.builder(
         padding: const EdgeInsets.all(12.0),
-        itemCount: widget.userList.length,
+        itemCount: userList.length,
         itemBuilder: (context, index) {
-          Map<String, dynamic> item = widget.userList.elementAt(index);
+          Map<String, dynamic> item = userList.elementAt(index);
           String type = ['tv', 'ova', 'ona'].contains(item['node']['media_type'])
               ? item['node']['media_type'].toString().toUpperCase()
               : item['node']['media_type'].toString().toTitleCase();
@@ -94,14 +90,14 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
               padding: const EdgeInsets.all(4.0),
               child: Row(
                 children: <Widget>[
-                  Container(color: statusColor(item['list_status']['status']), width: 5.0, height: kImageHeightS),
+                  Container(color: statusColor(item['list_status']['status']), width: 6.0, height: kImageHeightS),
                   Image.network(
                     item['node']['main_picture']['large'],
                     width: kImageWidthS,
                     height: kImageHeightS,
                     fit: BoxFit.cover,
                   ),
-                  SizedBox(width: 8.0),
+                  const SizedBox(width: 8.0),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,7 +126,4 @@ class _UserAnimeListState extends State<UserAnimeList> with AutomaticKeepAliveCl
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

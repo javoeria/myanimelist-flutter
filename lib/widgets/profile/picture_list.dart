@@ -16,7 +16,7 @@ class PictureList extends StatelessWidget {
       children: <Widget>[
         Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
+          padding: kTitlePadding,
           child: Text('Pictures', style: Theme.of(context).textTheme.titleMedium),
         ),
         SizedBox(
@@ -64,7 +64,7 @@ class ImageScreen extends StatefulWidget {
   final int currentIndex;
 
   @override
-  _ImageScreenState createState() => _ImageScreenState();
+  State<ImageScreen> createState() => _ImageScreenState();
 }
 
 class _ImageScreenState extends State<ImageScreen> {

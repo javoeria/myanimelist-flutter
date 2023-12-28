@@ -15,7 +15,7 @@ class MangaDetails extends StatefulWidget {
   final int id;
 
   @override
-  _MangaDetailsState createState() => _MangaDetailsState();
+  State<MangaDetails> createState() => _MangaDetailsState();
 }
 
 class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClientMixin<MangaDetails> {
@@ -42,17 +42,14 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
     setState(() => loading = false);
   }
 
-  String get _genresText {
-    return manga.genres.isEmpty ? 'None found' : manga.genres.map((i) => i.name).join(', ');
-  }
-
-  String get _authorsText {
-    return manga.authors.isEmpty ? 'None found' : manga.authors.map((i) => i.name).join(', ');
-  }
-
-  String get _serializationText {
-    return manga.serializations.isEmpty ? 'None found' : manga.serializations.map((i) => i.name).join(', ');
-  }
+  String get _scoreText => manga.score == null ? 'N/A' : manga.score.toString();
+  String get _rankText => manga.rank == null ? 'N/A' : '#${manga.rank}';
+  String get _volumesText => manga.volumes == null ? 'Unknown' : manga.volumes.toString();
+  String get _chaptersText => manga.chapters == null ? 'Unknown' : manga.chapters.toString();
+  String get _genresText => manga.genres.isEmpty ? 'None found' : manga.genres.map((i) => i.name).join(', ');
+  String get _authorsText => manga.authors.isEmpty ? 'None found' : manga.authors.map((i) => i.name).join(', ');
+  String get _serializationText =>
+      manga.serializations.isEmpty ? 'None found' : manga.serializations.map((i) => i.name).join(', ');
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +58,6 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
       return Center(child: CircularProgressIndicator());
     }
 
-    String score = manga.score == null ? 'N/A' : manga.score.toString();
-    String rank = manga.rank == null ? 'N/A' : '#${manga.rank}';
-    String volumes = manga.volumes == null ? 'Unknown' : manga.volumes.toString();
-    String chapters = manga.chapters == null ? 'Unknown' : manga.chapters.toString();
     return ListView(
       children: <Widget>[
         Padding(
@@ -80,7 +73,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                 children: <Widget>[
                   RichText(
                     text: TextSpan(
-                      text: score,
+                      text: _scoreText,
                       style: Theme.of(context).textTheme.headlineLarge,
                       children: <TextSpan>[
                         TextSpan(
@@ -95,36 +88,28 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                     text: TextSpan(
                       text: 'Ranked ',
                       style: Theme.of(context).textTheme.bodyLarge,
-                      children: <TextSpan>[
-                        TextSpan(text: rank, style: kTextStyleBold),
-                      ],
+                      children: [TextSpan(text: _rankText, style: kTextStyleBold)],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: 'Popularity ',
                       style: Theme.of(context).textTheme.bodyLarge,
-                      children: <TextSpan>[
-                        TextSpan(text: '#${manga.popularity}', style: kTextStyleBold),
-                      ],
+                      children: [TextSpan(text: '#${manga.popularity}', style: kTextStyleBold)],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: 'Members ',
                       style: Theme.of(context).textTheme.bodyLarge,
-                      children: <TextSpan>[
-                        TextSpan(text: manga.members!.decimal(), style: kTextStyleBold),
-                      ],
+                      children: [TextSpan(text: manga.members!.decimal(), style: kTextStyleBold)],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: 'Favorites ',
                       style: Theme.of(context).textTheme.bodyLarge,
-                      children: <TextSpan>[
-                        TextSpan(text: manga.favorites!.decimal(), style: kTextStyleBold),
-                      ],
+                      children: [TextSpan(text: manga.favorites!.decimal(), style: kTextStyleBold)],
                     ),
                   ),
                   SizedBox(height: 8.0),
@@ -138,7 +123,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
         ),
         status != null
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(side: BorderSide(width: 2.0, color: statusColor(status!['text']))),
                   child: Text(
@@ -175,10 +160,12 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: GenreHorizontal(manga.genres, anime: false),
-        ),
+        manga.genres.isNotEmpty
+            ? Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                child: GenreHorizontal(manga.genres, anime: false),
+              )
+            : Container(),
         manga.background != null
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,11 +173,14 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                   Divider(height: 0.0),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Text('Background', style: Theme.of(context).textTheme.titleMedium),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-                    child: Text(manga.background!, softWrap: true),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('Background', style: Theme.of(context).textTheme.titleMedium),
+                        SizedBox(height: 8.0),
+                        Text(manga.background!, softWrap: true),
+                      ],
+                    ),
                   ),
                 ],
               )
@@ -202,14 +192,12 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text('Information', style: Theme.of(context).textTheme.titleMedium),
-              SizedBox(height: 16.0),
+              SizedBox(height: 8.0),
               RichText(
                 text: TextSpan(
                   text: 'Type: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: manga.type ?? 'Unknown', style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: manga.type ?? 'Unknown', style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -217,9 +205,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Volumes: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: volumes, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: _volumesText, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -227,9 +213,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Chapters: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: chapters, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: _chaptersText, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -237,9 +221,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Status: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: manga.status, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: manga.status, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -247,9 +229,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Published: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: manga.published, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: manga.published, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -257,9 +237,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Genres: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: _genresText, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: _genresText, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -267,9 +245,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Serialization: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: _serializationText, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: _serializationText, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -277,9 +253,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Authors: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: _authorsText, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: _authorsText, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
             ],

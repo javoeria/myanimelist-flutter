@@ -24,7 +24,7 @@ class ArchiveScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Archive')),
+      appBar: AppBar(title: const Text('Archive')),
       body: Scrollbar(
         child: ListView.separated(
           separatorBuilder: (context, index) => const Divider(height: 0.0),

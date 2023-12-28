@@ -8,18 +8,16 @@ class AboutSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text('About', style: Theme.of(context).textTheme.titleMedium),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: Text(about != null ? about!.replaceAll(exp, '') : '(No biography written.)', softWrap: true),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text('About', style: Theme.of(context).textTheme.titleMedium),
+          SizedBox(height: 16.0),
+          Text(about != null ? about!.replaceAll(exp, '') : '(No biography written.)', softWrap: true),
+        ],
+      ),
     );
   }
 }

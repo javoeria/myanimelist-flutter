@@ -15,7 +15,7 @@ class FavoriteList extends StatelessWidget {
       children: <Widget>[
         Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 8.0),
+          padding: kTitlePadding,
           child: Text('Favorites', style: Theme.of(context).textTheme.titleMedium),
         ),
         favorites.anime.isNotEmpty ? FavoriteSection(favorites.anime, type: ItemType.anime) : Container(),
@@ -44,7 +44,7 @@ class FavoriteSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
           child: Text(type.name.toTitleCase(), style: Theme.of(context).textTheme.bodyLarge),
         ),
         SizedBox(

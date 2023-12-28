@@ -77,7 +77,7 @@ class UserData extends ChangeNotifier {
 
   void toggleBrightness() {
     if (_themeMode == 'system') {
-      _themeMode = WidgetsBinding.instance.window.platformBrightness == Brightness.light ? 'dark' : 'light';
+      _themeMode = WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.light ? 'dark' : 'light';
     } else {
       _themeMode = _themeMode == 'light' ? 'dark' : 'light';
     }

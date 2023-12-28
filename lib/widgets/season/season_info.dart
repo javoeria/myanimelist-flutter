@@ -9,28 +9,21 @@ class SeasonInfo extends StatelessWidget {
 
   final Anime anime;
 
-  String get _studiosText {
-    return anime.studios.isEmpty ? '-' : anime.studios.first.name;
-  }
-
-  String get _airingText {
-    return anime.aired == null ? '??' : anime.aired!.split(' to ').first;
-  }
+  String get _studiosText => anime.studios.isEmpty ? '-' : anime.studios.first.name;
+  String get _episodesText => anime.episodes == null ? '?' : anime.episodes.toString();
+  String get _airedText => anime.aired == null ? '??' : anime.aired!.split(' to ').first;
+  String get _scoreText => anime.score == null ? 'N/A' : anime.score.toString();
 
   @override
   Widget build(BuildContext context) {
-    String episodes = anime.episodes == null ? '?' : anime.episodes.toString();
-    String score = anime.score == null ? 'N/A' : anime.score.toString();
     return InkWell(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
         child: Column(
           children: <Widget>[
             Text(anime.title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium),
-            SizedBox(height: 4.0),
-            Text('${anime.type ?? 'Unknown'} | $_studiosText | $episodes eps'),
-            SizedBox(height: 4.0),
-            GenreHorizontal(anime.genres),
+            Text('${anime.type ?? 'Unknown'} | $_studiosText | $_episodesText eps'),
+            anime.genres.isNotEmpty ? GenreHorizontal(anime.genres) : Container(),
             SizedBox(height: 4.0),
             SizedBox(
               height: kImageHeightXL,
@@ -56,16 +49,16 @@ class SeasonInfo extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(_airingText),
+                Text(_airedText),
                 Row(
                   children: <Widget>[
-                    Icon(Icons.star_border, color: Colors.grey, size: 20.0),
-                    Text(score),
+                    Icon(Icons.star_border, size: 20.0, color: Colors.grey),
+                    Text(_scoreText),
                   ],
                 ),
                 Row(
                   children: <Widget>[
-                    Icon(Icons.person_outline, color: Colors.grey, size: 20.0),
+                    Icon(Icons.person_outline, size: 20.0, color: Colors.grey),
                     Text(anime.members!.compact()),
                   ],
                 ),

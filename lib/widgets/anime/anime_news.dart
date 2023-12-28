@@ -10,7 +10,7 @@ class AnimeNews extends StatefulWidget {
   final bool anime;
 
   @override
-  _AnimeNewsState createState() => _AnimeNewsState();
+  State<AnimeNews> createState() => _AnimeNewsState();
 }
 
 class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixin<AnimeNews> {
@@ -27,12 +27,12 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, AsyncSnapshot<BuiltList<Article>> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<Article> articleList = snapshot.data!;
+        final BuiltList<Article> articleList = snapshot.data!;
         if (articleList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
@@ -63,11 +63,9 @@ class _AnimeNewsState extends State<AnimeNews> with AutomaticKeepAliveClientMixi
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
+                          children: <Text>[
                             Text(article.title, style: Theme.of(context).textTheme.titleSmall),
-                            SizedBox(height: 4.0),
                             Text(article.excerpt, maxLines: 2, overflow: TextOverflow.ellipsis),
-                            SizedBox(height: 4.0),
                             Text(
                               '${article.date.formatDate(pattern: 'MMM d, yyyy h:mm a')} by ${article.authorUsername}',
                               style: Theme.of(context).textTheme.bodySmall,

@@ -19,13 +19,14 @@ class TopHorizontal extends StatelessWidget {
       children: <Widget>[
         Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.only(left: 16.0),
+          padding: kHomePadding,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text('Top $label Anime', style: Theme.of(context).textTheme.titleMedium),
               IconButton(
                 icon: Icon(Icons.chevron_right),
+                tooltip: 'View all',
                 key: Key('${label.toLowerCase()}_icon'),
                 onPressed: () {
                   Navigator.push(

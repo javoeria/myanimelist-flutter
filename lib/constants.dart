@@ -17,7 +17,7 @@ const kReviewPageSize = 20;
 
 const kWatchingColor = Color(0xFF2DB039);
 const kCompletedColor = Color(0xFF26448F);
-const kOnHoldColor = Color(0xFFF9D457);
+const kOnHoldColor = Color(0xFFF1C83E);
 const kDroppedColor = Color(0xFFA12F31);
 const kPlantoWatchColor = Color(0xFFC3C3C3);
 
@@ -28,13 +28,15 @@ const kImageHeightM = 163.0;
 const kImageWidthL = 160.0;
 const kImageHeightL = 220.0;
 const kImageWidthXL = 167.0;
-const kImageHeightXL = 242.0;
+const kImageHeightXL = 240.0;
 
 const kExpandedHeight = 268.0;
 const kSliverAppBarWidth = 135.0;
 const kSliverAppBarHeight = 210.0;
 const kSliverAppBarPadding = EdgeInsets.symmetric(horizontal: 24.0);
 
+const kHomePadding = EdgeInsets.only(left: 16.0, top: 4.0);
+const kTitlePadding = EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 8.0);
 const kTextStyleBold = TextStyle(fontWeight: FontWeight.bold);
 const kTextStyleShadow = TextStyle(color: Colors.white, fontSize: 12.0, shadows: [Shadow(blurRadius: 3.0)]);
 
@@ -105,6 +107,30 @@ String episodesText(dynamic top) {
   } else {
     throw 'ItemType Error';
   }
+}
+
+Widget reviewIcon(String tag) {
+  if (tag == 'Recommended') {
+    return const Icon(Icons.star, size: 16.0, color: Colors.indigo);
+  } else if (tag == 'Not Recommended') {
+    return const Icon(Icons.star_border, size: 16.0, color: Colors.red);
+  } else {
+    return const Icon(Icons.star_half, size: 16.0, color: Colors.grey);
+  }
+}
+
+Widget playButton() {
+  return Container(
+    padding: const EdgeInsets.all(4.0),
+    decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(4.0)),
+    child: const Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Icon(Icons.play_circle_outline, color: Colors.white),
+        Text(' Play', style: TextStyle(color: Colors.white)),
+      ],
+    ),
+  );
 }
 
 extension TextParsing on String {

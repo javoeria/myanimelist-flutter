@@ -9,7 +9,7 @@ class GenreMangaScreen extends StatefulWidget {
   final bool showCount;
 
   @override
-  _GenreMangaScreenState createState() => _GenreMangaScreenState();
+  State<GenreMangaScreen> createState() => _GenreMangaScreenState();
 }
 
 class _GenreMangaScreenState extends State<GenreMangaScreen> {
@@ -35,7 +35,7 @@ class _GenreMangaScreenState extends State<GenreMangaScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Manga Genres')),
+      appBar: AppBar(title: const Text('Manga Genres')),
       body: Scrollbar(
         child: ListView.separated(
           separatorBuilder: (context, index) => const Divider(height: 0.0),
@@ -44,7 +44,7 @@ class _GenreMangaScreenState extends State<GenreMangaScreen> {
             Genre genre = genres.elementAt(index);
             return ListTile(
               title: Text(genre.name),
-              trailing: genre.count != null ? Chip(label: Text(genre.count.toString())) : null,
+              trailing: genre.count != null ? Chip(label: Text(genre.count!.decimal())) : null,
               onTap: () {
                 Navigator.push(
                   context,
@@ -74,9 +74,9 @@ class GenreMangaList extends StatelessWidget {
       appBar: AppBar(title: Text('$name Manga')),
       body: FutureBuilder(
         future: jikan.searchManga(genres: [id], orderBy: 'members', sort: 'desc'),
-        builder: (context, AsyncSnapshot<BuiltList<Manga>> snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           return MangaList(snapshot.data!);

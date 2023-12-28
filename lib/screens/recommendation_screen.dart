@@ -15,12 +15,12 @@ class RecommendationScreen extends StatelessWidget {
       appBar: AppBar(title: Text(anime ? 'Anime Recommendations' : 'Manga Recommendations')),
       body: FutureBuilder(
         future: anime ? jikan.getRecentAnimeRecommendations() : jikan.getRecentMangaRecommendations(),
-        builder: (context, AsyncSnapshot<BuiltList<UserRecommendation>> snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
-          BuiltList<UserRecommendation> recommendationList = snapshot.data!;
+          final BuiltList<UserRecommendation> recommendationList = snapshot.data!;
           return Scrollbar(
             child: ListView.separated(
               separatorBuilder: (context, index) => const Divider(height: 0.0),
@@ -35,25 +35,42 @@ class RecommendationScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          TitleAnime(
-                            rec.entry[0].malId,
-                            rec.entry[0].title,
-                            rec.entry[0].imageUrl,
-                            type: type,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const Text('If you liked'),
+                              const SizedBox(height: 8.0),
+                              TitleAnime(
+                                rec.entry[0].malId,
+                                rec.entry[0].title,
+                                rec.entry[0].imageUrl,
+                                type: type,
+                              ),
+                            ],
                           ),
-                          Icon(Icons.swap_horiz),
-                          TitleAnime(
-                            rec.entry[1].malId,
-                            rec.entry[1].title,
-                            rec.entry[1].imageUrl,
-                            type: type,
+                          const Icon(Icons.swap_horiz),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              const Text('...then you might like'),
+                              const SizedBox(height: 8.0),
+                              TitleAnime(
+                                rec.entry[1].malId,
+                                rec.entry[1].title,
+                                rec.entry[1].imageUrl,
+                                type: type,
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      SizedBox(height: 8.0),
+                      const SizedBox(height: 8.0),
                       Text(rec.content),
-                      SizedBox(height: 8.0),
-                      Text('${anime ? 'Anime' : 'Manga'} rec by ${rec.user.username} - ${rec.date.formatDate()}'),
+                      const SizedBox(height: 4.0),
+                      Text(
+                        '${anime ? 'Anime' : 'Manga'} rec by ${rec.user.username} - ${rec.date.formatDate()}',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     ],
                   ),
                 );

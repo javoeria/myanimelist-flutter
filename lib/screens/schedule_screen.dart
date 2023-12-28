@@ -12,10 +12,11 @@ class ScheduleScreen extends StatelessWidget {
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Schedule'),
-          bottom: TabBar(
+          title: const Text('Schedule'),
+          bottom: const TabBar(
             isScrollable: true,
-            tabs: const <Tab>[
+            tabAlignment: TabAlignment.center,
+            tabs: <Tab>[
               Tab(text: 'Monday'),
               Tab(text: 'Tuesday'),
               Tab(text: 'Wednesday'),
@@ -29,8 +30,8 @@ class ScheduleScreen extends StatelessWidget {
           ),
           actions: [CustomMenu()],
         ),
-        body: TabBarView(
-          children: const <ScheduleList>[
+        body: const TabBarView(
+          children: <ScheduleList>[
             ScheduleList(day: WeekDay.monday),
             ScheduleList(day: WeekDay.tuesday),
             ScheduleList(day: WeekDay.wednesday),
@@ -53,7 +54,7 @@ class ScheduleList extends StatefulWidget {
   final WeekDay? day;
 
   @override
-  _ScheduleListState createState() => _ScheduleListState();
+  State<ScheduleList> createState() => _ScheduleListState();
 }
 
 class _ScheduleListState extends State<ScheduleList> with AutomaticKeepAliveClientMixin<ScheduleList> {
@@ -70,9 +71,9 @@ class _ScheduleListState extends State<ScheduleList> with AutomaticKeepAliveClie
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, AsyncSnapshot<BuiltList<Anime>> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         return SeasonList(snapshot.data!.reversed.toBuiltList());

@@ -17,12 +17,12 @@ class ReviewScreen extends StatelessWidget {
       appBar: AppBar(title: Text(anime ? 'Anime Reviews' : 'Manga Reviews')),
       body: FutureBuilder(
         future: anime ? jikan.getRecentAnimeReviews() : jikan.getRecentMangaReviews(),
-        builder: (context, AsyncSnapshot<BuiltList<UserReview>> snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
-          BuiltList<UserReview> reviewList = snapshot.data!;
+          final BuiltList<UserReview> reviewList = snapshot.data!;
           return Scrollbar(
             child: ListView.separated(
               separatorBuilder: (context, index) => const Divider(height: 0.0),
@@ -56,7 +56,7 @@ class ReviewScreen extends StatelessWidget {
                           }
                         },
                       ),
-                      SizedBox(height: 12.0),
+                      const SizedBox(height: 8.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Row>[
@@ -79,13 +79,17 @@ class ReviewScreen extends StatelessWidget {
                                   },
                                 ),
                               ),
-                              SizedBox(width: 8.0),
+                              const SizedBox(width: 8.0),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(review.user.username),
-                                  SizedBox(height: 4.0),
-                                  Text(review.tags[0], style: Theme.of(context).textTheme.bodySmall),
+                                  Row(
+                                    children: <Widget>[
+                                      reviewIcon(review.tags[0]),
+                                      Text(review.tags[0], style: Theme.of(context).textTheme.bodySmall),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ],
@@ -94,16 +98,15 @@ class ReviewScreen extends StatelessWidget {
                             children: <Widget>[
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
-                                children: <Widget>[
+                                children: <Text>[
                                   Text(review.date.formatDate()),
-                                  SizedBox(height: 4.0),
                                   Text(
                                     review.isSpoiler ? 'Spoiler' : '',
                                     style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.red),
                                   ),
                                 ],
                               ),
-                              SizedBox(width: 8.0),
+                              const SizedBox(width: 8.0),
                               Ink.image(
                                 image: NetworkImage(review.entry.imageUrl),
                                 width: kImageWidthS,
@@ -137,7 +140,7 @@ class ReviewScreen extends StatelessWidget {
                       ),
                       ExpandablePanel(
                         header: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Text("Reviewer's Rating: ${review.score}"),
                         ),
                         collapsed: Text(review.review, softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),

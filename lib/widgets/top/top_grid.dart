@@ -7,12 +7,12 @@ import 'package:myanimelist/widgets/top/rank_image.dart';
 class TopGrid extends StatefulWidget {
   const TopGrid({this.type, this.filter, this.anime = true});
 
-  final TopType? type;
+  final dynamic type;
   final TopFilter? filter;
   final bool anime;
 
   @override
-  _TopGridState createState() => _TopGridState();
+  State<TopGrid> createState() => _TopGridState();
 }
 
 class _TopGridState extends State<TopGrid> with AutomaticKeepAliveClientMixin<TopGrid> {

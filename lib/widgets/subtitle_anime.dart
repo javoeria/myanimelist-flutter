@@ -44,7 +44,7 @@ class SubtitleAnime extends StatelessWidget {
                           subtitle,
                           maxLines: 1,
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white60, fontSize: 11.0),
+                          style: const TextStyle(color: Colors.white60, fontSize: 11.0),
                         ),
                       ],
                     ),

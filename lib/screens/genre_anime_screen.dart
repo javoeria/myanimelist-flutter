@@ -9,7 +9,7 @@ class GenreAnimeScreen extends StatefulWidget {
   final bool showCount;
 
   @override
-  _GenreAnimeScreenState createState() => _GenreAnimeScreenState();
+  State<GenreAnimeScreen> createState() => _GenreAnimeScreenState();
 }
 
 class _GenreAnimeScreenState extends State<GenreAnimeScreen> {
@@ -35,7 +35,7 @@ class _GenreAnimeScreenState extends State<GenreAnimeScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Anime Genres')),
+      appBar: AppBar(title: const Text('Anime Genres')),
       body: Scrollbar(
         child: ListView.separated(
           separatorBuilder: (context, index) => const Divider(height: 0.0),
@@ -44,7 +44,7 @@ class _GenreAnimeScreenState extends State<GenreAnimeScreen> {
             Genre genre = genres.elementAt(index);
             return ListTile(
               title: Text(genre.name),
-              trailing: genre.count != null ? Chip(label: Text(genre.count.toString())) : null,
+              trailing: genre.count != null ? Chip(label: Text(genre.count!.decimal())) : null,
               onTap: () {
                 Navigator.push(
                   context,
@@ -74,9 +74,9 @@ class GenreAnimeList extends StatelessWidget {
       appBar: AppBar(title: Text('$name Anime')),
       body: FutureBuilder(
         future: jikan.searchAnime(genres: [id], orderBy: 'members', sort: 'desc'),
-        builder: (context, AsyncSnapshot<BuiltList<Anime>> snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           return SeasonList(snapshot.data!);

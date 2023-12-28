@@ -9,7 +9,7 @@ class AnimeCharactersStaff extends StatefulWidget {
   final int id;
 
   @override
-  _AnimeCharactersStaffState createState() => _AnimeCharactersStaffState();
+  State<AnimeCharactersStaff> createState() => _AnimeCharactersStaffState();
 }
 
 class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
@@ -72,11 +72,9 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
+                            children: <Text>[
                               Text(item.name),
-                              SizedBox(height: 4.0),
                               Text(item.role, style: Theme.of(context).textTheme.bodySmall),
-                              SizedBox(height: 4.0),
                               Text(
                                 '${(item.favorites ?? 0).decimal()} Favorites',
                                 style: Theme.of(context).textTheme.bodySmall,
@@ -94,9 +92,8 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
+                                  children: <Text>[
                                     Text(actors.first.name, textAlign: TextAlign.end),
-                                    SizedBox(height: 4.0),
                                     Text(actors.first.language!, style: Theme.of(context).textTheme.bodySmall),
                                   ],
                                 ),
@@ -134,9 +131,8 @@ class _AnimeCharactersStaffState extends State<AnimeCharactersStaff>
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
+                      children: <Text>[
                         Text(item.name),
-                        SizedBox(height: 4.0),
                         Text(item.positions!.join(', '), style: Theme.of(context).textTheme.bodySmall),
                       ],
                     ),

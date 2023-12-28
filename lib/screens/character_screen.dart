@@ -14,7 +14,7 @@ class CharacterScreen extends StatefulWidget {
   final int id;
 
   @override
-  _CharacterScreenState createState() => _CharacterScreenState();
+  State<CharacterScreen> createState() => _CharacterScreenState();
 }
 
 class _CharacterScreenState extends State<CharacterScreen> {
@@ -46,7 +46,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return Scaffold(appBar: AppBar(), body: Center(child: CircularProgressIndicator()));
+      return Scaffold(appBar: AppBar(), body: const Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
@@ -73,7 +73,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
                         alignment: Alignment.centerRight,
                       ),
                     ),
-                    SizedBox(width: 24.0),
+                    const SizedBox(width: 24.0),
                     Expanded(
                       child: SizedBox(
                         height: kSliverAppBarHeight,
@@ -93,11 +93,11 @@ class _CharacterScreenState extends State<CharacterScreen> {
                                     maxLines: 1,
                                   )
                                 : Container(),
-                            SizedBox(height: 24.0),
+                            const SizedBox(height: 24.0),
                             Row(
                               children: <Widget>[
-                                Icon(Icons.person, size: 20.0),
-                                SizedBox(width: 4.0),
+                                const Icon(Icons.person, size: 20.0),
+                                const SizedBox(width: 4.0),
                                 Text(
                                   character.favorites.decimal(),
                                   style: Theme.of(context).textTheme.bodyLarge,
@@ -139,9 +139,9 @@ class AnimeographyList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Divider(height: 0.0),
+        const Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
+          padding: kTitlePadding,
           child: Text(
             type == ItemType.anime ? 'Animeography' : 'Mangaography',
             style: Theme.of(context).textTheme.titleMedium,
@@ -169,7 +169,7 @@ class AnimeographyList extends StatelessWidget {
             },
           ),
         ),
-        SizedBox(height: 12.0),
+        const SizedBox(height: 12.0),
       ],
     );
   }
@@ -185,9 +185,9 @@ class VoiceList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Divider(height: 0.0),
+        const Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
+          padding: kTitlePadding,
           child: Text('Voice Actors', style: Theme.of(context).textTheme.titleMedium),
         ),
         SizedBox(
@@ -211,7 +211,7 @@ class VoiceList extends StatelessWidget {
             },
           ),
         ),
-        SizedBox(height: 12.0),
+        const SizedBox(height: 12.0),
       ],
     );
   }

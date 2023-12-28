@@ -19,10 +19,11 @@ class MangaListScreen extends StatelessWidget {
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Manga List'),
-          bottom: TabBar(
+          title: const Text('Manga List'),
+          bottom: const TabBar(
             isScrollable: true,
-            tabs: const <Tab>[
+            tabAlignment: TabAlignment.center,
+            tabs: <Tab>[
               Tab(text: 'All Manga'),
               Tab(text: 'Currently Reading'),
               Tab(text: 'Completed'),
@@ -35,12 +36,12 @@ class MangaListScreen extends StatelessWidget {
         ),
         body: FutureBuilder(
           future: MalClient().getUserList(username, sort: sort, anime: false),
-          builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+          builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
-            List<dynamic> userList = snapshot.data!;
+            final List<dynamic> userList = snapshot.data!;
             return TabBarView(
               children: <UserMangaList>[
                 UserMangaList(userList),
@@ -58,28 +59,23 @@ class MangaListScreen extends StatelessWidget {
   }
 }
 
-class UserMangaList extends StatefulWidget {
+class UserMangaList extends StatelessWidget {
   const UserMangaList(this.userList);
 
   final List<dynamic> userList;
 
   @override
-  _UserMangaListState createState() => _UserMangaListState();
-}
-
-class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveClientMixin<UserMangaList> {
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
-    if (widget.userList.isEmpty) {
-      return ListTile(title: Text('No items found.'));
+    if (userList.isEmpty) {
+      return const ListTile(title: Text('No items found.'));
     }
+
     return Scrollbar(
       child: ListView.builder(
         padding: const EdgeInsets.all(12.0),
-        itemCount: widget.userList.length,
+        itemCount: userList.length,
         itemBuilder: (context, index) {
-          Map<String, dynamic> item = widget.userList.elementAt(index);
+          Map<String, dynamic> item = userList.elementAt(index);
           String type = item['node']['media_type'].toString().toTitleCase();
           String read =
               item['list_status']['num_volumes_read'] == 0 ? '-' : item['list_status']['num_volumes_read'].toString();
@@ -91,14 +87,14 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
               padding: const EdgeInsets.all(4.0),
               child: Row(
                 children: <Widget>[
-                  Container(color: statusColor(item['list_status']['status']), width: 5.0, height: kImageHeightS),
+                  Container(color: statusColor(item['list_status']['status']), width: 6.0, height: kImageHeightS),
                   Image.network(
                     item['node']['main_picture']['large'],
                     width: kImageWidthS,
                     height: kImageHeightS,
                     fit: BoxFit.cover,
                   ),
-                  SizedBox(width: 8.0),
+                  const SizedBox(width: 8.0),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +122,4 @@ class _UserMangaListState extends State<UserMangaList> with AutomaticKeepAliveCl
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

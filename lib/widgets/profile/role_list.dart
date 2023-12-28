@@ -16,7 +16,7 @@ class RoleList extends StatelessWidget {
       children: <Widget>[
         Divider(height: 0.0),
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
+          padding: kTitlePadding,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -24,6 +24,7 @@ class RoleList extends StatelessWidget {
               if (list.length > 50)
                 IconButton(
                   icon: Icon(Icons.chevron_right),
+                  tooltip: 'View all',
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -89,9 +90,8 @@ class RoleItem extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
+              children: <Text>[
                 Text(actor.character.name, textAlign: TextAlign.end),
-                SizedBox(height: 4.0),
                 Text(actor.role, style: Theme.of(context).textTheme.bodySmall),
               ],
             ),

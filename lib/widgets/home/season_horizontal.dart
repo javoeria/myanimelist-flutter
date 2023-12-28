@@ -13,18 +13,19 @@ class SeasonHorizontal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String seasonName = season.first.season!.toTitleCase();
+    final String seasonName = season.first.season!.toTitleCase();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 16.0),
+          padding: kHomePadding,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text('$seasonName ${season.first.year} Anime', style: Theme.of(context).textTheme.titleMedium),
               IconButton(
                 icon: Icon(Icons.chevron_right),
+                tooltip: 'View all',
                 key: Key('season_icon'),
                 onPressed: () {
                   Navigator.push(

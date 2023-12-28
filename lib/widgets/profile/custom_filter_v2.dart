@@ -12,6 +12,7 @@ class CustomFilterV2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
       icon: Icon(Icons.filter_list),
+      tooltip: 'Sort by',
       itemBuilder: (context) {
         return [
           PopupMenuItem(value: anime ? 'anime_title' : 'manga_title', child: Text('Title')),

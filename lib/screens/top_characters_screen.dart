@@ -13,7 +13,7 @@ class TopCharactersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Top Characters'),
+        title: const Text('Top Characters'),
         actions: [CustomView()],
       ),
       body: Scrollbar(
@@ -45,10 +45,10 @@ class TopCharactersScreen extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Image.network(top.imageUrl, width: kImageWidthS, height: kImageHeightS, fit: BoxFit.cover),
-            SizedBox(width: 8.0),
+            const SizedBox(width: 8.0),
             Expanded(child: Text('${index + 1}. ${top.name}', style: Theme.of(context).textTheme.titleSmall)),
             Text(top.favorites.decimal(), style: Theme.of(context).textTheme.bodyLarge),
-            Icon(Icons.person, color: Colors.grey),
+            const Icon(Icons.person, color: Colors.grey),
           ],
         ),
       ),

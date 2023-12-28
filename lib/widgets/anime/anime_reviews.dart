@@ -12,7 +12,7 @@ class AnimeReviews extends StatefulWidget {
   final bool anime;
 
   @override
-  _AnimeReviewsState createState() => _AnimeReviewsState();
+  State<AnimeReviews> createState() => _AnimeReviewsState();
 }
 
 class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClientMixin<AnimeReviews> {
@@ -65,17 +65,20 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(review.user.username),
-                          SizedBox(height: 4.0),
-                          Text(review.tags[0], style: Theme.of(context).textTheme.bodySmall),
+                          Row(
+                            children: <Widget>[
+                              reviewIcon(review.tags[0]),
+                              Text(review.tags[0], style: Theme.of(context).textTheme.bodySmall),
+                            ],
+                          ),
                         ],
                       ),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
+                    children: <Text>[
                       Text(review.date.formatDate()),
-                      SizedBox(height: 4.0),
                       Text(
                         review.isSpoiler ? 'Spoiler' : '',
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.red),
@@ -86,7 +89,7 @@ class _AnimeReviewsState extends State<AnimeReviews> with AutomaticKeepAliveClie
               ),
               ExpandablePanel(
                 header: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text("Reviewer's Rating: ${review.score}"),
                 ),
                 collapsed: Text(review.review, softWrap: true, maxLines: 4, overflow: TextOverflow.ellipsis),

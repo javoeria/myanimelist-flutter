@@ -8,12 +8,12 @@ import 'package:myanimelist/screens/manga_screen.dart';
 class TopList extends StatefulWidget {
   const TopList({this.type, this.filter, this.anime = true});
 
-  final TopType? type;
+  final dynamic type;
   final TopFilter? filter;
   final bool anime;
 
   @override
-  _TopListState createState() => _TopListState();
+  State<TopList> createState() => _TopListState();
 }
 
 class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<TopList> {

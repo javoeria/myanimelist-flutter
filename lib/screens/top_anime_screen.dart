@@ -18,10 +18,11 @@ class TopAnimeScreen extends StatelessWidget {
       initialIndex: index,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Top Anime'),
-          bottom: TabBar(
+          title: const Text('Top Anime'),
+          bottom: const TabBar(
             isScrollable: true,
-            tabs: const <Tab>[
+            tabAlignment: TabAlignment.center,
+            tabs: <Tab>[
               Tab(text: 'All Anime'),
               Tab(text: 'Top Airing'),
               Tab(text: 'Top Upcoming'),
@@ -37,30 +38,30 @@ class TopAnimeScreen extends StatelessWidget {
           actions: [CustomView()],
         ),
         body: Provider.of<UserData>(context).gridView
-            ? TabBarView(
-                children: const <TopGrid>[
+            ? const TabBarView(
+                children: <TopGrid>[
                   TopGrid(),
                   TopGrid(filter: TopFilter.airing),
                   TopGrid(filter: TopFilter.upcoming),
-                  TopGrid(type: TopType.tv),
-                  TopGrid(type: TopType.movie),
-                  TopGrid(type: TopType.ova),
-                  TopGrid(type: TopType.ona),
-                  TopGrid(type: TopType.special),
+                  TopGrid(type: AnimeType.tv),
+                  TopGrid(type: AnimeType.movie),
+                  TopGrid(type: AnimeType.ova),
+                  TopGrid(type: AnimeType.ona),
+                  TopGrid(type: AnimeType.special),
                   TopGrid(filter: TopFilter.bypopularity),
                   TopGrid(filter: TopFilter.favorite),
                 ],
               )
-            : TabBarView(
-                children: const <TopList>[
+            : const TabBarView(
+                children: <TopList>[
                   TopList(),
                   TopList(filter: TopFilter.airing),
                   TopList(filter: TopFilter.upcoming),
-                  TopList(type: TopType.tv),
-                  TopList(type: TopType.movie),
-                  TopList(type: TopType.ova),
-                  TopList(type: TopType.ona),
-                  TopList(type: TopType.special),
+                  TopList(type: AnimeType.tv),
+                  TopList(type: AnimeType.movie),
+                  TopList(type: AnimeType.ova),
+                  TopList(type: AnimeType.ona),
+                  TopList(type: AnimeType.special),
                   TopList(filter: TopFilter.bypopularity),
                   TopList(filter: TopFilter.favorite),
                 ],

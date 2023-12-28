@@ -12,10 +12,11 @@ class LaterScreen extends StatelessWidget {
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Later'),
-          bottom: TabBar(
+          title: const Text('Later'),
+          bottom: const TabBar(
             isScrollable: true,
-            tabs: const <Tab>[
+            tabAlignment: TabAlignment.center,
+            tabs: <Tab>[
               Tab(text: 'TV'),
               Tab(text: 'ONA'),
               Tab(text: 'OVA'),
@@ -28,12 +29,12 @@ class LaterScreen extends StatelessWidget {
         ),
         body: FutureBuilder(
           future: getSeasonComplete(),
-          builder: (context, AsyncSnapshot<BuiltList<Anime>> snapshot) {
+          builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
-            BuiltList<Anime> animeList = snapshot.data!;
+            final BuiltList<Anime> animeList = snapshot.data!;
             return TabBarView(
               children: <SeasonList>[
                 SeasonList(animeList.where((anime) => anime.type == 'TV').toBuiltList()),

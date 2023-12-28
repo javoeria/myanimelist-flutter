@@ -12,7 +12,7 @@ class GenreHorizontal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 48.0,
+      height: 40.0,
       alignment: Alignment.center,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -23,7 +23,7 @@ class GenreHorizontal extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(4.0),
             child: ActionChip(
-              label: Text(genre.name),
+              label: Text(genre.name, style: Theme.of(context).textTheme.labelMedium),
               padding: EdgeInsets.zero,
               onPressed: () {
                 if (anime) {

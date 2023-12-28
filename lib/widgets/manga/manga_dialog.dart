@@ -9,7 +9,7 @@ class MangaDialog extends StatefulWidget {
   final Map<String, dynamic> json;
 
   @override
-  _MangaDialogState createState() => _MangaDialogState();
+  State<MangaDialog> createState() => _MangaDialogState();
 }
 
 class _MangaDialogState extends State<MangaDialog> {
@@ -37,7 +37,7 @@ class _MangaDialogState extends State<MangaDialog> {
     String total2 = widget.json['total_volumes'] == 0 ? '?' : widget.json['total_volumes'].toString();
     return AlertDialog(
       title: Text('Edit Status'),
-      contentPadding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 8.0),
+      contentPadding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 12.0),
       content: SingleChildScrollView(
         child: Column(
           children: <Row>[

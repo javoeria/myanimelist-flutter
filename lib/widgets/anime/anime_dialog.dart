@@ -9,7 +9,7 @@ class AnimeDialog extends StatefulWidget {
   final Map<String, dynamic> json;
 
   @override
-  _AnimeDialogState createState() => _AnimeDialogState();
+  State<AnimeDialog> createState() => _AnimeDialogState();
 }
 
 class _AnimeDialogState extends State<AnimeDialog> {
@@ -34,7 +34,7 @@ class _AnimeDialogState extends State<AnimeDialog> {
     String total = widget.json['total_episodes'] == 0 ? '?' : widget.json['total_episodes'].toString();
     return AlertDialog(
       title: Text('Edit Status'),
-      contentPadding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 8.0),
+      contentPadding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 12.0),
       content: SingleChildScrollView(
         child: Column(
           children: <Row>[

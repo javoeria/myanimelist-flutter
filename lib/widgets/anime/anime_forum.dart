@@ -10,7 +10,7 @@ class AnimeForum extends StatefulWidget {
   final bool anime;
 
   @override
-  _AnimeForumState createState() => _AnimeForumState();
+  State<AnimeForum> createState() => _AnimeForumState();
 }
 
 class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMixin<AnimeForum> {
@@ -27,12 +27,12 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, AsyncSnapshot<BuiltList<Forum>> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<Forum> forumList = snapshot.data!;
+        final BuiltList<Forum> forumList = snapshot.data!;
         if (forumList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
@@ -51,17 +51,11 @@ class _AnimeForumState extends State<AnimeForum> with AutomaticKeepAliveClientMi
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
+                          children: <Text>[
                             Text(forum.title, style: Theme.of(context).textTheme.titleSmall),
-                            SizedBox(height: 4.0),
-                            RichText(
-                              text: TextSpan(
-                                text: '${forum.authorUsername} - ',
-                                style: DefaultTextStyle.of(context).style,
-                                children: <TextSpan>[
-                                  TextSpan(text: forum.date.formatDate(), style: Theme.of(context).textTheme.bodySmall),
-                                ],
-                              ),
+                            Text(
+                              '${forum.authorUsername} - ${forum.date.formatDate()}',
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],
                         ),

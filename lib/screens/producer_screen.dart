@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/widgets/manga/manga_list.dart';
 import 'package:myanimelist/widgets/season/season_list.dart';
@@ -18,7 +17,7 @@ class ProducerScreen extends StatelessWidget {
         child: PagewiseListView(
           pageSize: kDefaultPageSize,
           itemBuilder: _itemBuilder,
-          noItemsFoundBuilder: (context) => ListTile(title: Text('No items found.')),
+          noItemsFoundBuilder: (context) => const ListTile(title: Text('No items found.')),
           pageFuture: (pageIndex) => anime
               ? jikan.getProducers(orderBy: 'count', sort: 'desc', page: pageIndex! + 1)
               : jikan.getMagazines(orderBy: 'count', sort: 'desc', page: pageIndex! + 1),
@@ -44,7 +43,7 @@ class ProducerScreen extends StatelessWidget {
             );
           },
         ),
-        Divider(height: 0.0),
+        const Divider(height: 0.0),
       ],
     );
   }
@@ -62,9 +61,9 @@ class ProducerList extends StatelessWidget {
       appBar: AppBar(title: Text(name)),
       body: FutureBuilder(
         future: jikan.searchAnime(producers: [id], orderBy: 'members', sort: 'desc'),
-        builder: (context, AsyncSnapshot<BuiltList<Anime>> snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           return SeasonList(snapshot.data!);
@@ -86,9 +85,9 @@ class MagazineList extends StatelessWidget {
       appBar: AppBar(title: Text(name)),
       body: FutureBuilder(
         future: jikan.searchManga(magazines: [id], orderBy: 'members', sort: 'desc'),
-        builder: (context, AsyncSnapshot<BuiltList<Manga>> snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           return MangaList(snapshot.data!);

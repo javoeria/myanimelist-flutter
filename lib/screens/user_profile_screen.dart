@@ -18,7 +18,7 @@ class UserProfileScreen extends StatefulWidget {
   final String username;
 
   @override
-  _UserProfileScreenState createState() => _UserProfileScreenState();
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
@@ -57,7 +57,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return Scaffold(appBar: AppBar(), body: Center(child: CircularProgressIndicator()));
+      return Scaffold(appBar: AppBar(), body: const Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
@@ -94,13 +94,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Icon(Icons.camera_alt, size: 48.0, color: Colors.grey[700]),
-                                    Text('No Picture', style: TextStyle(color: Colors.grey[700])),
+                                    Text('No Picture', style: kTextStyleBold.copyWith(color: Colors.grey[700])),
                                   ],
                                 ),
                               ),
                             ),
                     ),
-                    SizedBox(width: 24.0),
+                    const SizedBox(width: 24.0),
                     Expanded(
                       child: SizedBox(
                         height: kSliverAppBarHeight,
@@ -113,11 +113,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               style: Theme.of(context).textTheme.titleLarge,
                               maxLines: 2,
                             ),
-                            SizedBox(height: 24.0),
+                            const SizedBox(height: 24.0),
                             Row(
                               children: <Widget>[
-                                Icon(Icons.access_time, size: 20.0),
-                                SizedBox(width: 4.0),
+                                const Icon(Icons.access_time, size: 20.0),
+                                const SizedBox(width: 4.0),
                                 Text(
                                   profile.lastOnline!.formatDate(pattern: 'MMM d, yy'),
                                   style: Theme.of(context).textTheme.bodyLarge,
@@ -128,7 +128,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 ? Row(
                                     children: <Widget>[
                                       Icon(profile.gender! == 'Male' ? Icons.male : Icons.female, size: 20.0),
-                                      SizedBox(width: 4.0),
+                                      const SizedBox(width: 4.0),
                                       Text(
                                         profile.gender!,
                                         style: Theme.of(context).textTheme.bodyLarge,
@@ -139,8 +139,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             profile.birthday != null
                                 ? Row(
                                     children: <Widget>[
-                                      Icon(Icons.cake, size: 20.0),
-                                      SizedBox(width: 4.0),
+                                      const Icon(Icons.cake, size: 20.0),
+                                      const SizedBox(width: 4.0),
                                       Text(
                                         profile.birthday!.formatDate(pattern: 'MMM d, yy'),
                                         style: Theme.of(context).textTheme.bodyLarge,
@@ -151,8 +151,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             profile.location != null
                                 ? Row(
                                     children: <Widget>[
-                                      Icon(Icons.place, size: 20.0),
-                                      SizedBox(width: 4.0),
+                                      const Icon(Icons.place, size: 20.0),
+                                      const SizedBox(width: 4.0),
                                       Expanded(
                                         child: Text(
                                           profile.location!,
@@ -198,7 +198,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         },
                       ),
                     ),
-                    SizedBox(width: 16.0),
+                    const SizedBox(width: 16.0),
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
@@ -220,9 +220,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ],
                 ),
               ),
-              Divider(height: 0.0),
+              const Divider(height: 0.0),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: kTitlePadding,
                 child: Text('Statistics', style: Theme.of(context).textTheme.titleMedium),
               ),
               SizedBox(

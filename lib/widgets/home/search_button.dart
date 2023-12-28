@@ -53,7 +53,7 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (query.isEmpty || query.length < 3) {
+    if (query.isEmpty || query.length < 6) {
       _suggestions.clear();
       return _SuggestionList(
         history: true,
@@ -66,11 +66,11 @@ class CustomSearchDelegate extends SearchDelegate {
     } else {
       return FutureBuilder(
         future: type == ItemType.anime
-            ? jikan.searchAnime(query: query, rawQuery: '&limit=10')
-            : jikan.searchManga(query: query, rawQuery: '&limit=10'),
-        builder: (context, AsyncSnapshot<BuiltList<dynamic>> snapshot) {
+            ? jikan.searchAnime(query: query, rawQuery: '&limit=10&sfw=true')
+            : jikan.searchManga(query: query, rawQuery: '&limit=10&sfw=true'),
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            BuiltList<dynamic> searchList = snapshot.data!;
+            final BuiltList<dynamic> searchList = snapshot.data!;
             _suggestions.addAll(searchList.map((search) => search.title.toString()));
           }
 
@@ -149,9 +149,9 @@ class _ResultList extends StatelessWidget {
                   Text(search.title, style: Theme.of(context).textTheme.titleSmall),
                   Text(
                     search.synopsis ?? '',
+                    style: Theme.of(context).textTheme.bodySmall,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                   Text(
                     '${search.type ?? 'Unknown'} ${episodesText(search)} - $score',

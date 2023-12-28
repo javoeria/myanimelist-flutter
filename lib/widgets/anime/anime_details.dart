@@ -15,7 +15,7 @@ class AnimeDetails extends StatefulWidget {
   final int id;
 
   @override
-  _AnimeDetailsState createState() => _AnimeDetailsState();
+  State<AnimeDetails> createState() => _AnimeDetailsState();
 }
 
 class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClientMixin<AnimeDetails> {
@@ -42,21 +42,13 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
     setState(() => loading = false);
   }
 
-  String get _producersText {
-    return anime.producers.isEmpty ? 'None found' : anime.producers.map((i) => i.name).join(', ');
-  }
-
-  String get _licensorsText {
-    return anime.licensors.isEmpty ? 'None found' : anime.licensors.map((i) => i.name).join(', ');
-  }
-
-  String get _studiosText {
-    return anime.studios.isEmpty ? 'None found' : anime.studios.map((i) => i.name).join(', ');
-  }
-
-  String get _genresText {
-    return anime.genres.isEmpty ? 'None found' : anime.genres.map((i) => i.name).join(', ');
-  }
+  String get _scoreText => anime.score == null ? 'N/A' : anime.score.toString();
+  String get _rankText => anime.rank == null ? 'N/A' : '#${anime.rank}';
+  String get _episodesText => anime.episodes == null ? 'Unknown' : anime.episodes.toString();
+  String get _producersText => anime.producers.isEmpty ? 'None found' : anime.producers.map((i) => i.name).join(', ');
+  String get _licensorsText => anime.licensors.isEmpty ? 'None found' : anime.licensors.map((i) => i.name).join(', ');
+  String get _studiosText => anime.studios.isEmpty ? 'None found' : anime.studios.map((i) => i.name).join(', ');
+  String get _genresText => anime.genres.isEmpty ? 'None found' : anime.genres.map((i) => i.name).join(', ');
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +57,6 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
       return Center(child: CircularProgressIndicator());
     }
 
-    String score = anime.score == null ? 'N/A' : anime.score.toString();
-    String rank = anime.rank == null ? 'N/A' : '#${anime.rank}';
-    String episodes = anime.episodes == null ? 'Unknown' : anime.episodes.toString();
     String? premiered =
         anime.season == null || anime.year == null ? null : '${anime.season!.toTitleCase()} ${anime.year}';
     return ListView(
@@ -85,7 +74,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 children: <Widget>[
                   RichText(
                     text: TextSpan(
-                      text: score,
+                      text: _scoreText,
                       style: Theme.of(context).textTheme.headlineLarge,
                       children: <TextSpan>[
                         TextSpan(
@@ -100,36 +89,28 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                     text: TextSpan(
                       text: 'Ranked ',
                       style: Theme.of(context).textTheme.bodyLarge,
-                      children: <TextSpan>[
-                        TextSpan(text: rank, style: kTextStyleBold),
-                      ],
+                      children: [TextSpan(text: _rankText, style: kTextStyleBold)],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: 'Popularity ',
                       style: Theme.of(context).textTheme.bodyLarge,
-                      children: <TextSpan>[
-                        TextSpan(text: '#${anime.popularity}', style: kTextStyleBold),
-                      ],
+                      children: [TextSpan(text: '#${anime.popularity}', style: kTextStyleBold)],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: 'Members ',
                       style: Theme.of(context).textTheme.bodyLarge,
-                      children: <TextSpan>[
-                        TextSpan(text: anime.members!.decimal(), style: kTextStyleBold),
-                      ],
+                      children: [TextSpan(text: anime.members!.decimal(), style: kTextStyleBold)],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: 'Favorites ',
                       style: Theme.of(context).textTheme.bodyLarge,
-                      children: <TextSpan>[
-                        TextSpan(text: anime.favorites!.decimal(), style: kTextStyleBold),
-                      ],
+                      children: [TextSpan(text: anime.favorites!.decimal(), style: kTextStyleBold)],
                     ),
                   ),
                   SizedBox(height: 8.0),
@@ -143,7 +124,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
         ),
         status != null
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(side: BorderSide(width: 2.0, color: statusColor(status!['text']))),
                   child: Text(
@@ -179,10 +160,12 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: GenreHorizontal(anime.genres),
-        ),
+        anime.genres.isNotEmpty
+            ? Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                child: GenreHorizontal(anime.genres),
+              )
+            : Container(),
         anime.background != null
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,11 +173,14 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                   Divider(height: 0.0),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Text('Background', style: Theme.of(context).textTheme.titleMedium),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-                    child: Text(anime.background!, softWrap: true),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('Background', style: Theme.of(context).textTheme.titleMedium),
+                        SizedBox(height: 8.0),
+                        Text(anime.background!, softWrap: true),
+                      ],
+                    ),
                   ),
                 ],
               )
@@ -206,14 +192,12 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text('Information', style: Theme.of(context).textTheme.titleMedium),
-              SizedBox(height: 16.0),
+              SizedBox(height: 8.0),
               RichText(
                 text: TextSpan(
                   text: 'Type: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: anime.type ?? 'Unknown', style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: anime.type ?? 'Unknown', style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -221,9 +205,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Episodes: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: episodes, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: _episodesText, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -231,9 +213,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Status: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: anime.status, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: anime.status, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -241,9 +221,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Aired: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: anime.aired, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: anime.aired, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -254,9 +232,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                         text: TextSpan(
                           text: 'Premiered: ',
                           style: Theme.of(context).textTheme.titleSmall,
-                          children: <TextSpan>[
-                            TextSpan(text: premiered, style: DefaultTextStyle.of(context).style),
-                          ],
+                          children: [TextSpan(text: premiered, style: DefaultTextStyle.of(context).style)],
                         ),
                       ),
                     )
@@ -268,9 +244,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                         text: TextSpan(
                           text: 'Broadcast: ',
                           style: Theme.of(context).textTheme.titleSmall,
-                          children: <TextSpan>[
-                            TextSpan(text: anime.broadcast, style: DefaultTextStyle.of(context).style),
-                          ],
+                          children: [TextSpan(text: anime.broadcast, style: DefaultTextStyle.of(context).style)],
                         ),
                       ),
                     )
@@ -279,9 +253,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Producers: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: _producersText, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: _producersText, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -289,9 +261,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Licensors: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: _licensorsText, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: _licensorsText, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -299,9 +269,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Studios: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: _studiosText, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: _studiosText, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -309,9 +277,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Source: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: anime.source, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: anime.source, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -319,9 +285,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Genres: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: _genresText, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: _genresText, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -329,9 +293,7 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Duration: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: anime.duration, style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: anime.duration, style: DefaultTextStyle.of(context).style)],
                 ),
               ),
               SizedBox(height: 4.0),
@@ -339,52 +301,12 @@ class _AnimeDetailsState extends State<AnimeDetails> with AutomaticKeepAliveClie
                 text: TextSpan(
                   text: 'Rating: ',
                   style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(text: anime.rating ?? 'None', style: DefaultTextStyle.of(context).style),
-                  ],
+                  children: [TextSpan(text: anime.rating ?? 'None', style: DefaultTextStyle.of(context).style)],
                 ),
               ),
             ],
           ),
         ),
-        // anime.openingThemes!.isNotEmpty
-        //     ? Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: <Widget>[
-        //           Divider(height: 0.0),
-        //           Padding(
-        //             padding: const EdgeInsets.all(16.0),
-        //             child: Text('Opening Theme', style: Theme.of(context).textTheme.titleMedium),
-        //           ),
-        //           Padding(
-        //             padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-        //             child: Column(
-        //               crossAxisAlignment: CrossAxisAlignment.start,
-        //               children: anime.openingThemes!.map((op) => Text(op)).toList(),
-        //             ),
-        //           ),
-        //         ],
-        //       )
-        //     : Container(),
-        // anime.endingThemes!.isNotEmpty
-        //     ? Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: <Widget>[
-        //           Divider(height: 0.0),
-        //           Padding(
-        //             padding: const EdgeInsets.all(16.0),
-        //             child: Text('Ending Theme', style: Theme.of(context).textTheme.titleMedium),
-        //           ),
-        //           Padding(
-        //             padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-        //             child: Column(
-        //               crossAxisAlignment: CrossAxisAlignment.start,
-        //               children: anime.endingThemes!.map((ed) => Text(ed)).toList(),
-        //             ),
-        //           ),
-        //         ],
-        //       )
-        //     : Container(),
         if (related != null && related!.isNotEmpty) RelatedList(related!),
         PictureList(pictures),
       ],

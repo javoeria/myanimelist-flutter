@@ -21,9 +21,10 @@ class MangaScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(title ?? 'Manga'),
-          bottom: TabBar(
+          bottom: const TabBar(
             isScrollable: true,
-            tabs: const <Tab>[
+            tabAlignment: TabAlignment.center,
+            tabs: <Tab>[
               Tab(text: 'Details'),
               Tab(text: 'Characters'),
               Tab(text: 'Stats'),

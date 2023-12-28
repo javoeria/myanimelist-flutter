@@ -9,7 +9,7 @@ class MangaCharacters extends StatefulWidget {
   final int id;
 
   @override
-  _MangaCharactersState createState() => _MangaCharactersState();
+  State<MangaCharacters> createState() => _MangaCharactersState();
 }
 
 class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAliveClientMixin<MangaCharacters> {
@@ -26,12 +26,12 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, AsyncSnapshot<BuiltList<CharacterMeta>> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<CharacterMeta> characterList = snapshot.data!;
+        final BuiltList<CharacterMeta> characterList = snapshot.data!;
         if (characterList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
@@ -57,9 +57,8 @@ class _MangaCharactersState extends State<MangaCharacters> with AutomaticKeepAli
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
+                        children: <Text>[
                           Text(character.name),
-                          SizedBox(height: 4.0),
                           Text(character.role, style: Theme.of(context).textTheme.bodySmall),
                         ],
                       ),

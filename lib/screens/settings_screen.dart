@@ -21,11 +21,11 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String? username = prefs.getString('username');
     return Scaffold(
-      appBar: AppBar(title: Text('Settings')),
+      appBar: AppBar(title: const Text('Settings')),
       body: ListView(
         children: <ListTile>[
           ListTile(
-            title: username == null ? Text('Login') : Text('Logout'),
+            title: Text(username == null ? 'Login' : 'Logout'),
             onTap: () async {
               bool? action = true;
               if (username == null) {
@@ -55,8 +55,8 @@ class SettingsScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Kids'),
-            subtitle: Text('Show entries with Kids genres'),
+            title: const Text('Kids'),
+            subtitle: const Text('Show entries with Kids genres'),
             trailing: Switch(
               value: Provider.of<UserData>(context).kidsGenre,
               onChanged: (value) {
@@ -66,8 +66,8 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: Text('R18+'),
-            subtitle: Text('Show entries with Hentai/Erotica genres'),
+            title: const Text('R18+'),
+            subtitle: const Text('Show entries with Hentai/Erotica genres'),
             trailing: Switch(
               value: Provider.of<UserData>(context).r18Genre,
               onChanged: (value) {
@@ -77,8 +77,8 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: Text('Dark mode'),
-            subtitle: Text('Choose between light and dark color palettes'),
+            title: const Text('Dark mode'),
+            subtitle: const Text('Choose between light and dark color palettes'),
             trailing: Switch(
               value: Theme.of(context).brightness == Brightness.dark,
               onChanged: (value) {
@@ -88,15 +88,15 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           // ListTile(
-          //   title: Text('Clear history'),
-          //   subtitle: Text('Remove local searches from this device'),
+          //   title: const Text('Clear history'),
+          //   subtitle: const Text('Remove local searches from this device'),
           //   onTap: () {
           //     Provider.of<UserData>(context, listen: false).removeHistoryAll();
           //   },
           // ),
           ListTile(
-            title: Text('Rate app'),
-            subtitle: Text('Your feedback is very important to us'),
+            title: const Text('Rate app'),
+            subtitle: const Text('Your feedback is very important to us'),
             onTap: () {
               FirebaseAnalytics.instance.logEvent(name: 'rate');
               RateMyApp(googlePlayIdentifier: kGooglePlayId).launchStore();
@@ -117,15 +117,15 @@ Future<bool?> _logoutDialog(BuildContext context) async {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text('Logout'),
-        content: Text('Are you sure you want to logout?'),
+        title: const Text('Logout'),
+        content: const Text('Are you sure you want to logout?'),
         actions: <TextButton>[
           TextButton(
-            child: Text('NO'),
+            child: const Text('NO'),
             onPressed: () => Navigator.pop(context, false),
           ),
           TextButton(
-            child: Text('YES'),
+            child: const Text('YES'),
             onPressed: () => Navigator.pop(context, true),
           ),
         ],

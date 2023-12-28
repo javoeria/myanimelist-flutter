@@ -10,7 +10,7 @@ class AnimeRecommendations extends StatefulWidget {
   final bool anime;
 
   @override
-  _AnimeRecommendationsState createState() => _AnimeRecommendationsState();
+  State<AnimeRecommendations> createState() => _AnimeRecommendationsState();
 }
 
 class _AnimeRecommendationsState extends State<AnimeRecommendations>
@@ -28,12 +28,12 @@ class _AnimeRecommendationsState extends State<AnimeRecommendations>
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, AsyncSnapshot<BuiltList<Recommendation>> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<Recommendation> recommendationList = snapshot.data!;
+        final BuiltList<Recommendation> recommendationList = snapshot.data!;
         if (recommendationList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }

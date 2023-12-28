@@ -9,7 +9,7 @@ class AnimeVideos extends StatefulWidget {
   final int id;
 
   @override
-  _AnimeVideosState createState() => _AnimeVideosState();
+  State<AnimeVideos> createState() => _AnimeVideosState();
 }
 
 class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClientMixin<AnimeVideos> {
@@ -26,12 +26,12 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
     super.build(context);
     return FutureBuilder(
       future: _future,
-      builder: (context, AsyncSnapshot<BuiltList<Promo>> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(child: CircularProgressIndicator());
         }
 
-        BuiltList<Promo> promoList = snapshot.data!;
+        final BuiltList<Promo> promoList = snapshot.data!;
         if (promoList.isEmpty) {
           return ListTile(title: Text('No items found.'));
         }
@@ -42,7 +42,7 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
               child: Wrap(
                 spacing: 16.0,
                 runSpacing: 16.0,
-                children: promoList.map((promo) => VideoImage(promo)).toList(),
+                children: promoList.map((promo) => LandscapeVideo(promo)).toList(),
               ),
             ),
           ),
@@ -55,17 +55,17 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
   bool get wantKeepAlive => true;
 }
 
-class VideoImage extends StatelessWidget {
-  const VideoImage(this.promo);
+class LandscapeVideo extends StatelessWidget {
+  const LandscapeVideo(this.promo);
 
   final Promo promo;
-  final double width = 300.0;
-  final double height = 170.0;
+  final double width = 320.0;
+  final double height = 180.0;
 
   @override
   Widget build(BuildContext context) {
     return Ink.image(
-      image: NetworkImage(promo.imageUrl),
+      image: NetworkImage(promo.imageUrl.replaceFirst('/maxresdefault.jpg', '/hqdefault.jpg')),
       width: width,
       height: height,
       fit: BoxFit.cover,
@@ -74,17 +74,7 @@ class VideoImage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             SizedBox(height: 30.0),
-            Container(
-              padding: const EdgeInsets.all(4.0),
-              decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(4.0)),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const <Widget>[
-                  Icon(Icons.play_circle_outline, color: Colors.white),
-                  Text(' Play', style: TextStyle(color: Colors.white)),
-                ],
-              ),
-            ),
+            playButton(),
             Stack(
               alignment: AlignmentDirectional.bottomStart,
               children: <Widget>[
