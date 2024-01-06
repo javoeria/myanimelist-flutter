@@ -58,12 +58,12 @@ class _AnimeVideosState extends State<AnimeVideos> with AutomaticKeepAliveClient
 class LandscapeVideo extends StatelessWidget {
   const LandscapeVideo(this.promo);
 
-  final Promo promo;
-  final double width = 320.0;
-  final double height = 180.0;
+  final dynamic promo;
 
   @override
   Widget build(BuildContext context) {
+    final double width = promo is Promo ? 320.0 : 220.0;
+    final double height = promo is Promo ? 180.0 : 120.0;
     return Ink.image(
       image: NetworkImage(promo.imageUrl.replaceFirst('/maxresdefault.jpg', '/hqdefault.jpg')),
       width: width,

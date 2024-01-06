@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:myanimelist/constants.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:xml/xml.dart';
 
@@ -54,7 +55,7 @@ class FeedScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 4.0),
                               Text(
-                                item.getElement('description')!.innerText.trim(),
+                                item.getElement('description')!.innerText.formatHtml().trim(),
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                               ),

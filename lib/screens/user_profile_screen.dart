@@ -182,7 +182,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   children: <Widget>[
                     Expanded(
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
+                        style: ElevatedButton.styleFrom(backgroundColor: kMyAnimeListColor),
                         child: Text(
                           'Anime List',
                           style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.white),
@@ -201,7 +201,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     const SizedBox(width: 16.0),
                     Expanded(
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
+                        style: ElevatedButton.styleFrom(backgroundColor: kMyAnimeListColor),
                         child: Text(
                           'Manga List',
                           style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.white),

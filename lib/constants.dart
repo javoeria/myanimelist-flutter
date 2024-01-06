@@ -15,6 +15,7 @@ const kDefaultPageSize = 25;
 const kEpisodePageSize = 100;
 const kReviewPageSize = 20;
 
+const kMyAnimeListColor = Color(0xFF2E51A2);
 const kWatchingColor = Color(0xFF2DB039);
 const kCompletedColor = Color(0xFF26448F);
 const kOnHoldColor = Color(0xFFF1C83E);
@@ -136,6 +137,11 @@ Widget playButton() {
 extension TextParsing on String {
   String toTitleCase() => this[0].toUpperCase() + substring(1).toLowerCase();
   String formatDate({pattern = 'MMM d, yyyy'}) => DateFormat(pattern).format(DateTime.parse(this));
+  String formatHtml() => replaceAll('&amp;', '&')
+      .replaceAll('&quot;', '"')
+      .replaceAll('&#039;', "'")
+      .replaceAll('&lt;', '<')
+      .replaceAll('&gt;', '>');
 }
 
 extension NumberParsing on int {

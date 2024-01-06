@@ -30,7 +30,7 @@ class RankImage extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(2.0),
                 color: Colors.black54,
-                child: Text('${index + 1}', style: TextStyle(color: Colors.white)),
+                child: Text('${index + 1}', style: const TextStyle(color: Colors.white)),
               ),
             ),
             Stack(
@@ -51,7 +51,7 @@ class RankImage extends StatelessWidget {
           ],
         ),
         onTap: () {
-          int id = top.malId;
+          final int id = top.malId;
           switch (type) {
             case ItemType.anime:
               Navigator.push(

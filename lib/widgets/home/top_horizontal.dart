@@ -12,27 +12,40 @@ class TopHorizontal extends StatelessWidget {
   final BuiltList<Anime> top;
   final String label;
 
+  int get _labelIndex {
+    switch (label) {
+      case 'Top Airing':
+        return 1;
+      case 'Top Upcoming':
+        return 2;
+      case 'Most Popular':
+        return 8;
+      default:
+        return 0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Divider(height: 0.0),
+        const Divider(height: 0.0),
         Padding(
           padding: kHomePadding,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Top $label Anime', style: Theme.of(context).textTheme.titleMedium),
+              Text('$label Anime', style: Theme.of(context).textTheme.titleMedium),
               IconButton(
-                icon: Icon(Icons.chevron_right),
+                icon: const Icon(Icons.chevron_right),
+                key: Key('${label.split(' ').last.toLowerCase()}_icon'),
                 tooltip: 'View all',
-                key: Key('${label.toLowerCase()}_icon'),
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TopAnimeScreen(index: label == 'Airing' ? 1 : 2),
+                      builder: (context) => TopAnimeScreen(index: _labelIndex),
                       settings: const RouteSettings(name: 'TopAnimeScreen'),
                     ),
                   );
@@ -61,7 +74,7 @@ class TopHorizontal extends StatelessWidget {
             },
           ),
         ),
-        SizedBox(height: 12.0),
+        const SizedBox(height: 12.0),
       ],
     );
   }

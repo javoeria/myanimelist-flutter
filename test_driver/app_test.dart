@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
+/// flutter drive --target=test_driver/app.dart
 void main() {
   group('AnimeDB App', () {
     final menuIconFinder = find.byTooltip('Open navigation menu');
@@ -37,15 +38,27 @@ void main() {
 
     test('home screen', () async {
       await takeScreenshot('home');
-      await driver.tap(find.byValueKey('season_icon'));
-      await driver.tap(find.pageBack());
-      await driver.tap(find.byValueKey('airing_icon'));
-      await driver.tap(find.pageBack());
-      await driver.tap(find.byValueKey('upcoming_icon'));
-      await driver.tap(find.pageBack());
+      // await driver.tap(find.byValueKey('season_icon'));
+      // await driver.tap(find.byValueKey('trailers_icon'));
+      // await driver.tap(find.byValueKey('news_icon'));
+
+      await driver.tap(find.text('Trending'));
+      await takeScreenshot('trending');
+      // await driver.tap(find.byValueKey('airing_icon'));
+      // await driver.tap(find.byValueKey('upcoming_icon'));
+      // await driver.tap(find.byValueKey('popular_icon'));
+      sleep(const Duration(seconds: 3));
+
+      await driver.tap(find.text('Feed'));
+      await takeScreenshot('feed');
+      // await driver.tap(find.byValueKey('articles_icon'));
+      // await driver.tap(find.byValueKey('reviews_icon'));
+      // await driver.tap(find.byValueKey('recommendations_icon'));
+      sleep(const Duration(seconds: 3));
+
+      await driver.tap(find.text('Home'));
       await driver.tap(find.byTooltip('Search anime'));
       await driver.tap(find.byTooltip('Back'));
-
       await driver.tap(find.byValueKey('anime_0'));
       await takeScreenshot('anime');
       // await driver.tap(find.text('Details'));
@@ -134,29 +147,30 @@ void main() {
       // await driver.tap(find.text('Special'));
       await driver.tap(find.pageBack());
 
-      await driver.tap(menuIconFinder);
-      await driver.tap(animeTextFinder);
-      await driver.tap(find.text('Genres'));
-      await driver.tap(find.text('Action'));
-      await driver.tap(find.pageBack());
-      await driver.tap(find.pageBack());
-
-      await driver.tap(menuIconFinder);
-      await driver.tap(animeTextFinder);
-      await driver.tap(find.text('Studios'));
-      await driver.tap(find.text('Toei Animation'));
-      await driver.tap(find.pageBack());
-      await driver.tap(find.pageBack());
-
       // await driver.tap(menuIconFinder);
       // await driver.tap(animeTextFinder);
-      // await driver.tap(find.text('Reviews'));
+      // await driver.tap(find.text('Genres'));
+      // await driver.tap(find.text('Action'));
+      // await driver.tap(find.pageBack());
       // await driver.tap(find.pageBack());
 
       // await driver.tap(menuIconFinder);
       // await driver.tap(animeTextFinder);
-      // await driver.tap(find.text('Recommendations'));
+      // await driver.tap(find.text('Studios'));
+      // await driver.tap(find.text('Toei Animation'));
       // await driver.tap(find.pageBack());
+      // await driver.tap(find.pageBack());
+
+      await driver.tap(menuIconFinder);
+      await driver.tap(animeTextFinder);
+      await driver.tap(find.text('Reviews'));
+      await driver.tap(find.pageBack());
+
+      await driver.tap(menuIconFinder);
+      await driver.tap(animeTextFinder);
+      await driver.scrollUntilVisible(animeTextFinder, find.text('Recommendations'), dyScroll: -300.0);
+      await driver.tap(find.text('Recommendations'));
+      await driver.tap(find.pageBack());
     });
 
     test('manga screen', () async {
@@ -184,29 +198,30 @@ void main() {
       // await driver.tap(find.text('Most Favorited'));
       await driver.tap(find.pageBack());
 
-      await driver.tap(menuIconFinder);
-      await driver.tap(mangaTextFinder);
-      await driver.tap(find.text('Genres'));
-      await driver.tap(find.text('Action'));
-      await driver.tap(find.pageBack());
-      await driver.tap(find.pageBack());
-
-      await driver.tap(menuIconFinder);
-      await driver.tap(mangaTextFinder);
-      await driver.tap(find.text('Magazines'));
-      await driver.tap(find.text('Shounen Jump (Weekly)'));
-      await driver.tap(find.pageBack());
-      await driver.tap(find.pageBack());
-
       // await driver.tap(menuIconFinder);
       // await driver.tap(mangaTextFinder);
-      // await driver.tap(find.text('Reviews'));
+      // await driver.tap(find.text('Genres'));
+      // await driver.tap(find.text('Action'));
+      // await driver.tap(find.pageBack());
       // await driver.tap(find.pageBack());
 
       // await driver.tap(menuIconFinder);
       // await driver.tap(mangaTextFinder);
-      // await driver.tap(find.text('Recommendations'));
+      // await driver.tap(find.text('Magazines'));
+      // await driver.tap(find.text('Shounen Jump (Weekly)'));
       // await driver.tap(find.pageBack());
+      // await driver.tap(find.pageBack());
+
+      await driver.tap(menuIconFinder);
+      await driver.tap(mangaTextFinder);
+      await driver.tap(find.text('Reviews'));
+      await driver.tap(find.pageBack());
+
+      await driver.tap(menuIconFinder);
+      await driver.tap(mangaTextFinder);
+      await driver.scrollUntilVisible(mangaTextFinder, find.text('Recommendations'), dyScroll: -300.0);
+      await driver.tap(find.text('Recommendations'));
+      await driver.tap(find.pageBack());
     });
 
     test('industry screen', () async {
@@ -223,14 +238,12 @@ void main() {
       await driver.tap(menuIconFinder);
       await driver.tap(industryTextFinder);
       await driver.tap(find.text('People'));
-      await takeScreenshot('people');
       await driver.tap(find.pageBack());
 
       await driver.tap(menuIconFinder);
       await driver.tap(industryTextFinder);
       await driver.scrollUntilVisible(industryTextFinder, find.text('Characters'), dyScroll: -300.0);
       await driver.tap(find.text('Characters'));
-      await takeScreenshot('characters');
       await driver.tap(find.pageBack());
     });
 

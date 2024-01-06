@@ -13,6 +13,7 @@ class MangaList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
     BuiltList<Manga> mangaList = BuiltList(items.where((manga) => !manga.genres.any((i) => i.name == 'Hentai')));
     if (!Provider.of<UserData>(context).kidsGenre) {
       mangaList = BuiltList(mangaList.where((manga) => !manga.demographics.any((i) => i.name == 'Kids')));
@@ -25,11 +26,17 @@ class MangaList extends StatelessWidget {
       return ListTile(title: Text('No items found.'));
     }
     return Scrollbar(
-      child: ListView.separated(
-        separatorBuilder: (context, index) => const Divider(height: 0.0),
-        itemCount: mangaList.length,
-        itemBuilder: (context, index) => MangaInfo(mangaList.elementAt(index)),
-      ),
+      child: screenWidth < 992.0
+          ? ListView.separated(
+              separatorBuilder: (context, index) => const Divider(height: 0.0),
+              itemCount: mangaList.length,
+              itemBuilder: (context, index) => MangaInfo(mangaList.elementAt(index)),
+            )
+          : GridView.count(
+              crossAxisCount: 2,
+              childAspectRatio: (screenWidth / 2) / 400.0,
+              children: mangaList.map((i) => MangaInfo(i)).toList(),
+            ),
     );
   }
 }

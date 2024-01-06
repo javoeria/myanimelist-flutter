@@ -98,6 +98,6 @@ class SeasonalAnimeScreen extends StatelessWidget {
       return Anime.fromJson(jsonMap);
     }).toList();
 
-    return BuiltList(items.where((anime) => anime.year == year && anime.season == season.toLowerCase()));
+    return BuiltList(items.where((anime) => anime.year == year));
   }
 }

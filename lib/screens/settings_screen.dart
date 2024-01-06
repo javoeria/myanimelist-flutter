@@ -2,9 +2,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:myanimelist/constants.dart';
-import 'package:myanimelist/main.dart';
 import 'package:myanimelist/models/user_data.dart';
 import 'package:myanimelist/oauth.dart';
+import 'package:myanimelist/screens/home_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
@@ -48,7 +48,7 @@ class SettingsScreen extends StatelessWidget {
               if (username != null && action == true) {
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => LoadingScreen()),
+                  MaterialPageRoute(builder: (context) => HomeScreen(prefs.getString('username'))),
                   (Route<dynamic> route) => false,
                 );
               }

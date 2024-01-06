@@ -15,7 +15,7 @@ class SearchButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.search),
+      icon: const Icon(Icons.search),
       tooltip: 'Search anime',
       onPressed: () async {
         final Anime? selected = await showSearch<dynamic>(
@@ -45,7 +45,7 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: BackButtonIcon(),
+      icon: const BackButtonIcon(),
       tooltip: 'Back',
       onPressed: () => Navigator.pop(context),
     );
@@ -90,7 +90,7 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     if (query.isEmpty || query.length < 3) {
-      return Center(child: Text('Minimum 3 letters'));
+      return const Center(child: Text('Minimum 3 letters'));
     }
 
     FirebaseAnalytics.instance.logSearch(searchTerm: query);
@@ -100,7 +100,7 @@ class CustomSearchDelegate extends SearchDelegate {
         pageSize: kDefaultPageSize,
         itemBuilder: (context, search, _) => _ResultList(search, searchDelegate: this),
         padding: const EdgeInsets.all(12.0),
-        noItemsFoundBuilder: (context) => ListTile(title: Text('No items found.')),
+        noItemsFoundBuilder: (context) => const ListTile(title: Text('No items found.')),
         pageFuture: (pageIndex) => type == ItemType.anime
             ? jikan.searchAnime(query: query, page: pageIndex! + 1)
             : jikan.searchManga(query: query, page: pageIndex! + 1),
@@ -113,7 +113,7 @@ class CustomSearchDelegate extends SearchDelegate {
     if (query.isNotEmpty) {
       return [
         IconButton(
-          icon: Icon(Icons.clear),
+          icon: const Icon(Icons.clear),
           onPressed: () {
             query = '';
             showSuggestions(context);
@@ -141,7 +141,7 @@ class _ResultList extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Image.network(search.imageUrl, width: kImageWidthS, height: kImageHeightS, fit: BoxFit.cover),
-            SizedBox(width: 8.0),
+            const SizedBox(width: 8.0),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +154,7 @@ class _ResultList extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    '${search.type ?? 'Unknown'} ${episodesText(search)} - $score',
+                    '${search.type ?? 'Unknown'} ${episodesText(search)} - Scored $score',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   Text(
@@ -186,7 +186,7 @@ class _SuggestionList extends StatelessWidget {
         String suggestion = suggestions.elementAt(index);
         if (history) {
           return ListTile(
-            leading: Icon(Icons.history),
+            leading: const Icon(Icons.history),
             title: Text(suggestion, style: Theme.of(context).textTheme.bodyLarge),
             onTap: () => onSelected(suggestion),
             onLongPress: () async {
@@ -196,8 +196,8 @@ class _SuggestionList extends StatelessWidget {
           );
         } else {
           return ListTile(
+            leading: const Icon(Icons.search),
             key: Key('suggestion_$index'),
-            leading: Icon(Icons.search),
             title: Text(suggestion, style: Theme.of(context).textTheme.bodyLarge),
             onTap: () => onSelected(suggestion),
           );
@@ -213,14 +213,14 @@ Future<bool?> _historyDialog(BuildContext context, String suggestion) async {
     builder: (context) {
       return AlertDialog(
         title: Text(suggestion),
-        content: Text('Remove from search history?'),
+        content: const Text('Remove from search history?'),
         actions: <TextButton>[
           TextButton(
-            child: Text('NO'),
+            child: const Text('NO'),
             onPressed: () => Navigator.pop(context, false),
           ),
           TextButton(
-            child: Text('YES'),
+            child: const Text('YES'),
             onPressed: () => Navigator.pop(context, true),
           ),
         ],

@@ -13,7 +13,7 @@ class SuggestionHorizontal extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Divider(height: 0.0),
+        const Divider(height: 0.0),
         Padding(
           padding: kHomePadding,
           child: Row(
@@ -21,9 +21,10 @@ class SuggestionHorizontal extends StatelessWidget {
             children: <Widget>[
               Text('My Anime Suggestions', style: Theme.of(context).textTheme.titleMedium),
               IconButton(
-                icon: Icon(Icons.help_outline),
+                icon: const Icon(Icons.help_outline),
                 onPressed: (() => Fluttertoast.showToast(
-                    msg: "These suggestions are generated based on MAL's Anime and Manga rankings.")),
+                    msg: "These suggestions are generated based on MAL's Anime and Manga rankings.",
+                    backgroundColor: kMyAnimeListColor)),
               )
             ],
           ),
@@ -48,7 +49,7 @@ class SuggestionHorizontal extends StatelessWidget {
             },
           ),
         ),
-        SizedBox(height: 12.0),
+        const SizedBox(height: 12.0),
       ],
     );
   }

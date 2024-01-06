@@ -207,7 +207,7 @@ class HorizontalBarChart extends StatelessWidget {
         domainFn: (score, _) => score.score.toString(),
         measureFn: (score, _) => score.votes,
         labelAccessorFn: (score, _) => '${score.percentage}% (${score.votes} votes)',
-        seriesColor: charts.Color(r: 63, g: 81, b: 181),
+        seriesColor: charts.Color(r: 46, g: 81, b: 162),
       ),
     ];
   }

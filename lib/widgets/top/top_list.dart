@@ -54,7 +54,9 @@ class _TopListState extends State<TopList> with AutomaticKeepAliveClientMixin<To
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   Text(
-                    '${(top.members as int).decimal()} members',
+                    widget.filter != TopFilter.favorite
+                        ? '${(top.members as int).decimal()} members'
+                        : '${(top.favorites as int).decimal()} favorites',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],

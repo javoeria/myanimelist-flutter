@@ -19,10 +19,10 @@ class MangaDetails extends StatefulWidget {
 }
 
 class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClientMixin<MangaDetails> {
-  late Manga manga;
+  late final Manga manga;
   late BuiltList<Picture> pictures;
-  Map<String, dynamic>? status;
-  List<dynamic>? related;
+  late Map<String, dynamic> status;
+  late List<dynamic> related;
   bool loading = true;
 
   @override
@@ -121,29 +121,29 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
             ],
           ),
         ),
-        status != null
+        status.isNotEmpty
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                 child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(side: BorderSide(width: 2.0, color: statusColor(status!['text']))),
+                  style: OutlinedButton.styleFrom(side: BorderSide(width: 2.0, color: statusColor(status['text']))),
                   child: Text(
-                    status!['text'],
-                    style: Theme.of(context).textTheme.labelLarge!.copyWith(color: statusColor(status!['text'])),
+                    status['text'],
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(color: statusColor(status['text'])),
                   ),
                   onPressed: () async {
                     final newStatus = await showDialog<dynamic>(
                       context: context,
-                      builder: (context) => MangaDialog(status!),
+                      builder: (context) => MangaDialog(status),
                     );
                     if (newStatus != null && newStatus['status'] != null) {
                       setState(() {
-                        status!['status'] = newStatus['status'];
-                        status!['score'] = newStatus['score'];
-                        status!['num_chapters_read'] = newStatus['num_chapters_read'];
-                        status!['num_volumes_read'] = newStatus['num_volumes_read'];
-                        status!['text'] = newStatus['status'].replaceAll('_', ' ').toUpperCase();
+                        status['status'] = newStatus['status'];
+                        status['score'] = newStatus['score'];
+                        status['num_chapters_read'] = newStatus['num_chapters_read'];
+                        status['num_volumes_read'] = newStatus['num_volumes_read'];
+                        status['text'] = newStatus['status'].toString().replaceAll('_', ' ').toUpperCase();
                       });
-                      Fluttertoast.showToast(msg: 'Update Successful');
+                      Fluttertoast.showToast(msg: 'Update Successful', backgroundColor: kMyAnimeListColor);
                     }
                   },
                 ),
@@ -259,7 +259,7 @@ class _MangaDetailsState extends State<MangaDetails> with AutomaticKeepAliveClie
             ],
           ),
         ),
-        if (related != null && related!.isNotEmpty) RelatedList(related!, anime: false),
+        if (related.isNotEmpty) RelatedList(related, anime: false),
         PictureList(pictures),
       ],
     );

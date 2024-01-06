@@ -24,9 +24,9 @@ class SeasonHorizontal extends StatelessWidget {
             children: <Widget>[
               Text('$seasonName ${season.first.year} Anime', style: Theme.of(context).textTheme.titleMedium),
               IconButton(
-                icon: Icon(Icons.chevron_right),
+                icon: const Icon(Icons.chevron_right),
+                key: const Key('season_icon'),
                 tooltip: 'View all',
-                key: Key('season_icon'),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -61,7 +61,7 @@ class SeasonHorizontal extends StatelessWidget {
             },
           ),
         ),
-        SizedBox(height: 12.0),
+        const SizedBox(height: 12.0),
       ],
     );
   }

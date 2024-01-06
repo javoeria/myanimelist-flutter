@@ -5,14 +5,11 @@ import 'package:firebase_performance/firebase_performance.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
-import 'package:jikan_api/jikan_api.dart';
 import 'package:myanimelist/constants.dart';
 import 'package:myanimelist/models/user_data.dart';
-import 'package:myanimelist/oauth.dart';
 import 'package:myanimelist/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:slack_notifier/slack_notifier.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +43,7 @@ Future<FirebaseRemoteConfig> setupRemoteConfig() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp(this.prefs);
+  const MyApp(this.prefs, {super.key});
 
   final SharedPreferences prefs;
 
@@ -60,64 +57,18 @@ class MyApp extends StatelessWidget {
           themeMode: Provider.of<UserData>(context).themeMode,
           theme: ThemeData(
             useMaterial3: true,
-            colorSchemeSeed: Colors.indigo,
+            colorSchemeSeed: kMyAnimeListColor,
             brightness: Brightness.light,
           ),
           darkTheme: ThemeData(
             useMaterial3: true,
-            colorSchemeSeed: Colors.indigo,
+            colorSchemeSeed: kMyAnimeListColor,
             brightness: Brightness.dark,
           ),
-          home: LoadingScreen(),
+          home: HomeScreen(prefs.getString('username')),
           navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
         );
       },
     );
-  }
-}
-
-class LoadingScreen extends StatefulWidget {
-  @override
-  State<LoadingScreen> createState() => _LoadingScreenState();
-}
-
-class _LoadingScreenState extends State<LoadingScreen> {
-  UserProfile? profile;
-  List<dynamic>? suggestions;
-  late BuiltList<Anime> season;
-  late BuiltList<Anime> topAiring;
-  late BuiltList<Anime> topUpcoming;
-  bool loading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    load();
-  }
-
-  void load() async {
-    final Trace mainTrace = FirebasePerformance.instance.newTrace('main_trace');
-    mainTrace.start();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? username = prefs.getString('username');
-    if (username != null) {
-      profile = await jikan.getUserProfile(username);
-      suggestions = await MalClient().getSuggestions();
-      if (kReleaseMode) SlackNotifier(kSlackToken).send('Main $username', channel: 'jikan');
-    }
-    season = await jikan.getSeason();
-    topAiring = await jikan.getTopAnime(filter: TopFilter.airing);
-    topUpcoming = await jikan.getTopAnime(filter: TopFilter.upcoming);
-    mainTrace.stop();
-    setState(() => loading = false);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (loading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    } else {
-      return HomeScreen(profile, season, topAiring, topUpcoming, suggestions);
-    }
   }
 }
