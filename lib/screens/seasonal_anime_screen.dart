@@ -62,6 +62,7 @@ class SeasonalAnimeScreen extends StatelessWidget {
           ? item['node']['media_type'].toString().toUpperCase()
           : item['node']['media_type'].toString().toTitleCase();
       if (item['node']['main_picture'] == null) item['node']['main_picture'] = {'medium': kDefaultPicture};
+      if (item['node']['start_season'] == null) item['node']['start_season'] = {'year': year, 'season': season};
       if (item['node']['start_date'].toString().split('-').length == 2) item['node']['start_date'] += '-01';
       Map<String, dynamic> jsonMap = {
         'mal_id': item['node']['id'],

@@ -41,6 +41,19 @@ const kTitlePadding = EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom
 const kTextStyleBold = TextStyle(fontWeight: FontWeight.bold);
 const kTextStyleShadow = TextStyle(color: Colors.white, fontSize: 12.0, shadows: [Shadow(blurRadius: 3.0)]);
 
+String get kSeasonName {
+  int month = DateTime.now().month;
+  if (month < 4) {
+    return 'Winter';
+  } else if (month >= 4 && month < 7) {
+    return 'Spring';
+  } else if (month >= 7 && month < 10) {
+    return 'Summer';
+  } else {
+    return 'Fall';
+  }
+}
+
 Color statusColor(String status) {
   switch (status.toLowerCase()) {
     case 'watching':

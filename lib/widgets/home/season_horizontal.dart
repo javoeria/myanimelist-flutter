@@ -13,7 +13,6 @@ class SeasonHorizontal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String seasonName = season.first.season!.toTitleCase();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -22,7 +21,7 @@ class SeasonHorizontal extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('$seasonName ${season.first.year} Anime', style: Theme.of(context).textTheme.titleMedium),
+              Text('$kSeasonName ${season.first.year} Anime', style: Theme.of(context).textTheme.titleMedium),
               IconButton(
                 icon: const Icon(Icons.chevron_right),
                 key: const Key('season_icon'),
@@ -31,7 +30,7 @@ class SeasonHorizontal extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SeasonalAnimeScreen(year: season.first.year!, season: seasonName),
+                      builder: (context) => SeasonalAnimeScreen(year: season.first.year!, season: kSeasonName),
                       settings: const RouteSettings(name: 'SeasonalAnimeScreen'),
                     ),
                   );

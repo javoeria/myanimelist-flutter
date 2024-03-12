@@ -101,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return ListView(
         key: const Key('home_page'),
         children: <Widget>[
-          SeasonHorizontal(season!),
+          SeasonHorizontal(season!.where((anime) => anime.year == DateTime.now().year).toBuiltList()),
           if (suggestions != null && suggestions!.isNotEmpty) SuggestionHorizontal(suggestions!),
           WatchHorizontal(trailers!),
           FeedList(news!),

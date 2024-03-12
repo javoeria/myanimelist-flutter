@@ -35,19 +35,6 @@ class DrawerMenu extends StatelessWidget {
 
   final UserProfile? profile;
 
-  String get _seasonName {
-    int month = DateTime.now().month;
-    if (month < 4) {
-      return 'Winter';
-    } else if (month >= 4 && month < 7) {
-      return 'Spring';
-    } else if (month >= 7 && month < 10) {
-      return 'Summer';
-    } else {
-      return 'Fall';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
@@ -177,7 +164,7 @@ class DrawerMenu extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SeasonalAnimeScreen(year: DateTime.now().year, season: _seasonName),
+                            builder: (context) => SeasonalAnimeScreen(year: DateTime.now().year, season: kSeasonName),
                             settings: const RouteSettings(name: 'SeasonalAnimeScreen'),
                           ),
                         );
